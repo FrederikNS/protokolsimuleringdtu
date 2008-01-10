@@ -1,12 +1,32 @@
 package message;
 
+/**
+ * A transmitter can send and receive messages.
+ * @author Niels Thykier
+ */
 public interface Transmitter extends Cloneable{
-	public static final int TRANSMIT_TYPE_TARGET = 1;
-	public static final int TRANSMIT_TYPE_BROADCAST = 2;
+
+	/**
+	 * The "steps" it takes before a transmission is "timed-out".
+	 */
 	public static final int TIMEOUT_IN_STEPS = 3;
+	
+	/**
+	 * Invoked on the receiving transmitter, when it receives it message. 
+	 * @param msg The message.
+	 */
 	public void receive(Message msg);
-	public boolean transmit(Message msg);
-	public boolean transmit(Message msg, Transmitter[] through);
+	/**
+	 * Invoked when a message is to be transmitted. 
+	 * @param msg the message to send.
+	 */
+	public void transmit(Message msg);
+	/**
+	 * Invoked when a message is to be transmitted. 
+	 * @param msg the message to send.
+	 * @param through the transmitters it should be sent via.
+	 */
+	public void transmit(Message msg, Transmitter[] through);
 	
 	public Object clone();
 }
