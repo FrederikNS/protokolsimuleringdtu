@@ -42,22 +42,20 @@ public class Location implements Drawable,Cloneable {
 	}
 	
 	public void draw(Graphics g) {
-		g.drawOval(x, y, 3, 3);
-		/*g.drawLine(x-1, y-1, x+1, y+1);
-		g.drawLine(x+1, y+1, x-1, y-1);*/
+		g.drawOval(x-1, y-1, 3, 3);
 	}
-	
 	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Location) {
-			Location loc = (Location)obj;
+			Location loc = (Location) obj;
 			return x == loc.x && y == loc.y;
 			}
 		return false;
 	}
+	
 	@Override
-	public Location clone() {
+	public Object clone() {
 		return new Location(this);
 	}
 	
