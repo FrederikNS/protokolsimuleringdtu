@@ -2,14 +2,15 @@ package gui;
 
 import javax.swing.JFrame;
 
-public class MainFrame extends JFrame{
+public class ControlPanelFrame extends JFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8026416994513756565L;
 
-	public MainFrame() {
-		super("Protokolsimulator");
+	public ControlPanelFrame() {
+		super("Controlpanel");
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
