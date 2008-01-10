@@ -16,6 +16,6 @@ public class ControlPanelFrame extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		new MainFrame();
+		new ControlPanelFrame();
 	}
 }
