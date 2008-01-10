@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import message.Message;
 import message.Transmitter;
 
-public class Sensor extends Location implements Transmitter{
+public class Sensor extends Location implements Transmitter, Cloneable{
 
 	private ArrayList<Message> toTransmit;
 	private ArrayList<Message> received;
-	private ArrayList<Message> sent;
+	@SuppressWarnings("unused")
+	private ArrayList<Transmitter> sent;
 	
 	
 	public Sensor() {
@@ -24,11 +25,14 @@ public class Sensor extends Location implements Transmitter{
 		super(loc);
 		initSensor();
 	}
-	
+
 	private void initSensor() {
 		toTransmit = new ArrayList<Message>();
 		received = new ArrayList<Message>();
-		sent = new ArrayList<Message>();
+		sent = new ArrayList<Transmitter>();
+	}
+
+	protected void prepareMessages() {
 	}
 	
 	public boolean isDown() {
@@ -48,7 +52,7 @@ public class Sensor extends Location implements Transmitter{
 	}
 	
 	public Location getLocation() {
-		return super.clone();
+		return (Location) super.clone();
 	}
 
 	public boolean transmit(Message msg) {
@@ -57,9 +61,17 @@ public class Sensor extends Location implements Transmitter{
 	}
 
 	public boolean transmit(Message msg, Transmitter[] through) {
-		sent.add(msg);
+		//sent.add(through[0]);
 		return false;
 	}
 	
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (Exception e) {
+			throw new RuntimeException(e) ; 
+		}
+	}
 	
 }

@@ -1,12 +1,21 @@
 package message;
 
-import nodes.Location;
-import nodes.Sensor;
 
 public class Message {
-	private Sensor destination;
 	
-	public Location getDestination() {
-		return destination.getLocation();
+	private Transmitter destination;
+	private Transmitter transmitter;
+	private int messageType;
+	
+	public Transmitter getDestination() {
+		return (Transmitter) destination.clone();
+	}
+	
+	public Transmitter getSender() {
+		return (Transmitter) transmitter.clone();
+	}
+	
+	public int getMessageType() {
+		return messageType;
 	}
 }
