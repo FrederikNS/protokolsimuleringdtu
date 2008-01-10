@@ -28,10 +28,12 @@ public class Scaling {
 	}
 	
 	public int convertToRealX(int x, int currH) {
+		// ??? picXMax - picXMax is always 0 !?
 		return new Fraction(x,currH).multiply(picXMax - picXMax).add(picXMin).evaluateRoundDown();
 	}
 	
 	public int convertToRealY(int y, int currW) {
+		// ??? picYMax - picYMax is always 0 !?
 		return new Fraction(y,currW).multiply(picYMax-picYMax).add(picYMin).evaluateRoundDown();
 	}
 }
