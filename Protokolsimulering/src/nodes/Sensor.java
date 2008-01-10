@@ -13,19 +13,34 @@ public class Sensor extends Location implements Transmitter, Cloneable{
 	private ArrayList<Transmitter> sent;
 	
 	
+	/**
+	 * Generate a sensor at a random location.
+	 */
 	public Sensor() {
-		super();
+		this(new Location());
 	}
 
+	/**
+	 * Generate a sensor at a given location.
+	 * @param coordX The x-coordiate of the location 
+	 * @param coordY The y-coordiate of the location
+	 */
 	public Sensor(int coordX, int coordY) {
-		super(coordX, coordY);
+		this(new Location(coordX, coordY));
 	}
 
+	/**
+	 * Generates a Sensor from a location.
+	 * @param loc The location of the new sensor.
+	 */
 	public Sensor(Location loc) {
 		super(loc);
 		initSensor();
 	}
 
+	/**
+	 * Initialization, called from the constructors. 
+	 */
 	private void initSensor() {
 		toTransmit = new ArrayList<Message>();
 		received = new ArrayList<Message>();
@@ -35,15 +50,22 @@ public class Sensor extends Location implements Transmitter, Cloneable{
 	protected void prepareMessages() {
 	}
 	
+	/**
+	 * Test if the Sensor is operational.
+	 * @return true if the sensor is down/unavailable. 
+	 */
 	public boolean isDown() {
 		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see message.Transmitter#receive(message.Message)
+	 */
 	public void receive(Message msg) {
 		if(isDown()) {
 			return;
 		}
-		if(msg.getDestination().equals(this)) {
+		if(msg.getReceiver().equals(this)) {
 			received.add(msg);
 		} else {
 			toTransmit.add(msg);
@@ -51,20 +73,32 @@ public class Sensor extends Location implements Transmitter, Cloneable{
 		
 	}
 	
+	/**
+	 * Gets the locaiton of the sensor.
+	 * @return The location of the sensor.
+	 */
 	public Location getLocation() {
 		return (Location) super.clone();
 	}
 
-	public boolean transmit(Message msg) {
+	/* (non-Javadoc)
+	 * @see message.Transmitter#transmit(message.Message)
+	 */
+	public void transmit(Message msg) {
 		Transmitter[] through = null;//findShortestPath
-		return transmit(msg, through);
+		transmit(msg, through);
 	}
 
-	public boolean transmit(Message msg, Transmitter[] through) {
+	/* (non-Javadoc)
+	 * @see message.Transmitter#transmit(message.Message, message.Transmitter[])
+	 */
+	public void transmit(Message msg, Transmitter[] through) {
 		//sent.add(through[0]);
-		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see nodes.Location#clone()
+	 */
 	@Override
 	public Object clone() {
 		try {
