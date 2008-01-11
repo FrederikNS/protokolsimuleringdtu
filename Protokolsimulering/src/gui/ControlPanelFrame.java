@@ -5,18 +5,21 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ControlPanelFrame extends JFrame implements ActionListener{
 	/**
@@ -246,12 +249,30 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			break;
 		case MENU_OPEN:
 			//TODO
+			File openFile;
+			JFileChooser openChooser = new JFileChooser();
+		    FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+		    openChooser.setFileFilter(openFilter);
+		    int openReturnVal = openChooser.showOpenDialog(rootPane);
+		    if(openReturnVal == JFileChooser.APPROVE_OPTION) {
+		            openFile = openChooser.getSelectedFile();
+		            System.out.println(openFile);
+		    }
 			break;
 		case MENU_SAVE:
 			//TODO
 			break;
 		case MENU_SAVE_AS:
 			//TODO
+			File saveFile;
+			JFileChooser saveChooser = new JFileChooser();
+		    FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+		    saveChooser.setFileFilter(saveFilter);
+		    int saveReturnVal = saveChooser.showOpenDialog(rootPane);
+		    if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
+		            saveFile = saveChooser.getSelectedFile();
+		            System.out.println(saveFile);
+		    }
 			break;
 		case BUTTON_KILL:
 			//TODO
