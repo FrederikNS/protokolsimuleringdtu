@@ -106,7 +106,7 @@ public class Location implements Drawable,Cloneable {
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
-	public Object clone() {
+	public Object clone() throws CloneNotSupportedException {
 		return new Location(this);
 	}
 	

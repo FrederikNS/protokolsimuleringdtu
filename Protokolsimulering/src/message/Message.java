@@ -13,11 +13,11 @@ public class Message {
 	/**
 	 * The receiver of the message.
 	 */
-	private Transmitter receiver;
+	private int receiver;
 	/**
 	 * The sender of the message.
 	 */
-	private Transmitter sender;
+	private int sender;
 	/**
 	 * The message type.
 	 */
@@ -28,26 +28,34 @@ public class Message {
 	@SuppressWarnings("unused")
 	private ArrayList<Data> data;
 	
-	public Message(Transmitter receiver, Transmitter sender) {
+	private int dataType;
+	
+	public Message(int receiver, int sender, Data information) {
 		this.receiver = receiver;
 		this.sender = sender;
 		data = new ArrayList<Data>();
+		data.add(information);
+		dataType = information.getDataType();
+	}
+	
+	public Message generateConfirmationMessage() {
+		return new Message(sender, receiver, Data.generateMessageReceived());
 	}
 	
 	/**
-	 * Fetches (a copy of) the receiving transmitter.
-	 * @return (a copy of) the receiving transmitter.
+	 * Fetches the ID of the receiving transmitter.
+	 * @return The id of the receiving transmitter.
 	 */
-	public Transmitter getReceiver() {
-		return (Transmitter) receiver.clone();
+	public int getReceiver() {
+		return receiver;
 	}
 	
 	/**
-	 * Fetches (a copy of) the sending transmitter.
-	 * @return (a copy of) the sending transmitter.
+	 * Fetches the ID of the sending transmitter.
+	 * @return The id of the sending transmitter.
 	 */
-	public Transmitter getSender() {
-		return (Transmitter) sender.clone();
+	public int getSender() {
+		return sender;
 	}
 	
 	/**
@@ -67,13 +75,20 @@ public class Message {
 		return data.get(index);
 	}
 	
+	public int getDataType() {
+		return dataType;
+	}
+	
 	/**
-	 * Appends some data to the list.
+	 * Appends some data to the list if and only if it is of the same type.
 	 * @param toAdd Data to add
 	 * @return true if it could be added.
 	 */
 	public boolean appendData(Data toAdd) {
-		return data.add(toAdd);
+		if(toAdd.getDataType() == dataType) {
+			return data.add(toAdd);
+		}
+		return false;
 	}
 	
 	/**
