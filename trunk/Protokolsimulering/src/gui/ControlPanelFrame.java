@@ -25,8 +25,13 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -8026416994513756565L;
 	
 	private ButtonGroup modeGroup = new ButtonGroup();
+	ButtonGroup stepperGroup = new ButtonGroup();
 	private JPanel controlPanelPane = new JPanel();
 	
+	private final static int MENU_NEW = 1;
+	private final static int MENU_OPEN = 2;
+	private final static int MENU_SAVE = 3;
+	private final static int MENU_SAVE_AS = 4;
 	private final static int MENU_QUIT = 0;
 	private final static int BUTTON_KILL = 101;
 	private final static int BUTTON_ADD = 102;
@@ -35,17 +40,16 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	private final static int BUTTON_REWIND = 111;
 	private final static int BUTTON_STEP_BACKWARD = 112;
 	private final static int BUTTON_PLAY_BACKWARDS = 113;
-	private final static int BUTTON_PLAY = 114;
-	private final static int BUTTON_STEP_FORWARD = 115;
-	private final static int BUTTON_FAST_FORWARD = 116;
+	private final static int BUTTON_STOP = 114;
+	private final static int BUTTON_PLAY = 115;
+	private final static int BUTTON_STEP_FORWARD = 116;
+	private final static int BUTTON_FAST_FORWARD = 117;
 	private final static int CHECKBOX_RADII = 201;
 	private final static int CHECKBOX_CONNECTIONS = 202;
 	private final static int CHECKBOX_BATTERY = 203;
 	private final static int CHECKBOX_ID = 204;
 	private final static int CHECKBOX_NEIGHBOURS = 205;
-	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
+	
 	//private final static int  = ;
 	//private final static int  = ;
 	//private final static int  = ;
@@ -61,10 +65,12 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	public final static int PLAYBACK_PLAY = 1;
 	public final static int PLAYBACK_FAST_FORWARD = 2;
 	public int playback = PLAYBACK_PAUSE;
+	
 	public final static int MODE_SELECT = 0;
 	public final static int MODE_KILL = 1;
 	public final static int MODE_ADD = 2;
 	public final static int MODE_MOVE = 3;
+	
 	public int mode = MODE_SELECT;
 
 	public ControlPanelFrame() {
@@ -78,6 +84,18 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
+		JMenuItem newMenuItem = new JMenuItem("New");
+		newMenuItem.addActionListener(this);
+		newMenuItem.setActionCommand(String.valueOf(MENU_NEW));
+		JMenuItem openMenuItem = new JMenuItem("Open...");
+		openMenuItem.addActionListener(this);
+		openMenuItem.setActionCommand(String.valueOf(MENU_OPEN));
+		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.addActionListener(this);
+		saveMenuItem.setActionCommand(String.valueOf(MENU_SAVE));
+		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
+		saveAsMenuItem.addActionListener(this);
+		saveAsMenuItem.setActionCommand(String.valueOf(MENU_SAVE_AS));
 		JMenuItem quitMenuItem = new JMenuItem("Quit");
 		quitMenuItem.addActionListener(this);
 		quitMenuItem.setActionCommand(String.valueOf(MENU_QUIT));
@@ -85,6 +103,10 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		setJMenuBar(menuBar);
 
 		menuBar.add(fileMenu);
+		fileMenu.add(newMenuItem);
+		fileMenu.add(openMenuItem);
+		fileMenu.add(saveMenuItem);
+		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(quitMenuItem);
 
 		controlPanelPane.setLayout(controlPanelPaneLayout);
@@ -101,12 +123,15 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		JPanel modesPanel = new JPanel();
 		FlowLayout modesPanelLayout = new FlowLayout(FlowLayout.CENTER,0,0);
 		JToggleButton killButton = new JToggleButton("Kill");
+		killButton.setToolTipText("Removes the sensor you click");
 		killButton.addActionListener(this);
 		killButton.setActionCommand(String.valueOf(BUTTON_KILL));
 		JToggleButton addButton = new JToggleButton("Add");
+		addButton.setToolTipText("Adds another sensor where you click");
 		addButton.addActionListener(this);
 		addButton.setActionCommand(String.valueOf(BUTTON_ADD));
 		JToggleButton moveButton = new JToggleButton("Move");
+		moveButton.setToolTipText("Makes sensors draggable");
 		moveButton.addActionListener(this);
 		moveButton.setActionCommand(String.valueOf(BUTTON_MOVE));
 
@@ -126,18 +151,23 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		BoxLayout viewSettingsLayout = new BoxLayout(viewSettingsPanel, BoxLayout.Y_AXIS);
 
 		JCheckBox viewRadii = new JCheckBox("Radii");
+		viewRadii.setToolTipText("Shows how far the sensors can communicate");
 		viewRadii.addActionListener(this);
 		viewRadii.setActionCommand(String.valueOf(CHECKBOX_RADII));
 		JCheckBox viewConnections = new JCheckBox("Connections");
+		viewConnections.setToolTipText("Shows lines between connected sensors");
 		viewConnections.addActionListener(this);
 		viewConnections.setActionCommand(String.valueOf(CHECKBOX_CONNECTIONS));
 		JCheckBox viewBattery = new JCheckBox("Battery");
+		viewBattery.setToolTipText("Shows the battery level of the sensors");
 		viewConnections.addActionListener(this);
 		viewConnections.setActionCommand(String.valueOf(CHECKBOX_BATTERY));
 		JCheckBox viewID = new JCheckBox("ID");
+		viewID.setToolTipText("Shows the ID of the sensors");
 		viewConnections.addActionListener(this);
 		viewConnections.setActionCommand(String.valueOf(CHECKBOX_ID));
 		JCheckBox viewNeighbours = new JCheckBox("Neighbours");
+		viewNeighbours.setToolTipText("Highlights the neighbouring sensors of the selected sensor");
 		viewConnections.addActionListener(this);
 		viewConnections.setActionCommand(String.valueOf(CHECKBOX_NEIGHBOURS));
 
@@ -153,43 +183,56 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 
 	public void stepper() {
 		JPanel stepperPanel = new JPanel();
-		ButtonGroup stepperControls = new ButtonGroup();
+		FlowLayout stepperLayout = new FlowLayout(FlowLayout.CENTER,0,0);
+		stepperPanel.setLayout(stepperLayout);
 		JButton toStart = new JButton("|<");
+		toStart.setToolTipText("Goto Start");
 		toStart.addActionListener(this);
 		toStart.setActionCommand(String.valueOf(BUTTON_TO_START));
 		JToggleButton rewind = new JToggleButton("<<");
+		rewind.setToolTipText("Rewind");
 		rewind.addActionListener(this);
 		rewind.setActionCommand(String.valueOf(BUTTON_REWIND));
 		JButton stepBackwards = new JButton("<|");
+		stepBackwards.setToolTipText("Step Backward");
 		stepBackwards.addActionListener(this);
 		stepBackwards.setActionCommand(String.valueOf(BUTTON_STEP_BACKWARD));
 		JToggleButton playBackwards = new JToggleButton("<");
+		playBackwards.setToolTipText("Play Backwards");
 		playBackwards.addActionListener(this);
 		playBackwards.setActionCommand(String.valueOf(BUTTON_PLAY_BACKWARDS));
+		JButton stop = new JButton("■");
+		stop.setToolTipText("Stop");
+		stop.addActionListener(this);
+		stop.setActionCommand(String.valueOf(BUTTON_STOP));
 		JToggleButton play = new JToggleButton(">");
+		play.setToolTipText("Play");
 		play.addActionListener(this);
 		play.setActionCommand(String.valueOf(BUTTON_PLAY));
 		JButton stepForward = new JButton("|>");
+		stepForward.setToolTipText("Step Forward");
 		stepForward.addActionListener(this);
 		stepForward.setActionCommand(String.valueOf(BUTTON_STEP_FORWARD));
 		JToggleButton fastForward = new JToggleButton(">>");
+		fastForward.setToolTipText("Fast Forward");
 		fastForward.addActionListener(this);
 		fastForward.setActionCommand(String.valueOf(BUTTON_FAST_FORWARD));
 
 		controlPanelPane.add(stepperPanel);
 		stepperPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
-		stepperControls.add(rewind);
-		stepperControls.add(playBackwards);
-		stepperControls.add(play);
-		stepperControls.add(stepForward);
-		stepperControls.add(fastForward);
+		stepperGroup.add(rewind);
+		stepperGroup.add(playBackwards);
+		stepperGroup.add(play);
+		stepperGroup.add(stepForward);
+		stepperGroup.add(fastForward);
 		stepperPanel.add(toStart);
 		stepperPanel.add(rewind);
-		stepperPanel.add(stepBackwards);
-		stepperPanel.add(playBackwards);
-		stepperPanel.add(play);
-		stepperPanel.add(stepForward);
 		stepperPanel.add(fastForward);
+		stepperPanel.add(playBackwards);
+		stepperPanel.add(stop);
+		stepperPanel.add(play);
+		stepperPanel.add(stepBackwards);
+		stepperPanel.add(stepForward);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -197,6 +240,18 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		case MENU_QUIT:
 			//TODO
 			System.exit(0);
+			break;
+		case MENU_NEW:
+			//TODO
+			break;
+		case MENU_OPEN:
+			//TODO
+			break;
+		case MENU_SAVE:
+			//TODO
+			break;
+		case MENU_SAVE_AS:
+			//TODO
 			break;
 		case BUTTON_KILL:
 			//TODO
@@ -233,21 +288,28 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			break;
 		case BUTTON_TO_START:
 			//TODO
+			stepperGroup.clearSelection();
 			break;
 		case BUTTON_REWIND:
 			//TODO
 			break;
 		case BUTTON_STEP_BACKWARD:
 			//TODO
+			stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			//TODO
+			break;
+		case BUTTON_STOP:
+			//TODO
+			stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY:
 			//TODO
 			break;
 		case BUTTON_STEP_FORWARD:
 			//TODO
+			stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
 			//TODO
