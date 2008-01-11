@@ -1,8 +1,8 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -14,11 +14,13 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ControlPanelFrame extends JFrame implements ActionListener{
@@ -27,8 +29,10 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	 */
 	private static final long serialVersionUID = -8026416994513756565L;
 	
+	public ViewFrame sensorNetwork;
+	
 	private ButtonGroup modeGroup = new ButtonGroup();
-	ButtonGroup stepperGroup = new ButtonGroup();
+	private ButtonGroup stepperGroup = new ButtonGroup();
 	private JPanel controlPanelPane = new JPanel();
 	
 	private final static int MENU_NEW = 1;
@@ -45,8 +49,9 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	private final static int BUTTON_PLAY_BACKWARDS = 113;
 	private final static int BUTTON_STOP = 114;
 	private final static int BUTTON_PLAY = 115;
-	private final static int BUTTON_STEP_FORWARD = 116;
-	private final static int BUTTON_FAST_FORWARD = 117;
+	private final static int BUTTON_NEXT_SENSOR = 116;
+	private final static int BUTTON_STEP_FORWARD = 117;
+	private final static int BUTTON_FAST_FORWARD = 118;
 	private final static int CHECKBOX_RADII = 201;
 	private final static int CHECKBOX_CONNECTIONS = 202;
 	private final static int CHECKBOX_BATTERY = 203;
@@ -73,7 +78,6 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	public final static int MODE_KILL = 1;
 	public final static int MODE_ADD = 2;
 	public final static int MODE_MOVE = 3;
-	
 	public int mode = MODE_SELECT;
 
 	public ControlPanelFrame() {
@@ -82,9 +86,14 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		setPreferredSize(new Dimension(200,600));
 		setResizable(false);
 
+		//BorderLayout contentPaneLayout = new BorderLayout(0,0);
 		//BoxLayout controlPanelPaneLayout = new BoxLayout(controlPanelPane, BoxLayout.Y_AXIS);
-		GridLayout controlPanelPaneLayout = new GridLayout(0,1);
-
+		//GridLayout controlPanelPaneLayout = new GridLayout(0,1);
+		SpringLayout controlPanelPaneLayout = new SpringLayout();
+		//GridBagLayout controlPanelPaneLayout = new GridBagLayout();
+		//this.setLayout(contentPaneLayout);
+		controlPanelPane.setLayout(controlPanelPaneLayout);
+		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newMenuItem = new JMenuItem("New");
@@ -103,6 +112,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		quitMenuItem.addActionListener(this);
 		quitMenuItem.setActionCommand(String.valueOf(MENU_QUIT));
 
+		
 		setJMenuBar(menuBar);
 
 		menuBar.add(fileMenu);
@@ -112,11 +122,12 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(quitMenuItem);
 
-		controlPanelPane.setLayout(controlPanelPaneLayout);
-		add(controlPanelPane);
+		
+		add(controlPanelPane,BorderLayout.CENTER);
 		modes();
 		viewSettings();
 		stepper();
+		statusBar();
 
 		pack();
 		setVisible(true);
@@ -151,6 +162,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 
 	public void viewSettings() {
 		JPanel viewSettingsPanel = new JPanel();
+		//FlowLayout viewSettingsLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		BoxLayout viewSettingsLayout = new BoxLayout(viewSettingsPanel, BoxLayout.Y_AXIS);
 
 		JCheckBox viewRadii = new JCheckBox("Radii");
@@ -212,6 +224,10 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		play.setToolTipText("Play");
 		play.addActionListener(this);
 		play.setActionCommand(String.valueOf(BUTTON_PLAY));
+		JButton nextSensor = new JButton("||>");
+		nextSensor.setToolTipText("Next Sensor");
+		nextSensor.addActionListener(this);
+		nextSensor.setActionCommand(String.valueOf(BUTTON_NEXT_SENSOR));
 		JButton stepForward = new JButton("|>");
 		stepForward.setToolTipText("Step Forward");
 		stepForward.addActionListener(this);
@@ -235,7 +251,19 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		stepperPanel.add(stop);
 		stepperPanel.add(play);
 		stepperPanel.add(stepBackwards);
+		stepperPanel.add(nextSensor);
 		stepperPanel.add(stepForward);
+	}
+	
+	public void statusBar() {
+		JPanel statusBarPanel = new JPanel();
+		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
+		statusBarPanel.setLayout(statusBarLayout);
+		statusBarPanel.setBorder(BorderFactory.createTitledBorder(""));
+		JLabel status = new JLabel("WAAARGH!");
+		
+		add(statusBarPanel,BorderLayout.SOUTH);
+		statusBarPanel.add(status);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -246,6 +274,8 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			break;
 		case MENU_NEW:
 			//TODO
+			System.out.println("rrr");
+			sensorNetwork = new ViewFrame("Untitled");
 			//new();
 			break;
 		case MENU_OPEN:
@@ -259,6 +289,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		            openFile = openChooser.getSelectedFile();
 		            System.out.println(openFile);
 		            //openFile();
+		            sensorNetwork = new ViewFrame(openFile.getName());
 		    }
 			break;
 		case MENU_SAVE:
@@ -340,6 +371,10 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			//TODO
 			//play();
 			break;
+		case BUTTON_NEXT_SENSOR:
+			//TODO
+			//nextSensor();
+			break;
 		case BUTTON_STEP_FORWARD:
 			//TODO
 			//stepForward();
@@ -365,10 +400,5 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			//TODO
 			break;
 		}
-	}
-	
-	
-	public static void main(String[] args) {
-		new ControlPanelFrame();
 	}
 }
