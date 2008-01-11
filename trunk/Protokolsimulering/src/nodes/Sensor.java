@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import turns.Prepareable;
 
 import message.Data;
-import message.Message;
+import message.Transmission;
 import message.Transmitter;
 import message.TransmissionTimeOutChecker;
 
@@ -15,8 +15,8 @@ import message.TransmissionTimeOutChecker;
  */
 public class Sensor extends Location implements Transmitter, Prepareable{
 
-	private ArrayList<Message> toTransmit;
-	private ArrayList<Message> received;
+	private ArrayList<Transmission> toTransmit;
+	private ArrayList<Transmission> received;
 	private TransmissionTimeOutChecker sent;
 	
 	private static int usedIDs = 0;
@@ -66,9 +66,9 @@ public class Sensor extends Location implements Transmitter, Prepareable{
 	 * @param allLists true, for all lists.
 	 */
 	private void regenerateLists(boolean allLists) {
-		toTransmit = new ArrayList<Message>();
+		toTransmit = new ArrayList<Transmission>();
 		if(allLists) {
-			ArrayList<Message> tempReceived = new ArrayList<Message>();
+			ArrayList<Transmission> tempReceived = new ArrayList<Transmission>();
 			int size = 0;
 			if(received != null) {
 				size = received.size();
@@ -85,7 +85,7 @@ public class Sensor extends Location implements Transmitter, Prepareable{
 		for(int i = 0 ; i < size ; i++) {
 			toTransmit.add(received.get(i).generateConfirmationMessage());
 		}
-		received = new ArrayList<Message>();
+		received = new ArrayList<Transmission>();
 		
 	}
 	
@@ -110,9 +110,9 @@ public class Sensor extends Location implements Transmitter, Prepareable{
 	}
 	
 	/* (non-Javadoc)
-	 * @see message.Transmitter#receive(message.Message)
+	 * @see message.Transmitter#receive(message.Transmission)
 	 */
-	public void receive(Message msg) {
+	public void receive(Transmission msg) {
 		if(isDown()) {
 			return;
 		}
@@ -128,9 +128,9 @@ public class Sensor extends Location implements Transmitter, Prepareable{
 	}
 
 	/* (non-Javadoc)
-	 * @see message.Transmitter#transmit(message.Message)
+	 * @see message.Transmitter#transmit(message.Transmission)
 	 */
-	public void transmit(Message msg) {
+	public void transmit(Transmission msg) {
 		sent.add(msg.getReceiver());
 	}
 	
