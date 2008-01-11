@@ -246,6 +246,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			break;
 		case MENU_NEW:
 			//TODO
+			//new();
 			break;
 		case MENU_OPEN:
 			//TODO
@@ -257,11 +258,15 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		    if(openReturnVal == JFileChooser.APPROVE_OPTION) {
 		            openFile = openChooser.getSelectedFile();
 		            System.out.println(openFile);
+		            //openFile();
 		    }
 			break;
 		case MENU_SAVE:
 			//TODO
-			break;
+			if(false){ //if(file has already been saved once)
+				//save(fileName);
+				break;
+			}
 		case MENU_SAVE_AS:
 			//TODO
 			File saveFile;
@@ -272,6 +277,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		    if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
 		            saveFile = saveChooser.getSelectedFile();
 		            System.out.println(saveFile);
+		            //save(fileName);
 		    }
 			break;
 		case BUTTON_KILL:
@@ -309,31 +315,39 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			break;
 		case BUTTON_TO_START:
 			//TODO
+			//toStart();
 			stepperGroup.clearSelection();
 			break;
 		case BUTTON_REWIND:
 			//TODO
+			//rewind();
 			break;
 		case BUTTON_STEP_BACKWARD:
 			//TODO
+			//stepBackwards;
 			stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			//TODO
+			//playBackwards();
 			break;
 		case BUTTON_STOP:
 			//TODO
+			//stop();
 			stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY:
 			//TODO
+			//play();
 			break;
 		case BUTTON_STEP_FORWARD:
 			//TODO
+			//stepForward();
 			stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
 			//TODO
+			//fastForward();
 			break;
 		case CHECKBOX_RADII:
 			//TODO
