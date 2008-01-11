@@ -103,7 +103,7 @@ public class Scaling {
 	 * @param currH the current height of the window
 	 * @return an x-coordinate that isn't scaled
 	 */
-	public static int convertToRealX(int x, int currH) {
+	public static int convertToRealX(int x) {
 		return new Fraction(x,currH).multiply(picXMax-picXMin).add(picXMin).evaluateRoundDown();
 	}
 	
@@ -113,7 +113,7 @@ public class Scaling {
 	 * @param currW the current width of the window
 	 * @return an y-coordinate that isn't scaled
 	 */
-	public static int convertToRealY(int y, int currW) {
+	public static int convertToRealY(int y) {
 		return new Fraction(y,currW).multiply(picYMax-picYMin).add(picYMin).evaluateRoundDown();
 	}
 }
