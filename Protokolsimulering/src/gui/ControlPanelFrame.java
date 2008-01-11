@@ -31,6 +31,13 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	private final static int BUTTON_KILL = 101;
 	private final static int BUTTON_ADD = 102;
 	private final static int BUTTON_MOVE = 103;
+	private final static int BUTTON_TO_START = 110;
+	private final static int BUTTON_REWIND = 111;
+	private final static int BUTTON_STEP_BACKWARD = 112;
+	private final static int BUTTON_PLAY_BACKWARDS = 113;
+	private final static int BUTTON_PLAY = 114;
+	private final static int BUTTON_STEP_FORWARD = 115;
+	private final static int BUTTON_FAST_FORWARD = 116;
 	private final static int CHECKBOX_RADII = 201;
 	private final static int CHECKBOX_CONNECTIONS = 202;
 	private final static int CHECKBOX_BATTERY = 203;
@@ -48,6 +55,12 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	//private final static int  = ;
 	//private final static int  = ;
 	
+	public final static int PLAYBACK_REWIND = -2;
+	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
+	public final static int PLAYBACK_PAUSE = 0;
+	public final static int PLAYBACK_PLAY = 1;
+	public final static int PLAYBACK_FAST_FORWARD = 2;
+	public int playback = PLAYBACK_PAUSE;
 	public final static int MODE_SELECT = 0;
 	public final static int MODE_KILL = 1;
 	public final static int MODE_ADD = 2;
@@ -142,18 +155,30 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		JPanel stepperPanel = new JPanel();
 		ButtonGroup stepperControls = new ButtonGroup();
 		JButton toStart = new JButton("|<");
+		toStart.addActionListener(this);
+		toStart.setActionCommand(String.valueOf(BUTTON_TO_START));
 		JToggleButton rewind = new JToggleButton("<<");
+		rewind.addActionListener(this);
+		rewind.setActionCommand(String.valueOf(BUTTON_REWIND));
 		JButton stepBackwards = new JButton("<|");
-		JToggleButton playBackwards = new JToggleButton();
-		JToggleButton play = new JToggleButton();
+		stepBackwards.addActionListener(this);
+		stepBackwards.setActionCommand(String.valueOf(BUTTON_STEP_BACKWARD));
+		JToggleButton playBackwards = new JToggleButton("<");
+		playBackwards.addActionListener(this);
+		playBackwards.setActionCommand(String.valueOf(BUTTON_PLAY_BACKWARDS));
+		JToggleButton play = new JToggleButton(">");
+		play.addActionListener(this);
+		play.setActionCommand(String.valueOf(BUTTON_PLAY));
 		JButton stepForward = new JButton("|>");
+		stepForward.addActionListener(this);
+		stepForward.setActionCommand(String.valueOf(BUTTON_STEP_FORWARD));
 		JToggleButton fastForward = new JToggleButton(">>");
+		fastForward.addActionListener(this);
+		fastForward.setActionCommand(String.valueOf(BUTTON_FAST_FORWARD));
 
 		controlPanelPane.add(stepperPanel);
 		stepperPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
-		stepperControls.add(toStart);
 		stepperControls.add(rewind);
-		stepperControls.add(stepBackwards);
 		stepperControls.add(playBackwards);
 		stepperControls.add(play);
 		stepperControls.add(stepForward);
@@ -206,6 +231,27 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 				System.out.println("Move");
 			}
 			break;
+		case BUTTON_TO_START:
+			//TODO
+			break;
+		case BUTTON_REWIND:
+			//TODO
+			break;
+		case BUTTON_STEP_BACKWARD:
+			//TODO
+			break;
+		case BUTTON_PLAY_BACKWARDS:
+			//TODO
+			break;
+		case BUTTON_PLAY:
+			//TODO
+			break;
+		case BUTTON_STEP_FORWARD:
+			//TODO
+			break;
+		case BUTTON_FAST_FORWARD:
+			//TODO
+			break;
 		case CHECKBOX_RADII:
 			//TODO
 			break;
@@ -223,7 +269,8 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			break;
 		}
 	}
-
+	
+	
 	public static void main(String[] args) {
 		new ControlPanelFrame();
 	}
