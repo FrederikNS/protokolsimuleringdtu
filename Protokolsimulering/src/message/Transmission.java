@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * A message is also used to confirm receiving a message previously.
  * @author Niels Thykier
  */
-public class Message {
+public class Transmission {
 	
 	/**
 	 * The receiver of the message.
@@ -25,12 +25,11 @@ public class Message {
 	/**
 	 * The data being transmitted.
 	 */
-	@SuppressWarnings("unused")
 	private ArrayList<Data> data;
 	
 	private int dataType;
 	
-	public Message(int receiver, int sender, Data information) {
+	public Transmission(int receiver, int sender, Data information) {
 		this.receiver = receiver;
 		this.sender = sender;
 		data = new ArrayList<Data>();
@@ -38,8 +37,8 @@ public class Message {
 		dataType = information.getDataType();
 	}
 	
-	public Message generateConfirmationMessage() {
-		return new Message(sender, receiver, Data.generateMessageReceived());
+	public Transmission generateConfirmationMessage() {
+		return new Transmission(sender, receiver, Data.generateMessageReceived());
 	}
 	
 	/**
@@ -60,7 +59,7 @@ public class Message {
 	
 	/**
 	 * Gets the type of message.
-	 * @return The type of Message
+	 * @return The type of Transmission
 	 */
 	public int getMessageType() {
 		return messageType;

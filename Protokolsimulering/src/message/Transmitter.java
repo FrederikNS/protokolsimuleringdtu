@@ -15,12 +15,12 @@ public interface Transmitter {
 	 * Invoked when a message is to be transmitted. 
 	 * @param msg the message to send.
 	 */
-	public void transmit(Message msg);
+	public void transmit(Transmission msg);
 	
 	/**
 	 * Invoked on the receiving transmitter, when it receives it message. 
 	 * @param msg The message.
 	 */
-	public void receive(Message msg);
+	public void receive(Transmission msg);
 	
 }
