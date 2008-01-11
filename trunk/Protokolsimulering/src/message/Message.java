@@ -22,7 +22,9 @@ public class Message {
 	 * The message type.
 	 */
 	private int messageType;
-	
+	/**
+	 * The data being transmitted.
+	 */
 	@SuppressWarnings("unused")
 	private ArrayList<Data> data;
 	
