@@ -13,10 +13,19 @@ import nodes.Location;
  */
 public class DrawableCircle extends Shape {
 
+	/**
+	 * Variable for locating the center of the circle.
+	 */
 	private Location center;
+	/**
+	 * Variable for the diameter.
+	 */
 	private int diameter;
+	/**
+	 * A variable for color.
+	 */
 	private Color color;
-	
+
 	/**
 	 * Create a black circle.
 	 * @param center The center of the circle
@@ -37,7 +46,7 @@ public class DrawableCircle extends Shape {
 		this.diameter = radius*2;
 		this.color = color;
 	}
-	
+
 	/**
 	 * Gets the center of the circle.
 	 * @return The center.
@@ -46,7 +55,7 @@ public class DrawableCircle extends Shape {
 		int radius = diameter/2;
 		return new Location(center.getX() + radius, center.getY() + radius);
 	}
-	
+
 	/**
 	 * Gets the diameter of the circle.
 	 * @return The diameter
@@ -54,7 +63,7 @@ public class DrawableCircle extends Shape {
 	public int getDiameter() {
 		return diameter;
 	}
-	
+
 	/**
 	 * Calculate the radius of the circle.
 	 * @return The radius
@@ -62,7 +71,7 @@ public class DrawableCircle extends Shape {
 	public int getRadius() {
 		return diameter/2;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see graphics.Drawable#draw(java.awt.Graphics)
 	 */
