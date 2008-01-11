@@ -26,7 +26,11 @@ public interface Transmitter extends Cloneable{
 	 * @param msg the message to send.
 	 * @param through the transmitters it should be sent via.
 	 */
-	public void transmit(Message msg, Transmitter[] through);
+	//public void transmit(Message msg, Transmitter[] through);
 	
+	/**
+	 * Must have a public clone method following the standards of Cloneable.
+	 * @return A copy of the object.
+	 */
 	public Object clone();
 }
