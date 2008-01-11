@@ -66,6 +66,8 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem quitMenuItem = new JMenuItem("Quit");
+		quitMenuItem.addActionListener(this);
+		quitMenuItem.setActionCommand(String.valueOf(MENU_QUIT));
 
 		setJMenuBar(menuBar);
 
