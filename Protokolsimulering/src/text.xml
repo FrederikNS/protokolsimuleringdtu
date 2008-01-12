@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<root>
+  <data>
+    <field>
+      <size>
+	<x>
+	  <!-- some comment -->
+	  <min>-30</min>
+	  <max>30</max>
+	</x>
+	<y>
+	  <min>-30</min>
+	  <max>30</max>
+	  <!-- another comment -->
+	</y>
+      </size>
+    </field>
+    <config>
+      <communicationRadius>5</communicationRadius>
+    </config>
+    <sensor id="0">
+      <location>
+	<!-- wee! -->
+	<x>10</x>
+	<y>20</y>
+      </location>
+    </sensor>
+    <sensor id="1">
+      <location>
+	<x>12</x>
+	<y>23</y>
+      </location>
+    </sensor>
+  </data>
+</root>
