@@ -1,25 +1,25 @@
-package message;
+package transmissions;
 
 import java.util.ArrayList;
 
 
 /**
- * A message can be sent between two transmitters and may contain data.
- * A message is also used to confirm receiving a message previously.
+ * A transmissions can be sent between two transmitters and may contain data.
+ * A transmissions is also used to confirm receiving a transmissions previously.
  * @author Niels Thykier
  */
 public class Transmission {
 	
 	/**
-	 * The receiver of the message.
+	 * The receiver of the transmissions.
 	 */
 	private int receiver;
 	/**
-	 * The sender of the message.
+	 * The sender of the transmissions.
 	 */
 	private int sender;
 	/**
-	 * The message type.
+	 * The transmissions type.
 	 */
 	private int messageType;
 	/**
@@ -27,18 +27,16 @@ public class Transmission {
 	 */
 	private ArrayList<Data> data;
 	
-	private int dataType;
-	
 	public Transmission(int receiver, int sender, Data information) {
 		this.receiver = receiver;
 		this.sender = sender;
 		data = new ArrayList<Data>();
 		data.add(information);
-		dataType = information.getDataType();
+		messageType = information.getDataType();
 	}
 	
 	public Transmission generateConfirmationMessage() {
-		return new Transmission(sender, receiver, Data.generateMessageReceived());
+		return new Transmission(sender, receiver, Data.generateMessageReceivedSuccessfully());
 	}
 	
 	/**
@@ -58,7 +56,7 @@ public class Transmission {
 	}
 	
 	/**
-	 * Gets the type of message.
+	 * Gets the type of transmissions.
 	 * @return The type of Transmission
 	 */
 	public int getMessageType() {
@@ -66,16 +64,12 @@ public class Transmission {
 	}
 	
 	/**
-	 * Fetches data from the message.
-	 * @param index The index of the message.
+	 * Fetches data from the transmissions.
+	 * @param index The index of the transmissions.
 	 * @return The data.
 	 */
 	public Data getData(int index) {
 		return data.get(index);
-	}
-	
-	public int getDataType() {
-		return dataType;
 	}
 	
 	/**
@@ -84,15 +78,15 @@ public class Transmission {
 	 * @return true if it could be added.
 	 */
 	public boolean appendData(Data toAdd) {
-		if(toAdd.getDataType() == dataType) {
+		if(toAdd.getDataType() == messageType) {
 			return data.add(toAdd);
 		}
 		return false;
 	}
 	
 	/**
-	 * Remove some data from the message at index.
-	 * @param index The index of the message to be removed.
+	 * Remove some data from the transmissions at index.
+	 * @param index The index of the transmissions to be removed.
 	 * @return true if it could be moved.
 	 */
 	public Data remove(int index) {
@@ -100,9 +94,9 @@ public class Transmission {
 	}
 	
 	/**
-	 * Remove some data from the message
+	 * Remove some data from the transmissions
 	 * @param toRemove The data to be removed.
-	 * @return true if the data was in the message.
+	 * @return true if the data was in the transmissions.
 	 */
 	public boolean remove(Data toRemove) {
 		return data.remove(toRemove);

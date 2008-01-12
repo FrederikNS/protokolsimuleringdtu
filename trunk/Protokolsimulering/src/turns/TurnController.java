@@ -16,13 +16,15 @@ public abstract class TurnController implements Drawable{
 	private HashMap<String,Integer> sensorLabel;
 	
 	/**
-	 * Play the next unit's prepare or step phase (depending on what turn 
+	 * Play the next unit's prepare or step phase (depending on what part of the turn it is).
+	 * If a turn was finished, a new one will be started. 
 	 */
-	public abstract void playTick();
+	public abstract boolean playTick();
 	/**
-	 * Play out the complete prepare phase of all units.
+	 * Play out the complete prepare phase of all units. This will never advance the time by a turn (or step).
+	 * @return false, if the prepare phase could not be played (e.g. it was already over)
 	 */
-	public abstract void playPrepareFase();
+	public abstract boolean playPreparePhase();
 	/**
 	 * Play the whole turn.
 	 * If the prepare phase has not been played, it will be played.
@@ -67,9 +69,22 @@ public abstract class TurnController implements Drawable{
 		return getSensor(getSensorID(label));
 	}
 	
-	public abstract boolean assignLabel(String labal, int id);
+	/**
+	 * Assigns a label to a sensor using the sensor's ID.
+	 * @param label The new label of the sensor. If null or "", the sensor's current label will be removed.
+	 * @param id The id of the sensor.
+	 * @return true, if the label was updated.
+	 */
+	public abstract boolean assignLabel(String label, int id);
 	
 	public abstract void draw(Graphics g);
-	public abstract void goToTurn(int turn);
+	/**
+	 * The TurnController will attempt to go to the given turn. If it jumps forward it may have to 
+	 * calculate all the turns inbetween. If it goes back it must keep a history and may have to 
+	 * reload that turn.
+	 * @param turn The turn number.
+	 * @return true, if it could jump to that turn successfully.
+	 */
+	public abstract boolean goToTurn(int turn);
 	
 }

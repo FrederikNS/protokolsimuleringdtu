@@ -1,5 +1,7 @@
 package nodes;
 
-public class Terminal extends Sensor {
+import nodes.Sensor.RealSensor;
+
+public class Terminal extends RealSensor {
 
 }

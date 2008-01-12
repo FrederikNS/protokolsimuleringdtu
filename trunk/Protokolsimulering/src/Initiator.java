@@ -1,6 +1,3 @@
-import gui.ControlPanelFrame;
-
-
 /**
  * The initializor of the program.
  */
@@ -11,7 +8,17 @@ public class Initiator {
 	 * @param args The command-line arguments.
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new ControlPanelFrame();
+		//new gui.ControlPanelFrame().setResizable(true);
+		try {
+	      javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory.newInstance();
+	      javax.xml.parsers.SAXParser parser = factory.newSAXParser();
+		  parser.parse(new org.xml.sax.InputSource(new java.io.InputStreamReader(
+						new java.io.FileInputStream("/home/moon/workspace/ProtokolSimulering/src/text.xml"), "UTF-8")),
+						new xml.SAXContentHandler());
+		} catch (Exception e) {
+			System.out.flush();
+			System.err.flush();
+			e.printStackTrace();
+		}
 	}
 }
