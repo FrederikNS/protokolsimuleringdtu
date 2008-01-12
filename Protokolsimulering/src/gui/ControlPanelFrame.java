@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -279,7 +280,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			//new();
 			break;
 		case MENU_OPEN:
-			//TODO
+			//TODO - check if session is already running?
 			File openFile;
 			JFileChooser openChooser = new JFileChooser();
 		    FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
@@ -287,9 +288,18 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		    int openReturnVal = openChooser.showOpenDialog(rootPane);
 		    if(openReturnVal == JFileChooser.APPROVE_OPTION) {
 		            openFile = openChooser.getSelectedFile();
-		            System.out.println(openFile);
+		            System.out.println("Selected: " + openFile);
+		            if(openFile.exists()) {
+		            	if(openFile.canRead()) {
+		            		//load
+				            sensorNetwork = new ViewFrame(openFile.getName());
+		            	} else {
+		            		//could not be read.
+		            	}
+		            } else {
+		            	//Does not exist? Mispelled?
+		            }
 		            //openFile();
-		            sensorNetwork = new ViewFrame(openFile.getName());
 		    }
 			break;
 		case MENU_SAVE:
@@ -304,11 +314,24 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 			JFileChooser saveChooser = new JFileChooser();
 		    FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
 		    saveChooser.setFileFilter(saveFilter);
-		    int saveReturnVal = saveChooser.showOpenDialog(rootPane);
+		    int saveReturnVal = saveChooser.showSaveDialog(rootPane);
 		    if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
 		            saveFile = saveChooser.getSelectedFile();
-		            System.out.println(saveFile);
-		            //save(fileName);
+		            if(saveFile.canWrite()) {
+		            	if(saveFile.exists()) {
+		            		// TODO override or cancel
+		            		saveFile.delete();
+		            	}
+		            	try {
+		            		saveFile.createNewFile();
+		            		//doSomeSaving.
+		            	} catch(IOException e) {
+		            		//
+		            	}
+		            } else {
+		            	//Do not have write permissions.
+		            	System.out.println(saveFile);
+		            }
 		    }
 			break;
 		case BUTTON_KILL:

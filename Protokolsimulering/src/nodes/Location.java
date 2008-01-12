@@ -10,6 +10,7 @@ import java.util.Random;
  * @author Niels Thykier
  */
 public class Location implements Drawable,Cloneable {
+
 	/**
 	 * x-coordinate of the location.
 	 */

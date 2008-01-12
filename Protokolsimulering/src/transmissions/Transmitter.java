@@ -1,4 +1,4 @@
-package message;
+package transmissions;
 
 /**
  * A transmitter can send and receive messages.
@@ -12,14 +12,14 @@ public interface Transmitter {
 	public static final int TIMEOUT_IN_STEPS = 3;
 	
 	/**
-	 * Invoked when a message is to be transmitted. 
-	 * @param msg the message to send.
+	 * Invoked when a transmissions is to be transmitted. 
+	 * @param msg the transmissions to send.
 	 */
 	public void transmit(Transmission msg);
 	
 	/**
-	 * Invoked on the receiving transmitter, when it receives it message. 
-	 * @param msg The message.
+	 * Invoked on the receiving transmitter, when it receives it transmissions. 
+	 * @param msg The transmissions.
 	 */
 	public void receive(Transmission msg);
 	
