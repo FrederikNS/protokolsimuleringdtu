@@ -15,7 +15,7 @@ public class AddressBook {
 	/**
 	 * The Hashtable that contains informations about who to send to.
 	 */
-	private Hashtable<Integer, Integer>away;
+	private final Hashtable<Integer, Integer>away;
 	
 	/**
 	 * Constructor for the class.
@@ -57,5 +57,12 @@ public class AddressBook {
 	 */
 	public int getToTerminal() {
 		return toTerminal;
+	}
+	
+	/**
+	 * Clears the entire list of entries in the Hashtable.
+	 */
+	public void clearList() {
+		away.clear();
 	}
 }
