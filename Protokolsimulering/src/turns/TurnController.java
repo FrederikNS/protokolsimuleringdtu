@@ -11,7 +11,7 @@ public abstract class TurnController implements Drawable{
 	 * Play the next unit's prepare or step phase (depending on what part of the turn it is).
 	 * If a turn was finished, a new one will be started. 
 	 */
-	public abstract boolean playTick();
+	public abstract void playTick();
 	/**
 	 * Play out the complete prepare phase of all units. This will never advance the time by a turn (or step).
 	 * @return false, if the prepare phase could not be played (e.g. it was already over)
