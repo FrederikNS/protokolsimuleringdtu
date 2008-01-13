@@ -69,7 +69,7 @@ public class SensorRemake extends Location implements Transmitter, Prepareable, 
 	
 	/**
 	 * Fetches a sensor by ID.
-	 * @param id The id of the sensor.
+	 * @param sensorID The id of the sensor.
 	 * @return The sensor
 	 */
 	public SensorRemake getSensor(int sensorID) {

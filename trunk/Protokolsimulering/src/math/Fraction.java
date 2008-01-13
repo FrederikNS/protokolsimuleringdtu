@@ -5,7 +5,7 @@ package math;
  * It contains only integers and keeps itself as precise as possible. 
  * @author Niels Thykier
  */
-public class Fraction implements Cloneable, Comparable{
+public class Fraction implements Cloneable, Comparable<Object>{
 	private int numerator;
 	private int denominator;
 	
@@ -331,6 +331,7 @@ public class Fraction implements Cloneable, Comparable{
 	
 	/**
 	 * Gets the reciprocal counter-part of this fraction.
+	 * @return The reciprocial counter-part of this fraction.
 	 */
 	public Fraction getReciprocal() {
 		Fraction frac = this.clone();
@@ -375,6 +376,8 @@ public class Fraction implements Cloneable, Comparable{
 	 * returns -1,0,1 per rules of the compareTo(Object arg0) method defined in the Comparable interface.
 	 * 
 	 * Note: For non-Fraction values, this is only as precise the double value allows it to be.
+	 * @param arg0 To compare too.
+	 * @return -1,0 or 1 if this object is less than, equal too or greather than the input.
 	 */
 	public int compareTo(Object arg0) {
 		if(arg0 instanceof Fraction || arg0 instanceof Double) {
