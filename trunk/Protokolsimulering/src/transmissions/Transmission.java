@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * A transmissions is also used to confirm receiving a transmissions previously.
  * @author Niels Thykier
  */
-public class Transmission {
+public class Transmission implements Comparable<Transmission>, DataConstants{
 	
 	/**
 	 * The receiver of the transmissions.
@@ -27,6 +27,12 @@ public class Transmission {
 	 */
 	private ArrayList<Data> data;
 	
+	/**
+	 * Generate a Transmission.
+	 * @param receiver The receiver of the transmission
+	 * @param sender The original sender of the transmission.
+	 * @param information The Data it contains.
+	 */
 	public Transmission(int receiver, int sender, Data information) {
 		this.receiver = receiver;
 		this.sender = sender;
@@ -35,8 +41,27 @@ public class Transmission {
 		messageType = information.getDataType();
 	}
 	
+	/**
+	 * Generates a confirmation Transmission to this Transmission.
+	 * If this transmission was a send request, it will return a "Can receive" Transmission.
+	 * @return A "received successfully" Transmission or a "Can receive" Transmission 
+	 * 		depending on this Transmission
+	 */
 	public Transmission generateConfirmationMessage() {
+		if(messageType == Data.TYPE_SENDING) {
+			return new Transmission(sender, receiver, Data.generateMessageReceiving());
+		}
 		return new Transmission(sender, receiver, Data.generateMessageReceivedSuccessfully());
+	}
+	
+	/**
+	 * Generates a send-request Transmission.
+	 * @param wishingToSendTo The one to be receiving.
+	 * @param sendingFrom The one wishing to send.
+	 * @return The Transmission.
+	 */
+	public static Transmission generateSendRequest(int wishingToSendTo, int sendingFrom) {
+		return new Transmission(wishingToSendTo, sendingFrom, Data.generateMessageSending());
 	}
 	
 	/**
@@ -100,5 +125,19 @@ public class Transmission {
 	 */
 	public boolean remove(Data toRemove) {
 		return data.remove(toRemove);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public int compareTo(Transmission arg0) {
+		int priority = messageType & PRIORITY_ALL;
+		int comparePriority = arg0.messageType & PRIORITY_ALL;
+		if(priority < comparePriority) {
+			return -1;
+		} else if(priority == comparePriority) {
+			return 0;
+		}
+		return 1;
 	}
 }
