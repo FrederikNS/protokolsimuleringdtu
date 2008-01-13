@@ -153,6 +153,14 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	public int compareTo(Sensor arg0) {
 		return Integer.valueOf(id).compareTo(arg0.id);
 	}
+
+	/* (non-Javadoc)
+	 * @see nodes.Location#toString()
+	 */
+	@Override
+	public String toString() {
+		return "*s" + id + " " + allRealSensors.get(id); 
+	}
 	
 	public static final class SensorComparator implements Comparator<Sensor> {
 		private final int compareType;
@@ -251,11 +259,9 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	/**
 	 * To avoid Sensors not being up to date, all instances of the Sensor-class points to a RealSensor.
 	 * This real sensor does the actual workload.
+	 * 
+	 * Whatever you are doing, you do not need a RealSensor, use the Sensor-class to aqcuire it.
 	 * @author Niels Thykier
-	 */
-	/**
-	 * @author Niels Thykier
-	 *
 	 */
 	protected static class RealSensor extends Sensor{
 
@@ -431,7 +437,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 					transmissionRestriction |= CORRUPTION;
 				}
 				break;
-			case TYPE_RECEIVING:
+			case TYPE_LISTENING:
 				if(msg.getSender() != id) {
 					transmissionRestriction |= CANNOT_SEND;
 				} else {
@@ -466,7 +472,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		 */
 		@Override
 		public void transmit(Transmission msg) {
-			if(msg.getMessageType() != TYPE_SENDING && msg.getMessageType() != TYPE_RECEIVING) {
+			if(msg.getMessageType() != TYPE_SENDING && msg.getMessageType() != TYPE_LISTENING) {
 				amountOfSendingRequests = 0;
 				transmissionRoll = 0;
 				sent = msg;
@@ -582,6 +588,14 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		@Override
 		public String toString() {
 			return "Sensor #" + id + " " + super.toString();
+		}
+
+		/* (non-Javadoc)
+		 * @see nodes.Sensor#clone()
+		 */
+		@Override
+		public final Object clone()  {
+			return new Sensor(this);
 		}
 
 	}

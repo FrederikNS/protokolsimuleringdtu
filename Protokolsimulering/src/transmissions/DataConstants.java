@@ -27,7 +27,11 @@ public interface DataConstants {
 	/**
 	 * A "Someone is talking to me, so keep quiet" transmission
 	 */
-	public static final int TYPE_RECEIVING  				= 0x02000000;
+	public static final int TYPE_LISTENING  				= 0x02000000;
+	/**
+	 * Garbage data. Disregard all information about this package.
+	 */
+	public static final int TYPE_GARBAGE 					= 0x04000000;
 	/**
 	 * Type Bit-mask filter.
 	 */
