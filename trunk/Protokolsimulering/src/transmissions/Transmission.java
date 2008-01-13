@@ -13,11 +13,15 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	/**
 	 * The receiver of the transmissions.
 	 */
-	private int receiver;
+	public final int receiver;
+	/**
+	 * Whom is respondable for passing it on?
+	 */
+	private int through = -1;
 	/**
 	 * The sender of the transmissions.
 	 */
-	private int sender;
+	public final int sender;
 	/**
 	 * The transmissions type.
 	 */
@@ -81,6 +85,14 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	}
 	
 	/**
+	 * Fetches the ID of the transmitter respondsable for passing it on.
+	 * @return The id of the transmitter respondsable for passing it on.
+	 */
+	public int getRespondsableTransmitter() {
+		return through;
+	}
+	
+	/**
 	 * Gets the type of transmissions.
 	 * @return The type of Transmission
 	 */
@@ -89,12 +101,20 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	}
 	
 	/**
-	 * Fetches data from the transmissions.
-	 * @param index The index of the transmissions.
+	 * Fetches data from the transmission.
+	 * @param index The index of the transmission.
 	 * @return The data.
 	 */
 	public Data getData(int index) {
 		return data.get(index);
+	}
+	
+	/**
+	 * Fetches the amount of data packages in this transmission.
+	 * @return The amount of data packages.
+	 */
+	public int size(){
+		return data.size();
 	}
 	
 	/**
@@ -125,6 +145,11 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	 */
 	public boolean remove(Data toRemove) {
 		return data.remove(toRemove);
+	}
+	
+	public void corruptTransmission() {
+		data = new ArrayList<Data>();
+		data.add(Data.GarbageData);
 	}
 
 	/* (non-Javadoc)

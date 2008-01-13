@@ -3,12 +3,18 @@ package transmissions;
 public class Data implements DataConstants{
 
 	private int dataType;
-	
+	public static final Data GarbageData;
+	static {
+		//Ninja!
+		Data temp = new Data();
+		temp.dataType = TYPE_GARBAGE;
+		GarbageData = temp;
+	}
 	private Data() {}
 	
 	public static Data generateMessageReceiving() {
 		Data toReturn = new Data();
-		toReturn.dataType = TYPE_RECEIVING | PRIORITY_INSTANT;
+		toReturn.dataType = TYPE_LISTENING | PRIORITY_INSTANT;
 		return toReturn;
 	}
 	
