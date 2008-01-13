@@ -8,39 +8,58 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SAXContentHandler extends DefaultHandler {
-	int level = 0;
-	boolean[] hasContents;
-	PrintStream out = System.out;
-	boolean doIndent = false;
+	private int level = 0;
+	private int[] contents;
+	private PrintStream out = System.out;
+	private boolean doIndent = false;
+	public static final int NONE = 0;
+	public static final int UNKNOWN = 5;
+	public static final int INT = 1;
+	public static final int BOOLEAN = 2;
+	public static final int STRING = 3;
+	public static final int DOUBLE = 4;
+	public static final int TAG = 5;
 
 	@Override
 	public void characters(char[] arg0, int arg1, int arg2) throws SAXException {
-		String contents = new String(arg0, arg1, arg2).trim();
-		if(contents.equals("")) {
+		String input = new String(arg0, arg1, arg2).trim();
+		if(input.equals("")) {
 			return;
 		}
-		if(!hasContents[level]) {
+		switch(contents[level]) {
+		case INT:
+			print(">" + Integer.parseInt(input));
+			break;
+		case NONE:
 			println(">");
-			hasContents[level] = true;
+			contents[level] = UNKNOWN;
+		case UNKNOWN:
+			println(input);
+			break;
 		}
-		
-		print(contents);
-		println();
+
 	}
 
 	@Override
 	public void endDocument() throws SAXException {
 		level = 0;
 		println("Document End");
-		hasContents = null;
+		contents = null;
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		if(hasContents[level--]) {
-			println("</"+ qName + ">");
-		} else {
-			println("/>");
+		switch(contents[level]) {
+		case INT:
+			--level;
+			break;
+		default:
+			if(contents[level-- +1] == INT || contents[level] != NONE) {
+				println("</"+ qName + ">");
+			} else {
+				println("/>");
+			}
+			break;
 		}
 	}
 
@@ -57,23 +76,28 @@ public class SAXContentHandler extends DefaultHandler {
 	@Override
 	public void startDocument() throws SAXException {
 		println("Document start");
-		hasContents = new boolean[10];
-		hasContents[0] = true;
+		contents = new int[20];
+		contents[0] = TAG;
 	}
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-		if(!hasContents[level]) {
-			hasContents[level] = true;
-			println(">");
+	
+		if(qName.equalsIgnoreCase("int")) {
+			contents[level] = STRING;
+			contents[++level] = INT;
+		} else {
+			if(contents[level] == NONE) {
+				contents[level] = TAG;
+				println(">");
+			}
+			print("<" + qName);
+			int amount = atts.getLength();
+			for(int i = 0 ; i < amount ; i++) {
+				print(" " +atts.getQName(i) + "='" + atts.getValue(i) + "'");
+			}
+			contents[++level] = NONE;
 		}
-		print("<" + qName);
-		int amount = atts.getLength();
-		for(int i = 0 ; i < amount ; i++) {
-			print(" " +atts.getQName(i) + "='" + atts.getValue(i) + "'");
-		}
-		++level;
-		hasContents[level] = false;
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +113,7 @@ public class SAXContentHandler extends DefaultHandler {
 	 */
 	@Override
 	public void fatalError(SAXParseException arg0) throws SAXException {
-		
+		contents = null;
 	}
 
 	/* (non-Javadoc)

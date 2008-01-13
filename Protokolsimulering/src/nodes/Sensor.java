@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.TreeSet;
 
-import transmissions.Data;
+import notification.Note;
+import notification.NoteConstants;
+import transmissions.DataConstants;
 import transmissions.Transmission;
-import transmissions.TransmissionTimeOutChecker;
 import transmissions.Transmitter;
+import turns.EndSteppable;
 import turns.Prepareable;
 
 
@@ -16,8 +19,8 @@ import turns.Prepareable;
  * 
  * @author Niels Thykier
  */
-public class Sensor extends Location implements Transmitter, Prepareable, Comparable<Sensor>{
-	
+public class Sensor extends Location implements Transmitter, Prepareable, Comparable<Sensor>, NoteConstants, DataConstants, EndSteppable {
+
 	private static SensorList allRealSensors = new SensorList(50);
 	private static ArrayList<Sensor> fakeSensors = new ArrayList<Sensor>();
 	
@@ -38,7 +41,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	/**
 	 * Used by the RealSensor constructor.
-	 * @param loc
+	 * @param loc The Location of the sensor
 	 * @param id The ID of the sensor.
 	 */
 	protected Sensor(Location loc, int id) {
@@ -83,6 +86,12 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		}
 	}
 	
+	public void EndStep() {
+		RealSensor real = allRealSensors.get(id);
+		if(real != null) {
+			real.EndStep();
+		}
+	}
 	
 	public static Sensor getSensor(int sensorID) {
 		return new Sensor(allRealSensors.get(sensorID));
@@ -239,25 +248,78 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		}
 	}
 	
+	/**
+	 * To avoid Sensors not being up to date, all instances of the Sensor-class points to a RealSensor.
+	 * This real sensor does the actual workload.
+	 * @author Niels Thykier
+	 */
+	/**
+	 * @author Niels Thykier
+	 *
+	 */
 	protected static class RealSensor extends Sensor{
 
+		/**
+		 * The used ids for Sensors
+		 */
 		private static int usedIDs = 0;
+		/**
+		 * Max roll a initiative roll can get.
+		 */
 		private static int maxRoll = 100; 
+		/**
+		 * Random-generator
+		 */
 		protected static Random ran = new Random();
 		private static int CANNOT_RECEIVE = 0x01;
 		private static int CANNOT_SEND	  = 0x02;
 		private static int IS_RECEIVING   = 0x04;
 		private static int IS_SENDING	  = 0x08;
-		private static int CORRUPTION	  = 0x10;
+		/**
+		 * Receiver confirmed my message.
+		 */
+		private static int SEND_CONFIRMED = 0x10;
+		/**
+		 * Corruption of received data.
+		 */
+		private static int CORRUPTION	  = 0x20;
 		
-		private ArrayList<Transmission> toTransmit;
+		/**
+		 * Sorted list 
+		 */
+		private TreeSet<Transmission> toTransmit;
+		/**
+		 * A list of all received and yet unhandled messages.
+		 */
+		/**
+		 * 
+		 */
 		private ArrayList<Transmission> received; 
-		private TransmissionTimeOutChecker sent;
+		/**
+		 * A manager of all the sent messages.
+		 */
+		private Transmission sent;
+		/**
+		 * The last sent transmission. If this is a non-null value, the Sensor is waiting for a reply
+		 * or is going to resend the transmission due to corruption.
+		 */
+		private Transmission toSend;
 	
+		/**
+		 * Its initiative, determines its turn during the tick event.
+		 */
 		private int transmissionRoll = 0;
+		/**
+		 * The amount of ticks it will wait before resending the last failed Transmission.
+		 */
 		private int transmissionDelay = 0;
+		/**
+		 * A Bit-mask of transmission options and plans for the current tick.
+		 */
 		private int transmissionRestriction = 0;
 		
+		private int amountOfTicksMissingReply = 0;
+		private int amountOfSendingRequests = 0;
 		/**
 		 * Generate a sensor at a random location.
 		 */
@@ -289,7 +351,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		private void initSensor() {
 			allRealSensors.add(this);
 			regenerateLists();
-			sent = new TransmissionTimeOutChecker();
 		}
 
 		/**
@@ -297,7 +358,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		 * Non-removed data are copied to the new lists.
 		 */
 		private void regenerateLists() {
-			ArrayList<Transmission> tempToTransmit = new ArrayList<Transmission>();
 			ArrayList<Transmission> tempReceived = new ArrayList<Transmission>();
 			int size = 0;
 			
@@ -308,22 +368,37 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 				}
 			}
 			if(toTransmit != null) {
-				size = toTransmit.size();
-				for(int i = 0 ; i< size ; i++) {
-					tempToTransmit.add(toTransmit.get(i));
-				}
+				toTransmit = new TreeSet<Transmission>(toTransmit);
+			} else {
+				toTransmit = new TreeSet<Transmission>(); 
 			}
 			received = tempReceived;
-			toTransmit = tempToTransmit;
 		}
 		
-		protected void prepareMessages() {
+		/**
+		 * If the sensor is not waiting for a reply or waiting to resend a previously send message, 
+		 * this will check the list of which messages should be sent first.
+		 * 
+		 * @return false, if the sensor has no messages to send nor is waiting for a reply/resend of a previously sent message.
+		 */
+		protected boolean prepareMessages() {
 			int size = received.size();
 			for(int i = 0 ; i < size ; i++) {
-				toTransmit.add(received.get(i).generateConfirmationMessage());
+				if(0 == (transmissionRestriction & CORRUPTION)) {
+					toTransmit.add(received.get(i).generateConfirmationMessage());
+				} else {
+					//Failed
+				}
 			}
 			received = new ArrayList<Transmission>();
 			
+			if(toSend != null || toTransmit.size() > 0) {
+				if(transmissionDelay == 0) {
+					transmissionRestriction |= IS_SENDING;
+				}
+				return true;
+			}
+			return false;
 		}
 		
 		/**
@@ -344,7 +419,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 				return;
 			}
 			switch(msg.getMessageType()) {
-			case Data.TYPE_SENDING:
+			case TYPE_SENDING:
 				if(0 == (transmissionRestriction & IS_RECEIVING)) {
 					if(msg.getReceiver() == id) {
 						transmissionRestriction |= IS_RECEIVING;
@@ -356,17 +431,27 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 					transmissionRestriction |= CORRUPTION;
 				}
 				break;
-			case Data.TYPE_RECEIVING:
+			case TYPE_RECEIVING:
 				if(msg.getSender() != id) {
 					transmissionRestriction |= CANNOT_SEND;
+				} else {
+					transmissionRestriction |= SEND_CONFIRMED;
+					transmit(toSend);
 				}
 				break;
-			case Data.TYPE_RECEIVED_SUCCESSFULLY:
-				sent.remove(msg.getSender());
+			case TYPE_RECEIVED_SUCCESSFULLY:
+				if(msg.getReceiver() == id) {
+					sent.remove(msg.getSender());
+					toSend = null;
+				}
 				break;
-			case Data.TYPE_RECEIVED_UNSUCCESSFULLY:
+			case TYPE_RECEIVED_UNSUCCESSFULLY:
+				if(msg.getReceiver() == id) {
+					transmissionDelay = ran.nextInt(10) + 1;
+					sent.remove(msg.getSender());
+				}
 				break;
-			case Data.TYPE_DATA:
+			case TYPE_DATA:
 				if(msg.getReceiver() == id) {
 					received.add(msg);
 				} else {
@@ -381,8 +466,12 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		 */
 		@Override
 		public void transmit(Transmission msg) {
-			if(msg.getMessageType() != Data.TYPE_RECEIVING && msg.getMessageType() != Data.TYPE_SENDING) {
-				sent.add(msg);
+			if(msg.getMessageType() != TYPE_SENDING && msg.getMessageType() != TYPE_RECEIVING) {
+				amountOfSendingRequests = 0;
+				transmissionRoll = 0;
+				sent = msg;
+				transmissionDelay = -1;
+				amountOfTicksMissingReply = 0;
 			}
 		}
 
@@ -391,17 +480,92 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		 */
 		@Override
 		public void prepare() {
-			// TODO Auto-generated method stub
-			prepareMessages();
-			transmissionRoll = ran.nextInt(maxRoll); 
+			String message = "Prepare phase for " + this + ": " ;
+			boolean hasMessages = prepareMessages();
+			transmissionRestriction = 0;
+			if(toSend == null) {
+				//No need to prepare messages, while we wait for a reply.
+				message += hasMessages?"Have messages to send":"Having nothing to send";
+				if(transmissionRoll == 0) {
+					transmissionRoll = ran.nextInt(maxRoll);
+					message += ", new initiative: " + transmissionRoll;
+				} else {
+					message += ", current initative: " + transmissionRoll;
+				}
+			} else {
+				if(transmissionDelay == -1) {
+					message += "Waiting for reply message from " + toSend.getReceiver();
+				} else if(transmissionDelay == 0) {
+					message += "Resending to " + toSend.getReceiver() + " this tick.";
+				} else {
+					message += "Resending to " + toSend.getReceiver() + " in " + (transmissionDelay--) + " steps.";
+				}	        
+			}
+			broadcastNote(message);
 		}
 
+		/**
+		 * Broadcasts an informal note.
+		 * @param message The message.
+		 */
+		private void broadcastNote(String message) {
+			broadcastNote(message, INFORMATION);
+		}
+		
+		/**
+		 * Broadcasts a note.
+		 * @param message The message.
+		 * @parma type The type of the note.
+		 */
+		private void broadcastNote(String message, int type) {
+			new Note(message, type);
+		}
+		
 		/* (non-Javadoc)
 		 * @see turns.Steppable#step()
 		 */
 		@Override
 		public void step() {
-			// TODO Auto-generated method stub	
+			String message = "Step for " + this + ": ";
+			
+			if(0 != (transmissionRestriction & IS_SENDING)) {
+				if(0 == (transmissionRestriction & CANNOT_SEND)) {
+					if(toSend == null) {
+						toSend = toTransmit.pollLast();
+					}
+					message += " requesting transmission with " + toSend.getReceiver();
+					broadcastNote(message);
+					transmit(Transmission.generateSendRequest(toSend.getReceiver(), id));
+					return;
+				}
+				// increase its initiative.
+				transmissionRoll += 5;
+				message += " cannot send its message this turn, increased initiative to : " + transmissionRoll;
+			} else {
+				message += " waiting.";
+			}
+			broadcastNote(message);
+		}
+
+		/* (non-Javadoc)
+		 * @see nodes.Sensor#EndStep()
+		 */
+		@Override
+		public void EndStep() {
+			//TODO
+			if(0 != (transmissionRestriction & IS_SENDING)) {
+				if(0 == (transmissionRestriction & SEND_CONFIRMED)) {
+					amountOfSendingRequests = 0;
+				} else if(0 == (transmissionRestriction & CANNOT_SEND)) {
+					amountOfSendingRequests++;
+					transmissionDelay = 0;
+				} else {
+					transmissionDelay = 0;
+				}
+			}
+			if(sent != null) {
+				amountOfTicksMissingReply++;
+			}
 		}
 
 		/* (non-Javadoc)
@@ -411,6 +575,15 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		protected RealSensor getRealSensor() {
 			return this;
 		}
+		
+		/* (non-Javadoc)
+		 * @see nodes.Location#toString()
+		 */
+		@Override
+		public String toString() {
+			return "Sensor #" + id + " " + super.toString();
+		}
 
 	}
+
 }

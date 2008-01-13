@@ -1,20 +1,7 @@
 package transmissions;
 
-public class Data {
-	
-	public static final int TYPE_RECEIVED_SUCCESSFULLY      = 0x10000000;
-	public static final int TYPE_RECEIVED_UNSUCCESSFULLY    = 0x20000000;
-	public static final int TYPE_NETWORK   				    = 0x40000000;
-	public static final int TYPE_DATA  					    = 0x80000000;
-	public static final int TYPE_SENDING    				= 0x01000000;
-	public static final int TYPE_RECEIVING  				= 0x02000000;
-	private static final int TYPE_ALL 						= 0xff000000;
-	private static final int PRIORITY_ALL					= 0x0000000f;
-	public static final int PRIORITY_LOW					= 0x00000001;
-	public static final int PRIORITY_MEDIUM					= 0x00000002;
-	public static final int PRIORITY_HIGH					= 0x00000003;
-	public static final int PRIORITY_VERY_HIGH				= 0x000000dd;
-	public static final int PRIORITY_INSTANT				= 0x000000ff;
+public class Data implements DataConstants{
+
 	private int dataType;
 	
 	private Data() {}
