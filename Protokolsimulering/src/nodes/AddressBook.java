@@ -1,6 +1,7 @@
 package nodes;
 
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * This class contains informations about, who to pass a message on to.
@@ -22,7 +23,7 @@ public class AddressBook {
 	 * When the class is initialized, the Hashtable 'away' will be created.
 	 */
 	public AddressBook() {
-		Hashtable away = new Hashtable<Integer, Integer>();
+		away = new Hashtable<Integer, Integer>();
 	}
 	
 	/**
@@ -64,5 +65,13 @@ public class AddressBook {
 	 */
 	public void clearList() {
 		away.clear();
+	}
+	
+	/**
+	 * This method extracts a list of all the keys from the Hashtable and returns it.
+	 * @return a set of keys in the Hashtable
+	 */
+	public Set<Integer> getBook() {
+		return away.keySet();
 	}
 }
