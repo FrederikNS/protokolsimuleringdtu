@@ -30,7 +30,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	 */
 	private static final long serialVersionUID = -8026416994513756565L;
 	
-	public ViewFrame sensorNetwork;
+	public ViewPort sensorNetwork;
 	
 	private ButtonGroup modeGroup = new ButtonGroup();
 	private ButtonGroup stepperGroup = new ButtonGroup();
@@ -269,7 +269,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		case MENU_NEW:
 			//TODO
 			System.out.println("rrr");
-			sensorNetwork = new ViewFrame("Untitled");
+			sensorNetwork = new ViewPort("Untitled", 600, 600);
 			//new();
 			break;
 		case MENU_OPEN:
@@ -285,7 +285,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		            if(openFile.exists()) {
 		            	if(openFile.canRead()) {
 		            		//load
-				            sensorNetwork = new ViewFrame(openFile.getName());
+				            sensorNetwork = new ViewPort(openFile, 600, 600);
 		            	} else {
 		            		//could not be read.
 		            	}
