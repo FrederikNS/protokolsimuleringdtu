@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -21,7 +22,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ControlPanelFrame extends JFrame implements ActionListener{
@@ -60,13 +60,6 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	private final static int CHECKBOX_NEIGHBOURS = 205;
 	
 	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
-	//private final static int  = ;
 	
 	public final static int PLAYBACK_REWIND = -2;
 	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
@@ -89,9 +82,9 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 
 		//BorderLayout contentPaneLayout = new BorderLayout(0,0);
 		//BoxLayout controlPanelPaneLayout = new BoxLayout(controlPanelPane, BoxLayout.Y_AXIS);
-		//GridLayout controlPanelPaneLayout = new GridLayout(0,1);
-		SpringLayout controlPanelPaneLayout = new SpringLayout();
+		GridLayout controlPanelPaneLayout = new GridLayout(0,1);
 		//GridBagLayout controlPanelPaneLayout = new GridBagLayout();
+		//SpringLayout controlPanelPaneLayout = new SpringLayout();
 		//this.setLayout(contentPaneLayout);
 		controlPanelPane.setLayout(controlPanelPaneLayout);
 		
