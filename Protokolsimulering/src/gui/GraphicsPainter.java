@@ -29,7 +29,8 @@ public class GraphicsPainter extends JPanel implements MouseListener {
 	/**
      * @param g
      */
-    public void paintComponent(Graphics g) {
+    @Override
+	public void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	for(int i=0;i<nodesList.size();i++){
     		nodesList.get(i).draw(g);
@@ -42,7 +43,6 @@ public class GraphicsPainter extends JPanel implements MouseListener {
     	if(ControlPanelFrame.mode==ControlPanelFrame.MODE_ADD){
     		try{
     			nodesList.add(new DrawableCircle(new Location(arg0.getX(),arg0.getY()),4));
-    			
     		} catch(Throwable e) {
     			System.err.println(e);
     		}
