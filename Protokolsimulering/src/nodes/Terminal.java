@@ -1,7 +1,9 @@
 package nodes;
 
-import nodes.Sensor.RealSensor;
+import nodes.Sensor;
 
-public class Terminal extends RealSensor {
-	private Terminal() {}
+public class Terminal extends Sensor {
+	private Terminal() {
+		super(new Location());
+	}
 }
