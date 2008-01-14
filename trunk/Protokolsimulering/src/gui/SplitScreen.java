@@ -7,7 +7,7 @@ import nodes.Sensor;
  * To be able to do that easier (instead of using Phytagoras on every sensor and then select the closest), it splits the screen up in smaller blocks.
  * Every time (in this case) 10 sensors is placed in the same block, it splits in four equal sized blocks, and the registrering of sensors goes on.
  * When 10 sensors is detected in one of the new smaller blocks, that one will split in four new blocks, and so on.
- * In taht way, when the user clicks somewhere on the screen, only che closests blocks will be searched for the closest sensor.
+ * In that way, when the user clicks somewhere on the screen, only che closests blocks will be searched for the closest sensor.
  * @author Morten Soerensen
  */
 public class SplitScreen {
