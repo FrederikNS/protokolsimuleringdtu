@@ -1,5 +1,9 @@
 package transmissions;
 
+/**
+ * This class contains all the constants for the class Data.
+ * @author Niels Thykier
+ */
 public interface DataConstants {
 	/**
 	 * Last transmission received successfully
