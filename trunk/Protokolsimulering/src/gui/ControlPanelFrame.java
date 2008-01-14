@@ -72,9 +72,9 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 	public final static int MODE_KILL = 1;
 	public final static int MODE_ADD = 2;
 	public final static int MODE_MOVE = 3;
-	public int mode = MODE_SELECT;
+	public static int mode = MODE_SELECT;
 
-	public ControlPanelFrame() {
+	public ControlPanelFrame /*ButtonsNStuff*/() {
 		super("Control Panel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(200,600));
@@ -90,32 +90,32 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
+		JMenu editMenu = new JMenu("Edit");
 		JMenuItem newMenuItem = new JMenuItem("New");
+		JMenuItem openMenuItem = new JMenuItem("Open...");
+		JMenuItem saveMenuItem = new JMenuItem("Save");
+		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
+		JMenuItem quitMenuItem = new JMenuItem("Quit");
+		//JMenuItem 
+		
 		newMenuItem.addActionListener(this);
 		newMenuItem.setActionCommand(String.valueOf(MENU_NEW));
-		JMenuItem openMenuItem = new JMenuItem("Open...");
 		openMenuItem.addActionListener(this);
 		openMenuItem.setActionCommand(String.valueOf(MENU_OPEN));
-		JMenuItem saveMenuItem = new JMenuItem("Save");
 		saveMenuItem.addActionListener(this);
 		saveMenuItem.setActionCommand(String.valueOf(MENU_SAVE));
-		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
 		saveAsMenuItem.addActionListener(this);
 		saveAsMenuItem.setActionCommand(String.valueOf(MENU_SAVE_AS));
-		JMenuItem quitMenuItem = new JMenuItem("Quit");
 		quitMenuItem.addActionListener(this);
 		quitMenuItem.setActionCommand(String.valueOf(MENU_QUIT));
-
 		
 		setJMenuBar(menuBar);
-
 		menuBar.add(fileMenu);
 		fileMenu.add(newMenuItem);
 		fileMenu.add(openMenuItem);
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(quitMenuItem);
-
 		
 		add(controlPanelPane,BorderLayout.CENTER);
 		modes();
@@ -269,7 +269,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		case MENU_NEW:
 			//TODO
 			System.out.println("rrr");
-			sensorNetwork = new ViewPort("Untitled", 600, 600);
+			sensorNetwork = new ViewPort("Untitled", 200, 0);
 			//new();
 			break;
 		case MENU_OPEN:
@@ -285,7 +285,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		            if(openFile.exists()) {
 		            	if(openFile.canRead()) {
 		            		//load
-				            sensorNetwork = new ViewPort(openFile, 600, 600);
+				            sensorNetwork = new ViewPort(openFile, 200, 0);
 		            	} else {
 		            		//could not be read.
 		            	}
@@ -390,6 +390,7 @@ public class ControlPanelFrame extends JFrame implements ActionListener{
 		case BUTTON_NEXT_SENSOR:
 			//TODO
 			//nextSensor();
+			stepperGroup.clearSelection();
 			break;
 		case BUTTON_STEP_FORWARD:
 			//TODO

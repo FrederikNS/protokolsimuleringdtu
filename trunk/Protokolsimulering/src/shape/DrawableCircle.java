@@ -1,7 +1,5 @@
 package shape;
 
-import graphics.Scaling;
-
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -78,8 +76,9 @@ public class DrawableCircle extends Shape {
 	public void draw(Graphics g) {
 		Color temp = g.getColor();
 		g.setColor(color);
-		g.drawOval(Scaling.convertToPicX(center.getX()), Scaling.convertToPicY(center.getY())
-				, Scaling.convertToPicX(diameter), Scaling.convertToPicY(diameter));
+		//g.drawOval(Scaling.convertToPicX(center.getX()), Scaling.convertToPicY(center.getY())
+			//	, Scaling.convertToPicX(diameter), Scaling.convertToPicY(diameter));
+		g.drawOval(center.getX(), center.getY(), diameter, diameter);
 		g.setColor(temp);
 	}
 
