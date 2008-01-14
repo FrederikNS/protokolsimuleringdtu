@@ -1,6 +1,9 @@
 package transmissions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+
+import nodes.Sensor;
 
 
 /**
@@ -13,7 +16,7 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	/**
 	 * The receiver of the transmissions.
 	 */
-	public final int receiver;
+	private int receiver;
 	/**
 	 * Whom is respondable for passing it on?
 	 */
@@ -21,7 +24,7 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	/**
 	 * The sender of the transmissions.
 	 */
-	public final int sender;
+	private int sender;
 	/**
 	 * The transmissions type.
 	 */
@@ -45,6 +48,13 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 		messageType = information.getDataType();
 	}
 	
+	public Transmission(int receiver, int sender, Collection<? extends Data> dataList) {
+		this.receiver = receiver;
+		this.sender = sender;
+		data = new ArrayList<Data>(dataList);
+		messageType = data.get(0).getDataType();
+	}
+
 	/**
 	 * Generates a confirmation Transmission to this Transmission.
 	 * If this transmission was a send request, it will return a "Can receive" Transmission.
@@ -147,9 +157,14 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 		return data.remove(toRemove);
 	}
 	
+	public Transmission generateCorruptTransmission() {
+		return new Transmission(Sensor.INVALID_SENSOR_ID, Sensor.INVALID_SENSOR_ID, Data.GarbageData);
+	}
+	
 	public void corruptTransmission() {
 		data = new ArrayList<Data>();
 		data.add(Data.GarbageData);
+		messageType = TYPE_GARBAGE;
 	}
 
 	/* (non-Javadoc)
