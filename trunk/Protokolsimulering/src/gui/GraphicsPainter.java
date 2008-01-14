@@ -40,7 +40,7 @@ public class GraphicsPainter extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
     	//System.out.println("("+arg0.getX()+","+arg0.getY()+")");
-    	if(ControlPanelFrame.mode==ControlPanelFrame.MODE_ADD){
+    	if(GuiStuff.mode==ControlPanelFrame.MODE_ADD){
     		try{
     			nodesList.add(new DrawableCircle(new Location(arg0.getX(),arg0.getY()),4));
     		} catch(Throwable e) {

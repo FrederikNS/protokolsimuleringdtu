@@ -4,5 +4,4 @@ public class FrameController {
 	public FrameController() {
 		new ControlPanelFrame();
 	}
-
 }
