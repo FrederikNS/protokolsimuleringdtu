@@ -1,13 +1,11 @@
 package gui;
 
-import java.io.File;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFrame;
 
-public class ViewPort extends JFrame implements ActionListener{
+public class ViewPort extends JFrame{
 
 	/**
 	 * 
@@ -18,6 +16,8 @@ public class ViewPort extends JFrame implements ActionListener{
 		super(title);
 		setSize(new Dimension(600,600));
 		setLocation(posX, posY);
+		GraphicsPainter graphicsPainter = new GraphicsPainter();
+		this.getContentPane().add(graphicsPainter);
 		setVisible(true);
 	}
 
@@ -25,9 +25,10 @@ public class ViewPort extends JFrame implements ActionListener{
 		this(openFile.getAbsolutePath(),posX,posY);
 	}
 	
-	public void actionPerformed(ActionEvent arg0) {
+	/*public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
-		
 		}
-	}
+	}*/
+
+	
 }
