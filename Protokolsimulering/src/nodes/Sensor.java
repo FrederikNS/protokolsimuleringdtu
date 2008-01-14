@@ -78,7 +78,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		return idToSensor.get(sensorID);
 	}
 
-
 	/**
 	 * Fetches a sensors by its label. 
 	 * Sensors do not have a label unless one has been assigned to them!
