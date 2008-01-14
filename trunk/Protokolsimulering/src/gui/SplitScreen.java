@@ -11,7 +11,7 @@ import nodes.Sensor;
  * @author Morten Soerensen
  */
 public class SplitScreen {
-	
+
 	/**
 	 * Integer array containing a list over sensors.
 	 */
@@ -40,8 +40,8 @@ public class SplitScreen {
 	 * The maximum y coordinate.
 	 */
 	private int yMax;
-	
-	
+
+
 	/**
 	 * The constructor the this class.
 	 * When this class is initialized, it will make the integer array and set it's size to 10 (slot 0 to 9).
@@ -99,31 +99,63 @@ public class SplitScreen {
 		this.SL[0] = sensor;
 		this.size = 1;
 	}
-	
+
 	/**
 	 * Adds a sensor to the integer array.
 	 * @param sensor to be added
 	 */
 	public void addSensor(Sensor sensor) {
 		if(ss != null) {
-			
+			int i;
+			if(sensor.getX() < this.xMax/2) {
+				if(sensor.getY() < this.yMax/2) {
+					i = 0;
+				} else {
+					i = 2;
+				}
+			} else {
+				if(sensor.getY() < this.yMax/2) {
+					i = 1;
+				} else {
+					i = 3;
+				}
+			}
+			ss[i].addSensor(sensor);
 		} else if(size == SL.length) {
 			ss = new SplitScreen[4];
 			for(int i = 0 ; i < 4 ; i++){
 				ss[i] = new SplitScreen(this,i, sensor.id);
 			}
-			//TODO
 		} else {
 			SL[size] = sensor.id;
 			size++;
 		}
 	}
-	
+
 	/**
 	 * Removed a sensor from the integer array.
 	 * @param sensor to be removed
 	 */
-	public void removeSensor(int sensor) {
-		
+	public void removeSensor(Sensor sensor) {
+		if(ss != null) {
+			int i;
+			if(sensor.getX() < this.xMax/2) {
+				if(sensor.getY() < this.yMax/2) {
+					i = 0;
+				} else {
+					i = 2;
+				}
+			} else {
+				if(sensor.getY() < this.yMax/2) {
+					i = 1;
+				} else {
+					i = 3;
+				}
+			}
+			ss[i].removeSensor(sensor);
+		} else {
+			SL[size-1] = 0;
+			--size;
+		}
 	}
 }
