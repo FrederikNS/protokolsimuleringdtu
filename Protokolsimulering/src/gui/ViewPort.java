@@ -22,7 +22,7 @@ public class ViewPort extends JFrame implements ActionListener{
 	}
 
 	public ViewPort(File openFile,int posX,int posY){
-		this(openFile.getName(),posX,posY);
+		this(openFile.getAbsolutePath(),posX,posY);
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
