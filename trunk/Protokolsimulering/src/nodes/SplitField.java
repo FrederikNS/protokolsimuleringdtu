@@ -1,4 +1,4 @@
-package gui;
+package nodes;
 
 import nodes.Sensor;
 
@@ -10,7 +10,7 @@ import nodes.Sensor;
  * In that way, when the user clicks somewhere on the screen, only che closests blocks will be searched for the closest sensor.
  * @author Morten Soerensen
  */
-public class SplitScreen {
+public class SplitField {
 
 	/**
 	 * Integer array containing a list over sensors.
@@ -23,7 +23,7 @@ public class SplitScreen {
 	/**
 	 * An instance of this class, to house all the minions.
 	 */
-	private SplitScreen[] ss;
+	private SplitField[] ss;
 	/**
 	 * The minimum x coordinate.
 	 */
@@ -50,7 +50,7 @@ public class SplitScreen {
 	 * @param yMin the minimum y coordinate
 	 * @param yMax the maximum y coordinate
 	 */
-	public SplitScreen(int xMin, int xMax, int yMin, int yMax) {
+	public SplitField(int xMin, int xMax, int yMin, int yMax) {
 		SL = new int[10];
 		size = 0;
 		this.xMin = xMin;
@@ -65,7 +65,7 @@ public class SplitScreen {
 	 * @param block the block number. This will be used to know, how to calculate the new block's coordinates
 	 * @param sensor the sensor number that caused the array SL to exceed its limit
 	 */
-	private SplitScreen(SplitScreen splitMe, int block, int sensor) {
+	private SplitField(SplitField splitMe, int block, int sensor) {
 		switch(block) {
 		case 0:
 			//upper left block
@@ -122,9 +122,9 @@ public class SplitScreen {
 			}
 			ss[i].addSensor(sensor);
 		} else if(size == SL.length) {
-			ss = new SplitScreen[4];
+			ss = new SplitField[4];
 			for(int i = 0 ; i < 4 ; i++){
-				ss[i] = new SplitScreen(this,i, sensor.id);
+				ss[i] = new SplitField(this,i, sensor.id);
 			}
 		} else {
 			SL[size] = sensor.id;
