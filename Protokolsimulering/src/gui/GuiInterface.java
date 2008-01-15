@@ -30,15 +30,11 @@ public interface GuiInterface {
 	public final static int CHECKBOX_ID = 204;
 	public final static int CHECKBOX_NEIGHBOURS = 205;
 	
-	
-	
 	public final static int PLAYBACK_REWIND = -2;
 	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
 	public final static int PLAYBACK_PAUSE = 0;
 	public final static int PLAYBACK_PLAY = 1;
 	public final static int PLAYBACK_FAST_FORWARD = 2;
-	
-	
 	
 	public final static int MODE_SELECT = 0;
 	public final static int MODE_KILL = 1;
