@@ -61,6 +61,7 @@ public class SplitField {
 	public SplitField(int xMin, int xMax, int yMin, int yMax) {
 		sensorList = new Sensor[10];
 		size = 0;
+		splitField = null;
 		this.xMin = xMin;
 		this.xMax = xMax;
 		this.yMin = yMin;
@@ -71,7 +72,6 @@ public class SplitField {
 	 * A private constructor for this class. The only time this can be called, is when the window splits.
 	 * @param splitMe the parent class
 	 * @param block the block number. This will be used to know, how to calculate the new block's coordinates
-	 * @param sensor the sensor number that caused the array sensorList to exceed its limit
 	 */
 	private SplitField(SplitField splitMe, int block) {
 		switch(block) {
@@ -136,7 +136,19 @@ public class SplitField {
 			Sensor[] sensorArray = new Sensor[4];
 			int[] sectorCheckList = {-1,-1,-1,-1};
 			int amountToAsk = -1;
-			if(loc.getX()+dist < this.xMax/2) {
+			if(((loc.getX()-dist) < this.xMax/2) && ((loc.getY()-dist) < this.yMax/2)) {
+				sectorCheckList[++amountToAsk] = 0;
+			}
+			if(((loc.getX()+dist) > this.xMax/2) && ((loc.getY()-dist) < this.yMax/2)) {
+				sectorCheckList[++amountToAsk] = 1;
+			}
+			if(((loc.getX()-dist) < this.xMax/2) && ((loc.getY()+dist) > this.yMax/2)) {
+				sectorCheckList[++amountToAsk] = 2;
+			}
+			if(((loc.getX()+dist) > this.xMax/2) && ((loc.getY()+dist) > this.yMax/2)) {
+				sectorCheckList[++amountToAsk] = 3;
+			}
+			/*if(loc.getX()+dist < this.xMax/2) {
 				if(loc.getY()+dist < this.yMax/2) {
 					sectorCheckList[++amountToAsk] = 0;
 				} else {
@@ -148,16 +160,23 @@ public class SplitField {
 				} else {
 					sectorCheckList[++amountToAsk] = 3;
 				}
-			}
+			}*/
+			Sensor test = null;
+			int k = 0;
 			for(int j = 0 ; j < sectorCheckList.length ; j++) {
 				if(sectorCheckList[j] == -1) {
 
 				} else {
-					sensorArray[++amountToAsk] = splitField[sectorCheckList[j]].selectSensor(loc, dist);
+					test = splitField[sectorCheckList[j]].selectSensor(loc, dist);
+					if (test != null) {
+						sensorArray[k++]=test;
+					}
 				}
 			}
-			toReturn = returnSensor(sensorArray, amountToAsk, dist, loc);
+			System.out.println("children");
+			toReturn = returnSensor(sensorArray, k, dist, loc);
 		} else {
+			System.out.println("no children!");
 			toReturn = returnSensor(sensorList, size, dist, loc);
 		}
 		return toReturn;
@@ -176,6 +195,7 @@ public class SplitField {
 		int currentDistance = 0;
 		int lowestDistance = (int) Math.pow(dist, 2);
 		for(int i = 0 ; i < length ; i++) {
+			System.out.println(length + " " + dist + " " + loc.getX() + " " + loc.getY());
 			currentDistance = list[i].internalDistanceCheck(loc);
 			if(currentDistance < lowestDistance) {
 				lowestDistance = currentDistance;
