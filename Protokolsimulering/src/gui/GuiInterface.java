@@ -1,5 +1,9 @@
 package gui;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public interface GuiInterface {
 	public final static int MENU_NEW = 1;
 	public final static int MENU_OPEN = 2;

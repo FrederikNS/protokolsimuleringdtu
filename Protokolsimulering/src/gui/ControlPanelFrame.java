@@ -11,10 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class ControlPanelFrame extends JFrame implements GuiInterface{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -8026416994513756565L;
 	
 	private static ControlPanelFrame controlPanelFrame;

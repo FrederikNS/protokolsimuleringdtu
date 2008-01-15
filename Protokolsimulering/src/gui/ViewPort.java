@@ -5,11 +5,12 @@ import java.io.File;
 
 import javax.swing.JFrame;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class ViewPort extends JFrame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1960058377833441994L;
 	
 	public ViewPort(String title,int posX,int posY){

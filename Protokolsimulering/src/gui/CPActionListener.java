@@ -8,6 +8,10 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class CPActionListener implements ActionListener,GuiInterface{
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {

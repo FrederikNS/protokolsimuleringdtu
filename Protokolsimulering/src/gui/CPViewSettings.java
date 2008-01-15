@@ -7,6 +7,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class CPViewSettings implements GuiInterface{
 	public CPViewSettings(ActionListener actionListener){
 		JPanel viewSettingsPanel = new JPanel();
