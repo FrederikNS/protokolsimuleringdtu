@@ -51,7 +51,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int currentTick;
 	private int resendDelay;
 	private int status; //Used for coloring.
-	private boolean statusUpdated = false;
 	private int transmissionRoll;
 	private DrawableCircle draw;
 	
@@ -320,20 +319,18 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	public void setEnabled(boolean running) {
 		if(running) {
-			status &= ~STATUS_DEAD;
+			status &= (~STATUS_DEAD);
 		} else {
 			status |= STATUS_DEAD;
 		}
-		statusUpdated = true;
 	}
 	
 	public void setSelected(boolean selectedStatus) {
 		if(selectedStatus) {
 			status |= STATUS_SELECTED;
 		} else {
-			status &= ~STATUS_SELECTED;
+			status &= (~STATUS_SELECTED);
 		}
-		statusUpdated = true;
 	}
 		
 	/**
@@ -363,32 +360,22 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-	
-	public void changeColor(Color newColor) {
-		draw.setColor(newColor);
-	}
 
 	/* (non-Javadoc)
 	 * @see nodes.Location#draw(java.awt.Graphics)
 	 */
 	@Override
 	public void draw(Graphics g) {
-		if(statusUpdated) {
-			if(0 != (status & STATUS_SELECTED)) {
-				if(0 != (status & STATUS_DEAD)) {
-					draw.setColor(GuiStuff.deadColor);
-				} else {
-					draw.setColor(GuiStuff.sensorColor);
-				}
-			} else {
-				draw.setColor(GuiStuff.selectedColor);
+		Color temp = g.getColor();
+		if(0 == (status & STATUS_SELECTED)) {
+			if(0 != (status & STATUS_DEAD)) {
+				g.setColor(GuiStuff.deadColor);
 			}
-			//draw.setColor(GuiStuff.selectedColor);
-			statusUpdated=false;
 		} else {
-			//draw.setColor(GuiStuff.sensorColor);
+			g.setColor(GuiStuff.selectedColor);
 		}
 		draw.draw(g);
+		g.setColor(temp);
 	}
 
 
