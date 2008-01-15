@@ -2,7 +2,9 @@ package nodes;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Random;
 
 import exceptions.LabelNotRecognizedException;
 
@@ -15,8 +17,8 @@ import turns.EndSteppable;
 import turns.Prepareable;
 
 /**
+ * 
  * @author Niels Thykier
- *
  */
 public class Sensor extends Location implements Transmitter, Prepareable, Comparable<Sensor>, NoteConstants, DataConstants, EndSteppable {
 
@@ -30,6 +32,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	protected static final int ACTION_WAIT		= 0x00000010;
 	protected static final int ACTION_NOTHING_TO_DO		= 0x00000020;
 	
+	protected static Random ran = new Random();
+	
 	public final int id = 0;
 	private ArrayList<Data> unsentData = new ArrayList<Data>();
 	private Transmission ingoing;
@@ -37,6 +41,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private boolean waiting;
 	private int currentTick;
 	private int resendDelay;
+	private boolean enabled = false;
+	private int transmissionRoll;
 	
 	private String sensorLabel = null;
 	
@@ -285,10 +291,14 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	/**
 	 * Test if the Sensor is operational.
-	 * @return true if the sensor is down/unavailable. 
+	 * @return true if the sensor is available. 
 	 */
-	public boolean isDown() {
-		return false;
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	public void setEnabled(boolean running) {
+		enabled = running;
 	}
 	
 	/**
@@ -329,5 +339,44 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 
 
+	public static final class SensorComparator implements Comparator<Sensor> {
+		private final int compareType;
+		public static final int SORT_DEFAULT = 0;
+		public static final int SORT_BY_TURNS = 1;
+		public static final int SORT_BY_ID = 2;
+		
+		public SensorComparator(int type) {
+			compareType = type;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		public int compare(Sensor o1, Sensor o2) {
+			int toReturn = 0;
+			switch(compareType) {
+			case SORT_BY_TURNS:
+				if(o1.transmissionRoll < o2.transmissionRoll) {
+					toReturn = -1;
+				} else if(o1.transmissionRoll == o2.transmissionRoll) {
+					//Tie, randomly choose one. (50/50)
+					if((Sensor.ran.nextInt(50) & 1) == 0) {
+						toReturn = -1;
+					} else {
+						toReturn = 1;
+					}
+				} else {
+					toReturn = 1;
+				}
+				break;
+			default:
+			case SORT_DEFAULT:
+			case SORT_BY_ID:
+				toReturn = o1.compareTo(o2);
+				break;
+			}
+			return toReturn;
+		}
+	}
 
 }
