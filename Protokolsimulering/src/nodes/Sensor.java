@@ -1,5 +1,6 @@
 package nodes;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,6 +10,7 @@ import java.util.Random;
 import exceptions.LabelNotRecognizedException;
 
 import notification.NoteConstants;
+import shape.DrawableCircle;
 import transmissions.Data;
 import transmissions.DataConstants;
 import transmissions.Transmission;
@@ -43,12 +45,14 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int resendDelay;
 	private boolean enabled = false;
 	private int transmissionRoll;
+	private DrawableCircle draw;
 	
 	private String sensorLabel = null;
 	
 	public Sensor(Location loc) {
 		super(loc);
 		idToSensor.put(id, this);
+		draw = new DrawableCircle(loc, 2);
 	}
 	
 	/**
@@ -328,14 +332,17 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+	
+	public void changeColor(Color newColor) {
+		draw.setColor(newColor);
+	}
 
 	/* (non-Javadoc)
 	 * @see nodes.Location#draw(java.awt.Graphics)
 	 */
 	@Override
 	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		super.draw(g);
+		draw.draw(g);
 	}
 
 
