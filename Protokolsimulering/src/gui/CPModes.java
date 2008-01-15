@@ -3,7 +3,6 @@ package gui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
@@ -24,10 +23,11 @@ public class CPModes implements GuiInterface {
 		moveButton.setToolTipText("Makes sensors draggable");
 		moveButton.addActionListener(actionListener);
 		moveButton.setActionCommand(String.valueOf(BUTTON_MOVE));
+		moveButton.setEnabled(false);
 
-		ControlPanelFrame.getFrame().controlPanelPane.add(modesPanel);
+		GuiStuff.constructPanel.add(modesPanel);
 		modesPanel.setLayout(modesPanelLayout);
-		modesPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
+		//modesPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
 		GuiStuff.modeGroup.add(killButton);
 		GuiStuff.modeGroup.add(addButton);
 		GuiStuff.modeGroup.add(moveButton);

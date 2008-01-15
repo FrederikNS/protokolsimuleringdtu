@@ -3,7 +3,6 @@ package gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -51,8 +50,8 @@ public class CPStepper implements GuiInterface {
 		fastForward.addActionListener(actionListener);
 		fastForward.setActionCommand(String.valueOf(BUTTON_FAST_FORWARD));
 
-		ControlPanelFrame.getFrame().controlPanelPane.add(stepperPanel);
-		stepperPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
+		GuiStuff.simulatePanel.add(stepperPanel);
+		//stepperPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
 		GuiStuff.stepperGroup.add(rewind);
 		GuiStuff.stepperGroup.add(playBackwards);
 		GuiStuff.stepperGroup.add(play);
