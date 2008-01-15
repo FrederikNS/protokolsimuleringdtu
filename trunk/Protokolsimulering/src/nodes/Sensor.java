@@ -327,7 +327,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		statusUpdated = true;
 	}
 	
-	public void setIsSelect(boolean selectedStatus) {
+	public void setSelected(boolean selectedStatus) {
 		if(selectedStatus) {
 			status |= STATUS_SELECTED;
 		} else {
@@ -378,10 +378,15 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 				if(0 != (status & STATUS_DEAD)) {
 					draw.setColor(GuiStuff.deadColor);
 				} else {
+					draw.setColor(GuiStuff.sensorColor);
 				}
 			} else {
 				draw.setColor(GuiStuff.selectedColor);
 			}
+			//draw.setColor(GuiStuff.selectedColor);
+			statusUpdated=false;
+		} else {
+			//draw.setColor(GuiStuff.sensorColor);
 		}
 		draw.draw(g);
 	}

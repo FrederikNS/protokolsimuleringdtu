@@ -68,18 +68,12 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			} else {
 				System.out.println("Could not find sensor at location: ("+Scaling.convertToRealX(arg0.getX())+","+Scaling.convertToRealY(arg0.getY())+")");
 			}*/
+			
 			if(GuiStuff.selectedSensor!=null){
-				GuiStuff.selectedSensor.changeColor(Color.BLACK);
+				GuiStuff.selectedSensor.setSelected(false);
 				GuiStuff.selectedSensor = null;
 			}
-			
 			selectSensor(loc,dist);
-			
-			if(GuiStuff.selectedSensor != null) {
-				GuiStuff.selectedSensor.changeColor(Color.GRAY);
-			} else {
-				System.out.println("No Sensor found at: " + loc);
-			}
 			break;
 		case MODE_ADD:
 			try{
@@ -91,7 +85,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 		case MODE_KILL:
 			selectSensor(loc,dist);
 			if(GuiStuff.selectedSensor != null) {
-				GuiStuff.selectedSensor.changeColor(Color.BLUE);
 				GuiStuff.selectedSensor.setEnabled(false);
 				GuiStuff.selectedSensor = null;
 			} else {
@@ -112,6 +105,9 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 				dist = check;
 				GuiStuff.selectedSensor = sen;
 			}
+		}
+		if(GuiStuff.selectedSensor != null) {
+			GuiStuff.selectedSensor.setSelected(true);
 		}
 	}
 
