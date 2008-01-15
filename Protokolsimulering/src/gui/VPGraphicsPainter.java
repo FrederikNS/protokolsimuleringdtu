@@ -56,6 +56,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		//System.out.println("("+arg0.getX()+","+arg0.getY()+")");
+		Location loc = new Location(Scaling.convertToRealX(arg0.getX()), Scaling.convertToRealY(arg0.getY()));
+		int dist = (int)Math.pow(3,2);
 		switch(GuiStuff.mode) {
 		case MODE_SELECT:
 			/*
@@ -66,22 +68,15 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			} else {
 				System.out.println("Could not find sensor at location: ("+Scaling.convertToRealX(arg0.getX())+","+Scaling.convertToRealY(arg0.getY())+")");
 			}*/
-			Location loc = new Location(Scaling.convertToRealX(arg0.getX()), Scaling.convertToRealY(arg0.getY()));
-			int dist = (int)Math.pow(3,2);
-			int check = 0;
-			Sensor sen = null;
-			Sensor toColor = null;
-			for(int i=0;i<Sensor.usedIDs;i++){
-				sen = Sensor.idToSensor.get(i);
-				check = sen.internalDistanceCheck(loc);
-				if(check < dist) {
-					dist = check;
-					toColor = sen;
-				}
+			if(GuiStuff.selectedSensor!=null){
+				GuiStuff.selectedSensor.changeColor(Color.BLACK);
+				GuiStuff.selectedSensor = null;
 			}
-			if(toColor != null) {
-				toColor.changeColor(Color.RED);
-				repaint();
+			
+			selectSensor(loc,dist);
+			
+			if(GuiStuff.selectedSensor != null) {
+				GuiStuff.selectedSensor.changeColor(Color.GRAY);
 			} else {
 				System.out.println("No Sensor found at: " + loc);
 			}
@@ -92,13 +87,32 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			} catch(Throwable e) {
 				System.err.println(e);
 			}
-			repaint();
 			break;
 		case MODE_KILL:
+			selectSensor(loc,dist);
+			if(GuiStuff.selectedSensor != null) {
+				GuiStuff.selectedSensor.changeColor(Color.BLUE);
+				GuiStuff.selectedSensor.setEnabled(false);
+				GuiStuff.selectedSensor = null;
+			} else {
+				System.out.println("No Sensor found at: " + loc);
+			}
 			break;
 		}
-			
-
+		repaint();
+	}
+	
+	private void selectSensor(Location loc,int dist){
+		Sensor sen = null;
+		int check = 0;
+		for(int i=0;i<Sensor.usedIDs;i++){
+			sen = Sensor.idToSensor.get(i);
+			check = sen.internalDistanceCheck(loc);
+			if(check < dist) {
+				dist = check;
+				GuiStuff.selectedSensor = sen;
+			}
+		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
