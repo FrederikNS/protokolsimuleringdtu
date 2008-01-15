@@ -1,14 +1,18 @@
 package gui;
 
+import java.awt.Color;
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+
+import nodes.Sensor;
 
 /**
  * @author Frederik Nordahl Sabroe
  *
  */
-class GuiStuff implements GuiInterface{ 
+public class GuiStuff implements GuiInterface{ 
 	static JPanel constructPanel;
 	static JPanel simulatePanel;
 	static JPanel controlPanelPane;
@@ -17,6 +21,14 @@ class GuiStuff implements GuiInterface{
 	static int mode = MODE_SELECT;
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
+	static Sensor selectedSensor;
+	
+	public static Color sensorColor = Color.BLACK;
+	public static Color selectedColor = Color.RED;
+	public static Color deadColor = Color.GRAY;
+	public static Color sendingColor = Color.GREEN;
+	public static Color receivingColor = Color.BLUE;
+	
 	
 	static{
 		System.out.println("static started");
