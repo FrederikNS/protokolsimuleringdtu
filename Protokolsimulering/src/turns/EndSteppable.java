@@ -8,5 +8,5 @@ public interface EndSteppable extends Steppable {
 	/**
 	 * The end phase of the tick.
 	 */
-	public void EndStep();
+	public void endStep();
 }

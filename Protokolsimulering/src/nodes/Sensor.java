@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import exceptions.LabelNotRecognizedException;
+import gui.GuiStuff;
 
 import notification.NoteConstants;
 import shape.DrawableCircle;
@@ -34,6 +35,11 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	protected static final int ACTION_WAIT		= 0x00000010;
 	protected static final int ACTION_NOTHING_TO_DO		= 0x00000020;
 	
+	public static final int STATUS_SENDING 	   = 0x00000001;
+	public static final int STATUS_RECEIVING   = 0x00000002;
+	public static final int STATUS_DEAD		   = 0x00000004;
+	public static final int STATUS_SELECTED	   = 0x00000008;
+	
 	protected static Random ran = new Random();
 	public static int usedIDs = 0;
 	
@@ -44,7 +50,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private boolean waiting;
 	private int currentTick;
 	private int resendDelay;
-	private boolean enabled = false;
+	private int status; //Used for coloring.
+	private boolean statusUpdated = false;
 	private int transmissionRoll;
 	private DrawableCircle draw;
 	
@@ -308,13 +315,27 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	 * @return true if the sensor is available. 
 	 */
 	public boolean isEnabled() {
-		return enabled;
+		return 0 == (status & STATUS_DEAD);
 	}
 	
 	public void setEnabled(boolean running) {
-		enabled = running;
+		if(running) {
+			status &= ~STATUS_DEAD;
+		} else {
+			status |= STATUS_DEAD;
+		}
+		statusUpdated = true;
 	}
 	
+	public void setIsSelect(boolean selectedStatus) {
+		if(selectedStatus) {
+			status |= STATUS_SELECTED;
+		} else {
+			status &= ~STATUS_SELECTED;
+		}
+		statusUpdated = true;
+	}
+		
 	/**
 	 * Gets the locaiton of the sensor.
 	 * @return The location of the sensor.
@@ -352,6 +373,16 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	 */
 	@Override
 	public void draw(Graphics g) {
+		if(statusUpdated) {
+			if(0 != (status & STATUS_SELECTED)) {
+				if(0 != (status & STATUS_DEAD)) {
+					draw.setColor(GuiStuff.deadColor);
+				} else {
+				}
+			} else {
+				draw.setColor(GuiStuff.selectedColor);
+			}
+		}
 		draw.draw(g);
 	}
 
