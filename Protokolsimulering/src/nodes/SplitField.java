@@ -13,9 +13,9 @@ import nodes.Sensor;
 public class SplitField {
 
 	/**
-	 * Integer array containing a list over sensors.
+	 * Sensor array containing a list over sensors.
 	 */
-	private int[] SL;
+	private Sensor[] sensorList;
 	/**
 	 * Integer containing the number of sensors.
 	 */
@@ -23,7 +23,7 @@ public class SplitField {
 	/**
 	 * An instance of this class, to house all the minions.
 	 */
-	private SplitField[] ss;
+	private SplitField[] splitField;
 	/**
 	 * The minimum x coordinate.
 	 */
@@ -40,6 +40,14 @@ public class SplitField {
 	 * The maximum y coordinate.
 	 */
 	private int yMax;
+	/**
+	 * Constant for the add-command.
+	 */
+	private static final int ADD = 1;
+	/**
+	 * Constant for the remove-command.
+	 */
+	private static final int REMOVE = 2;
 
 
 	/**
@@ -51,7 +59,7 @@ public class SplitField {
 	 * @param yMax the maximum y coordinate
 	 */
 	public SplitField(int xMin, int xMax, int yMin, int yMax) {
-		SL = new int[10];
+		sensorList = new Sensor[10];
 		size = 0;
 		this.xMin = xMin;
 		this.xMax = xMax;
@@ -63,9 +71,9 @@ public class SplitField {
 	 * A private constructor for this class. The only time this can be called, is when the window splits.
 	 * @param splitMe the parent class
 	 * @param block the block number. This will be used to know, how to calculate the new block's coordinates
-	 * @param sensor the sensor number that caused the array SL to exceed its limit
+	 * @param sensor the sensor number that caused the array sensorList to exceed its limit
 	 */
-	private SplitField(SplitField splitMe, int block, int sensor) {
+	private SplitField(SplitField splitMe, int block, Sensor sensor) {
 		switch(block) {
 		case 0:
 			//upper left block
@@ -96,48 +104,99 @@ public class SplitField {
 			this.yMax = splitMe.yMax;
 			break;
 		}
-		this.SL[0] = sensor;
-		this.size = 1;
+		this.size = 0;
+		this.addSensor(sensor);
 	}
 
 	/**
-	 * Adds a sensor to the integer array.
+	 * Adds a sensor to the sensor array.
 	 * @param sensor to be added
 	 */
 	public void addSensor(Sensor sensor) {
-		if(ss != null) {
-			int i;
-			if(sensor.getX() < this.xMax/2) {
-				if(sensor.getY() < this.yMax/2) {
-					i = 0;
-				} else {
-					i = 2;
-				}
-			} else {
-				if(sensor.getY() < this.yMax/2) {
-					i = 1;
-				} else {
-					i = 3;
-				}
-			}
-			ss[i].addSensor(sensor);
-		} else if(size == SL.length) {
-			ss = new SplitField[4];
-			for(int i = 0 ; i < 4 ; i++){
-				ss[i] = new SplitField(this,i, sensor.id);
-			}
-		} else {
-			SL[size] = sensor.id;
-			size++;
-		}
+		executeCommand(sensor, ADD);
 	}
 
 	/**
-	 * Removed a sensor from the integer array.
+	 * Removed a sensor from the sensor array.
 	 * @param sensor to be removed
 	 */
 	public void removeSensor(Sensor sensor) {
-		if(ss != null) {
+		executeCommand(sensor, REMOVE);
+	}
+
+	/**
+	 * This method go through the correct blocks to find the sensor closest to where the user clicked.
+	 * @param loc the location of where the user clicked (scaled so it fits the window)
+	 * @param dist the maximal distance from where the sensor is, to where it can be selected
+	 * @return the closest sensor (null if none is close enought)
+	 */
+	public Sensor selectSensor(Location loc, int dist) {
+		Sensor toReturn = null;
+		if(splitField != null) {
+			Sensor[] sensorArray = new Sensor[4];
+			int[] g = {-1,-1,-1,-1};
+			int i = 0;
+			int amountToAsk = -1;
+			if(loc.getX()+dist < this.xMax/2) {
+				if(loc.getY()+dist < this.yMax/2) {
+					g[i] = 0;
+					i++;
+				} else {
+					g[i] = 2;
+					i++;
+				}
+			} else {
+				if(loc.getY()+dist < this.yMax/2) {
+					g[i] = 1;
+					i++;
+				} else {
+					g[i] = 3;
+					i++;
+				}
+			}
+			for(int j = 0 ; j < g.length ; j++) {
+				if(g[j] == -1) {
+
+				} else {
+					sensorArray[++amountToAsk] = splitField[g[j]].selectSensor(loc, dist);
+				}
+			}
+			toReturn = returnSensor(sensorArray, amountToAsk, dist, loc);
+		} else {
+			toReturn = returnSensor(sensorList, size, dist, loc);
+		}
+		return toReturn;
+	}
+
+	/**
+	 * This method calculates the distance from the selected sensors, and returns it (if the distance is less than max).
+	 * @param list the array in which it should search
+	 * @param length the length of the array
+	 * @param dist the maximal distance from where the sensor is, to where it can be selected
+	 * @param loc the location of where the user clicked (scaled so it fits the window)
+	 * @return the closest sensor
+	 */
+	private Sensor returnSensor(Sensor[] list, int length, int dist, Location loc) {
+		Sensor toReturn = null;
+		int currentDistance = 0;
+		int lowestDistance = (int) Math.pow(dist, 2);
+		for(int i = 0 ; i < length ; i++) {
+			currentDistance = list[i].internalDistanceCheck(loc);
+			if(currentDistance < lowestDistance) {
+				lowestDistance = currentDistance;
+				toReturn = sensorList[i];
+			}
+		}
+		return toReturn;
+	}
+
+	/**
+	 * This method is for adding or removing a sensor from the field.
+	 * @param sensor the sensor in question
+	 * @param flag the flag used to decide what to do
+	 */
+	private void executeCommand(Sensor sensor, int flag) {
+		if(splitField != null) {
 			int i;
 			if(sensor.getX() < this.xMax/2) {
 				if(sensor.getY() < this.yMax/2) {
@@ -152,10 +211,23 @@ public class SplitField {
 					i = 3;
 				}
 			}
-			ss[i].removeSensor(sensor);
-		} else {
-			SL[size-1] = 0;
-			--size;
+			if(flag == REMOVE) {
+				splitField[i].removeSensor(sensor);
+			} else {
+				splitField[i].addSensor(sensor);
+			}
+		} else if((size == sensorList.length) && (flag == ADD)) {
+			splitField = new SplitField[4];
+			for(int i = 0 ; i < 4 ; i++){
+				splitField[i] = new SplitField(this,i, sensor);
+			}
+		}else {
+			if(flag == REMOVE) {
+				sensorList[--size] = null;
+			} else {
+				sensorList[size] = sensor;
+				size++;
+			}
 		}
 	}
 }
