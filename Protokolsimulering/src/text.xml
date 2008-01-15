@@ -1,36 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <root>
-  <data>
-    <field>
-      <size>
-	<x>
-	  <!-- some comment -->
-	  <min><int>-30</int></min>
-	  <max><int>30</int></max>
-	</x>
-	<y>
-	  <min><int>-30</int></min>
-	  <max><int>30</int></max>
-	  <!-- another comment -->
-	</y>
-      </size>
-    </field>
-    <config>
-      <communicationRadius>5</communicationRadius>
-    </config>
     <sensor id="0" label="first">
       <location>
-	<!-- wee! -->
-	<x><int>10</int></x>
-	<y><int>20</int></y>
+		<x>10</x>
+		<y>20</y>
       </location>
-    </sensor>
-    <sensor id="1" label="second">
-      <location>
-	<x><int>12</int></x>
-	<y><int>23</int></y>
-      </location>
-    </sensor>
-  </data>
+     </sensor>
 </root>

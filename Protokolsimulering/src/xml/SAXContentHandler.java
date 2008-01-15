@@ -1,102 +1,128 @@
 package xml;
 
-import java.io.PrintStream;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * @author Niels Thykier
+ * @deprecated
+ */
+@Deprecated
 public class SAXContentHandler extends DefaultHandler {
 	private int level = 0;
-	private int[] contents;
-	private PrintStream out = System.out;
-	private boolean doIndent = false;
-	public static final int NONE = 0;
-	public static final int UNKNOWN = 5;
-	public static final int INT = 1;
-	public static final int BOOLEAN = 2;
-	public static final int STRING = 3;
-	public static final int DOUBLE = 4;
-	public static final int TAG = 5;
-
+	private StringBuffer buff;
+	private int type[];
+	
+	private static final int TYPE_IGNORE = 0;
+/*	private static final int TYPE_COORD_MIN_X = 1;
+	private static final int TYPE_COORD_MAX_X = 2;
+	private static final int TYPE_COORD_MIN_Y = 3;
+	private static final int TYPE_COORD_MAX_Y = 4;*/
+	private static final int TYPE_SENSOR    = 5;
+	private static final int TYPE_LOCATION = 6;
+	private static final int TYPE_COORD_Y = 7;
+	private static final int TYPE_COORD_X = 8;
+	
 	@Override
-	public void characters(char[] arg0, int arg1, int arg2) throws SAXException {
-		String input = new String(arg0, arg1, arg2).trim();
-		if(input.equals("")) {
-			return;
+	public void characters(char[] str, int offset, int len) throws SAXException {
+		System.out.println(new String(str, offset, len) + " of: " + offset  + " len: " + len);
+		char[] array = str;
+		if(buff != null) {
+			for(int i = offset ; i < len ; i++) {
+				System.out.print(str[i]);
+				switch((byte)array[i]){
+				case '\n':
+				case '\r':
+				case '\0':
+				case '\t':
+				case '\f':
+				case '\b':
+					//Ignored!
+					break;
+				case  ' ':
+					if(i + 1 < len && array[i+i] != ' ') {
+						//Ignore all but one whitespace character.
+						buff.append(' ');
+					}
+				default:
+					buff.append(array[i]);
+					break;
+				}
+			}
+			
 		}
-		switch(contents[level]) {
-		case INT:
-			print(">" + Integer.parseInt(input));
-			break;
-		case NONE:
-			println(">");
-			contents[level] = UNKNOWN;
-		case UNKNOWN:
-			println(input);
-			break;
-		}
-
 	}
 
 	@Override
-	public void endDocument() throws SAXException {
-		level = 0;
-		println("Document End");
-		contents = null;
-	}
+	public void endDocument() throws SAXException {}
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		switch(contents[level]) {
-		case INT:
-			--level;
+		if(type == null) {
+			return;
+		}
+		switch(type[level]) {
+		case TYPE_COORD_X:
+		case TYPE_COORD_Y:
+			System.out.println("'ello, number: " + buff.toString());
 			break;
-		default:
-			if(contents[level-- +1] == INT || contents[level] != NONE) {
-				println("</"+ qName + ">");
-			} else {
-				println("/>");
-			}
+		case TYPE_IGNORE:
 			break;
+		}
+		buff = null;
+		if(--level == -1) {
+			type = null;
 		}
 	}
 
 	@Override
-	public void ignorableWhitespace(char[] arg0, int arg1, int arg2) throws SAXException {
-		println("WhiteSpace detected:" + new String(arg0, arg1, arg2));
-	}
+	public void ignorableWhitespace(char[] arg0, int arg1, int arg2) throws SAXException {}
 	
 	@Override
-	public void skippedEntity(String arg0) throws SAXException {
-		println("Entity: " + arg0);
-	}
+	public void skippedEntity(String arg0) throws SAXException {}
 
 	@Override
-	public void startDocument() throws SAXException {
-		println("Document start");
-		contents = new int[20];
-		contents[0] = TAG;
-	}
+	public void startDocument() throws SAXException {}
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-	
-		if(qName.equalsIgnoreCase("int")) {
-			contents[level] = STRING;
-			contents[++level] = INT;
-		} else {
-			if(contents[level] == NONE) {
-				contents[level] = TAG;
-				println(">");
+		switch(qName.charAt(0)) {
+		case 's':
+			if(qName.equals("sensor")) {
+				System.out.println("Sensor tag detected");
+				if(type != null) {
+					throw new SAXException("Unexpected Sensor Tag.");
+				}
+				type = new int[6];
+				type[0] = TYPE_SENSOR;
 			}
-			print("<" + qName);
-			int amount = atts.getLength();
-			for(int i = 0 ; i < amount ; i++) {
-				print(" " +atts.getQName(i) + "='" + atts.getValue(i) + "'");
+			break;
+		case 'l':
+			if(qName.equals("location")) {
+				if(type[level] != TYPE_SENSOR || type.length == level) {
+					throw new SAXException("Unexpected Location Tag.");
+				}
+				++level;
+				type[level] = TYPE_LOCATION;
 			}
-			contents[++level] = NONE;
+			break;
+		case 'y':
+		case 'x':
+			if(type == null || type[level] != TYPE_LOCATION || type.length == level) {
+				throw new SAXException("Unexpected x or y Tag.");
+			}
+			++level;
+			if(qName.charAt(0) == 'x') {
+				type[level] = TYPE_COORD_X;
+			} else {
+				type[level] = TYPE_COORD_Y;
+			}
+			buff = new StringBuffer(10);
+			break;
+		default:
+			return;
 		}
 	}
 
@@ -113,7 +139,7 @@ public class SAXContentHandler extends DefaultHandler {
 	 */
 	@Override
 	public void fatalError(SAXParseException arg0) throws SAXException {
-		contents = null;
+		buff = null;
 	}
 
 	/* (non-Javadoc)
@@ -122,26 +148,6 @@ public class SAXContentHandler extends DefaultHandler {
 	@Override
 	public void warning(SAXParseException arg0) throws SAXException {
 		
-	}
-
-	public void println() {
-		println("");
-	}
-	public void println(String text) {
-		print(text + "\n");
-		doIndent = true;
-	}
-	
-	public void print(String text) {
-		
-		String indent = "";
-		if(doIndent) {
-			for(int i = 0 ; i < level ; i++) {
-				indent += "    ";
-			}
-		}
-		out.print(indent + text);
-		doIndent = false;
 	}
 
 }

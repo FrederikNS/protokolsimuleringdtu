@@ -16,15 +16,15 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	/**
 	 * The receiver of the transmissions.
 	 */
-	private int receiver;
+	private int receiver = Sensor.INVALID_SENSOR_ID;
 	/**
 	 * Whom is respondable for passing it on?
 	 */
-	private int through = -1;
+	private int through = Sensor.INVALID_SENSOR_ID;
 	/**
 	 * The sender of the transmissions.
 	 */
-	private int sender;
+	private int sender = Sensor.INVALID_SENSOR_ID;
 	/**
 	 * The transmissions type.
 	 */
@@ -33,7 +33,7 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 	 * The data being transmitted.
 	 */
 	private ArrayList<Data> data;
-	
+
 	/**
 	 * Generate a Transmission.
 	 * @param receiver The receiver of the transmission
@@ -165,6 +165,9 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 		data = new ArrayList<Data>();
 		data.add(Data.GarbageData);
 		messageType = TYPE_GARBAGE;
+		sender = Sensor.INVALID_SENSOR_ID;
+		receiver = Sensor.INVALID_SENSOR_ID;
+		through = Sensor.INVALID_SENSOR_ID;
 	}
 
 	/* (non-Javadoc)
