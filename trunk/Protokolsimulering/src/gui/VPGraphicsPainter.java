@@ -15,10 +15,11 @@ import nodes.Location;
 import shape.DrawableCircle;
 import shape.Shape;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterface {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4244383889572154127L;
 
 	private ArrayList<Shape> nodesList = new ArrayList<Shape>();

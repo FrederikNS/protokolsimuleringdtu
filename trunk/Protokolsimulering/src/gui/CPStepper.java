@@ -7,6 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class CPStepper implements GuiInterface {
 	public CPStepper(ActionListener actionListener){
 		JPanel stepperPanel = new JPanel();

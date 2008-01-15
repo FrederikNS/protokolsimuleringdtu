@@ -4,6 +4,10 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 class GuiStuff implements GuiInterface{ 
 	static JPanel constructPanel;
 	static JPanel simulatePanel;

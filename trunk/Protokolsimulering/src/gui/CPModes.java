@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+/**
+ * @author Frederik Nordahl Sabroe
+ *
+ */
 public class CPModes implements GuiInterface {
 	public CPModes(ActionListener actionListener){
 		JPanel modesPanel = new JPanel();
