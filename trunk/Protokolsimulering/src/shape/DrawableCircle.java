@@ -69,6 +69,10 @@ public class DrawableCircle extends Shape {
 	public int getRadius() {
 		return diameter/2;
 	}
+	
+	public void setColor(Color newColor) {
+		this.color = newColor;
+	}
 
 	/* (non-Javadoc)
 	 * @see graphics.Drawable#draw(java.awt.Graphics)
