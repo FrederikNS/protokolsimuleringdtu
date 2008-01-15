@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -64,11 +65,12 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		GuiStuff.controlPanelPane.add(modeTabPanes);
 		
 		//The console is created
-		JTextArea console = new JTextArea("test?\nwhaaarge");
+		JTextArea console = new JTextArea("test?\nwaaagh");
 		FlowLayout consolePanelLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		GridLayout consoleScrollerPanelLayout = new GridLayout(0,1);
 		JPanel consolePanel = new JPanel();
 		JPanel consoleScrollerPanel = new JPanel();
+		consoleScrollerPanel.setBorder(BorderFactory.createTitledBorder("Console"));
 		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		consoleScrollerPanel.setLayout(consoleScrollerPanelLayout);
@@ -76,13 +78,15 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		add(consoleScrollerPanel);
 		consoleScrollerPanel.add(consoleScroller);
 		consolePanel.add(console);
+		console.setEditable(false);
+		console.setBackground(new Color(0x00EEEEEE));
 		
 		//The statusbar is created
 		JPanel statusBarPanel = new JPanel();
 		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		statusBarPanel.setLayout(statusBarLayout);
 		statusBarPanel.setBorder(BorderFactory.createTitledBorder(""));
-		JLabel status = new JLabel("WAAARGH!");
+		JLabel status = new JLabel("WAAAGH!");
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
 		
