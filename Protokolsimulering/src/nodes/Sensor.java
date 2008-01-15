@@ -35,8 +35,9 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	protected static final int ACTION_NOTHING_TO_DO		= 0x00000020;
 	
 	protected static Random ran = new Random();
+	public static int usedIDs = 0;
 	
-	public final int id = 0;
+	public final int id;
 	private ArrayList<Data> unsentData = new ArrayList<Data>();
 	private Transmission ingoing;
 	private Transmission outgoing;
@@ -51,6 +52,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	public Sensor(Location loc) {
 		super(loc);
+		id = usedIDs++;
 		idToSensor.put(id, this);
 		draw = new DrawableCircle(loc, 2);
 	}
@@ -62,7 +64,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	/**
 	 * Handles id-look-up
 	 */
-	private static Hashtable<Integer,Sensor> idToSensor = new Hashtable<Integer,Sensor>();
+	public static Hashtable<Integer,Sensor> idToSensor = new Hashtable<Integer,Sensor>();
 	
 	/**
 	 * Fetches a sensor's ID by its label. 
