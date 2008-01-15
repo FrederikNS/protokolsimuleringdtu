@@ -15,15 +15,24 @@ public class Turn {
 	boolean isRunning = false;
 	
 	public Turn(TreeSet<Sensor> sensors) {
-		this.sensors = new TreeSet<Sensor>(new SensorComparator(SensorComparator.SORT_BY_ID));
-		this.sensors.addAll(sensors.descendingSet());
+		this(sensors ,SensorComparator.SORT_BY_ID);
+
+	}
+	private Turn(TreeSet<Sensor> sensor, int sortBy) {
+		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
+		this.sensors.addAll(sensors.descendingSet());		
 	}
 	
-	public class RunnableTurn extends Turn {
+	public RunnableTurn getRunnableTurn() {
+		return new RunnableTurn(this.sensors);
+	}
+	
+	private class RunnableTurn extends Turn {
 
-		public RunnableTurn(TreeSet<Sensor> sensors) {
-			super(sensors);
+		private RunnableTurn(TreeSet<Sensor> sensors) {
+			super(sensors, SensorComparator.SORT_BY_TURNS);
 		}
+		
 		
 	}
 	
