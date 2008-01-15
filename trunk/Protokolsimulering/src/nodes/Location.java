@@ -60,12 +60,29 @@ public class Location implements Drawable,Cloneable {
 	}
 	
 	/**
+	 * @param loc1
+	 * @param loc2
+	 * @return The distance sqaured.
+	 */
+	public static int internalDistanceCheck(Location loc1, Location loc2) {
+		return loc1.internalDistanceCheck(loc2);
+	}
+	
+	/**
+	 * @param loc
+	 * @return The distance sqaured.
+	 */
+	public int internalDistanceCheck(Location loc) {
+		return (int) ( Math.pow(x - loc.x,2) + Math.pow(y - loc.y,2) );
+	}
+	
+	/**
 	 * Gets the distances between two locations.
 	 * @param loc First location.
 	 * @return The distance.
 	 */
 	public double getDistance(Location loc) {
-		return Math.sqrt( (x - loc.x)^2 + (y - loc.y)^2 );
+		return Math.sqrt( internalDistanceCheck(loc) );
 	}
 	
 	/**
