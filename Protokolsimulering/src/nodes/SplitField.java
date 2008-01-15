@@ -73,7 +73,7 @@ public class SplitField {
 	 * @param block the block number. This will be used to know, how to calculate the new block's coordinates
 	 * @param sensor the sensor number that caused the array sensorList to exceed its limit
 	 */
-	private SplitField(SplitField splitMe, int block, Sensor sensor) {
+	private SplitField(SplitField splitMe, int block) {
 		switch(block) {
 		case 0:
 			//upper left block
@@ -105,7 +105,7 @@ public class SplitField {
 			break;
 		}
 		this.size = 0;
-		this.addSensor(sensor);
+		sensorList = new Sensor[10];
 	}
 
 	/**
@@ -134,31 +134,26 @@ public class SplitField {
 		Sensor toReturn = null;
 		if(splitField != null) {
 			Sensor[] sensorArray = new Sensor[4];
-			int[] g = {-1,-1,-1,-1};
-			int i = 0;
+			int[] sectorCheckList = {-1,-1,-1,-1};
 			int amountToAsk = -1;
 			if(loc.getX()+dist < this.xMax/2) {
 				if(loc.getY()+dist < this.yMax/2) {
-					g[i] = 0;
-					i++;
+					sectorCheckList[++amountToAsk] = 0;
 				} else {
-					g[i] = 2;
-					i++;
+					sectorCheckList[++amountToAsk] = 2;
 				}
 			} else {
 				if(loc.getY()+dist < this.yMax/2) {
-					g[i] = 1;
-					i++;
+					sectorCheckList[++amountToAsk] = 1;
 				} else {
-					g[i] = 3;
-					i++;
+					sectorCheckList[++amountToAsk] = 3;
 				}
 			}
-			for(int j = 0 ; j < g.length ; j++) {
-				if(g[j] == -1) {
+			for(int j = 0 ; j < sectorCheckList.length ; j++) {
+				if(sectorCheckList[j] == -1) {
 
 				} else {
-					sensorArray[++amountToAsk] = splitField[g[j]].selectSensor(loc, dist);
+					sensorArray[++amountToAsk] = splitField[sectorCheckList[j]].selectSensor(loc, dist);
 				}
 			}
 			toReturn = returnSensor(sensorArray, amountToAsk, dist, loc);
@@ -169,12 +164,12 @@ public class SplitField {
 	}
 
 	/**
-	 * This method calculates the distance from the selected sensors, and returns it (if the distance is less than max).
+	 * This method calculates the distance from the selected sensors, and returns the closest sensor (if the distance is less than max).
 	 * @param list the array in which it should search
 	 * @param length the length of the array
 	 * @param dist the maximal distance from where the sensor is, to where it can be selected
 	 * @param loc the location of where the user clicked (scaled so it fits the window)
-	 * @return the closest sensor
+	 * @return the closest sensor or null, if no sensor was within dist
 	 */
 	private Sensor returnSensor(Sensor[] list, int length, int dist, Location loc) {
 		Sensor toReturn = null;
@@ -197,20 +192,7 @@ public class SplitField {
 	 */
 	private void executeCommand(Sensor sensor, int flag) {
 		if(splitField != null) {
-			int i;
-			if(sensor.getX() < this.xMax/2) {
-				if(sensor.getY() < this.yMax/2) {
-					i = 0;
-				} else {
-					i = 2;
-				}
-			} else {
-				if(sensor.getY() < this.yMax/2) {
-					i = 1;
-				} else {
-					i = 3;
-				}
-			}
+			int i = getBlock(sensor);
 			if(flag == REMOVE) {
 				splitField[i].removeSensor(sensor);
 			} else {
@@ -219,9 +201,16 @@ public class SplitField {
 		} else if((size == sensorList.length) && (flag == ADD)) {
 			splitField = new SplitField[4];
 			for(int i = 0 ; i < 4 ; i++){
-				splitField[i] = new SplitField(this,i, sensor);
+				splitField[i] = new SplitField(this,i);
 			}
-		}else {
+			for(int j = 0 ; j < sensorList.length ; j++) {
+				int s = getBlock(sensorList[j]);
+				splitField[s].addSensor(sensorList[j]);
+			}
+			size++;
+		} /*else if( TODO - check if the number of sensors is == 10, then kill the children) {
+
+		}*/	else {
 			if(flag == REMOVE) {
 				sensorList[--size] = null;
 			} else {
@@ -229,5 +218,28 @@ public class SplitField {
 				size++;
 			}
 		}
+	}
+
+	/**
+	 * This method checks which block it should send the sensor to.
+	 * @param sensor the sensor in question
+	 * @return the integer value of the correct block
+	 */
+	private int getBlock(Sensor sensor) {
+		int i;
+		if(sensor.getX() < this.xMax/2) {
+			if(sensor.getY() < this.yMax/2) {
+				i = 0;
+			} else {
+				i = 2;
+			}
+		} else {
+			if(sensor.getY() < this.yMax/2) {
+				i = 1;
+			} else {
+				i = 3;
+			}
+		}
+		return i;
 	}
 }

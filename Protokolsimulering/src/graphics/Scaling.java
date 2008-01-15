@@ -45,7 +45,7 @@ public class Scaling {
 	 * @param xMin the minimum number an x coordinate can be
 	 * @throws IllegalArgumentException
 	 */
-	public static void setPicCoordsX(int xMax, int xMin) throws IllegalArgumentException {
+	public static void setPicCoordsX(int xMin,int xMax) throws IllegalArgumentException {
 		if(xMax <= xMin) {
 			throw new IllegalArgumentException("Illegal x-coordinates.");
 		}
@@ -59,7 +59,7 @@ public class Scaling {
 	 * @param yMin the minimum number an y coordinate can be
 	 * @throws IllegalArgumentException
 	 */
-	public static void setPicCoordsY(int yMax, int yMin) throws IllegalArgumentException {
+	public static void setPicCoordsY(int yMin,int yMax) throws IllegalArgumentException {
 		if(yMax <= yMin) {
 			throw new IllegalArgumentException("Illegal y-coordinates.");
 		}
@@ -83,7 +83,7 @@ public class Scaling {
 	 * @return an x coordinate that is scaled to fit the window
 	 */
 	public static int convertToPicX(int x) {
-		return new Fraction(x-picXMin,picXMax-picXMin).multiply(currH).evaluateRoundDown();
+		return new Fraction(x-picXMin,picXMax-picXMin).multiply(currW).evaluateRoundDown();
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class Scaling {
 	 * @return an y coordinate that is scaled to fit the window
 	 */
 	public static int convertToPicY(int y) {
-		return new Fraction(y-picYMin,picYMax-picYMin).multiply(currW).evaluateRoundDown();
+		return new Fraction(y-picYMin,picYMax-picYMin).multiply(currH).evaluateRoundDown();
 	}
 	
 	/**
@@ -101,7 +101,7 @@ public class Scaling {
 	 * @return an x coordinate that isn't scaled
 	 */
 	public static int convertToRealX(int x) {
-		return new Fraction(x,currH).multiply(picXMax-picXMin).add(picXMin).evaluateRoundDown();
+		return new Fraction(x,currW).multiply(picXMax-picXMin).add(picXMin).evaluateRoundDown();
 	}
 	
 	/**
@@ -110,6 +110,6 @@ public class Scaling {
 	 * @return an y coordinate that isn't scaled
 	 */
 	public static int convertToRealY(int y) {
-		return new Fraction(y,currW).multiply(picYMax-picYMin).add(picYMin).evaluateRoundDown();
+		return new Fraction(y,currH).multiply(picYMax-picYMin).add(picYMin).evaluateRoundDown();
 	}
 }

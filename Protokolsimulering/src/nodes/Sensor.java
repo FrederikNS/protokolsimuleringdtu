@@ -50,6 +50,14 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	private String sensorLabel = null;
 	
+	public Sensor(int x,int y){
+		this(new Location(x,y));
+	}
+	
+	public Sensor(){
+		this(ran.nextInt(500),ran.nextInt(500));
+	}
+	
 	public Sensor(Location loc) {
 		super(loc);
 		id = usedIDs++;
