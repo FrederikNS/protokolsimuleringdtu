@@ -16,7 +16,7 @@ public class ViewPort extends JFrame{
 		super(title);
 		setSize(new Dimension(600,600));
 		setLocation(posX, posY);
-		GraphicsPainter graphicsPainter = new GraphicsPainter();
+		VPGraphicsPainter graphicsPainter = new VPGraphicsPainter();
 		this.getContentPane().add(graphicsPainter);
 		setVisible(true);
 	}

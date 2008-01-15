@@ -15,7 +15,7 @@ import nodes.Location;
 import shape.DrawableCircle;
 import shape.Shape;
 
-public class GraphicsPainter extends JPanel implements MouseListener,GuiInterface {
+public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterface {
 	/**
 	 * 
 	 */
@@ -23,7 +23,7 @@ public class GraphicsPainter extends JPanel implements MouseListener,GuiInterfac
 
 	private ArrayList<Shape> nodesList = new ArrayList<Shape>();
 
-	public GraphicsPainter(){
+	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
 	}
