@@ -244,7 +244,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	/* (non-Javadoc)
 	 * @see turns.EndSteppable#EndStep()
 	 */
-	public void EndStep() {
+	public void endStep() {
 		// TODO Auto-generated method stub
 		if(ingoing != null) {
 			switch(ingoing.getMessageType()) {
