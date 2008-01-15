@@ -15,7 +15,7 @@ public class CPModes implements GuiInterface {
 		JPanel modesPanel = new JPanel();
 		FlowLayout modesPanelLayout = new FlowLayout(FlowLayout.CENTER,0,0);
 		//GridLayout modesPanelLayout = new GridLayout(1,1);
-		JToggleButton killButton = new JToggleButton("Kill");
+		JToggleButton killButton = new JToggleButton("Enable/Disable");
 		killButton.setToolTipText("Removes the sensor you click");
 		killButton.addActionListener(actionListener);
 		killButton.setActionCommand(String.valueOf(BUTTON_KILL));

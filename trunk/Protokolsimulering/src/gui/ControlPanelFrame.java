@@ -3,25 +3,30 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+
+import notification.Note;
+import notification.NotificationListener;
 
 /**
  * @author Frederik Nordahl Sabroe
  *
  */
-public class ControlPanelFrame extends JFrame implements GuiInterface{
+public class ControlPanelFrame extends JFrame implements GuiInterface,NotificationListener{
 
 	private static final long serialVersionUID = -8026416994513756565L;
 	
 	private static ControlPanelFrame controlPanelFrame;
 	JTabbedPane modeTabPanes = new JTabbedPane();
-	
 	
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
@@ -58,6 +63,20 @@ public class ControlPanelFrame extends JFrame implements GuiInterface{
 		modeTabPanes.addTab("Simulate", GuiStuff.simulatePanel);
 		GuiStuff.controlPanelPane.add(modeTabPanes);
 		
+		//The console is created
+		JTextArea console = new JTextArea("test?\nwhaaarge");
+		FlowLayout consolePanelLayout = new FlowLayout(FlowLayout.LEFT,0,0);
+		GridLayout consoleScrollerPanelLayout = new GridLayout(0,1);
+		JPanel consolePanel = new JPanel();
+		JPanel consoleScrollerPanel = new JPanel();
+		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		consoleScrollerPanel.setLayout(consoleScrollerPanelLayout);
+		consolePanel.setLayout(consolePanelLayout);
+		add(consoleScrollerPanel);
+		consoleScrollerPanel.add(consoleScroller);
+		consolePanel.add(console);
+		
 		//The statusbar is created
 		JPanel statusBarPanel = new JPanel();
 		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
@@ -67,6 +86,7 @@ public class ControlPanelFrame extends JFrame implements GuiInterface{
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
 		
+		
 		//frame is packed and shown
 		pack();
 		setVisible(true);
@@ -74,5 +94,11 @@ public class ControlPanelFrame extends JFrame implements GuiInterface{
 	
 	public static ControlPanelFrame getFrame(){
 		return controlPanelFrame;
+	}
+
+	public void note(Note newNote) {
+		// TODO Auto-generated method stub
+		//consolePanel.
+		newNote.getMessage();
 	}
 }

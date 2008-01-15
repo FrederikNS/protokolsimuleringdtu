@@ -25,7 +25,7 @@ public class GuiStuff implements GuiInterface{
 	
 	public static Color sensorColor = Color.BLACK;
 	public static Color selectedColor = Color.RED;
-	public static Color deadColor = Color.GRAY;
+	public static Color deadColor = Color.LIGHT_GRAY;
 	public static Color sendingColor = Color.GREEN;
 	public static Color receivingColor = Color.BLUE;
 	
