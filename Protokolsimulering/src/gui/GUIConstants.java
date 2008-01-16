@@ -11,9 +11,10 @@ public interface GUIConstants {
 	public final static int MENU_SAVE_AS = 4;
 	public final static int MENU_QUIT = 0;
 	
-	public final static int BUTTON_KILL = 101;
-	public final static int BUTTON_ADD = 102;
-	public final static int BUTTON_MOVE = 103;
+	public final static int BUTTON_GENERATE = 101;
+	public final static int BUTTON_KILL = 102;
+	public final static int BUTTON_ADD = 103;
+	public final static int BUTTON_MOVE = 104;
 	public final static int BUTTON_TO_START = 110;
 	public final static int BUTTON_REWIND = 111;
 	public final static int BUTTON_STEP_BACKWARD = 112;

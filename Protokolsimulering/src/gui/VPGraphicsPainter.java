@@ -3,7 +3,6 @@ package gui;
 import graphics.Scaling;
 
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;

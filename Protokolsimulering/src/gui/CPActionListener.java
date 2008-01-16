@@ -9,9 +9,12 @@ import java.io.IOException;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import nodes.Sensor;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -85,6 +88,18 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		            }
 		    }
 			break;
+		case BUTTON_GENERATE:
+			String generateDialog = JOptionPane.showInputDialog(GUIReferences.constructPanel, "Please enter a number of sensors to generate", "Generate...", JOptionPane.QUESTION_MESSAGE);
+			
+			if(generateDialog!=null){
+				System.out.println(generateDialog);
+				for(int i=0;i<Integer.parseInt(generateDialog);i++) {
+//					splitField.addSensor(new Sensor());
+					new Sensor();
+				}
+				GUIReferences.sensorNetwork.repaint();
+			}
+			
 		case BUTTON_KILL:
 			//TODO
 			if(GUIReferences.mode==MODE_KILL){
