@@ -16,7 +16,7 @@ public class AddressBook {
 	/**
 	 * The Hashtable that contains informations about who to send to.
 	 */
-	private final Hashtable<Integer, Integer>away;
+	private Hashtable<Integer, Integer>away;
 	
 	/**
 	 * Constructor for the class.
