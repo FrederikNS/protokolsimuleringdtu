@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import nodes.GlobalAdressBook;
 import nodes.Sensor;
 
 /**
@@ -31,30 +32,31 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			//TODO
 			System.out.println("rrr");
 			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
+
 			//new();
 			break;
 		case MENU_OPEN:
 			//TODO - check if session is already running?
 			File openFile;
 			JFileChooser openChooser = new JFileChooser();
-		    FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
-		    openChooser.setFileFilter(openFilter);
-		    int openReturnVal = openChooser.showOpenDialog(ControlPanelFrame.getFrame());
-		    if(openReturnVal == JFileChooser.APPROVE_OPTION) {
-		            openFile = openChooser.getSelectedFile();
-		            System.out.println("Selected: " + openFile);
-		            if(openFile.exists()) {
-		            	if(openFile.canRead()) {
-		            		//load
-				            GUIReferences.sensorNetwork = new ViewPort(openFile, 200, 0);
-		            	} else {
-		            		//could not be read.
-		            	}
-		            } else {
-		            	//Does not exist? Mispelled?
-		            }
-		            //openFile();
-		    }
+			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+			openChooser.setFileFilter(openFilter);
+			int openReturnVal = openChooser.showOpenDialog(ControlPanelFrame.getFrame());
+			if(openReturnVal == JFileChooser.APPROVE_OPTION) {
+				openFile = openChooser.getSelectedFile();
+				System.out.println("Selected: " + openFile);
+				if(openFile.exists()) {
+					if(openFile.canRead()) {
+						//load
+						GUIReferences.sensorNetwork = new ViewPort(openFile, 200, 0);
+					} else {
+						//could not be read.
+					}
+				} else {
+					//Does not exist? Mispelled?
+				}
+				//openFile();
+			}
 			break;
 		case MENU_SAVE:
 			//TODO
@@ -66,40 +68,47 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			//TODO
 			File saveFile;
 			JFileChooser saveChooser = new JFileChooser();
-		    FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
-		    saveChooser.setFileFilter(saveFilter);
-		    int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
-		    if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
-		            saveFile = saveChooser.getSelectedFile();
-		            if(saveFile.canWrite()) {
-		            	if(saveFile.exists()) {
-		            		// TODO override or cancel
-		            		saveFile.delete();
-		            	}
-		            	try {
-		            		saveFile.createNewFile();
-		            		//doSomeSaving.
-		            	} catch(IOException e) {
-		            		//
-		            	}
-		            } else {
-		            	//Do not have write permissions.
-		            	System.out.println(saveFile);
-		            }
-		    }
+			FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+			saveChooser.setFileFilter(saveFilter);
+			int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
+			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
+				saveFile = saveChooser.getSelectedFile();
+				if(saveFile.canWrite()) {
+					if(saveFile.exists()) {
+						// TODO override or cancel
+						saveFile.delete();
+					}
+					try {
+						saveFile.createNewFile();
+						//doSomeSaving.
+					} catch(IOException e) {
+						//
+					}
+				} else {
+					//Do not have write permissions.
+					System.out.println(saveFile);
+				}
+			}
 			break;
 		case BUTTON_GENERATE:
+			int number;
 			String generateDialog = JOptionPane.showInputDialog(GUIReferences.constructPanel, "Please enter a number of sensors to generate", "Generate...", JOptionPane.QUESTION_MESSAGE);
-			
-			if(generateDialog!=null){
-				System.out.println(generateDialog);
-				for(int i=0;i<Integer.parseInt(generateDialog);i++) {
-//					splitField.addSensor(new Sensor());
-					new Sensor();
+			try{
+				number = Integer.parseInt(generateDialog);
+				if(number>0){
+					System.out.println(generateDialog);
+					for(int i=0;i<number;i++) {
+//						splitField.addSensor(new Sensor());
+						new Sensor();
+					}
+					GlobalAdressBook.getAdressBook().generateDirectConnections();
+					GUIReferences.sensorNetwork.repaint();
 				}
-				GUIReferences.sensorNetwork.repaint();
+			} catch (NumberFormatException e) {
+
 			}
-			
+
+
 		case BUTTON_KILL:
 			//TODO
 			if(GUIReferences.mode==MODE_KILL){

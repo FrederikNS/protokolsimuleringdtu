@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import nodes.GlobalAdressBook;
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
@@ -80,6 +81,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			break;
 		case MODE_ADD:
 				new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())));
+				GlobalAdressBook.getAdressBook().generateDirectConnections();
 			break;
 		case MODE_KILL:
 			selectSensor(loc,dist);
