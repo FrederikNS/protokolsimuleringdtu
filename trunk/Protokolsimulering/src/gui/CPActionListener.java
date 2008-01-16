@@ -86,10 +86,8 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			if(GuiStuff.mode==MODE_KILL){
 				GuiStuff.modeGroup.clearSelection();
 				GuiStuff.mode = MODE_SELECT;
-				System.out.println("Select");
 			} else {
 				GuiStuff.mode = MODE_KILL;
-				System.out.println("Kill");
 			}
 			break;
 		case BUTTON_ADD:
@@ -97,10 +95,8 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			if(GuiStuff.mode==MODE_ADD){
 				GuiStuff.modeGroup.clearSelection();
 				GuiStuff.mode = MODE_SELECT;
-				System.out.println("Select");
 			}else{
 				GuiStuff.mode = MODE_ADD;
-				System.out.println("Add");
 			}
 			break;
 		case BUTTON_MOVE:
@@ -108,10 +104,8 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			if(GuiStuff.mode == MODE_MOVE){
 				GuiStuff.modeGroup.clearSelection();
 				GuiStuff.mode = MODE_SELECT;
-				System.out.println("Select");
 			}else{
 				GuiStuff.mode = MODE_MOVE;
-				System.out.println("Move");
 			}
 			break;
 		case BUTTON_TO_START:
