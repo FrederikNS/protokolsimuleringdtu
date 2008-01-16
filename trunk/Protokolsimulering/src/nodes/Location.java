@@ -5,6 +5,9 @@ import graphics.Drawable;
 import java.awt.Graphics;
 import java.util.Random;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * A (2D) location in the field.
  * @author Niels Thykier
@@ -131,6 +134,18 @@ public class Location implements Drawable,Cloneable {
 	protected void relocate(Location newLocation) {
 		this.x = newLocation.x;
 		this.y = newLocation.y;
+	}
+	
+	public Element generateXMLElement(Document doc) {
+		Element element = doc.createElement("location"); 
+		Element nodeX = doc.createElement("x");		
+		Element nodeY = doc.createElement("y");
+		nodeX.appendChild(doc.createTextNode(String.valueOf(this.x)));
+		nodeY.appendChild(doc.createTextNode(String.valueOf(this.y)));
+		
+		element.appendChild(nodeX);
+		element.appendChild(nodeY);
+		return element;
 	}
 	
 	/* (non-Javadoc)
