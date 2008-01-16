@@ -89,10 +89,20 @@ public class Scaling {
 		return new Fraction(x-picXMin,picXMax-picXMin).multiply(currW).evaluateRoundDown();
 	}
 	
+	/**
+	 * Converts from mouse click point to location that's used internally.
+	 * @param point where the mouse clicked
+	 * @return a new location
+	 */
 	public static Location pointToLocation(Point point) {
 		return new Location(convertToRealX(point.x), convertToRealY(point.y));
 	}
 	
+	/**
+	 * Converts from a locations that is used internally to a mouse point.
+	 * @param loc location
+	 * @return a new point
+	 */
 	public static Point locationToPoint(Location loc) {
 		return new Point(convertToPicX(loc.getX()), convertToRealY(loc.getY()));
 	}
