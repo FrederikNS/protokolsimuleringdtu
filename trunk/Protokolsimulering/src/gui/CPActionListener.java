@@ -123,7 +123,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.mode = MODE_ADD;
 			}
 			break;
-		case BUTTON_MOVE:
+		case BUTTON_CLEAR:
 			//TODO
 			if(GUIReferences.mode == MODE_MOVE){
 				GUIReferences.modeGroup.clearSelection();
