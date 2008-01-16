@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -17,8 +16,6 @@ import javax.swing.JPopupMenu;
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
-import shape.DrawableCircle;
-import shape.Shape;
 import tests.SelectionTest;
 
 /**
@@ -27,8 +24,6 @@ import tests.SelectionTest;
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
-
-	private ArrayList<Shape> nodesList = new ArrayList<Shape>();
 	
 	private SplitField splitField;
 	private JPopupMenu jPop;
@@ -84,11 +79,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			}
 			break;
 		case MODE_ADD:
-			try{
-				nodesList.add(new DrawableCircle(new Location(arg0.getX(),arg0.getY()),4));
-			} catch(Throwable e) {
-				System.err.println(e);
-			}
+				new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())));
 			break;
 		case MODE_KILL:
 			selectSensor(loc,dist);
