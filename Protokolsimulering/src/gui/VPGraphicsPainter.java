@@ -83,7 +83,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())));
 				GlobalAdressBook.getAdressBook().generateDirectConnections();
 			break;
-		case MODE_KILL:
+		case MODE_DISABLE:
 			selectSensor(loc,dist);
 			if(GUIReferences.selectedSensor != null) {
 				if(GUIReferences.selectedSensor.isEnabled()){

@@ -105,17 +105,31 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				}
 			} catch (NumberFormatException e) {
 			}
-		case BUTTON_KILL:
-			//TODO
-			if(GUIReferences.mode==MODE_KILL){
+		case BUTTON_ENABLE:
+			if(GUIReferences.mode==MODE_ENABLE){
 				GUIReferences.modeGroup.clearSelection();
 				GUIReferences.mode = MODE_SELECT;
 			} else {
-				GUIReferences.mode = MODE_KILL;
+				GUIReferences.mode = MODE_ENABLE;
+			}
+			break;		
+		case BUTTON_DISABLE:
+			if(GUIReferences.mode==MODE_DISABLE){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
+			} else {
+				GUIReferences.mode = MODE_DISABLE;
+			}
+			break;
+		case BUTTON_REMOVE:
+			if(GUIReferences.mode==MODE_REMOVE){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
+			}else{
+				GUIReferences.mode = MODE_REMOVE;
 			}
 			break;
 		case BUTTON_ADD:
-			//TODO
 			if(GUIReferences.mode==MODE_ADD){
 				GUIReferences.modeGroup.clearSelection();
 				GUIReferences.mode = MODE_SELECT;
@@ -124,13 +138,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_CLEAR:
-			//TODO
-			if(GUIReferences.mode == MODE_MOVE){
+			//TODO - Dialog
+			/*if(GUIReferences.mode == MODE_ENABLE){
 				GUIReferences.modeGroup.clearSelection();
 				GUIReferences.mode = MODE_SELECT;
 			}else{
-				GUIReferences.mode = MODE_MOVE;
-			}
+				GUIReferences.mode = MODE_ENABLE;
+			}*/
 			break;
 		case BUTTON_TO_START:
 			//TODO

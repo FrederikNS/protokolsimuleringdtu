@@ -20,14 +20,14 @@ public class CPModes implements GUIConstants {
 		generateButton.setToolTipText("Generates a given number of random sensors");
 		generateButton.addActionListener(actionListener);
 		generateButton.setActionCommand(String.valueOf(BUTTON_GENERATE));
-		JToggleButton enableButton = new JToggleButton("Disable");
+		JToggleButton enableButton = new JToggleButton("Enable");
 		enableButton.setToolTipText("Enables the sensor you click");
 		enableButton.addActionListener(actionListener);
 		enableButton.setActionCommand(String.valueOf(BUTTON_ENABLE));
-		JToggleButton killButton = new JToggleButton("Disable");
-		killButton.setToolTipText("Disables the sensor you click");
-		killButton.addActionListener(actionListener);
-		killButton.setActionCommand(String.valueOf(BUTTON_KILL));
+		JToggleButton disableButton = new JToggleButton("Disable");
+		disableButton.setToolTipText("Disables the sensor you click");
+		disableButton.addActionListener(actionListener);
+		disableButton.setActionCommand(String.valueOf(BUTTON_DISABLE));
 		JToggleButton addButton = new JToggleButton("Add");
 		addButton.setToolTipText("Adds another sensor where you click");
 		addButton.addActionListener(actionListener);
@@ -45,7 +45,7 @@ public class CPModes implements GUIConstants {
 		modesPanel.setLayout(modesPanelLayout);
 		//modesPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
 		GUIReferences.modeGroup.add(addButton);
-		GUIReferences.modeGroup.add(killButton);
+		GUIReferences.modeGroup.add(disableButton);
 		GUIReferences.modeGroup.add(removeButton);
 		GUIReferences.modeGroup.add(clearButton);
 		
@@ -54,7 +54,7 @@ public class CPModes implements GUIConstants {
 		modesPanel.add(removeButton);
 		modesPanel.add(clearButton);
 		modesPanel.add(enableButton);
-		modesPanel.add(killButton);
+		modesPanel.add(disableButton);
 		
 	}
 }
