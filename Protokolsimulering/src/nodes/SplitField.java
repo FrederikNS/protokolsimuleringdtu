@@ -148,19 +148,6 @@ public class SplitField {
 			if(((loc.getX()+dist) > this.xMax/2) && ((loc.getY()+dist) > this.yMax/2)) {
 				sectorCheckList[++amountToAsk] = 3;
 			}
-			/*if(loc.getX()+dist < this.xMax/2) {
-				if(loc.getY()+dist < this.yMax/2) {
-					sectorCheckList[++amountToAsk] = 0;
-				} else {
-					sectorCheckList[++amountToAsk] = 2;
-				}
-			} else {
-				if(loc.getY()+dist < this.yMax/2) {
-					sectorCheckList[++amountToAsk] = 1;
-				} else {
-					sectorCheckList[++amountToAsk] = 3;
-				}
-			}*/
 			Sensor test = null;
 			int k = 0;
 			for(int j = 0 ; j < sectorCheckList.length ; j++) {
@@ -217,34 +204,35 @@ public class SplitField {
 				splitField[i].addSensor(sensor);
 				size++;
 			}
-		} else if((size == sensorList.length) && (flag == ADD)) {
-			splitField = new SplitField[4];
-			for(int i = 0 ; i < 4 ; i++){
-				splitField[i] = new SplitField(this,i);
-			}
-			for(int j = 0 ; j < sensorList.length ; j++) {
-				int s = getBlock(sensorList[j]);
-				splitField[s].addSensor(sensorList[j]);
-				sensorList[j] = null;
-			}
-			size++;
-		} else if((size == sensorList.length) && (flag == REMOVE)) {
-			int g = 0;
-			for(int j = 0 ; j < splitField.length ; j++) {
-				for(int i = 0; i < splitField[j].sensorList.length; i++) {
-					sensorList[g] = splitField[j].sensorList[i];
-					g++;
+		} else if(flag == ADD) {
+			if(size == sensorList.length) {
+				splitField = new SplitField[4];
+				for(int i = 0 ; i < 4 ; i++){
+					splitField[i] = new SplitField(this,i);
 				}
-			}
-			sensorList[size] = null;
-			size--;
-		} else {
-			if(flag == REMOVE) {
-				sensorList[--size] = null;
+				for(int j = 0 ; j < sensorList.length ; j++) {
+					int s = getBlock(sensorList[j]);
+					splitField[s].addSensor(sensorList[j]);
+					sensorList[j] = null;
+				}
 			} else {
 				sensorList[size] = sensor;
 				size++;
 			}
+		} else if (flag == REMOVE) {
+			if(size == sensorList.length) {
+				int g = 0;
+				for(int j = 0 ; j < splitField.length ; j++) {
+					for(int i = 0; i < splitField[j].sensorList.length; i++) {
+						sensorList[g] = splitField[j].sensorList[i];
+						g++;
+					}
+				}
+				sensorList[size] = null;
+				size--;
+			}
+		} else {
+			sensorList[--size] = null;
 		}
 	}
 
