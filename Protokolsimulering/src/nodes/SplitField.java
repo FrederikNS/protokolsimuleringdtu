@@ -212,8 +212,10 @@ public class SplitField {
 			int i = getBlock(sensor);
 			if(flag == REMOVE) {
 				splitField[i].removeSensor(sensor);
+				size--;
 			} else {
 				splitField[i].addSensor(sensor);
+				size++;
 			}
 		} else if((size == sensorList.length) && (flag == ADD)) {
 			splitField = new SplitField[4];
@@ -223,11 +225,20 @@ public class SplitField {
 			for(int j = 0 ; j < sensorList.length ; j++) {
 				int s = getBlock(sensorList[j]);
 				splitField[s].addSensor(sensorList[j]);
+				sensorList[j] = null;
 			}
 			size++;
-		} /*else if( TODO - check if the number of sensors is == 10, then kill the children) {
-
-		}*/	else {
+		} else if((size == sensorList.length) && (flag == REMOVE)) {
+			int g = 0;
+			for(int j = 0 ; j < splitField.length ; j++) {
+				for(int i = 0; i < splitField[j].sensorList.length; i++) {
+					sensorList[g] = splitField[j].sensorList[i];
+					g++;
+				}
+			}
+			sensorList[size] = null;
+			size--;
+		} else {
 			if(flag == REMOVE) {
 				sensorList[--size] = null;
 			} else {
