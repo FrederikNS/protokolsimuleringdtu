@@ -27,7 +27,7 @@ public class Note implements NoteConstants {
 	 * @param message The text
 	 * @throws NullPointerException if the message is null
 	 */
-	public Note(String message) {
+	protected Note(String message) {
 		this(INFORMATION, message, true);
 	}
 	
@@ -37,7 +37,7 @@ public class Note implements NoteConstants {
 	 * @param type The type of the message
 	 * @throws NullPointerException if the message is null
 	 */
-	public Note(String message, int type) {
+	protected Note(String message, int type) {
 		this(type, message, true);
 	}
 	
@@ -47,7 +47,7 @@ public class Note implements NoteConstants {
 	 * @param message The text
 	 * @throws NullPointerException if the message is null
 	 */	
-	public Note(int type, String message) {
+	protected Note(int type, String message) {
 		this(type, message, true);
 	}
 	/**
@@ -57,7 +57,7 @@ public class Note implements NoteConstants {
 	 * @param broadcast true if the message should be auto-broadcasted.
 	 * @throws NullPointerException if the message is null
 	 */
-	public Note(String message, int type, boolean broadcast) {
+	protected Note(String message, int type, boolean broadcast) {
 		this(type, message, broadcast);
 	}
 	
@@ -68,7 +68,7 @@ public class Note implements NoteConstants {
 	 * @param broadcast true if the message should be auto-broadcasted.
 	 * @throws NullPointerException if the message is null
 	 */
-	public Note(int type, String message, boolean broadcast) {
+	protected Note(int type, String message, boolean broadcast) {
 		this.type = type;
 		if(message == null) {
 			throw new NullPointerException("Message cannot be null");
@@ -122,4 +122,18 @@ public class Note implements NoteConstants {
 	public String getMessage() {
 		return message;
 	}
+	
+	public static void sendNote(String text) {
+		new Note(text);
+	}
+	
+	public static void sendNote(String text, int type) {
+		new Note(type, text);
+	}
+	
+	public static void sendNote(int type, String text) {
+		new Note(type, text);
+	}
+	
+	
 }

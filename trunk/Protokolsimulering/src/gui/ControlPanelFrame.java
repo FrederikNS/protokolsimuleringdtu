@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -27,6 +28,10 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 	private static final long serialVersionUID = -8026416994513756565L;
 	
 	private static ControlPanelFrame controlPanelFrame;
+	private int note = ALL_MESSAGES;
+	private ArrayList<Note> shownNotes = new ArrayList<Note>();
+	private ArrayList<Note> allNotes = new ArrayList<Note>();
+	private JTextArea console;
 	JTabbedPane modeTabPanes = new JTabbedPane();
 	
 	public ControlPanelFrame() {
@@ -65,13 +70,15 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		GuiStuff.controlPanelPane.add(modeTabPanes);
 		
 		//The console is created
-		JTextArea console = new JTextArea("test?\nwaaagh");
+		console = new JTextArea();
 		FlowLayout consolePanelLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		GridLayout consoleScrollerPanelLayout = new GridLayout(0,1);
 		JPanel consolePanel = new JPanel();
 		JPanel consoleScrollerPanel = new JPanel();
 		consoleScrollerPanel.setBorder(BorderFactory.createTitledBorder("Console"));
 		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//Register as listener
+		Note.registerListener(this);
 		
 		consoleScrollerPanel.setLayout(consoleScrollerPanelLayout);
 		consolePanel.setLayout(consolePanelLayout);
@@ -100,9 +107,27 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		return controlPanelFrame;
 	}
 
+	protected void updateShownNoteList() {
+		shownNotes.clear();
+		shownNotes = new ArrayList<Note>();
+		console.setText("");
+		Note nt = null;
+		int size = allNotes.size();
+		for(int i = 0; i < size ; i++) {
+			nt = allNotes.get(i);
+			if(0 != (nt.getType() & note)) {
+				shownNotes.add(nt);
+				console.append(nt.getMessage());
+			}
+		}
+	}
+	
 	public void note(Note newNote) {
-		// TODO Auto-generated method stub
-		//consolePanel.
-		newNote.getMessage();
+		allNotes.add(newNote);
+		if(0 != (newNote.getType() & note)) {
+			shownNotes.add(newNote);
+			console.append(newNote.getMessage() +"\n");
+		}
+		
 	}
 }
