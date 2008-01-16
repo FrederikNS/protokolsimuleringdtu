@@ -16,7 +16,7 @@ public class Turn {
 	boolean isRunning = false;
 	
 	public Turn(TreeSet<Sensor> sensors) {
-		this(sensors ,SensorComparator.SORT_BY_ID);
+		this(sensors, SensorComparator.SORT_BY_ID);
 
 	}
 	private Turn(TreeSet<Sensor> sensor, int sortBy) {

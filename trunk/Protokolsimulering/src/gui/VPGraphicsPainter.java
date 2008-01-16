@@ -104,11 +104,12 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 	private void selectSensor(Location loc,int dist){
 		Sensor sen = null;
 		int check = 0;
+		int maxDist = dist;
 		for(int i=0;i<Sensor.usedIDs;i++){
 			sen = Sensor.idToSensor.get(i);
 			check = sen.internalDistanceCheck(loc);
-			if(check < dist) {
-				dist = check;
+			if(check < maxDist) {
+				maxDist = check;
 				GuiStuff.selectedSensor = sen;
 			}
 		}
