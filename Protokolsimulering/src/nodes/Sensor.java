@@ -53,6 +53,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int status; //Used for coloring.
 	private int transmissionRoll;
 	private DrawableCircle draw;
+	private static int transmissionRadius = 5; 
+	
 	
 	private String sensorLabel = null;
 	
@@ -142,6 +144,36 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		return toReturn;
 	}
 	
+	
+	/**
+	 * Get the radius that sensors can communicate within.
+	 * @return The Transmission Radius
+	 */
+	public static int getTransmissionRadius(){
+		return transmissionRadius;
+	}
+	
+	/**
+	 * Change the transmission radius.
+	 * @param newRadius The new radius they can communicate within.
+	 * @throws IllegalArgumentException If the new radius was less than 1. 
+	 */
+	public static void setTransmissionRadius(int newRadius){
+		if(newRadius < 1) {
+			throw new IllegalArgumentException("Transmission Radius cannot be less than 1");
+		}
+		transmissionRadius = newRadius;
+	}
+	
+	/**
+	 * Check if two sensors can communicate with each other using the current 
+	 * transmission radius.
+	 * @param sen The other sensor
+	 * @return true if they can communicate
+	 */
+	public boolean canCommunicate(Sensor sen) {
+		return this.internalDistanceCheck(sen) <=  Math.pow(transmissionRadius, 2);
+	}
 	
 	/* (non-Javadoc)
 	 * @see transmissions.Transmitter#receive(transmissions.Transmission)
