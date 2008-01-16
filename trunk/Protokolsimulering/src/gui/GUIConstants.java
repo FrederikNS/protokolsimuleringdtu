@@ -12,9 +12,11 @@ public interface GUIConstants {
 	public final static int MENU_QUIT = 0;
 	
 	public final static int BUTTON_GENERATE = 101;
-	public final static int BUTTON_KILL = 102;
+	public final static int BUTTON_DISABLE = 102;
 	public final static int BUTTON_ADD = 103;
 	public final static int BUTTON_CLEAR = 104;
+	public final static int BUTTON_ENABLE = 105;
+	public final static int BUTTON_REMOVE = 106;
 	public final static int BUTTON_TO_START = 110;
 	public final static int BUTTON_REWIND = 111;
 	public final static int BUTTON_STEP_BACKWARD = 112;
@@ -40,9 +42,10 @@ public interface GUIConstants {
 	public final static int PLAYBACK_FAST_FORWARD = 2;
 	
 	public final static int MODE_SELECT = 0;
-	public final static int MODE_KILL = 1;
+	public final static int MODE_DISABLE = 1;
 	public final static int MODE_ADD = 2;
-	public final static int MODE_MOVE = 3;
+	public final static int MODE_ENABLE = 3;
+	public final static int MODE_REMOVE = 4;
 	
 	public final static int VIEW_RADII		  = 0x00000001;
 	public final static int VIEW_CONNECTIONS  = 0x00000002;
