@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -179,6 +180,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			//TODO - make nicer
 			JDialog log = new JDialog(GUIReferences.sensorNetwork, GUIReferences.selectedSensor.toString());
 			JPanel pane = new JPanel();
+			log.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			pane.setLayout(new BorderLayout());
 			log.setContentPane(pane);
 			pane.add(new JLabel(GUIReferences.selectedSensor.toString()));
