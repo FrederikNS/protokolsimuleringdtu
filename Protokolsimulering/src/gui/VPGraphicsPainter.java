@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
+import notification.Note;
 
 import shape.DrawableCircle;
 import shape.Shape;
@@ -88,13 +89,13 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			selectSensor(loc,dist);
 			if(GuiStuff.selectedSensor != null) {
 				if(GuiStuff.selectedSensor.isEnabled()){
-				GuiStuff.selectedSensor.setEnabled(false);
+					GuiStuff.selectedSensor.setEnabled(false);
 				}else{
 					GuiStuff.selectedSensor.setEnabled(true);
 				}
 				GuiStuff.selectedSensor = null;
 			} else {
-				System.out.println("No Sensor found at: " + loc);
+				Note.sendNote("No Sensor found at: " + loc);
 			}
 			break;
 		}

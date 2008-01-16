@@ -151,7 +151,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		if(0 != (currentTick & OPTION_RECEIVE_DISABLED)) {
 			 // cannot receive, die here, if a message was expected, flag need to send "Unsuccessful received"
 			if(ingoing != null || 0 != (currentTick & ACTION_RECEIVING)) {
-				
 				ingoing.corruptTransmission();
 			}
 			return;

@@ -5,5 +5,6 @@ package notification;
  * @author Niels Thykier
  */
 public interface NoteConstants {
-	public static final int INFORMATION = 0x00000001;
+	public static final int ALL_MESSAGES = 0x0000ffff;
+	public static final int INFORMATION  = 0x00000001;
 }
