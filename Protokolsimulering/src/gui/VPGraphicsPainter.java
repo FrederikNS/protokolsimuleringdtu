@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JMenuItem;
@@ -25,19 +26,22 @@ import tests.SelectionTest;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConstants {
+public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
 
 	private ArrayList<Shape> nodesList = new ArrayList<Shape>();
 	
 	private SplitField splitField;
 	private JPopupMenu jPop;
+	private ControlPanelFrame cpf;
 
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		splitField = new SplitField(0, 500, 0, 500); //TODO - get live data thingy
 		new SelectionTest(splitField);
+		cpf = ControlPanelFrame.getFrame();
 	}
 
 	/**
@@ -97,7 +101,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConsta
 				}
 				GUIReferences.selectedSensor = null;
 			} else {
-				Note.sendNote("No Sensor found at: " + loc);
 			}
 			break;
 		}
@@ -125,7 +128,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConsta
 	}
 
 	public void mouseExited(MouseEvent e) {
-		//TODO
+		cpf.setJLabelStatus(-1, -1);
 	}
 
 	private void makePopup(Point point) {
@@ -159,5 +162,14 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConsta
 		if( e.isPopupTrigger() ) {
 			makePopup(e.getPoint());
 		}
+	}
+
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()));
 	}
 }

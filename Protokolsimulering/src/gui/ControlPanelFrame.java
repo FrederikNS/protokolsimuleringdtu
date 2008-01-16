@@ -36,6 +36,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 	private JTextArea console;
 	JTabbedPane modeTabPanes = new JTabbedPane();
 	private boolean constructTabSelected = true;
+	private JLabel status;
 	
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
@@ -98,7 +99,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		statusBarPanel.setLayout(statusBarLayout);
 		statusBarPanel.setBorder(BorderFactory.createTitledBorder(""));
-		JLabel status = new JLabel("WAAAGH!");
+		status = new JLabel("WAAAGH!");
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
 		
@@ -106,6 +107,10 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		//frame is packed and shown
 		pack();
 		setVisible(true);
+	}
+	
+	public void setJLabelStatus(int x, int y) {
+		status.setText("(" + x + "," + y + ")");
 	}
 
 	public static ControlPanelFrame getFrame(){
