@@ -509,7 +509,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	public void draw(Graphics g) {
 		Color temp = g.getColor();
 		if(0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
-			System.out.println("Drawing connection between ");
 			g.setColor(GUIReferences.connectionColor);
 			Point senPoint = Scaling.locationToPoint(this);
 			Point target;
