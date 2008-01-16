@@ -59,7 +59,7 @@ public class GUIReferences implements GUIConstants{
 	
 	public static Color transmissionRadiusColor = Color.MAGENTA;
 	
-	public static Color connectionColor = Color.YELLOW;
+	public static Color connectionColor = Color.ORANGE;
 	
 	/**
 	 * Init the static variables in the correct order.
