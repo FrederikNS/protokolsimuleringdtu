@@ -44,7 +44,8 @@ public interface GUIConstants {
 	public final static int MODE_ADD = 2;
 	public final static int MODE_MOVE = 3;
 	
-	public final static int VIEW_RADII = 0x00000001;
-	public final static int VIEW_NONE  = 0x00000000;
-	public final static int VIEW_ALL   = 0x000000ff;
+	public final static int VIEW_RADII		  = 0x00000001;
+	public final static int VIEW_CONNECTIONS  = 0x00000002;
+	public final static int VIEW_NONE  		  = 0x00000000;
+	public final static int VIEW_ALL 		  = 0x000000ff;
 }

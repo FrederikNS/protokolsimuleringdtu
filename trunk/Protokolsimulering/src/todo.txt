@@ -1,6 +1,5 @@
 GlobalAddressBook (Frederik) [Finde connections]
 Anskaffelse af locale Adressbooks fra GlobalAddressBook.
-Tegne connections
 
 Fixe alle "TODO"s
 

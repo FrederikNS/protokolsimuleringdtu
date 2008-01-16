@@ -53,23 +53,17 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		
 		//The additional panels are created
 		ActionListener actionListener = new CPActionListener();
-		System.out.println("menubar");
 		new CPMenuBar(this,actionListener);
-		System.out.println("viewsettings");
 		new CPViewSettings(actionListener);
-		System.out.println("modes");
 		new CPModes(actionListener);
-		System.out.println("stepper");
 		new CPStepper(actionListener);
 		GUIReferences.listener = actionListener;
 		
 		//The panel used for the content of the control panel is created and added
 		//BoxLayout controlPanelPaneLayout = new BoxLayout(controlPanelPane,BoxLayout.Y_AXIS);
-		System.out.println("adding controlpanelpane");
 		add(GUIReferences.controlPanelPane,BorderLayout.NORTH);
 		
 		//The two tabs on are created and filled
-		System.out.println("filling tabs");
 		modeTabPanes.addTab("Construct", GUIReferences.constructPanel);
 		modeTabPanes.addTab("Simulate", GUIReferences.simulatePanel);
 		GUIReferences.controlPanelPane.add(modeTabPanes);
