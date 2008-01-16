@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -22,6 +23,7 @@ public class GuiStuff implements GuiInterface{
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
 	static Sensor selectedSensor;
+	static ActionListener listener;
 	public static int view = 0;
 	
 	
