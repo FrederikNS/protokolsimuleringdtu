@@ -52,6 +52,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	public final int id;
 	private ArrayList<Data> unsentData = new ArrayList<Data>();
+	private ArrayList<Sensor> links = new ArrayList<Sensor>();
 	private Transmission ingoing;
 	private Transmission outgoing;
 	private boolean waiting;
@@ -61,6 +62,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int transmissionRoll;
 	private SensorCircle draw;
 	private static int transmissionRadius = 10;
+	
 	
 	
 	private String sensorLabel = null;
@@ -174,6 +176,14 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 			throw new IllegalArgumentException("Transmission Radius cannot be less than 1");
 		}
 		transmissionRadius = newRadius;
+	}
+	
+	/**
+	 * Adds a link from this sensor to the other.
+	 * @param sen The other sensor.
+	 */
+	public void addLinkToSensor(Sensor sen) {
+		links.add(sen);
 	}
 	
 	/**
@@ -400,6 +410,11 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		}
 	}
 	
+	/**
+	 * Load all sensors from the XML file
+	 * @param doc The DOM Document reference of the XML file
+	 * @throws XMLParseException Throw if invalid tags/informations was found.
+	 */
 	public static void loadFromXML(Document doc) throws XMLParseException {
 		NodeList sensorList = doc.getElementsByTagName("sensor");
 		int size = sensorList.getLength();
@@ -407,7 +422,13 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 			loadFromXMLElement(sensorList.item(i));
 		}
 	}
-	 
+	
+	/**
+	 * Load all sensors from the XML file
+	 * @param sensorElement The DOM Document reference of the XML file
+	 * @return The sensor.
+	 * @throws XMLParseException Throw if invalid tags/informations was found.
+	 */
 	public static Sensor loadFromXMLElement(Node sensorElement) throws XMLParseException {
 		if(sensorElement.getNodeType() != Node.ELEMENT_NODE || !sensorElement.getNodeName().equals("sensor")) {
 			throw new IllegalArgumentException("Node was not a sensorElement");
