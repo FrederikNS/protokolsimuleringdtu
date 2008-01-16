@@ -173,10 +173,8 @@ public class SplitField {
 					}
 				}
 			}
-			System.out.println("children");
 			toReturn = returnSensor(sensorArray, k, dist, loc);
 		} else {
-			System.out.println("no children!");
 			toReturn = returnSensor(sensorList, size, dist, loc);
 		}
 		return toReturn;
@@ -195,7 +193,6 @@ public class SplitField {
 		int currentDistance = 0;
 		int lowestDistance = (int) Math.pow(dist, 2);
 		for(int i = 0 ; i < length ; i++) {
-			System.out.println(length + " " + dist + " " + loc.getX() + " " + loc.getY());
 			currentDistance = list[i].internalDistanceCheck(loc);
 			if(currentDistance < lowestDistance) {
 				lowestDistance = currentDistance;
