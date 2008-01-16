@@ -35,7 +35,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 	private ArrayList<Note> allNotes = new ArrayList<Note>();
 	private JTextArea console;
 	JTabbedPane modeTabPanes = new JTabbedPane();
-	private boolean constructTabSelected = true; 
+	private boolean constructTabSelected = true;
 	
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
@@ -107,7 +107,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		pack();
 		setVisible(true);
 	}
-	
+
 	public static ControlPanelFrame getFrame(){
 		return controlPanelFrame;
 	}

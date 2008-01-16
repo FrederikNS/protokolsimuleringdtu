@@ -3,6 +3,7 @@ package gui;
 import graphics.Scaling;
 
 import java.awt.Color;
+import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -36,7 +37,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConsta
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
-		splitField = new SplitField(0, 500, 0, 500);
+		splitField = new SplitField(0, 500, 0, 500); //TODO - get live data thingy
 		new SelectionTest(splitField);
 	}
 
@@ -125,8 +126,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConsta
 	}
 
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		//TODO
 	}
 
 	private void makePopup(Point point) {
