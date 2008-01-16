@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class CPMenuBar implements GuiInterface {
+public class CPMenuBar implements GUIConstants {
 	public CPMenuBar(ControlPanelFrame frame, ActionListener actionListener){
 		
 		JMenuBar menuBar = new JMenuBar();

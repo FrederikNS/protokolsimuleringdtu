@@ -25,7 +25,7 @@ import notification.NotificationListener;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class ControlPanelFrame extends JFrame implements GuiInterface,NotificationListener, ChangeListener{
+public class ControlPanelFrame extends JFrame implements GUIConstants,NotificationListener, ChangeListener{
 
 	private static final long serialVersionUID = -8026416994513756565L;
 	
@@ -60,18 +60,18 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		new CPModes(actionListener);
 		System.out.println("stepper");
 		new CPStepper(actionListener);
-		GuiStuff.listener = actionListener;
+		GUIReferences.listener = actionListener;
 		
 		//The panel used for the content of the control panel is created and added
 		//BoxLayout controlPanelPaneLayout = new BoxLayout(controlPanelPane,BoxLayout.Y_AXIS);
 		System.out.println("adding controlpanelpane");
-		add(GuiStuff.controlPanelPane,BorderLayout.NORTH);
+		add(GUIReferences.controlPanelPane,BorderLayout.NORTH);
 		
 		//The two tabs on are created and filled
 		System.out.println("filling tabs");
-		modeTabPanes.addTab("Construct", GuiStuff.constructPanel);
-		modeTabPanes.addTab("Simulate", GuiStuff.simulatePanel);
-		GuiStuff.controlPanelPane.add(modeTabPanes);
+		modeTabPanes.addTab("Construct", GUIReferences.constructPanel);
+		modeTabPanes.addTab("Simulate", GUIReferences.simulatePanel);
+		GUIReferences.controlPanelPane.add(modeTabPanes);
 		modeTabPanes.addChangeListener(this);
 		
 		//The console is created

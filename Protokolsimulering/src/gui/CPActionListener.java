@@ -8,15 +8,15 @@ import java.io.IOException;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Frederik Nordahl Sabroe
  *
  */
-public class CPActionListener implements ActionListener,GuiInterface{
+public class CPActionListener implements ActionListener,GUIConstants{
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
@@ -26,7 +26,7 @@ public class CPActionListener implements ActionListener,GuiInterface{
 		case MENU_NEW:
 			//TODO
 			System.out.println("rrr");
-			GuiStuff.sensorNetwork = new ViewPort("Untitled", 200, 0);
+			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
 			//new();
 			break;
 		case MENU_OPEN:
@@ -42,7 +42,7 @@ public class CPActionListener implements ActionListener,GuiInterface{
 		            if(openFile.exists()) {
 		            	if(openFile.canRead()) {
 		            		//load
-				            GuiStuff.sensorNetwork = new ViewPort(openFile, 200, 0);
+				            GUIReferences.sensorNetwork = new ViewPort(openFile, 200, 0);
 		            	} else {
 		            		//could not be read.
 		            	}
@@ -86,35 +86,35 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			break;
 		case BUTTON_KILL:
 			//TODO
-			if(GuiStuff.mode==MODE_KILL){
-				GuiStuff.modeGroup.clearSelection();
-				GuiStuff.mode = MODE_SELECT;
+			if(GUIReferences.mode==MODE_KILL){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
 			} else {
-				GuiStuff.mode = MODE_KILL;
+				GUIReferences.mode = MODE_KILL;
 			}
 			break;
 		case BUTTON_ADD:
 			//TODO
-			if(GuiStuff.mode==MODE_ADD){
-				GuiStuff.modeGroup.clearSelection();
-				GuiStuff.mode = MODE_SELECT;
+			if(GUIReferences.mode==MODE_ADD){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
 			}else{
-				GuiStuff.mode = MODE_ADD;
+				GUIReferences.mode = MODE_ADD;
 			}
 			break;
 		case BUTTON_MOVE:
 			//TODO
-			if(GuiStuff.mode == MODE_MOVE){
-				GuiStuff.modeGroup.clearSelection();
-				GuiStuff.mode = MODE_SELECT;
+			if(GUIReferences.mode == MODE_MOVE){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
 			}else{
-				GuiStuff.mode = MODE_MOVE;
+				GUIReferences.mode = MODE_MOVE;
 			}
 			break;
 		case BUTTON_TO_START:
 			//TODO
 			//toStart();
-			GuiStuff.stepperGroup.clearSelection();
+			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_REWIND:
 			//TODO
@@ -123,7 +123,7 @@ public class CPActionListener implements ActionListener,GuiInterface{
 		case BUTTON_STEP_BACKWARD:
 			//TODO
 			//stepBackwards;
-			GuiStuff.stepperGroup.clearSelection();
+			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			//TODO
@@ -132,7 +132,7 @@ public class CPActionListener implements ActionListener,GuiInterface{
 		case BUTTON_STOP:
 			//TODO
 			//stop();
-			GuiStuff.stepperGroup.clearSelection();
+			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY:
 			//TODO
@@ -141,12 +141,12 @@ public class CPActionListener implements ActionListener,GuiInterface{
 		case BUTTON_NEXT_SENSOR:
 			//TODO
 			//nextSensor();
-			GuiStuff.stepperGroup.clearSelection();
+			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_STEP_FORWARD:
 			//TODO
 			//stepForward();
-			GuiStuff.stepperGroup.clearSelection();
+			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
 			//TODO
@@ -154,13 +154,13 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			break;
 		case CHECKBOX_RADII:
 			//TODO
-			if(0 != (GuiStuff.view & VIEW_RADII)) {
-				GuiStuff.view &= ~VIEW_RADII;
+			if(0 != (GUIReferences.view & VIEW_RADII)) {
+				GUIReferences.view &= ~VIEW_RADII;
 			} else {
-				GuiStuff.view |= VIEW_RADII;
+				GUIReferences.view |= VIEW_RADII;
 			}
-			if(GuiStuff.sensorNetwork != null) {
-				GuiStuff.sensorNetwork.repaint();
+			if(GUIReferences.sensorNetwork != null) {
+				GUIReferences.sensorNetwork.repaint();
 			}
 			break;
 		case CHECKBOX_CONNECTIONS:
@@ -177,11 +177,12 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer
-			JDialog log = new JDialog(GuiStuff.sensorNetwork, GuiStuff.selectedSensor.toString());
+			JDialog log = new JDialog(GUIReferences.sensorNetwork, GUIReferences.selectedSensor.toString());
 			JPanel pane = new JPanel();
 			pane.setLayout(new BorderLayout());
 			log.setContentPane(pane);
-			pane.add(new JTextArea(GuiStuff.selectedSensor.toString()));
+			pane.add(new JLabel(GUIReferences.selectedSensor.toString()));
+			log.pack();
 			log.setVisible(true);
 			break;
 		}

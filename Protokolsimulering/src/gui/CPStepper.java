@@ -11,7 +11,7 @@ import javax.swing.JToggleButton;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class CPStepper implements GuiInterface {
+public class CPStepper implements GUIConstants {
 	public CPStepper(ActionListener actionListener){
 		JPanel stepperPanel = new JPanel();
 		//FlowLayout stepperLayout = new FlowLayout(FlowLayout.CENTER,0,0);
@@ -54,13 +54,13 @@ public class CPStepper implements GuiInterface {
 		fastForward.addActionListener(actionListener);
 		fastForward.setActionCommand(String.valueOf(BUTTON_FAST_FORWARD));
 
-		GuiStuff.simulatePanel.add(stepperPanel);
+		GUIReferences.simulatePanel.add(stepperPanel);
 		//stepperPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
-		GuiStuff.stepperGroup.add(rewind);
-		GuiStuff.stepperGroup.add(playBackwards);
-		GuiStuff.stepperGroup.add(play);
-		GuiStuff.stepperGroup.add(stepForward);
-		GuiStuff.stepperGroup.add(fastForward);
+		GUIReferences.stepperGroup.add(rewind);
+		GUIReferences.stepperGroup.add(playBackwards);
+		GUIReferences.stepperGroup.add(play);
+		GUIReferences.stepperGroup.add(stepForward);
+		GUIReferences.stepperGroup.add(fastForward);
 		stepperPanel.add(toStart);
 		stepperPanel.add(rewind);
 		stepperPanel.add(fastForward);

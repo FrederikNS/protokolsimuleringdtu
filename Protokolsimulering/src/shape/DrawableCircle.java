@@ -1,7 +1,7 @@
 package shape;
 
 import graphics.Scaling;
-import gui.GuiStuff;
+import gui.GUIReferences;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -85,11 +85,11 @@ public class DrawableCircle extends Shape {
 		@Override
 		public void draw(Graphics g) {
 			super.draw(g);
-			if(0 == (GuiStuff.view & GuiStuff.VIEW_RADII)) {
+			if(0 == (GUIReferences.view & GUIReferences.VIEW_RADII)) {
 				return;
 			}
 			Color temp = g.getColor();
-			g.setColor(GuiStuff.transmissionRadiusColor);
+			g.setColor(GUIReferences.transmissionRadiusColor);
 			int transRadius = Sensor.getTransmissionRadius();
 			int diameter = transRadius * 2;
 			g.drawOval(Scaling.convertToPicX(center.getX() - transRadius), Scaling.convertToPicY(center.getY() - transRadius)
