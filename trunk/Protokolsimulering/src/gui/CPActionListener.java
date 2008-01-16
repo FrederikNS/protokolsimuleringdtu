@@ -26,14 +26,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
-			//TODO
+			//TODO - call another method.
 			System.exit(0);
 			break;
 		case MENU_NEW:
 			//TODO
 			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
 
-			//new();
 			break;
 		case MENU_OPEN:
 			//TODO - check if session is already running?
@@ -91,6 +90,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case MENU_PREFERENCES:
+			//TODO (in ConfigFrame)
 			ConfigFrame.openConfigFrame().setVisible(true);
 			break;
 		case BUTTON_GENERATE:
@@ -101,6 +101,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				if(number>0){
 					System.out.println(generateDialog);
 					for(int i=0;i<number;i++) {
+						// TODO - use splitField?
 //						splitField.addSensor(new Sensor());
 						new Sensor();
 					}
@@ -142,7 +143,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_CLEAR:
-			//TODO - Dialog
+			// FIXME
 			if(Sensor.idToSensor.size() > 0) {
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
 				System.out.println(returnValue);
@@ -215,12 +216,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			if(GUIReferences.sensorNetwork != null) {
 				GUIReferences.sensorNetwork.repaint();
 			}
-			break;
-		case CHECKBOX_BATTERY:
-			//TODO
-			break;
-		case CHECKBOX_ID:
-			//TODO
 			break;
 		case CHECKBOX_NEIGHBOURS:
 			//TODO

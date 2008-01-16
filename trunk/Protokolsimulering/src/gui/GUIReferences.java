@@ -43,7 +43,7 @@ public class GUIReferences implements GUIConstants{
 	/**
 	 * Selected Sensor color
 	 */
-	public static Color selectedColor = Color.RED;
+	public static Color selectedColor = Color.ORANGE;
 	/**
 	 * Color of a Sensor which is down.
 	 */
@@ -59,7 +59,7 @@ public class GUIReferences implements GUIConstants{
 	
 	public static Color transmissionRadiusColor = Color.MAGENTA;
 	
-	public static Color connectionColor = Color.ORANGE;
+	public static Color connectionColor = Color.RED;
 	
 	/**
 	 * Init the static variables in the correct order.
