@@ -128,6 +128,11 @@ public class Location implements Drawable,Cloneable {
 		return new Location(this);
 	}
 	
+	protected void relocate(Location newLocation) {
+		this.x = newLocation.x;
+		this.y = newLocation.y;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
