@@ -138,7 +138,10 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 		selectSensor(Scaling.pointToLocation(point),(int)Math.pow(4, 2));
 		if(GuiStuff.selectedSensor != null) {
 			GuiStuff.selectedSensor.setSelected(true);
-			jPop.add(new JMenuItem("View " + GuiStuff.selectedSensor) );
+			JMenuItem item = new JMenuItem("View " + GuiStuff.selectedSensor);
+			item.setActionCommand(String.valueOf(POPUP_BUTTON_VIEW_SENSOR));
+			item.addActionListener(GuiStuff.listener);
+			jPop.add(item);
 		} else {
 			jPop.add(new JMenuItem("Nothing here"));
 		}

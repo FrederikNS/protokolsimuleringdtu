@@ -30,6 +30,8 @@ public interface GuiInterface {
 	public final static int CHECKBOX_ID = 204;
 	public final static int CHECKBOX_NEIGHBOURS = 205;
 	
+	public final static int POPUP_BUTTON_VIEW_SENSOR = 301;
+	
 	public final static int PLAYBACK_REWIND = -2;
 	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
 	public final static int PLAYBACK_PAUSE = 0;

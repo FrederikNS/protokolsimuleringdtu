@@ -1,11 +1,15 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -171,6 +175,15 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			break;
 		case CHECKBOX_NEIGHBOURS:
 			//TODO
+			break;
+		case POPUP_BUTTON_VIEW_SENSOR:
+			//TODO - make nicer
+			JDialog log = new JDialog(GuiStuff.sensorNetwork, GuiStuff.selectedSensor.toString());
+			JPanel pane = new JPanel();
+			pane.setLayout(new BorderLayout());
+			log.setContentPane(pane);
+			pane.add(new JTextArea(GuiStuff.selectedSensor.toString()));
+			log.setVisible(true);
 			break;
 		}
 	}

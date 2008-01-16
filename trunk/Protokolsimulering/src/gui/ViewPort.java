@@ -20,6 +20,7 @@ public class ViewPort extends JFrame{
 		VPGraphicsPainter graphicsPainter = new VPGraphicsPainter();
 		this.getContentPane().add(graphicsPainter);
 		setVisible(true);
+		
 	}
 
 	public ViewPort(File openFile,int posX,int posY){

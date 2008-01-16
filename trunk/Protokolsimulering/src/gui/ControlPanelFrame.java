@@ -60,6 +60,7 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		new CPModes(actionListener);
 		System.out.println("stepper");
 		new CPStepper(actionListener);
+		GuiStuff.listener = actionListener;
 		
 		//The panel used for the content of the control panel is created and added
 		//BoxLayout controlPanelPaneLayout = new BoxLayout(controlPanelPane,BoxLayout.Y_AXIS);
