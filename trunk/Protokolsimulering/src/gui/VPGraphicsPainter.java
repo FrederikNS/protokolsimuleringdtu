@@ -8,16 +8,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
 import notification.Note;
-
 import shape.DrawableCircle;
 import shape.Shape;
-
 import tests.SelectionTest;
 
 /**
@@ -30,7 +30,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 	private ArrayList<Shape> nodesList = new ArrayList<Shape>();
 	
 	private SplitField splitField;
-	
+	private JPopupMenu jPop = new JPopupMenu("JPopupMenu");
+
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
@@ -57,11 +58,11 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		//System.out.println("("+arg0.getX()+","+arg0.getY()+")");
-		Location loc = new Location(Scaling.convertToRealX(arg0.getX()), Scaling.convertToRealY(arg0.getY()));
-		int dist = (int)Math.pow(3,2);
+		Location loc = new Location(Scaling.pointToLocation(arg0.getPoint()));
+		int dist = (int)Math.pow(5,2);
 		switch(GuiStuff.mode) {
 		case MODE_SELECT:
-			/*
+			/* 
 			Sensor sen = splitField.selectSensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getX())), 5);
 			if(sen!=null){
 				sen.changeColor(Color.RED);
@@ -129,11 +130,27 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		if( e.isPopupTrigger() ) {
+			jPop = new JPopupMenu("JPopupMenu");
+			if(GuiStuff.selectedSensor!=null){
+				GuiStuff.selectedSensor.setSelected(false);
+				GuiStuff.selectedSensor = null;
+			}
+			selectSensor(Scaling.pointToLocation(e.getPoint()),(int)Math.pow(4, 2));
+			if(GuiStuff.selectedSensor != null) {
+				GuiStuff.selectedSensor.setSelected(true);
+				jPop.add(new JMenuItem("View " + GuiStuff.selectedSensor) );
+			} else {
+				jPop.add(new JMenuItem("Nothing here"));
+			}
+			jPop.show(this, e.getX(), e.getY());		
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		if( e.isPopupTrigger() ) {
+			jPop.show(this, e.getX(), e.getY());
+		}
 	}
 }

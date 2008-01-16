@@ -1,5 +1,8 @@
 package graphics;
 
+import java.awt.Point;
+
+import nodes.Location;
 import math.Fraction;
 
 /**
@@ -85,6 +88,15 @@ public class Scaling {
 	public static int convertToPicX(int x) {
 		return new Fraction(x-picXMin,picXMax-picXMin).multiply(currW).evaluateRoundDown();
 	}
+	
+	public static Location pointToLocation(Point point) {
+		return new Location(convertToRealX(point.x), convertToRealY(point.y));
+	}
+	
+	public static Point locationToPoint(Location loc) {
+		return new Point(convertToPicX(loc.getX()), convertToRealY(loc.getY()));
+	}
+	
 	
 	/**
 	 * Scales an y coordinate to fit the current size of the window.
