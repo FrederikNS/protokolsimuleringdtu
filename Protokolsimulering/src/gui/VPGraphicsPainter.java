@@ -43,21 +43,16 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	 * @param g
 	 */
 	@Override
-	public void paintComponent(Graphics g) {
+	public synchronized void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
 		g.setColor(GUIReferences.sensorColor);
-		/*for(int i=0;i<nodesList.size();i++){
-			//nodesList.get(i).draw(g);
-		}*/
 		for(int i=0;i<Sensor.usedIDs;i++){
 			Sensor.idToSensor.get(i).draw(g);
 		}
 	}
 
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		//System.out.println("("+arg0.getX()+","+arg0.getY()+")");
 		Location loc = new Location(Scaling.pointToLocation(arg0.getPoint()));
 		int dist = (int)Math.pow(5,2);
 		switch(GUIReferences.mode) {
@@ -74,6 +69,17 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		case MODE_ADD:
 				new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())));
 				GlobalAdressBook.getAdressBook().generateDirectConnections();
+			break;
+		case MODE_REMOVE:
+			if(GUIReferences.selectedSensor!=null){
+				GUIReferences.selectedSensor.setSelected(false);
+				GUIReferences.selectedSensor = null;
+			}
+			selectSensor(loc,dist);
+			if(GUIReferences.selectedSensor != null) {
+
+				System.err.println("Ought to remove " + GUIReferences.selectedSensor);
+			}
 			break;
 		case MODE_DISABLE:
 			selectSensor(loc,dist);
@@ -106,10 +112,11 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		
 	}
 
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	//Not used
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 */
+	public void mouseEntered(MouseEvent e) {}
 
 	public void mouseExited(MouseEvent e) {
 		cpf.setJLabelStatus(-1, -1);
@@ -135,23 +142,22 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if( e.isPopupTrigger() ) {
 			makePopup(e.getPoint());
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if( e.isPopupTrigger() ) {
 			makePopup(e.getPoint());
 		}
 	}
 
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	//Not used
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+	 */
+	public void mouseDragged(MouseEvent arg0) {}
 
 	public void mouseMoved(MouseEvent e) {
 		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()));

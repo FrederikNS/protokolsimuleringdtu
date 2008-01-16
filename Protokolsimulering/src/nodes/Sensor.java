@@ -63,7 +63,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int status; //Used for coloring.
 	private int transmissionRoll;
 	private SensorCircle draw;
-	private static int transmissionRadius = 10;
+	private static int transmissionRadius = 15;
 	
 	/**
 	 * Handles labelling.

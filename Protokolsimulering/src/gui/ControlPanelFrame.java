@@ -78,7 +78,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		JPanel consoleScrollerPanel = new JPanel();
 		consoleScrollerPanel.setBorder(BorderFactory.createTitledBorder("Console"));
 		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		//Register as listener
+		//Register as NoteListener
 		Note.registerListener(this);
 		
 		consoleScrollerPanel.setLayout(consoleScrollerPanelLayout);
@@ -137,13 +137,13 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 	}
 
 	public void stateChanged(ChangeEvent arg0) {
+		//TODO
 		constructTabSelected = !constructTabSelected;
 		if(constructTabSelected) {
 			//construct tab selected
 		} else {
 			//simulate tab selected
 			//rebuild?
-			//TODO
 		}
 	}
 }

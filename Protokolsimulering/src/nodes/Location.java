@@ -1,9 +1,6 @@
 package nodes;
 
-import exceptions.XMLParseException;
-
 import java.awt.Graphics;
-import java.util.Random;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,9 +8,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import shape.Drawable;
+import exceptions.XMLParseException;
 
 /**
  * A (2D) location in the field.
+ * If it is to be shown or drawn, it should be scaled by using the Scaling.locationToPoint(loc) method.
  * @author Niels Thykier
  */
 public class Location implements Drawable,Cloneable {
@@ -36,16 +35,7 @@ public class Location implements Drawable,Cloneable {
 		x = coordX;
 		y = coordY;
 	}
-	
-	/**
-	 * Generates a random location.
-	 * //TODO Make dynamic limits!
-	 */
-	public Location() {
-		Random ran = new Random();
-		x = ran.nextInt(100);
-		y = ran.nextInt(100);
-	}
+
 	
 	/**
 	 * Generates a (copy of) location given a location. Exists mainly for its child-classes.
