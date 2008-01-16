@@ -8,6 +8,10 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import notification.NoteConstants;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import shape.DrawableCircle.SensorCircle;
 import transmissions.Data;
 import transmissions.DataConstants;
@@ -386,6 +390,15 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public Element generateXMLElement(Document doc) {
+		Element element = doc.createElement("sensor");
+		element.setAttribute("id", String.valueOf(id));
+		element.setIdAttribute("id", true);
+		element.appendChild(super.generateXMLElement(doc));
+		return element;
 	}
 	
 	/* (non-Javadoc)
