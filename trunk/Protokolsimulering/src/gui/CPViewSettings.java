@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class CPViewSettings implements GuiInterface{
+public class CPViewSettings implements GUIConstants{
 	public CPViewSettings(ActionListener actionListener){
 		JPanel viewSettingsPanel = new JPanel();
 		//FlowLayout viewSettingsLayout = new FlowLayout(FlowLayout.LEFT,0,0);
@@ -40,7 +40,7 @@ public class CPViewSettings implements GuiInterface{
 		viewConnections.setActionCommand(String.valueOf(CHECKBOX_NEIGHBOURS));
 
 		System.out.println("add?");
-		GuiStuff.controlPanelPane.add(viewSettingsPanel);
+		GUIReferences.controlPanelPane.add(viewSettingsPanel);
 		System.out.println("added");
 		viewSettingsPanel.setLayout(viewSettingsLayout);
 		viewSettingsPanel.setBorder(BorderFactory.createTitledBorder("Views"));

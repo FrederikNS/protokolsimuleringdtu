@@ -1,10 +1,10 @@
 package gui;
 
 /**
+ * List of constants related to the GUI.
  * @author Frederik Nordahl Sabroe
- *
  */
-public interface GuiInterface {
+public interface GUIConstants {
 	public final static int MENU_NEW = 1;
 	public final static int MENU_OPEN = 2;
 	public final static int MENU_SAVE = 3;

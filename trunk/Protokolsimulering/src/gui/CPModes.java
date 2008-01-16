@@ -10,7 +10,7 @@ import javax.swing.JToggleButton;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class CPModes implements GuiInterface {
+public class CPModes implements GUIConstants {
 	public CPModes(ActionListener actionListener){
 		JPanel modesPanel = new JPanel();
 		FlowLayout modesPanelLayout = new FlowLayout(FlowLayout.CENTER,0,0);
@@ -29,12 +29,12 @@ public class CPModes implements GuiInterface {
 		moveButton.setActionCommand(String.valueOf(BUTTON_MOVE));
 		moveButton.setEnabled(false);
 
-		GuiStuff.constructPanel.add(modesPanel);
+		GUIReferences.constructPanel.add(modesPanel);
 		modesPanel.setLayout(modesPanelLayout);
 		//modesPanel.setBorder(BorderFactory.createTitledBorder("Mode"));
-		GuiStuff.modeGroup.add(killButton);
-		GuiStuff.modeGroup.add(addButton);
-		GuiStuff.modeGroup.add(moveButton);
+		GUIReferences.modeGroup.add(killButton);
+		GUIReferences.modeGroup.add(addButton);
+		GUIReferences.modeGroup.add(moveButton);
 		modesPanel.add(killButton);
 		modesPanel.add(addButton);
 		modesPanel.add(moveButton);

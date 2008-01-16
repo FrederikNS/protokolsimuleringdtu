@@ -16,7 +16,7 @@ import transmissions.Transmitter;
 import turns.EndSteppable;
 import turns.Prepareable;
 import exceptions.LabelNotRecognizedException;
-import gui.GuiStuff;
+import gui.GUIReferences;
 
 /**
  * 
@@ -412,10 +412,10 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		Color temp = g.getColor();
 		if(0 == (status & STATUS_SELECTED)) {
 			if(0 != (status & STATUS_DEAD)) {
-				g.setColor(GuiStuff.deadColor);
+				g.setColor(GUIReferences.deadColor);
 			}
 		} else {
-			g.setColor(GuiStuff.selectedColor);
+			g.setColor(GUIReferences.selectedColor);
 		}
 		draw.draw(g);
 		g.setColor(temp);

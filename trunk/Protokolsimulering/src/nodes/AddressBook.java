@@ -78,6 +78,7 @@ public class AddressBook {
 
 	/**
 	 * Loops through the Hashtable and rmeoves any keys that points at the dead sensor.
+	 * @param deadSensor The id of newly died sensor
 	 */
 	public void remove(int deadSensor) {
 		Set<Integer> toBeRemoved = new HashSet<Integer>();

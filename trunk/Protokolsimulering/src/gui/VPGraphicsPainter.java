@@ -25,7 +25,7 @@ import tests.SelectionTest;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterface {
+public class VPGraphicsPainter extends JPanel implements MouseListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
 
 	private ArrayList<Shape> nodesList = new ArrayList<Shape>();
@@ -47,7 +47,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
-		g.setColor(GuiStuff.sensorColor);
+		g.setColor(GUIReferences.sensorColor);
 		/*for(int i=0;i<nodesList.size();i++){
 			//nodesList.get(i).draw(g);
 		}*/
@@ -61,7 +61,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 		//System.out.println("("+arg0.getX()+","+arg0.getY()+")");
 		Location loc = new Location(Scaling.pointToLocation(arg0.getPoint()));
 		int dist = (int)Math.pow(5,2);
-		switch(GuiStuff.mode) {
+		switch(GUIReferences.mode) {
 		case MODE_SELECT:
 			/* 
 			Sensor sen = splitField.selectSensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getX())), 5);
@@ -71,13 +71,13 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			} else {
 				System.out.println("Could not find sensor at location: ("+Scaling.convertToRealX(arg0.getX())+","+Scaling.convertToRealY(arg0.getY())+")");
 			}*/
-			if(GuiStuff.selectedSensor!=null){
-				GuiStuff.selectedSensor.setSelected(false);
-				GuiStuff.selectedSensor = null;
+			if(GUIReferences.selectedSensor!=null){
+				GUIReferences.selectedSensor.setSelected(false);
+				GUIReferences.selectedSensor = null;
 			}
 			selectSensor(loc,dist);
-			if(GuiStuff.selectedSensor != null) {
-				GuiStuff.selectedSensor.setSelected(true);
+			if(GUIReferences.selectedSensor != null) {
+				GUIReferences.selectedSensor.setSelected(true);
 			}
 			break;
 		case MODE_ADD:
@@ -89,13 +89,13 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			break;
 		case MODE_KILL:
 			selectSensor(loc,dist);
-			if(GuiStuff.selectedSensor != null) {
-				if(GuiStuff.selectedSensor.isEnabled()){
-					GuiStuff.selectedSensor.setEnabled(false);
+			if(GUIReferences.selectedSensor != null) {
+				if(GUIReferences.selectedSensor.isEnabled()){
+					GUIReferences.selectedSensor.setEnabled(false);
 				}else{
-					GuiStuff.selectedSensor.setEnabled(true);
+					GUIReferences.selectedSensor.setEnabled(true);
 				}
-				GuiStuff.selectedSensor = null;
+				GUIReferences.selectedSensor = null;
 			} else {
 				Note.sendNote("No Sensor found at: " + loc);
 			}
@@ -113,7 +113,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 			check = sen.internalDistanceCheck(loc);
 			if(check < maxDist) {
 				maxDist = check;
-				GuiStuff.selectedSensor = sen;
+				GUIReferences.selectedSensor = sen;
 			}
 		}
 		
@@ -131,16 +131,16 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 
 	private void makePopup(Point point) {
 		jPop = new JPopupMenu("JPopupMenu");
-		if(GuiStuff.selectedSensor!=null){
-			GuiStuff.selectedSensor.setSelected(false);
-			GuiStuff.selectedSensor = null;
+		if(GUIReferences.selectedSensor!=null){
+			GUIReferences.selectedSensor.setSelected(false);
+			GUIReferences.selectedSensor = null;
 		}
 		selectSensor(Scaling.pointToLocation(point),(int)Math.pow(4, 2));
-		if(GuiStuff.selectedSensor != null) {
-			GuiStuff.selectedSensor.setSelected(true);
-			JMenuItem item = new JMenuItem("View " + GuiStuff.selectedSensor);
+		if(GUIReferences.selectedSensor != null) {
+			GUIReferences.selectedSensor.setSelected(true);
+			JMenuItem item = new JMenuItem("View " + GUIReferences.selectedSensor);
 			item.setActionCommand(String.valueOf(POPUP_BUTTON_VIEW_SENSOR));
-			item.addActionListener(GuiStuff.listener);
+			item.addActionListener(GUIReferences.listener);
 			jPop.add(item);
 		} else {
 			jPop.add(new JMenuItem("Nothing here"));
