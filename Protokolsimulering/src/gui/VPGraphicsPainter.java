@@ -17,7 +17,6 @@ import javax.swing.JPopupMenu;
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
-import notification.Note;
 import shape.DrawableCircle;
 import shape.Shape;
 import tests.SelectionTest;
