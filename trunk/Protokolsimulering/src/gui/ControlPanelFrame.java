@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		//ControlPanelFrame gets initialized
 		super("Control Panel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(203,602));
+		setPreferredSize(new Dimension(203,(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
 		setResizable(true);
 		
 		//Niels Hack
