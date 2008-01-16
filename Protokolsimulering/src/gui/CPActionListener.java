@@ -157,6 +157,14 @@ public class CPActionListener implements ActionListener,GuiInterface{
 			break;
 		case CHECKBOX_RADII:
 			//TODO
+			if(0 != (GuiStuff.view & VIEW_RADII)) {
+				GuiStuff.view &= ~VIEW_RADII;
+			} else {
+				GuiStuff.view |= VIEW_RADII;
+			}
+			if(GuiStuff.sensorNetwork != null) {
+				GuiStuff.sensorNetwork.repaint();
+			}
 			break;
 		case CHECKBOX_CONNECTIONS:
 			//TODO

@@ -22,6 +22,8 @@ public class GuiStuff implements GuiInterface{
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
 	static Sensor selectedSensor;
+	public static int view = 0;
+	
 	
 	public static Color sensorColor = Color.BLACK;
 	public static Color selectedColor = Color.RED;
@@ -29,6 +31,7 @@ public class GuiStuff implements GuiInterface{
 	public static Color sendingColor = Color.GREEN;
 	public static Color receivingColor = Color.BLUE;
 	
+	public static Color transmissionRadiusColor = Color.MAGENTA;
 	
 	static{
 		System.out.println("static started");
