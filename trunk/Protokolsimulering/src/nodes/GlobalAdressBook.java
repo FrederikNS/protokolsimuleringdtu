@@ -4,14 +4,21 @@ import java.util.ArrayList;
 
 public class GlobalAdressBook {
 	private static GlobalAdressBook globalAdressBook;
-	private ArrayList<int[]> directConnections=new ArrayList<int[]>();
+	private ArrayList<int[]> directConnections;
 //	int globalAdressBook[][]=new int[Sensor.idToSensor.size()][4];
-	private boolean generatedBefore = false;
-	private int sensorsAccountedFor = 0;
+	private boolean generatedBefore;
+	private int sensorsAccountedFor;
 
 	private GlobalAdressBook() {
+		directConnections=new ArrayList<int[]>();
+		sensorsAccountedFor = 0;
+		generatedBefore = false;
 	}
 
+	public static GlobalAdressBook clearBook() {
+		return globalAdressBook = new GlobalAdressBook();
+	}
+	
 	public static GlobalAdressBook getAdressBook() {
 		if(globalAdressBook == null) {
 			globalAdressBook = new GlobalAdressBook();
@@ -21,7 +28,6 @@ public class GlobalAdressBook {
 	}
 
 	public void generateDirectConnections(){
-//		System.out.println("Generated Before: "+generatedBefore);
 		int totalAmountOfSensors = Sensor.idToSensor.size();
 		if(!generatedBefore && totalAmountOfSensors>1){
 			for(int i=0;i<totalAmountOfSensors;i++){
@@ -36,16 +42,15 @@ public class GlobalAdressBook {
 						temp[1]=i;
 						directConnections.add(temp);
 						sen2.addLinkToSensor(sen1);
-//						System.out.println(Sensor.idToSensor.get(temp[1])+" & "+Sensor.idToSensor.get(temp[0])+" was linked");
 					}
 
 				}
 			}
 			sensorsAccountedFor = totalAmountOfSensors;
-			if(directConnections.size()>1){
-				generatedBefore=true;
-//				System.out.println("Generated Before set to: "+generatedBefore);
-			}
+			
+			//update boolean to avoid complete re-run each time.
+			generatedBefore = directConnections.size()>1;
+			
 		} else if(generatedBefore && totalAmountOfSensors>1) {
 			for(int i=sensorsAccountedFor;i<totalAmountOfSensors;i++){
 				for(int j=0;j<totalAmountOfSensors;j++){
@@ -60,7 +65,6 @@ public class GlobalAdressBook {
 							temp[1]=i;
 							directConnections.add(temp);
 							sen2.addLinkToSensor(sen1);
-//							System.out.println(Sensor.idToSensor.get(temp[1])+" & "+Sensor.idToSensor.get(temp[0])+" was linked");
 						}
 					}
 				}

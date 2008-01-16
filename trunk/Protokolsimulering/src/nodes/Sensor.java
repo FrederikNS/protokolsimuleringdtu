@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Random;
 
+import math.Scaling;
 import notification.NoteConstants;
 
 import org.w3c.dom.Document;
@@ -25,7 +26,6 @@ import turns.EndSteppable;
 import turns.Prepareable;
 import exceptions.LabelNotRecognizedException;
 import exceptions.XMLParseException;
-import graphics.Scaling;
 import gui.GUIReferences;
 
 /**
@@ -65,7 +65,15 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private SensorCircle draw;
 	private static int transmissionRadius = 10;
 	
-	
+	/**
+	 * Handles labelling.
+	 */
+	private static Hashtable<String,Integer> labelToID = new Hashtable<String,Integer>();
+	/**
+	 * Handles id-look-up
+	 */
+	public static Hashtable<Integer,Sensor> idToSensor = new Hashtable<Integer,Sensor>();
+		
 	
 	private String sensorLabel = null;
 	
@@ -87,16 +95,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		idToSensor.put(id, this);
 		draw = new SensorCircle(loc, 2);
 	}
-	
-	/**
-	 * Handles labelling.
-	 */
-	private static Hashtable<String,Integer> labelToID = new Hashtable<String,Integer>();
-	/**
-	 * Handles id-look-up
-	 */
-	public static Hashtable<Integer,Sensor> idToSensor = new Hashtable<Integer,Sensor>();
-	
+
 	/**
 	 * Fetches a sensor's ID by its label. 
 	 * Sensors do not have a label unless one has been assigned to them!

@@ -48,7 +48,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		
 		//Niels Hack
 		if(controlPanelFrame != null) {
-			throw new RuntimeException();
+			throw new RuntimeException("No really... One ControlPanelFrame is enough");
 		}
 		controlPanelFrame = this;
 		

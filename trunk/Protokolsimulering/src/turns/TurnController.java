@@ -2,7 +2,8 @@ package turns;
 
 import java.awt.Graphics;
 
-import graphics.Drawable;
+import shape.Drawable;
+
 import nodes.Sensor;
 
 public abstract class TurnController implements Drawable{

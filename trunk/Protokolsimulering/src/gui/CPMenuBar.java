@@ -20,6 +20,9 @@ public class CPMenuBar implements GUIConstants {
 		JMenuItem saveMenuItem = new JMenuItem("Save");
 		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
 		JMenuItem quitMenuItem = new JMenuItem("Quit"); 
+		JMenu editMenu = new JMenu("Edit");
+		JMenuItem preferencesMenuItem = new JMenuItem("Perferences");
+		
 		
 		newMenuItem.addActionListener(actionListener);
 		newMenuItem.setActionCommand(String.valueOf(MENU_NEW));
@@ -31,6 +34,8 @@ public class CPMenuBar implements GUIConstants {
 		saveAsMenuItem.setActionCommand(String.valueOf(MENU_SAVE_AS));
 		quitMenuItem.addActionListener(actionListener);
 		quitMenuItem.setActionCommand(String.valueOf(MENU_QUIT));
+		preferencesMenuItem.addActionListener(actionListener);
+		preferencesMenuItem.setActionCommand(String.valueOf(MENU_PREFERENCES));
 		
 		frame.setJMenuBar(menuBar);
 		menuBar.add(fileMenu);
@@ -39,5 +44,7 @@ public class CPMenuBar implements GUIConstants {
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(quitMenuItem);	
+		menuBar.add(editMenu);
+		editMenu.add(preferencesMenuItem);
 	}
 }

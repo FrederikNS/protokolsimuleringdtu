@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Hashtable;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -89,6 +90,9 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				}
 			}
 			break;
+		case MENU_PREFERENCES:
+			ConfigFrame.openConfigFrame().setVisible(true);
+			break;
 		case BUTTON_GENERATE:
 			int number;
 			String generateDialog = JOptionPane.showInputDialog(GUIReferences.constructPanel, "Please enter a number of sensors to generate", "Generate...", JOptionPane.QUESTION_MESSAGE);
@@ -139,12 +143,17 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_CLEAR:
 			//TODO - Dialog
-			/*if(GUIReferences.mode == MODE_ENABLE){
-				GUIReferences.modeGroup.clearSelection();
-				GUIReferences.mode = MODE_SELECT;
-			}else{
-				GUIReferences.mode = MODE_ENABLE;
-			}*/
+			if(Sensor.idToSensor.size() > 0) {
+				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
+				System.out.println(returnValue);
+				if(returnValue == JOptionPane.OK_OPTION) {
+					GlobalAdressBook.clearBook();
+					Sensor.idToSensor = new Hashtable<Integer, Sensor>();
+					if(GUIReferences.sensorNetwork != null) {
+						GUIReferences.sensorNetwork.repaint();
+					}
+				}
+			}
 			break;
 		case BUTTON_TO_START:
 			//TODO

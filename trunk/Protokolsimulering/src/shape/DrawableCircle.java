@@ -1,11 +1,11 @@
 package shape;
 
-import graphics.Scaling;
 import gui.GUIReferences;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import math.Scaling;
 import nodes.Location;
 import nodes.Sensor;
 
