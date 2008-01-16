@@ -105,10 +105,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					GUIReferences.sensorNetwork.repaint();
 				}
 			} catch (NumberFormatException e) {
-
 			}
-
-
 		case BUTTON_KILL:
 			//TODO
 			if(GUIReferences.mode==MODE_KILL){
