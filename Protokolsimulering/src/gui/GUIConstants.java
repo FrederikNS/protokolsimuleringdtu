@@ -10,6 +10,7 @@ public interface GUIConstants {
 	public final static int MENU_SAVE = 3;
 	public final static int MENU_SAVE_AS = 4;
 	public final static int MENU_QUIT = 0;
+	public final static int MENU_PREFERENCES = 5;
 	
 	public final static int BUTTON_GENERATE = 101;
 	public final static int BUTTON_DISABLE = 102;

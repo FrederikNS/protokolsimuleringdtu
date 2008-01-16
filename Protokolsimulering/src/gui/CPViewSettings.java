@@ -39,9 +39,7 @@ public class CPViewSettings implements GUIConstants{
 		viewNeighbours.addActionListener(actionListener);
 		viewNeighbours.setActionCommand(String.valueOf(CHECKBOX_NEIGHBOURS));
 
-		System.out.println("add?");
 		GUIReferences.controlPanelPane.add(viewSettingsPanel);
-		System.out.println("added");
 		viewSettingsPanel.setLayout(viewSettingsLayout);
 		viewSettingsPanel.setBorder(BorderFactory.createTitledBorder("Views"));
 		viewSettingsPanel.add(viewRadii);

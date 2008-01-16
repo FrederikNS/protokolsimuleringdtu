@@ -1,6 +1,6 @@
 package tests;
 
-import graphics.Scaling;
+import math.Scaling;
 import nodes.SplitField;
 
 public class SelectionTest {

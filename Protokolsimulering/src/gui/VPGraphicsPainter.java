@@ -1,6 +1,5 @@
 package gui;
 
-import graphics.Scaling;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import math.Scaling;
 import nodes.GlobalAdressBook;
 import nodes.Location;
 import nodes.Sensor;
@@ -62,14 +62,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		int dist = (int)Math.pow(5,2);
 		switch(GUIReferences.mode) {
 		case MODE_SELECT:
-			/* 
-			Sensor sen = splitField.selectSensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getX())), 5);
-			if(sen!=null){
-				sen.changeColor(Color.RED);
-				repaint();
-			} else {
-				System.out.println("Could not find sensor at location: ("+Scaling.convertToRealX(arg0.getX())+","+Scaling.convertToRealY(arg0.getY())+")");
-			}*/
 			if(GUIReferences.selectedSensor!=null){
 				GUIReferences.selectedSensor.setSelected(false);
 				GUIReferences.selectedSensor = null;

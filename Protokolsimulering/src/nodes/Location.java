@@ -1,7 +1,6 @@
 package nodes;
 
 import exceptions.XMLParseException;
-import graphics.Drawable;
 
 import java.awt.Graphics;
 import java.util.Random;
@@ -10,6 +9,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import shape.Drawable;
 
 /**
  * A (2D) location in the field.

@@ -1,9 +1,8 @@
-package graphics;
+package math;
 
 import java.awt.Point;
 
 import nodes.Location;
-import math.Fraction;
 
 /**
  * This class is responsible for scaling coordinates so they fit the window.
