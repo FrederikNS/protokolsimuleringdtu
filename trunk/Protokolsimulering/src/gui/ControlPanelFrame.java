@@ -76,7 +76,7 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		JPanel consolePanel = new JPanel();
 		JPanel consoleScrollerPanel = new JPanel();
 		consoleScrollerPanel.setBorder(BorderFactory.createTitledBorder("Console"));
-		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		//Register as listener
 		Note.registerListener(this);
 		
