@@ -4,6 +4,7 @@ import graphics.Scaling;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 	private ArrayList<Shape> nodesList = new ArrayList<Shape>();
 	
 	private SplitField splitField;
-	private JPopupMenu jPop = new JPopupMenu("JPopupMenu");
+	private JPopupMenu jPop;
 
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
@@ -128,29 +129,33 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,GuiInterf
 
 	}
 
+	private void makePopup(Point point) {
+		jPop = new JPopupMenu("JPopupMenu");
+		if(GuiStuff.selectedSensor!=null){
+			GuiStuff.selectedSensor.setSelected(false);
+			GuiStuff.selectedSensor = null;
+		}
+		selectSensor(Scaling.pointToLocation(point),(int)Math.pow(4, 2));
+		if(GuiStuff.selectedSensor != null) {
+			GuiStuff.selectedSensor.setSelected(true);
+			jPop.add(new JMenuItem("View " + GuiStuff.selectedSensor) );
+		} else {
+			jPop.add(new JMenuItem("Nothing here"));
+		}
+		jPop.show(this, point.x, point.y);
+	}
+	
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if( e.isPopupTrigger() ) {
-			jPop = new JPopupMenu("JPopupMenu");
-			if(GuiStuff.selectedSensor!=null){
-				GuiStuff.selectedSensor.setSelected(false);
-				GuiStuff.selectedSensor = null;
-			}
-			selectSensor(Scaling.pointToLocation(e.getPoint()),(int)Math.pow(4, 2));
-			if(GuiStuff.selectedSensor != null) {
-				GuiStuff.selectedSensor.setSelected(true);
-				jPop.add(new JMenuItem("View " + GuiStuff.selectedSensor) );
-			} else {
-				jPop.add(new JMenuItem("Nothing here"));
-			}
-			jPop.show(this, e.getX(), e.getY());		
+			makePopup(e.getPoint());
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if( e.isPopupTrigger() ) {
-			jPop.show(this, e.getX(), e.getY());
+			makePopup(e.getPoint());
 		}
 	}
 }
