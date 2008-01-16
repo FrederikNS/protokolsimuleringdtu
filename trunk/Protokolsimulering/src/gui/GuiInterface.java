@@ -40,4 +40,8 @@ public interface GuiInterface {
 	public final static int MODE_KILL = 1;
 	public final static int MODE_ADD = 2;
 	public final static int MODE_MOVE = 3;
+	
+	public final static int VIEW_RADII = 0x00000001;
+	public final static int VIEW_NONE  = 0x00000000;
+	public final static int VIEW_ALL   = 0x000000ff;
 }

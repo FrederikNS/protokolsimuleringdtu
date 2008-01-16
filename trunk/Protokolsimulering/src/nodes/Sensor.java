@@ -7,17 +7,16 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Random;
 
-import exceptions.LabelNotRecognizedException;
-import gui.GuiStuff;
-
 import notification.NoteConstants;
-import shape.DrawableCircle;
+import shape.DrawableCircle.SensorCircle;
 import transmissions.Data;
 import transmissions.DataConstants;
 import transmissions.Transmission;
 import transmissions.Transmitter;
 import turns.EndSteppable;
 import turns.Prepareable;
+import exceptions.LabelNotRecognizedException;
+import gui.GuiStuff;
 
 /**
  * 
@@ -52,8 +51,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int resendDelay;
 	private int status; //Used for coloring.
 	private int transmissionRoll;
-	private DrawableCircle draw;
-	private static int transmissionRadius = 5; 
+	private SensorCircle draw;
+	private static int transmissionRadius = 10;
 	
 	
 	private String sensorLabel = null;
@@ -70,7 +69,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		super(loc);
 		id = usedIDs++;
 		idToSensor.put(id, this);
-		draw = new DrawableCircle(loc, 2);
+		draw = new SensorCircle(loc, 2);
 	}
 	
 	/**
@@ -168,11 +167,24 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	/**
 	 * Check if two sensors can communicate with each other using the current 
 	 * transmission radius.
+	 * This does NOT take their routing protocols into considerations.
 	 * @param sen The other sensor
 	 * @return true if they can communicate
 	 */
 	public boolean canCommunicate(Sensor sen) {
 		return this.internalDistanceCheck(sen) <=  Math.pow(transmissionRadius, 2);
+	}
+	
+	/**
+	 * Check if two sensors can communicate with each other using the current 
+	 * transmission radius.
+	 * This does NOT take their routing protocols into considerations.
+	 * @param sen1 A sensor
+	 * @param sen2 Another sensor
+	 * @return true if they can communicate
+	 */
+	public static boolean canCommunicate(Sensor sen1, Sensor sen2) {
+		return sen1.canCommunicate(sen2);
 	}
 	
 	/* (non-Javadoc)
