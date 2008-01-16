@@ -1,5 +1,6 @@
 package nodes;
 
+import exceptions.XMLParseException;
 import graphics.Drawable;
 
 import java.awt.Graphics;
@@ -7,6 +8,8 @@ import java.util.Random;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * A (2D) location in the field.
@@ -134,6 +137,49 @@ public class Location implements Drawable,Cloneable {
 	protected void relocate(Location newLocation) {
 		this.x = newLocation.x;
 		this.y = newLocation.y;
+	}
+	
+	public static Location loadFromXMLElement(Node locationNode) throws XMLParseException {
+		if(locationNode.getNodeType() != Node.ELEMENT_NODE || !locationNode.getNodeName().equals("location")) {
+			throw new IllegalArgumentException("Node was not a locationNode");
+		}
+		NodeList list = locationNode.getChildNodes();
+		int size = list.getLength();
+		Node current;
+		Integer locX = null;
+		Integer locY = null;
+		for(int i = 0; i < size ; i++) {
+			current = list.item(i);
+			switch(current.getNodeName().charAt(0)) {
+			case 'x':
+				if(current.getNodeName().length() < 2 && locX == null) {
+					try {
+						locX = Integer.parseInt(current.getNodeValue());
+					} catch(NumberFormatException e) {
+						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int");
+					}
+				} else {
+					throw new XMLParseException("The tag, " + current.getNodeName() + " is allowed only once");
+				}
+				break;
+			case 'y':
+				if(current.getNodeName().length() < 2 && locY == null) {
+					try {
+						locY = Integer.parseInt(current.getNodeValue());
+					} catch(NumberFormatException e) {
+						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int");
+					}
+				} else {
+					throw new XMLParseException("The tag, " + current.getNodeName() + " is allowed only once");
+				}
+				break;
+				
+			}
+			
+		}
+		
+		
+		return new Location(locX, locY);
 	}
 	
 	public Element generateXMLElement(Document doc) {

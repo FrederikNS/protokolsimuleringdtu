@@ -1,0 +1,12 @@
+GlobalAddressBook (Frederik) [Finde connections]
+Anskaffelse af locale Adressbooks fra GlobalAddressBook.
+Tegne connections
+
+Fixe alle "TODO"s
+
+Færdiggørelse af Sensor-protokolen.
+Test af Sensor-protokolen.
+
+Færdiggørelse af XML aflæsning.
+Færdiggørelse af XML indskriving.
+Lave Turn/TurnController classerne.

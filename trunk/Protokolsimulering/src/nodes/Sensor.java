@@ -11,6 +11,9 @@ import notification.NoteConstants;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import shape.DrawableCircle.SensorCircle;
 import transmissions.Data;
@@ -20,6 +23,7 @@ import transmissions.Transmitter;
 import turns.EndSteppable;
 import turns.Prepareable;
 import exceptions.LabelNotRecognizedException;
+import exceptions.XMLParseException;
 import gui.GUIReferences;
 
 /**
@@ -70,8 +74,12 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	public Sensor(Location loc) {
+		this(loc, usedIDs++);
+	}
+	
+	private Sensor(Location loc, int id) {
 		super(loc);
-		id = usedIDs++;
+		this.id = id;
 		idToSensor.put(id, this);
 		draw = new SensorCircle(loc, 2);
 	}
@@ -390,6 +398,60 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static void loadFromXML(Document doc) throws XMLParseException {
+		NodeList sensorList = doc.getElementsByTagName("sensor");
+		int size = sensorList.getLength();
+		for(int i = 0 ; i < size ; i++) {
+			loadFromXMLElement(sensorList.item(i));
+		}
+	}
+	 
+	public static Sensor loadFromXMLElement(Node sensorElement) throws XMLParseException {
+		if(sensorElement.getNodeType() != Node.ELEMENT_NODE || !sensorElement.getNodeName().equals("sensor")) {
+			throw new IllegalArgumentException("Node was not a sensorElement");
+		}
+		NodeList list = sensorElement.getChildNodes();
+		boolean noLocation = true;
+		Node current;
+		Location loc = null;
+		Sensor sen;
+		int size = list.getLength();
+		for(int i = 0; i < size ; i++) {
+			current = list.item(i);
+			switch(current.getNodeName().charAt(0)) {
+			case 'l':
+				if(current.getNodeName().equals("location")) {
+					loc = Location.loadFromXMLElement(current);
+					noLocation= false;
+				}
+				break;
+				
+			}
+			
+		}
+		
+		NamedNodeMap attrMap = sensorElement.getAttributes();
+		int sensorID = -1;
+		try {
+			sensorID = Integer.parseInt(attrMap.getNamedItem("id").getNodeValue());
+			if(sensorID < 0) {
+				throw new XMLParseException("Sensor tag missing id attribute OR id value was invalid. (Must be int above -1)");
+			}
+		} catch(RuntimeException e) {
+			throw new XMLParseException("Sensor tag missing id attribute OR id value was invalid. (Must be int above -1)");
+		}
+		
+		if(noLocation) {
+			sen = idToSensor.get(sensorID);
+			if(sen == null) {
+				throw new XMLParseException("Did not contain Location of Sensor with id: " + sensorID + " and sensor was not loaded! Perhaps another XML file should be loaded first?");
+			}
+		} else {
+			sen = new Sensor(loc, sensorID);
+		}
+		return sen;
 	}
 
 	@Override
