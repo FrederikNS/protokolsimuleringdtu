@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import notification.Note;
 import notification.NotificationListener;
@@ -23,7 +25,7 @@ import notification.NotificationListener;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class ControlPanelFrame extends JFrame implements GuiInterface,NotificationListener{
+public class ControlPanelFrame extends JFrame implements GuiInterface,NotificationListener, ChangeListener{
 
 	private static final long serialVersionUID = -8026416994513756565L;
 	
@@ -33,6 +35,7 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 	private ArrayList<Note> allNotes = new ArrayList<Note>();
 	private JTextArea console;
 	JTabbedPane modeTabPanes = new JTabbedPane();
+	private boolean constructTabSelected = true; 
 	
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
@@ -68,6 +71,7 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 		modeTabPanes.addTab("Construct", GuiStuff.constructPanel);
 		modeTabPanes.addTab("Simulate", GuiStuff.simulatePanel);
 		GuiStuff.controlPanelPane.add(modeTabPanes);
+		modeTabPanes.addChangeListener(this);
 		
 		//The console is created
 		console = new JTextArea();
@@ -129,5 +133,16 @@ public class ControlPanelFrame extends JFrame implements GuiInterface,Notificati
 			console.append(newNote.getMessage() +"\n");
 		}
 		
+	}
+
+	public void stateChanged(ChangeEvent arg0) {
+		constructTabSelected = !constructTabSelected;
+		if(constructTabSelected) {
+			//construct tab selected
+		} else {
+			//simulate tab selected
+			//rebuild?
+			//TODO
+		}
 	}
 }

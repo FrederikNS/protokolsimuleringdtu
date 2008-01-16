@@ -34,7 +34,6 @@ public class GuiStuff implements GuiInterface{
 	public static Color transmissionRadiusColor = Color.MAGENTA;
 	
 	static{
-		System.out.println("static started");
 		controlPanelPane = new JPanel();
 		constructPanel = new JPanel();
 		simulatePanel = new JPanel();
@@ -43,6 +42,5 @@ public class GuiStuff implements GuiInterface{
 		controlPanelPane.setLayout(new BoxLayout(controlPanelPane, BoxLayout.Y_AXIS));
 		constructPanel.setLayout(new BoxLayout(constructPanel, BoxLayout.Y_AXIS));
 		simulatePanel.setLayout(new BoxLayout(simulatePanel, BoxLayout.Y_AXIS));
-		System.out.println("static done");
 	}
 }
