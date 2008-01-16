@@ -104,7 +104,7 @@ public class Scaling {
 	 * @return a new point
 	 */
 	public static Point locationToPoint(Location loc) {
-		return new Point(convertToPicX(loc.getX()), convertToRealY(loc.getY()));
+		return new Point(convertToPicX(loc.getX()), convertToPicY(loc.getY()));
 	}
 	
 	

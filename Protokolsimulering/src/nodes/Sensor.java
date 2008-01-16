@@ -2,6 +2,7 @@ package nodes;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -24,6 +25,7 @@ import turns.EndSteppable;
 import turns.Prepareable;
 import exceptions.LabelNotRecognizedException;
 import exceptions.XMLParseException;
+import graphics.Scaling;
 import gui.GUIReferences;
 
 /**
@@ -424,9 +426,9 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	/**
-	 * Load all sensors from the XML file
+	 * Load a sensor (or updates an previously loaded Sensor) from the XML file
 	 * @param sensorElement The DOM Document reference of the XML file
-	 * @return The sensor.
+	 * @return The newly loaded (or updated) sensor.
 	 * @throws XMLParseException Throw if invalid tags/informations was found.
 	 */
 	public static Sensor loadFromXMLElement(Node sensorElement) throws XMLParseException {
@@ -506,13 +508,31 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	@Override
 	public void draw(Graphics g) {
 		Color temp = g.getColor();
+		if(0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
+			System.out.println("Drawing connection between ");
+			g.setColor(GUIReferences.connectionColor);
+			Point senPoint = Scaling.locationToPoint(this);
+			Point target;
+			Sensor sen;
+			int size = links.size();
+			for(int i = 0 ; i < size ; i++) {
+				sen = links.get(i);
+				if(sen.id > this.id) {
+					target = Scaling.locationToPoint(links.get(i));
+					g.drawLine(senPoint.x, senPoint.y, target.x, target.y);
+				}
+			}
+		}
 		if(0 == (status & STATUS_SELECTED)) {
 			if(0 != (status & STATUS_DEAD)) {
 				g.setColor(GUIReferences.deadColor);
+			} else {
+				g.setColor(GUIReferences.sensorColor);
 			}
 		} else {
 			g.setColor(GUIReferences.selectedColor);
 		}
+
 		draw.draw(g);
 		g.setColor(temp);
 	}

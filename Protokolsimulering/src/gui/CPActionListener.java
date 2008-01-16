@@ -30,7 +30,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case MENU_NEW:
 			//TODO
-			System.out.println("rrr");
 			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
 
 			//new();
@@ -175,7 +174,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			//fastForward();
 			break;
 		case CHECKBOX_RADII:
-			//TODO
 			if(0 != (GUIReferences.view & VIEW_RADII)) {
 				GUIReferences.view &= ~VIEW_RADII;
 			} else {
@@ -186,7 +184,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case CHECKBOX_CONNECTIONS:
-			//TODO
+			if(0 != (GUIReferences.view & VIEW_CONNECTIONS)) {
+				GUIReferences.view &= ~VIEW_CONNECTIONS;
+			} else {
+				GUIReferences.view |= VIEW_CONNECTIONS;
+			}
+			if(GUIReferences.sensorNetwork != null) {
+				GUIReferences.sensorNetwork.repaint();
+			}
 			break;
 		case CHECKBOX_BATTERY:
 			//TODO

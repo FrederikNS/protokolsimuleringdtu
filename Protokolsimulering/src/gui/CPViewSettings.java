@@ -28,16 +28,16 @@ public class CPViewSettings implements GUIConstants{
 		viewConnections.setActionCommand(String.valueOf(CHECKBOX_CONNECTIONS));
 		JCheckBox viewBattery = new JCheckBox("Battery");
 		viewBattery.setToolTipText("Shows the battery level of the sensors");
-		viewConnections.addActionListener(actionListener);
-		viewConnections.setActionCommand(String.valueOf(CHECKBOX_BATTERY));
+		viewBattery.addActionListener(actionListener);
+		viewBattery.setActionCommand(String.valueOf(CHECKBOX_BATTERY));
 		JCheckBox viewID = new JCheckBox("ID");
 		viewID.setToolTipText("Shows the ID of the sensors");
-		viewConnections.addActionListener(actionListener);
-		viewConnections.setActionCommand(String.valueOf(CHECKBOX_ID));
+		viewID.addActionListener(actionListener);
+		viewID.setActionCommand(String.valueOf(CHECKBOX_ID));
 		JCheckBox viewNeighbours = new JCheckBox("Neighbours");
 		viewNeighbours.setToolTipText("Highlights the neighbouring sensors of the selected sensor");
-		viewConnections.addActionListener(actionListener);
-		viewConnections.setActionCommand(String.valueOf(CHECKBOX_NEIGHBOURS));
+		viewNeighbours.addActionListener(actionListener);
+		viewNeighbours.setActionCommand(String.valueOf(CHECKBOX_NEIGHBOURS));
 
 		System.out.println("add?");
 		GUIReferences.controlPanelPane.add(viewSettingsPanel);
