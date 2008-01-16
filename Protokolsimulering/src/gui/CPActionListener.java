@@ -26,7 +26,6 @@ public class CPActionListener implements ActionListener,GuiInterface{
 		case MENU_NEW:
 			//TODO
 			System.out.println("rrr");
-			
 			GuiStuff.sensorNetwork = new ViewPort("Untitled", 200, 0);
 			//new();
 			break;
