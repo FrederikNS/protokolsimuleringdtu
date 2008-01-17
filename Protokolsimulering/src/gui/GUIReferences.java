@@ -18,6 +18,7 @@ public class GUIReferences implements GUIConstants{
 	static JPanel simulatePanel;
 	static JPanel controlPanelPane;
 	static ViewPort sensorNetwork;
+	static Console console;
 	static int playback = PLAYBACK_PAUSE;
 	static int mode = MODE_SELECT;
 	static ButtonGroup modeGroup;
@@ -34,7 +35,6 @@ public class GUIReferences implements GUIConstants{
 	 * Bit mask of the selected views.
 	 */
 	public static int view = 0;
-	
 	
 	/**
 	 * Default Sensor color

@@ -33,6 +33,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case MENU_NEW:
 			//TODO
 			CPNew.openCPNew();
+			
 			break;
 		case MENU_OPEN:
 			//TODO - check if session is already running?
@@ -243,6 +244,16 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			if(GUIReferences.sensorNetwork != null) {
 				GUIReferences.sensorNetwork.repaint();
 			}
+			break;
+		case CHECKBOX_ENABLE_CONSOLE:
+			if(0 != (GUIReferences.view & VIEW_CONSOLE)) {
+				GUIReferences.view &= ~VIEW_CONSOLE;
+				GUIReferences.console.setVisible(false);
+			} else {
+				GUIReferences.view |= VIEW_CONSOLE;
+				GUIReferences.console.setVisible(true);
+			}
+			
 			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer

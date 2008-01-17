@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -29,6 +31,9 @@ public class CPNew extends JDialog implements GUIConstants{
 
 	private void init(){
 		setTitle("New...");
+		setSize(200,200);
+		setMinimumSize(new Dimension(200,200));
+		setPreferredSize(new Dimension(200,200));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		BoxLayout dialogLayout = new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS);
 		setLayout(dialogLayout);
@@ -65,13 +70,12 @@ public class CPNew extends JDialog implements GUIConstants{
 		cancelButton.setActionCommand(String.valueOf(BUTTON_NEW_CANCEL));
 		okButton.setActionCommand(String.valueOf(BUTTON_NEW_OK));
 
-		widthSpinner.setValue(50000);
-		heightSpinner.setValue(50000);
+		widthSpinner.setValue(500);
+		heightSpinner.setValue(500);
 
 		pack();
 		setVisible(true);
-		widthSpinner.setValue(500);
-		heightSpinner.setValue(500);
+		
 	}
 
 	public static void disposeWindow(){

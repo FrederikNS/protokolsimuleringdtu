@@ -33,6 +33,7 @@ public interface GUIConstants {
 	public final static int CHECKBOX_RADII = 201;
 	public final static int CHECKBOX_CONNECTIONS = 202;
 	public final static int CHECKBOX_NEIGHBOURS = 203;
+	public final static int CHECKBOX_ENABLE_CONSOLE = 204;
 	
 	public final static int POPUP_BUTTON_VIEW_SENSOR = 301;
 	
@@ -68,4 +69,5 @@ public interface GUIConstants {
 	 * View bit-mask filter for all bit-masks 
 	 */
 	public final static int VIEW_ALL 		  = 0x000000ff;
+	public final static int VIEW_CONSOLE	  = 0x00000008;
 }
