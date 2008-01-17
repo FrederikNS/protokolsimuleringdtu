@@ -41,9 +41,12 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			openChooser.setFileFilter(openFilter);
 			int openReturnVal = openChooser.showOpenDialog(ControlPanelFrame.getFrame());
 			if(openReturnVal == JFileChooser.APPROVE_OPTION) {
+				
 				openFile = openChooser.getSelectedFile();
 				System.out.println("Selected: " + openFile);
-				if(openFile.exists()) {
+				ViewPort.disposeViewPort();
+				xml.DOMxmlParser.parse(openFile);
+				/*if(openFile.exists()) {
 					if(openFile.canRead()) {
 						//load
 						GUIReferences.sensorNetwork = new ViewPort(openFile, 200, 0);
@@ -52,7 +55,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					}
 				} else {
 					//Does not exist? Mispelled?
-				}
+				}*/
 				//openFile();
 			}
 			break;
@@ -142,11 +145,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_CLEAR:
+			// FIXME
 			if(Sensor.idToSensor.size() > 0) {
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
 				System.out.println(returnValue);
 				if(returnValue == JOptionPane.OK_OPTION) {
-					Sensor.disposeAllSensors();
+					GlobalAdressBook.clearBook();
+					Sensor.idToSensor = new Hashtable<Integer, Sensor>();
+					Sensor.usedIDs = 0;
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}
