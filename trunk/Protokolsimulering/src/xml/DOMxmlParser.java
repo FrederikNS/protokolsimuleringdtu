@@ -28,7 +28,7 @@ public class DOMxmlParser {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docbuilder = factory.newDocumentBuilder();
 		doc =  docbuilder.parse(new InputSource(new InputStreamReader(
-				new FileInputStream("/home/moon/workspace/ProtokolSimulator/src/text.xml"),
+				new FileInputStream(xmlFile),
 					"UTF-8")));
 
 	}
