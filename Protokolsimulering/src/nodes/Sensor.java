@@ -517,6 +517,19 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		return sen;
 	}
 
+	/**
+	 * Generates an XML element that contains the general sensor data settings.
+	 * @param doc The DOM Document of the XML file
+	 * @return The XML element to be added.
+	 */
+	public static Element generateXMLGeneralData(Document doc) {
+		Element element = doc.createElement("sensordata");
+		Node transmissionRadiusNode = doc.createElement("transmissionRadius");
+		transmissionRadiusNode.appendChild(doc.createTextNode(String.valueOf(transmissionRadius)));
+		element.appendChild(transmissionRadiusNode);
+		return element;
+	}
+	
 	public Element generateXMLTurnElement(Document doc) {
 		Element element = doc.createElement("sensor");
 		element.setAttribute("id", String.valueOf(id));
