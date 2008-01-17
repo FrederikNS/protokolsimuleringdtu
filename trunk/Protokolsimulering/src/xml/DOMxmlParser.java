@@ -1,9 +1,15 @@
 package xml;
 
 import java.io.File;
+
+import nodes.Sensor;
+import notification.Note;
+
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import exceptions.XMLParseException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,8 +33,32 @@ public class DOMxmlParser {
 
 	}
 	
-	public static void parse(File xmlFile) throws UnsupportedEncodingException, FileNotFoundException, ParserConfigurationException, SAXException, IOException {
-		Document result = new DOMxmlParser(xmlFile).doc;
-		result.getFirstChild();
+	public static void parse(File xmlFile) {
+		Document result;
+		try {
+			//TODO generate better notes for errors.
+			result = new DOMxmlParser(xmlFile).doc;
+			Sensor.loadFromXML(result);
+		} catch (UnsupportedEncodingException e) {
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+		} catch (FileNotFoundException e) {
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+		} catch (ParserConfigurationException e) {
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+		} catch (SAXException e) {
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+		} catch (IOException e) {
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+		} catch (XMLParseException e) {
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+		}
+			
+		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}
 }
