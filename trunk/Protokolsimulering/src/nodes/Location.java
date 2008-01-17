@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import shape.Drawable;
+import xml.DOMxmlParser;
 import xml.Saveable;
 import exceptions.XMLParseException;
 
@@ -146,9 +147,9 @@ public class Location implements Drawable,Cloneable, Saveable {
 			case 'x':
 				if(current.getNodeName().length() < 2 && locX == null) {
 					try {
-						locX = Integer.parseInt(current.getNodeValue().trim());
+						locX = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
 					} catch(Exception e) {
-						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int");
+						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int:" + e);
 					}
 				} else {
 					throw new XMLParseException("The tag, " + current.getNodeName() + " is allowed only once");
@@ -157,7 +158,7 @@ public class Location implements Drawable,Cloneable, Saveable {
 			case 'y':
 				if(current.getNodeName().length() < 2 && locY == null) {
 					try {
-						locY = Integer.parseInt(current.getNodeValue().trim());
+						locY = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
 					} catch(Exception e) {
 						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int");
 					}
