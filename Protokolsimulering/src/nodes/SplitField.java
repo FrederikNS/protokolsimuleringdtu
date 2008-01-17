@@ -184,7 +184,7 @@ public class SplitField {
 		int currentDistance = 0;
 		int lowestDistance = dist;
 		for(int i = 0 ; i < length ; i++) {
-			currentDistance = list[i].internalDistanceCheck(loc);
+			currentDistance = list[i].getLocation().internalDistanceCheck(loc);
 			if(currentDistance < lowestDistance) {
 				lowestDistance = currentDistance;
 				toReturn = list[i];
@@ -262,14 +262,15 @@ public class SplitField {
 	 */
 	private int getBlock(Sensor sensor) {
 		int i;
-		if(sensor.getX() < this.xMax/2) {
-			if(sensor.getY() < this.yMax/2) {
+		Location loc = sensor.getLocation();
+		if(loc.getX() < this.xMax/2) {
+			if(loc.getY() < this.yMax/2) {
 				i = 0;
 			} else {
 				i = 2;
 			}
 		} else {
-			if(sensor.getY() < this.yMax/2) {
+			if(loc.getY() < this.yMax/2) {
 				i = 1;
 			} else {
 				i = 3;

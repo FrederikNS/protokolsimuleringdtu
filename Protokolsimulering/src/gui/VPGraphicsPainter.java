@@ -66,7 +66,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			}
 			break;
 		case MODE_ADD:
-			/*splitField.addSensor(*/new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
+			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
 			GlobalAdressBook.getAdressBook().generateDirectConnections();
 			break;
 		case MODE_REMOVE:
@@ -115,7 +115,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		int maxDist = dist;
 		for(int i=0;i<Sensor.usedIDs;i++){
 			sen = Sensor.idToSensor.get(i);
-			check = sen.internalDistanceCheck(loc);
+			check = sen.getLocation().internalDistanceCheck(loc);
 			if(check < maxDist) {
 				maxDist = check;
 				GUIReferences.selectedSensor = sen;

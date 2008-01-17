@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import nodes.Sensor;
+import nodes.Sensor.SensorImplementation;
 import notification.Note;
 
 import turns.Turn;
@@ -58,7 +59,7 @@ public abstract class XMLSaver {
 		}
 		Element rootElement = doc.createElement("main");
 		
-		rootElement.appendChild(Sensor.generateXMLGeneralData(doc));
+		rootElement.appendChild(SensorImplementation.generateXMLGeneralData(doc));
 		
 		for(Sensor sen : new TreeSet<Sensor>(sensorList)) {
 			rootElement.appendChild(sen.generateXMLElement(doc));

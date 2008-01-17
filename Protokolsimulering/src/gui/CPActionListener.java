@@ -106,7 +106,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					System.out.println(generateDialog);
 					for(int i=0;i<number;i++) {
 						//GUIReferences.sensorNetwork.getField().addSensor(new Sensor());
-						new Sensor();
+						Sensor.newInstance();
 					}
 					GlobalAdressBook.getAdressBook().generateDirectConnections();
 					GUIReferences.sensorNetwork.repaint();

@@ -3,7 +3,7 @@ package nodes;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import nodes.Sensor.Terminal;
+import nodes.Sensor;
 
 public class GlobalAdressBook {
 	private static GlobalAdressBook globalAdressBook;
