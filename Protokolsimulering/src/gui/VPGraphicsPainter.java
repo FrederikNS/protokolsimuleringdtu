@@ -67,8 +67,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			}
 			break;
 		case MODE_ADD:
-				new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())));
-				GlobalAdressBook.getAdressBook().generateDirectConnections();
+			splitField.addSensor(new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY()))));
+			GlobalAdressBook.getAdressBook().generateDirectConnections();
 			break;
 		case MODE_REMOVE:
 			if(GUIReferences.selectedSensor!=null){
@@ -98,20 +98,22 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	}
 	
 	private void selectSensor(Location loc,int dist){
-		Sensor sen = null;
-		int check = 0;
-		int maxDist = dist;
-		for(int i=0;i<Sensor.usedIDs;i++){
+		GUIReferences.selectedSensor = splitField.selectSensor(loc, dist);
+		/*for(int i=0;i<Sensor.usedIDs;i++){
 			sen = Sensor.idToSensor.get(i);
 			check = sen.internalDistanceCheck(loc);
 			if(check < maxDist) {
 				maxDist = check;
 				GUIReferences.selectedSensor = sen;
 			}
-		}
+		}*/
 		
 	}
 
+	public SplitField getField() {
+		return splitField;
+	}
+	
 	//Not used
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)

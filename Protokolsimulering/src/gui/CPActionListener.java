@@ -101,9 +101,9 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				if(number>0){
 					System.out.println(generateDialog);
 					for(int i=0;i<number;i++) {
-						// TODO - use splitField?
+						GUIReferences.sensorNetwork.getField().addSensor(new Sensor());
 //						splitField.addSensor(new Sensor());
-						new Sensor();
+						//new Sensor();
 					}
 					GlobalAdressBook.getAdressBook().generateDirectConnections();
 					GUIReferences.sensorNetwork.repaint();

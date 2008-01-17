@@ -84,7 +84,7 @@ public class SplitField {
 			break;
 		case 1:
 			//upper right block
-			this.xMin = (splitMe.xMax/2)+1;
+			this.xMin = (splitMe.xMax+1)/2;
 			this.xMax = splitMe.xMax;
 			this.yMin = splitMe.yMin;
 			this.yMax = splitMe.yMax/2;
@@ -93,14 +93,14 @@ public class SplitField {
 			//lower left block
 			this.xMin = splitMe.xMin;
 			this.xMax = splitMe.xMax/2;
-			this.yMin = (splitMe.yMax/2)+1;
+			this.yMin = (splitMe.yMax+1)/2;
 			this.yMax = splitMe.yMax;
 			break;
 		case 3:
 			//lower right block
-			this.xMin = (splitMe.xMax/2)+1;
+			this.xMin = (splitMe.xMax+1)/2;
 			this.xMax = splitMe.xMax;
-			this.yMin = (splitMe.yMax/2)+1;
+			this.yMin = (splitMe.yMax+1)/2;
 			this.yMax = splitMe.yMax;
 			break;
 		}
