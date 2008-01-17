@@ -2,6 +2,7 @@ GlobalAddressBook (Frederik) [Finde connections]
 Anskaffelse af locale Adressbooks fra GlobalAddressBook.
 
 Fixe alle "TODO"s
+fjernet nogle TODO's
 
 Færdiggørelse af Sensor-protokolen.
 Test af Sensor-protokolen.

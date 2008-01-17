@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class GlobalAdressBook {
 	private static GlobalAdressBook globalAdressBook;
 	private ArrayList<int[]> directConnections;
-//	int globalAdressBook[][]=new int[Sensor.idToSensor.size()][4];
 	private boolean generatedBefore;
 	private int sensorsAccountedFor;
 
