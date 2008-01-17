@@ -7,6 +7,8 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
+import turns.TurnController;
+
 import nodes.Sensor;
 
 /**
@@ -23,6 +25,7 @@ public class GUIReferences implements GUIConstants{
 	static int mode = MODE_SELECT;
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
+	static TurnController turnController = TurnController.newInstance();
 	/**
 	 * The currently selected sensor (or null if none is selected)
 	 */
@@ -62,6 +65,8 @@ public class GUIReferences implements GUIConstants{
 	public static Color connectionColor = Color.RED;
 	
 	public static Color secondarySelectedColor = Color.CYAN;
+	
+	
 	
 	/**
 	 * Init the static variables in the correct order.

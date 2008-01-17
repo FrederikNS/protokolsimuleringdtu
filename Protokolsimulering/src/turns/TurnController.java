@@ -59,7 +59,7 @@ public abstract class TurnController implements Saveable, Drawable{
 		private short currentEntry = -1;
 		private int currentTurn = -1;
 		private RunnableTurn run;
-		private boolean notReady = false;
+		private boolean notReady = true;
 		
 		private RunnableTurn getCurrentTurn() {
 			if(notReady) {
