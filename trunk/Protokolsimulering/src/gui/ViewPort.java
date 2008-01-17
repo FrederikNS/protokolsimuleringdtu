@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.File;
 
 import javax.swing.JDialog;
@@ -19,8 +18,8 @@ public class ViewPort extends JFrame{
 	private VPGraphicsPainter graphicsPainter;
 	public ViewPort(String title,int posX,int posY){
 		super(title);
-		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-		int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		int screenHeight = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()*/ 601;
+		int screenWidth = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()*/ 601;
 		setSize(new Dimension((screenWidth-200),screenHeight));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocation(posX, posY);
@@ -28,6 +27,10 @@ public class ViewPort extends JFrame{
 		this.getContentPane().add(graphicsPainter);
 		setVisible(true);
 		
+	}
+	
+	public void generateField(int w,int h){
+		graphicsPainter.createNewField(w, h);
 	}
 
 	public ViewPort(File openFile,int posX,int posY){
