@@ -159,21 +159,24 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_TO_START:
 			//TODO
-			//toStart();
+			GUIReferences.turnController.goToTurn(0);
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_REWIND:
 			//TODO
-			//rewind();
+			for(int i=1;i<1000;i++){
+			GUIReferences.turnController.playTurnBackwards();
+			}
 			break;
 		case BUTTON_STEP_BACKWARD:
-			//TODO
-			//stepBackwards;
 			GUIReferences.stepperGroup.clearSelection();
+			GUIReferences.turnController.playStepBackwards();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			//TODO
-			//playBackwards();
+			for(int i=0;i<1000;i++){
+				GUIReferences.turnController.playTickBackwards();
+			}
 			break;
 		case BUTTON_STOP:
 			//TODO
@@ -182,20 +185,26 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_PLAY:
 			//TODO
-			//play();
+			for(int i=0;i<1000;i++){
+				GUIReferences.turnController.playTick()
+			}
+			GUIReferences.turnController.playTick();
 			break;
 		case BUTTON_NEXT_SENSOR:
-			//TODO
-			//nextSensor();
+			GUIReferences.turnController.playTick();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_STEP_FORWARD:
-			//TODO
-			//stepForward();
+			GUIReferences.turnController.playTurn();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
 			//TODO
+			int i=0;
+			while(i<1000){
+			GUIReferences.turnController.playTurn();
+			i++;
+			}
 			//fastForward();
 			break;
 		case BUTTON_NEW_OK:
