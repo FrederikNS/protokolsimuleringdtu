@@ -1,7 +1,11 @@
 package turns;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
@@ -13,33 +17,56 @@ import nodes.Sensor.SensorComparator;
  */
 public class Turn {
 	public final TreeSet<Sensor> sensors;
-	boolean isRunning = false;
+	public final int turn;
+	private static int turnsCreated = 0;
 	
-	public Turn(TreeSet<Sensor> sensors) {
-		this(sensors, SensorComparator.SORT_BY_ID);
+	public Turn(Collection<Sensor> sensors) {
+		this(sensors, SensorComparator.SORT_BY_ID, turnsCreated++);
 
 	}
-	private Turn(TreeSet<Sensor> sensor, int sortBy) {
+	Turn(Collection<Sensor> sensor, int sortBy, int turn) {
 		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
 		this.sensors.addAll(sensors.descendingSet());		
+		this.turn = turn;
 	}
 	
 	public RunnableTurn getRunnableTurn() {
-		return new RunnableTurn(this.sensors);
+		return new RunnableTurn(this.sensors, this.turn);
 	}
 	
-	private class RunnableTurn extends Turn implements Prepareable, EndSteppable {
+	public Element generateXMLElement(Document doc) {
+		Element turnElement = doc.createElement("turn");
+		turnElement.setAttribute("turn", String.valueOf(turn));
+		turnElement.setIdAttribute("turn", true);
 
-		private final static int PHASE_NOT_STARTED = 0;
-		private final static int PHASE_PREPARE = 1;
-		private final static int PHASE_STEP = 2;
-		private final static int PHASE_END_STEP = 3;
-		private final static int PHASE_FINISHED = 4;
-		private int phase = PHASE_NOT_STARTED;
+		return generateInnerXMLElement(turnElement, doc);
+	}
+	
+	protected Element generateInnerXMLElement(Element outerElement, Document doc) {
+		for(Sensor sen : sensors) {
+			outerElement.appendChild(sen.generateXMLTurnElement(doc));
+		}
+		return outerElement;
+	}
+	
+	
+	public class RunnableTurn extends Turn implements Prepareable, EndSteppable {
+
+		public final static short PHASE_NOT_STARTED = 0;
+		public final static short PHASE_PREPARE = 1;
+		public final static short PHASE_STEP = 2;
+		public final static short PHASE_END_STEP = 3;
+		public final static short PHASE_FINISHED = 4;
+		private short phase = PHASE_NOT_STARTED;
+		boolean isRunning = false;
 		private Iterator<Sensor> iter;
 		
-		private RunnableTurn(TreeSet<Sensor> sensors) {
-			super(sensors, SensorComparator.SORT_BY_TURNS);
+		private RunnableTurn(TreeSet<Sensor> sensors, int turn) {
+			super(sensors, SensorComparator.SORT_BY_TURNS, turn);
+		}
+		
+		public short getPhase() {
+			return phase;
 		}
 		
 		public void tick() {
@@ -80,7 +107,7 @@ public class Turn {
 				doLoop();
 				break;
 			default:
-				return;
+				break;
 			}
 		}
 
@@ -123,6 +150,17 @@ public class Turn {
 			phase++;
 			iter = sensors.descendingIterator();
 		}
+		
+		@Override
+		public Element generateXMLElement(Document doc) {
+			Element turnElement = doc.createElement("runningTurn");
+			turnElement.setAttribute("turn", String.valueOf(turn));
+			turnElement.setIdAttribute("turn", true);
+			
+			return generateInnerXMLElement(turnElement, doc);
+		}
 	}
+	
+	
 	
 }

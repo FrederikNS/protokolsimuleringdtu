@@ -61,9 +61,9 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private boolean waiting;
 	private int currentTick;
 	private int resendDelay;
-	private int status; //Used for coloring.
+	private int status; //Mainly used for determing coloring.
 	private int transmissionRoll;
-	private SensorCircle draw;
+	private SensorCircle draw; //handles drawing of the figure and radii
 	private static int transmissionRadius = 15;
 	
 	/**
@@ -282,6 +282,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 					currentTick |= ACTION_NOTHING_TO_DO;
 				}
 			}
+			
+			
 		}
 		
 		
@@ -402,7 +404,8 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	/**
-	 * 
+	 * Forces the sensor to update the secondary selected. Used by the addLinkToSensor method but can also
+	 * be called explicitly if the links have been modified without a call to that method.
 	 */
 	public void updateLinks() {
 		if(0 != (status & STATUS_SELECTED)) {
@@ -412,17 +415,20 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		}
 	}
 	
+	/**
+	 * Flag a sensor as selected or deselected. It will notify its links that they are now / no longer "secondarily selected"
+	 * @param selectedStatus true if the sensor is selected, false if it is deselected.
+	 */
 	public void setSelected(boolean selectedStatus) {
 		if(selectedStatus) {
 			status |= STATUS_SELECTED;
 		} else {
 			status &= ~STATUS_SELECTED;
 		}
-		//if(0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
-			for(Sensor sen : links) {
-				sen.setSecondaySelection(selectedStatus);
-			}
-		//}
+	
+		for(Sensor sen : links) {
+			sen.setSecondaySelection(selectedStatus);
+		}
 	}
 		
 	/**
@@ -506,12 +512,29 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		Element element = doc.createElement("sensor");
 		element.setAttribute("id", String.valueOf(id));
 		element.setIdAttribute("id", true);
-		//element.appendChild(super.generateXMLElement(doc));
+		if(sensorLabel != null){
+			element.setAttribute("label", sensorLabel);
+		}
+
+		if(this.resendDelay > 0){
+			Node resendDelayNode = doc.createElement("resendDelay");
+			resendDelayNode.appendChild(doc.createTextNode(String.valueOf(resendDelay)));
+			element.appendChild(resendDelayNode);
+		}
+		
+		Node transmissionRollNode = doc.createElement("transmissionRoll");
+		transmissionRollNode.appendChild(doc.createTextNode(String.valueOf(transmissionRoll)));
+		element.appendChild(transmissionRollNode);
+		
 		if(this.ingoing != null) {
-			element.appendChild(this.ingoing.generateXMLElement(doc));
+			Element ingoingNode = ingoing.generateXMLElement(doc);
+			ingoingNode.setAttribute("type", "ingoing");
+			element.appendChild(ingoingNode);
 		}
 		if(this.outgoing != null) {
-			element.appendChild(this.outgoing.generateXMLElement(doc));
+			Element outgoingNode = outgoing.generateXMLElement(doc);
+			outgoingNode.setAttribute("type", "outgoing");
+			element.appendChild(outgoingNode);
 		}
 		if(this.unsentData.size() > 0 ) {
 			Node unsentDataNode = doc.createElement("unsentData");
