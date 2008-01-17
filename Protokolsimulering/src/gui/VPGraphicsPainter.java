@@ -17,7 +17,6 @@ import nodes.GlobalAdressBook;
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
-import tests.SelectionTest;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -34,8 +33,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		splitField = new SplitField(0, 500, 0, 500); //TODO - get live data thingy
-		new SelectionTest(splitField);
 		cpf = ControlPanelFrame.getFrame();
 	}
 
@@ -112,6 +109,10 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 
 	public SplitField getField() {
 		return splitField;
+	}
+	
+	public void createNewField(int w,int h) {
+		splitField = new SplitField(0,w,0,h);
 	}
 	
 	//Not used

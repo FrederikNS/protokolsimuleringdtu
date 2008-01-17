@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import math.Scaling;
 import nodes.GlobalAdressBook;
 import nodes.Sensor;
 
@@ -31,8 +32,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case MENU_NEW:
 			//TODO
-			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
-
+			CPNew.openCPNew();
 			break;
 		case MENU_OPEN:
 			//TODO - check if session is already running?
@@ -196,6 +196,23 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_FAST_FORWARD:
 			//TODO
 			//fastForward();
+			break;
+		case BUTTON_NEW_OK:
+			//Clear()
+			int width = 0;
+			int height = 0;
+			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
+			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
+
+			Scaling.setPicCoordsX(0, width);
+			Scaling.setPicCoordsY(0, height);
+
+			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
+			GUIReferences.sensorNetwork.generateField(width,height);
+			CPNew.disposeWindow();
+			break;
+		case BUTTON_NEW_CANCEL:
+			CPNew.disposeWindow();
 			break;
 		case CHECKBOX_RADII:
 			if(0 != (GUIReferences.view & VIEW_RADII)) {
