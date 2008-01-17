@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import shape.Drawable;
+import xml.Saveable;
 import exceptions.XMLParseException;
 
 /**
@@ -15,7 +16,7 @@ import exceptions.XMLParseException;
  * If it is to be shown or drawn, it should be scaled by using the Scaling.locationToPoint(loc) method.
  * @author Niels Thykier
  */
-public class Location implements Drawable,Cloneable {
+public class Location implements Drawable,Cloneable, Saveable {
 
 	/**
 	 * x-coordinate of the location.

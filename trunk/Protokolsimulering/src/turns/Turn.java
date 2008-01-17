@@ -1,11 +1,16 @@
 package turns;
 
+import java.awt.Graphics;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import shape.Drawable;
+
+import xml.Saveable;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
@@ -15,7 +20,7 @@ import nodes.Sensor.SensorComparator;
  * Turns should only be constructed directly after a full step() finishes
  * @author Niels Thykier
  */
-public class Turn {
+public class Turn implements Saveable, Drawable{
 	public final TreeSet<Sensor> sensors;
 	public final int turn;
 	private static int turnsCreated = 0;
@@ -49,6 +54,12 @@ public class Turn {
 		return outerElement;
 	}
 	
+
+	public void draw(Graphics g) {
+		for(Sensor sen : sensors) {
+			sen.draw(g);
+		}
+	}
 	
 	public class RunnableTurn extends Turn implements Prepareable, EndSteppable {
 

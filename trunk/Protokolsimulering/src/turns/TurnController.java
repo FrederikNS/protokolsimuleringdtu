@@ -1,10 +1,17 @@
 package turns;
 
+import java.awt.Graphics;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
+import shape.Drawable;
 import turns.Turn.RunnableTurn;
+import xml.Saveable;
 
-public abstract class TurnController{
+public abstract class TurnController implements Saveable, Drawable{
 	
 	/**
 	 * Call when the field has been altered.
@@ -37,6 +44,11 @@ public abstract class TurnController{
 	 */
 	public abstract boolean goToTurn(int turn);
 
+	/* (non-Javadoc)
+	 * @see xml.Saveable#generateXMLElement(org.w3c.dom.Document)
+	 */
+	public abstract Element generateXMLElement(Document doc);
+	
 	public static TurnController newInstance() {
 		return new TurnControllerImplementation();
 	}
@@ -115,6 +127,23 @@ public abstract class TurnController{
 				//TODO split.
 			}
 			notReady = false;
+		}
+
+		@Override
+		public Element generateXMLElement(Document doc) {
+			Element turnListNode = doc.createElement("turns");
+			for(int i = 0 ; i < currentEntry ; i++) {
+				turnListNode.appendChild(turnList[i].generateXMLElement(doc));
+			}
+			if(run != null) {
+				turnListNode.appendChild(run.generateXMLElement(doc));
+			}
+			return turnListNode;
+		}
+
+		public void draw(Graphics g) {
+			// TODO Auto-generated method stub
+			
 		}
 
 		
