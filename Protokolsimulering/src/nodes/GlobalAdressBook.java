@@ -37,9 +37,6 @@ public class GlobalAdressBook {
 						int[] temp = {i,j};
 						directConnections.add(temp);
 						sen1.addLinkToSensor(sen2);
-						temp[0]=j;
-						temp[1]=i;
-						directConnections.add(temp);
 						sen2.addLinkToSensor(sen1);
 					}
 
@@ -60,9 +57,6 @@ public class GlobalAdressBook {
 							int[] temp = {i,j};
 							directConnections.add(temp);
 							sen1.addLinkToSensor(sen2);
-							temp[0]=j;
-							temp[1]=i;
-							directConnections.add(temp);
 							sen2.addLinkToSensor(sen1);
 						}
 					}
