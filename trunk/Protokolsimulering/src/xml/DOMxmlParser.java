@@ -1,9 +1,18 @@
 package xml;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import nodes.GlobalAdressBook;
-import nodes.Sensor;
+import nodes.Sensor.SensorImplementation;
 import notification.Note;
 
 import org.w3c.dom.Document;
@@ -13,16 +22,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import exceptions.XMLParseException;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class DOMxmlParser {
 	private Document doc;
@@ -49,7 +48,7 @@ public class DOMxmlParser {
 		try {
 			//TODO generate better notes for errors.
 			result = new DOMxmlParser(xmlFile).doc;
-			Sensor.loadFromXML(result);
+			SensorImplementation.loadFromXML(result);
 		} catch (UnsupportedEncodingException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );

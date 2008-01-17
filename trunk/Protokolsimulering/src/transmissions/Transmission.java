@@ -16,7 +16,7 @@ import nodes.Sensor;
  * A transmissions is also used to confirm receiving a transmissions previously.
  * @author Niels Thykier
  */
-public class Transmission implements Comparable<Transmission>, DataConstants{
+public class Transmission implements Comparable<Transmission>, DataConstants, Cloneable{
 	
 	/**
 	 * The receiver of the transmissions.
@@ -222,5 +222,15 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 			return 0;
 		}
 		return 1;
+	}
+	
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			//Not gonna happen.
+			throw new RuntimeException(e);
+		}
 	}
 }

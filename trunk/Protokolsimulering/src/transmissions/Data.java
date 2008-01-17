@@ -67,4 +67,14 @@ public class Data implements DataConstants{
 		dataNode.appendChild(content);
 		return dataNode;
 	}
+	
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			//Not gonna happen
+			throw new RuntimeException(e);
+		}
+	}
 }
