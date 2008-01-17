@@ -507,7 +507,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		NamedNodeMap attrMap = sensorElement.getAttributes();
 		int sensorID = -1;
 		try {
-			sensorID = Integer.parseInt(attrMap.getNamedItem("id").getNodeValue());
+			sensorID = Integer.parseInt(attrMap.getNamedItem("id").getNodeValue().trim());
 			if(sensorID < 0) {
 				throw new XMLParseException("Sensor tag missing id attribute OR id value was invalid. (Must be int above -1)");
 			}

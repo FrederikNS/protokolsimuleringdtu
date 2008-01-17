@@ -146,8 +146,8 @@ public class Location implements Drawable,Cloneable, Saveable {
 			case 'x':
 				if(current.getNodeName().length() < 2 && locX == null) {
 					try {
-						locX = Integer.parseInt(current.getNodeValue());
-					} catch(NumberFormatException e) {
+						locX = Integer.parseInt(current.getNodeValue().trim());
+					} catch(Exception e) {
 						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int");
 					}
 				} else {
@@ -157,8 +157,8 @@ public class Location implements Drawable,Cloneable, Saveable {
 			case 'y':
 				if(current.getNodeName().length() < 2 && locY == null) {
 					try {
-						locY = Integer.parseInt(current.getNodeValue());
-					} catch(NumberFormatException e) {
+						locY = Integer.parseInt(current.getNodeValue().trim());
+					} catch(Exception e) {
 						throw new XMLParseException("Illegal content value for the tag, " + current.getNodeName() + ": Expected int");
 					}
 				} else {
