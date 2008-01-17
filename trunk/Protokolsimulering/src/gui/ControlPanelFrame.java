@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -61,10 +62,13 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		modeTabPanes.addChangeListener(this);
 
 		//Console prefs
+		JPanel consoleOptionsPane = new JPanel();
+		consoleOptionsPane.setLayout(new GridLayout(0,1));
 		JCheckBox consoleEnable = new JCheckBox("Console");
 		consoleEnable.addActionListener(actionListener);
 		consoleEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_CONSOLE));
-		GUIReferences.controlPanelPane.add(consoleEnable);
+		GUIReferences.controlPanelPane.add(consoleOptionsPane);
+		consoleOptionsPane.add(consoleEnable);
 
 		//The statusbar is created
 		JPanel statusBarPanel = new JPanel();

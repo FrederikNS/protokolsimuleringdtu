@@ -224,6 +224,12 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_NEW_CANCEL:
 			CPNew.disposeWindow();
 			break;
+		case BUTTON_PROMOTE:
+			//TODO
+			break;
+		case BUTTON_DEMOTE:
+			//TODO
+			break;
 		case CHECKBOX_RADII:
 			if(0 != (GUIReferences.view & VIEW_RADII)) {
 				GUIReferences.view &= ~VIEW_RADII;

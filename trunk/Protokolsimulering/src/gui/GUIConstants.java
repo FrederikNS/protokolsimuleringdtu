@@ -29,6 +29,8 @@ public interface GUIConstants {
 	public final static int BUTTON_FAST_FORWARD = 118;
 	public final static int BUTTON_NEW_CANCEL = 119;
 	public final static int BUTTON_NEW_OK = 120;
+	public final static int BUTTON_PROMOTE = 121;
+	public final static int BUTTON_DEMOTE = 122;
 	
 	public final static int CHECKBOX_RADII = 201;
 	public final static int CHECKBOX_CONNECTIONS = 202;

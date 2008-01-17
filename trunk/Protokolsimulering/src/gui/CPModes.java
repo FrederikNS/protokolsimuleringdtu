@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -14,9 +14,9 @@ import javax.swing.JToggleButton;
 public class CPModes implements GUIConstants {
 	public CPModes(ActionListener actionListener){
 		JPanel modesPanel = new JPanel();
-		FlowLayout modesPanelLayout = new FlowLayout(FlowLayout.LEFT,0,0);
+		GridLayout modesPanelLayout = new GridLayout(0,2);
 		
-		JButton generateButton = new JButton("Generate...");
+		JButton generateButton = new JButton("Generate");
 		generateButton.setToolTipText("Generates a given number of random sensors");
 		generateButton.addActionListener(actionListener);
 		generateButton.setActionCommand(String.valueOf(BUTTON_GENERATE));
@@ -47,6 +47,16 @@ public class CPModes implements GUIConstants {
 		removeButton.setActionCommand(String.valueOf(BUTTON_REMOVE));
 		removeButton.setEnabled(false);
 		
+		JToggleButton promoteButton = new JToggleButton("Promote");
+		promoteButton.setToolTipText("");
+		promoteButton.addActionListener(actionListener);
+		promoteButton.setActionCommand(String.valueOf(BUTTON_PROMOTE));
+		
+		JToggleButton demoteButton = new JToggleButton("Demote");
+		promoteButton.setToolTipText("");
+		demoteButton.addActionListener(actionListener);
+		demoteButton.setActionCommand(String.valueOf(BUTTON_DEMOTE));
+		
 		GUIReferences.constructPanel.add(modesPanel);
 		modesPanel.setLayout(modesPanelLayout);
 		
@@ -54,6 +64,8 @@ public class CPModes implements GUIConstants {
 		GUIReferences.modeGroup.add(enableButton);
 		GUIReferences.modeGroup.add(disableButton);
 		GUIReferences.modeGroup.add(removeButton);
+		GUIReferences.modeGroup.add(promoteButton);
+		GUIReferences.modeGroup.add(demoteButton);
 		
 		modesPanel.add(addButton);
 		modesPanel.add(generateButton);
@@ -61,5 +73,7 @@ public class CPModes implements GUIConstants {
 		modesPanel.add(clearButton);
 		modesPanel.add(enableButton);
 		modesPanel.add(disableButton);
+		modesPanel.add(promoteButton);
+		modesPanel.add(demoteButton);
 	}
 }
