@@ -73,7 +73,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
 			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
 				saveFile = saveChooser.getSelectedFile();
-				if(saveFile.canWrite()) {
+				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+				/*if(saveFile.canWrite()) {
 					if(saveFile.exists()) {
 						// TODO override or cancel
 						saveFile.delete();
@@ -87,7 +88,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				} else {
 					//Do not have write permissions.
 					System.out.println(saveFile);
-				}
+				}*/
 			}
 			break;
 		case MENU_PREFERENCES:
