@@ -657,15 +657,18 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	protected void internalDraw(Graphics g) {
-		if(0 != (this.status & STATUS_SELECTED) && 0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
+		if( 0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
 			g.setColor(GUIReferences.connectionColor);
 			Point senPoint = Scaling.locationToPoint(this);
 			Point target;
 			int size = links.size();
+			Sensor sen;
 			for(int i = 0 ; i < size ; i++) {
-				target = Scaling.locationToPoint(links.get(i));
-				g.drawLine(senPoint.x, senPoint.y, target.x, target.y);
-				
+				sen = links.get(i);
+				if(sen.id > this.id) {
+					target = Scaling.locationToPoint(links.get(i));
+					g.drawLine(senPoint.x, senPoint.y, target.x, target.y);
+				}
 			}
 		}
 		
