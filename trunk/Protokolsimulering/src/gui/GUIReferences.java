@@ -49,7 +49,7 @@ public class GUIReferences implements GUIConstants{
 	/**
 	 * Default Sensor color
 	 */
-	public static Color sensorColor = /*Color.BLACK*/new Color(0x00007700);
+	public static Color sensorColor = Color.BLACK;
 	/**
 	 * Selected Sensor color
 	 */
@@ -73,7 +73,7 @@ public class GUIReferences implements GUIConstants{
 	
 	public static Color secondarySelectedColor = Color.CYAN;
 	
-//	public static Color terminalColor = new Color(0x00AAFFAA);
+	public static Color terminalColor = new Color(0x00007700);
 	
 	/**
 	 * Init the static variables in the correct order.
