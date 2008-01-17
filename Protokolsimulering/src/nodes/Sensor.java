@@ -24,6 +24,7 @@ import transmissions.Transmission;
 import transmissions.Transmitter;
 import turns.EndSteppable;
 import turns.Prepareable;
+import xml.DOMxmlParser;
 import exceptions.LabelNotRecognizedException;
 import exceptions.XMLParseException;
 import gui.GUIReferences;
@@ -462,6 +463,16 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		int size = sensorList.getLength();
 		for(int i = 0 ; i < size ; i++) {
 			loadFromXMLElement(sensorList.item(i));
+		}
+		Node transmissionRadiusNode = doc.getElementsByTagName("transmissionRadius").item(0);
+		if( transmissionRadiusNode != null) {
+			try {
+				transmissionRadius = Integer.parseInt(DOMxmlParser.getTextNodeValue(transmissionRadiusNode).trim());
+			} catch(Exception e) {
+				throw new XMLParseException("Transmission Radius tag did not contain an int.");
+			}
+		} else {
+			transmissionRadius = Sensor.SENSOR_TRANSMISSION_RADIUS_DEFAULT;
 		}
 	}
 	

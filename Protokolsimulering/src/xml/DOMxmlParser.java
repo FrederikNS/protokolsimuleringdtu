@@ -6,6 +6,8 @@ import nodes.Sensor;
 import notification.Note;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -27,9 +29,17 @@ public class DOMxmlParser {
 	private DOMxmlParser(File xmlFile) throws ParserConfigurationException, UnsupportedEncodingException, FileNotFoundException, SAXException, IOException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docbuilder = factory.newDocumentBuilder();
-		doc =  docbuilder.parse(new InputSource(new InputStreamReader(
-				new FileInputStream(xmlFile),
-					"UTF-8")));
+		FileInputStream inputFile = null;
+		try {
+			inputFile = new FileInputStream(xmlFile);
+			doc =  docbuilder.parse(new InputSource(new InputStreamReader(
+				inputFile, "UTF-8")));
+		} finally {
+			if(inputFile != null) {
+				inputFile.close();
+			}
+		}
+		
 
 	}
 	
@@ -42,23 +52,40 @@ public class DOMxmlParser {
 		} catch (UnsupportedEncodingException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		} catch (FileNotFoundException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		} catch (ParserConfigurationException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		} catch (SAXException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		} catch (IOException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		} catch (XMLParseException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		}
 			
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
+	}
+	
+	public static String getTextNodeValue(Node node) {
+		NodeList list = node.getChildNodes();
+		int length = list.getLength();
+		for(int i = 0 ; i < length ; i++) {
+			if(list.item(i).getNodeType() == Node.TEXT_NODE) {
+				return list.item(i).getNodeValue();
+			}
+		}
+		return null;
 	}
 }
