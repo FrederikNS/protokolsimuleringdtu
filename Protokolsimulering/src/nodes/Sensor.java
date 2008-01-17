@@ -388,6 +388,10 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		return 0 == (status & STATUS_DEAD);
 	}
 	
+	public Sensor[] getLinks() {
+		return links.toArray(new Sensor[1]);
+	}
+	
 	public void setEnabled(boolean running) {
 		if(running) {
 			status &= ~STATUS_DEAD;
@@ -464,6 +468,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		for(int i = 0 ; i < size ; i++) {
 			loadFromXMLElement(sensorList.item(i));
 		}
+		usedIDs = size;
 		Node transmissionRadiusNode = doc.getElementsByTagName("transmissionRadius").item(0);
 		if( transmissionRadiusNode != null) {
 			try {
