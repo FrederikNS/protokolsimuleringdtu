@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 import math.Scaling;
+import notification.Note;
 import notification.NoteConstants;
 
 import org.w3c.dom.Document;
@@ -59,17 +60,17 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	public static int usedIDs = 0;
 	
 	public final int id;
-	private ArrayList<Data> unsentData = new ArrayList<Data>();
-	private ArrayList<Sensor> links = new ArrayList<Sensor>();
-	private Transmission ingoing;
-	private Transmission outgoing;
-	private boolean waiting;
-	private int currentTick;
-	private int resendDelay;
-	private int status; //Mainly used for determing coloring.
-	private int transmissionRoll;
-	private SensorCircle draw; //handles drawing of the figure and radii
-	private static int transmissionRadius = SENSOR_TRANSMISSION_RADIUS_DEFAULT;
+	protected ArrayList<Data> unsentData = new ArrayList<Data>();
+	protected ArrayList<Sensor> links = new ArrayList<Sensor>();
+	protected Transmission ingoing;
+	protected Transmission outgoing;
+	protected boolean waiting;
+	protected int currentTick;
+	protected int resendDelay;
+	protected int status; //Mainly used for determing coloring.
+	protected int transmissionRoll;
+	protected SensorCircle draw; //handles drawing of the figure and radii
+	protected static int transmissionRadius = SENSOR_TRANSMISSION_RADIUS_DEFAULT;
 	
 	/**
 	 * Handles labelling.
@@ -93,6 +94,22 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	public Sensor(Location loc) {
 		this(loc, usedIDs++);
+	}
+	
+	protected Sensor(Sensor sen, int id) {
+		this((Location)sen, id);
+		this.ingoing = sen.ingoing;
+		this.outgoing = sen.outgoing;
+		this.links = sen.links;
+		this.draw = sen.draw;
+		this.transmissionRoll = sen.transmissionRoll;
+		this.waiting = sen.waiting;
+		this.resendDelay = sen.resendDelay;
+		this.status = sen.status;
+		for(Sensor loop : links) {
+			loop.links.remove(sen);
+			loop.addLinkToSensor(this);
+		}
 	}
 	
 	private Sensor(Location loc, int id) {
@@ -386,11 +403,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	public boolean isEnabled() {
 		return 0 == (status & STATUS_DEAD);
 	}
-	
-	public Sensor[] getLinks() {
-		return links.toArray(new Sensor[1]);
-	}
-	
+
 	public void setEnabled(boolean running) {
 		if(running) {
 			status &= ~STATUS_DEAD;
@@ -427,6 +440,16 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 			}
 		}
 	}
+
+
+	/**
+	 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
+	 * @return An array of Sensors that this sensor can reach.
+	 */
+	public Sensor[] getLinks() {
+		return links.toArray(new Sensor[1]);
+	}
+	
 	
 	/**
 	 * Flag a sensor as selected or deselected. It will notify its links that they are now / no longer "secondarily selected"
@@ -617,44 +640,86 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		return super.clone();
 	}
 
+	protected Color chooseColor(Color defaultColor) {
+		Color toReturn = defaultColor;
+
+		if(0 == (status & STATUS_SELECTED)) {
+			if(0 != (status & STATUS_DEAD)) {
+				toReturn = GUIReferences.deadColor;
+			} else if (0 != (status & STATUS_SECONDARY_SELECTED) 
+					&& 0 != (GUIReferences.view & GUIReferences.VIEW_NEIGHBOURS)) {
+				toReturn = GUIReferences.secondarySelectedColor;
+			} 
+		} else {
+			toReturn = GUIReferences.selectedColor;
+		}
+		return toReturn;
+	}
+	
+	protected void internalDraw(Graphics g) {
+		if(0 != (this.status & STATUS_SELECTED) && 0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
+			g.setColor(GUIReferences.connectionColor);
+			Point senPoint = Scaling.locationToPoint(this);
+			Point target;
+			int size = links.size();
+			for(int i = 0 ; i < size ; i++) {
+				target = Scaling.locationToPoint(links.get(i));
+				g.drawLine(senPoint.x, senPoint.y, target.x, target.y);
+				
+			}
+		}
+		
+		g.setColor(chooseColor(GUIReferences.sensorColor));
+		draw.draw(g);
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see nodes.Location#draw(java.awt.Graphics)
 	 */
 	@Override
 	public void draw(Graphics g) {
 		Color temp = g.getColor();
-		if(0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
-			g.setColor(GUIReferences.connectionColor);
-			Point senPoint = Scaling.locationToPoint(this);
-			Point target;
-			Sensor sen;
-			int size = links.size();
-			for(int i = 0 ; i < size ; i++) {
-				sen = links.get(i);
-				if(sen.id > this.id) {
-					target = Scaling.locationToPoint(links.get(i));
-					g.drawLine(senPoint.x, senPoint.y, target.x, target.y);
-				}
-			}
-		}
-		if(0 == (status & STATUS_SELECTED)) {
-			if(0 != (status & STATUS_DEAD)) {
-				g.setColor(GUIReferences.deadColor);
-			} else if (0 != (status & STATUS_SECONDARY_SELECTED) 
-					&& 0 != (GUIReferences.view & GUIReferences.VIEW_NEIGHBOURS)) {
-				g.setColor(GUIReferences.secondarySelectedColor);
-			} else {
-				g.setColor(GUIReferences.sensorColor);
-			}
-		} else {
-			g.setColor(GUIReferences.selectedColor);
-		}
-
-		draw.draw(g);
+		internalDraw(g);
 		g.setColor(temp);
 	}
+	
+	/**
+	 * Turn a sensor into a terminal or a terminal into a sensor. 
+	 * 
+	 * @param terminal true if it should be upgrade to a terminal, false if downgraded to normal sensor.
+	 * @return A new terminal or sensor depending on the input.
+	 */
+	public Sensor setTerminalStatus(boolean terminal) {
+		if(terminal) {
+			if(!(this instanceof Terminal)) {
+				Note.sendNote(this + " has been promoted to Terminal");
+				return new Terminal(this);
+			}
+			
+		} else {
+			if(this instanceof Terminal) {
+				Note.sendNote(this + " has been demoted to Sensor");
+				return new Sensor(this, this.id);
+			}
+		}
+		return this;
+	}
 
-
+	public class Terminal extends Sensor {
+		private Terminal(Sensor sen) {
+			super(sen, sen.id);
+		}
+		
+		
+		
+		@Override
+		protected Color chooseColor(Color defaultColor) {
+			return super.chooseColor(GUIReferences.terminalColor);
+		}
+		
+	}
+	
 	public static final class SensorComparator implements Comparator<Sensor> {
 		private final int compareType;
 		public static final int SORT_DEFAULT = 0;

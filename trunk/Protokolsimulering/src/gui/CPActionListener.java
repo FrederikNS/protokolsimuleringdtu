@@ -223,10 +223,20 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			CPNew.disposeWindow();
 			break;
 		case BUTTON_PROMOTE:
-			//TODO
+			if(GUIReferences.mode==MODE_PROMOTE){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
+			}else{
+				GUIReferences.mode = MODE_PROMOTE;
+			}
 			break;
 		case BUTTON_DEMOTE:
-			//TODO
+			if(GUIReferences.mode==MODE_DEMOTE){
+				GUIReferences.modeGroup.clearSelection();
+				GUIReferences.mode = MODE_SELECT;
+			}else{
+				GUIReferences.mode = MODE_DEMOTE;
+			}
 			break;
 		case CHECKBOX_RADII:
 			if(0 != (GUIReferences.view & VIEW_RADII)) {
