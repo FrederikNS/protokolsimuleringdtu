@@ -35,9 +35,9 @@ public class Scaling {
 	
 	/**
 	 * This method sets the minimum and maximum the y coordinate can be.
-	 * @param yMax the maximum number an y coordinate can be
-	 * @param yMin the minimum number an y coordinate can be
-	 * @throws IllegalArgumentException
+	 * @param x The maximum x coordinate
+	 * @param y The maximum y coordinate
+	 * @throws IllegalArgumentException If the x- or the y-coordinate is less than 1.
 	 */
 	public static void setPicCoords(int x,int y) throws IllegalArgumentException {
 		if(x<1||y<1) {

@@ -50,6 +50,8 @@ public interface GUIConstants {
 	public final static int MODE_ADD = 2;
 	public final static int MODE_ENABLE = 3;
 	public final static int MODE_REMOVE = 4;
+	public final static int MODE_PROMOTE = 5;
+	public final static int MODE_DEMOTE = 6;
 	
 	/**
 	 * View bit-mask for whether the Radii view is active or not 
