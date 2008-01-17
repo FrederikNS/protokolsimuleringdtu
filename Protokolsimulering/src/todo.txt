@@ -1,12 +1,10 @@
-GlobalAddressBook (Frederik) [Finde connections]
 Anskaffelse af locale Adressbooks fra GlobalAddressBook.
 
 Fixe alle "TODO"s
-fjernet nogle TODO's
 
 Færdiggørelse af Sensor-protokolen.
 Test af Sensor-protokolen.
 
-Færdiggørelse af XML aflæsning.
-Færdiggørelse af XML indskriving.
+Færdiggørelse af XML aflæsning. (25%)
+Færdiggørelse af XML indskriving. (50%)
 Lave Turn/TurnController classerne.
