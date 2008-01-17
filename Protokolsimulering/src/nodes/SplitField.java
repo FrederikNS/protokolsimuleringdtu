@@ -183,7 +183,7 @@ public class SplitField {
 			currentDistance = list[i].internalDistanceCheck(loc);
 			if(currentDistance < lowestDistance) {
 				lowestDistance = currentDistance;
-				toReturn = sensorList[i];
+				toReturn = list[i];
 			}
 		}
 		return toReturn;
