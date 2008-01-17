@@ -150,9 +150,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
 				System.out.println(returnValue);
 				if(returnValue == JOptionPane.OK_OPTION) {
-					GlobalAdressBook.clearBook();
-					Sensor.idToSensor = new Hashtable<Integer, Sensor>();
-					Sensor.usedIDs = 0;
+					Sensor.disposeAllSensors();
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}

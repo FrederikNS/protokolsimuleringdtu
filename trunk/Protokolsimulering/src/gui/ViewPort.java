@@ -6,6 +6,7 @@ import java.io.File;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import nodes.Sensor;
 import nodes.SplitField;
 
 /**
@@ -26,7 +27,14 @@ public class ViewPort extends JFrame{
 		graphicsPainter = new VPGraphicsPainter();
 		this.getContentPane().add(graphicsPainter);
 		setVisible(true);
-		
+	}
+	
+	public static void disposeViewPort(){
+		Sensor.disposeAllSensors();
+		if(GUIReferences.sensorNetwork!=null){
+			GUIReferences.sensorNetwork.dispose();
+			GUIReferences.sensorNetwork = null;
+		}
 	}
 	
 	public void generateField(int w,int h){
