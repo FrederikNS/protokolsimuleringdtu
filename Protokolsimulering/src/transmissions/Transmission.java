@@ -3,6 +3,11 @@ package transmissions;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
+
 import nodes.Sensor;
 
 
@@ -170,6 +175,41 @@ public class Transmission implements Comparable<Transmission>, DataConstants{
 		through = Sensor.INVALID_SENSOR_ID;
 	}
 
+	public Element generateXMLElement(Document doc) {
+		int size = data.size();
+		Element element = doc.createElement("transmission");
+		if(receiver != Sensor.INVALID_SENSOR_ID) {
+			Node receiverNode = doc.createElement("receiver");
+			Text receivingId = doc.createTextNode(String.valueOf(receiver));
+			receiverNode.appendChild(receivingId);
+			element.appendChild(receiverNode);
+		}
+		if(sender != Sensor.INVALID_SENSOR_ID) {
+			Node sendingNode = doc.createElement("sender");
+			Text sendingId = doc.createTextNode(String.valueOf(sender));
+			sendingNode.appendChild(sendingId);
+			element.appendChild(sendingNode);
+		}
+		if(through > -1) {
+			Node throughNode = doc.createElement("through");
+			Text throughId = doc.createTextNode(String.valueOf(through));
+			throughNode.appendChild(throughId);
+			element.appendChild(throughNode);
+		}
+		
+		
+		if(size > 0) {	
+			Node contentNode = doc.createElement("content");
+			for(int i = 0 ; i<size ; i++) {
+				contentNode.appendChild(data.get(i).generateXMLElement(doc));
+			}
+			element.appendChild(contentNode);
+		}
+		
+		return element;
+	}	
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
