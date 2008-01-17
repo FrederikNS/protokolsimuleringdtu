@@ -178,7 +178,7 @@ public class SplitField {
 	private Sensor returnSensor(Sensor[] list, int length, int dist, Location loc) {
 		Sensor toReturn = null;
 		int currentDistance = 0;
-		int lowestDistance = (int) Math.pow(dist, 2);
+		int lowestDistance = dist;
 		for(int i = 0 ; i < length ; i++) {
 			currentDistance = list[i].internalDistanceCheck(loc);
 			if(currentDistance < lowestDistance) {

@@ -28,7 +28,7 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 	}
 	
 	private void init() {
-		//TODO 
+		//TODO - doesn't work?
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(203,200));
 		setResizable(true);
