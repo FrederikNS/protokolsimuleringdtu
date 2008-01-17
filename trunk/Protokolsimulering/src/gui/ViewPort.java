@@ -19,8 +19,8 @@ public class ViewPort extends JFrame{
 	public ViewPort(String title,int posX,int posY){
 		super(title);
 		int screenHeight = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()*/ 601;
-		int screenWidth = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()*/ 601;
-		setSize(new Dimension((screenWidth-200),screenHeight));
+		int screenWidth = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()-200*/ 601;
+		setSize(new Dimension(screenWidth,screenHeight));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocation(posX, posY);
 		graphicsPainter = new VPGraphicsPainter();
