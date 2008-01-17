@@ -36,7 +36,7 @@ public class CPModes implements GUIConstants {
 		addButton.addActionListener(actionListener);
 		addButton.setActionCommand(String.valueOf(BUTTON_ADD));
 		
-		JToggleButton clearButton = new JToggleButton("Clear");
+		JButton clearButton = new JButton("Clear");
 		clearButton.setToolTipText("Removes all sensors");
 		clearButton.addActionListener(actionListener);
 		clearButton.setActionCommand(String.valueOf(BUTTON_CLEAR));
