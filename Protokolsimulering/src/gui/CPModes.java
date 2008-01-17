@@ -45,6 +45,7 @@ public class CPModes implements GUIConstants {
 		removeButton.setToolTipText("Removes the sensor you click");
 		removeButton.addActionListener(actionListener);
 		removeButton.setActionCommand(String.valueOf(BUTTON_REMOVE));
+		removeButton.setEnabled(false);
 		
 		GUIReferences.constructPanel.add(modesPanel);
 		modesPanel.setLayout(modesPanelLayout);
