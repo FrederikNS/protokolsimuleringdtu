@@ -186,7 +186,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_PLAY:
 			//TODO
 			for(int i=0;i<1000;i++){
-				GUIReferences.turnController.playTick()
+				GUIReferences.turnController.playTick();
 			}
 			GUIReferences.turnController.playTick();
 			break;
