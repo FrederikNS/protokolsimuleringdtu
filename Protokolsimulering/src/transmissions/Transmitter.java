@@ -9,7 +9,7 @@ public interface Transmitter {
 	/**
 	 * The "steps" it takes before a transmission is "timed-out".
 	 */
-	public static final int TIMEOUT_IN_STEPS = 3;
+	public static final int TIMEOUT_IN_STEPS = 120;
 	
 	/**
 	 * Invoked when a transmissions is to be transmitted. 
