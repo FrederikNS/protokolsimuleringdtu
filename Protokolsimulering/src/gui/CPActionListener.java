@@ -151,6 +151,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				if(returnValue == JOptionPane.OK_OPTION) {
 					GlobalAdressBook.clearBook();
 					Sensor.idToSensor = new Hashtable<Integer, Sensor>();
+					Sensor.usedIDs = 0;
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}

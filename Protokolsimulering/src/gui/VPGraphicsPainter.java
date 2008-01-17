@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Hashtable;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -44,8 +45,9 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
 		g.setColor(GUIReferences.sensorColor);
-		for(int i=0;i<Sensor.usedIDs;i++){
-			Sensor.idToSensor.get(i).draw(g);
+		Hashtable<Integer,Sensor> draw = Sensor.idToSensor;
+		for(int i=0;i<draw.size();i++){
+			draw.get(i).draw(g);
 		}
 	}
 
