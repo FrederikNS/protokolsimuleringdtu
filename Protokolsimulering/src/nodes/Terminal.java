@@ -7,5 +7,5 @@ public class Terminal extends Sensor {
 		super(0, 0);
 	}
 	
-	//errr... TODO (needs the protocol working though)
+	//errr... TODO (needs the protocol working though) XXX
 }

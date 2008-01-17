@@ -5,7 +5,6 @@ public class Data implements DataConstants{
 	private int dataType;
 	public static final Data GarbageData;
 	static {
-		//Ninja!
 		Data temp = new Data();
 		temp.dataType = TYPE_GARBAGE;
 		GarbageData = temp;

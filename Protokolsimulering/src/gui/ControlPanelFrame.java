@@ -46,9 +46,9 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		setPreferredSize(new Dimension(203,(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
 		setResizable(true);
 		
-		//Niels Hack
+		
 		if(controlPanelFrame != null) {
-			throw new RuntimeException("No really... One ControlPanelFrame is enough");
+			throw new RuntimeException();
 		}
 		controlPanelFrame = this;
 		
@@ -61,7 +61,6 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,Notificati
 		GUIReferences.listener = actionListener;
 		
 		//The panel used for the content of the control panel is created and added
-		//BoxLayout controlPanelPaneLayout = new BoxLayout(controlPanelPane,BoxLayout.Y_AXIS);
 		add(GUIReferences.controlPanelPane,BorderLayout.NORTH);
 		
 		//The two tabs on are created and filled
