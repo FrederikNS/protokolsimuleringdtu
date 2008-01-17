@@ -46,8 +46,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
 		g.setColor(GUIReferences.sensorColor);
 		Hashtable<Integer,Sensor> draw = Sensor.idToSensor;
-		for(int i=0;i<draw.size();i++){
-			draw.get(i).draw(g);
+		for(Sensor sen : draw.values()){
+			sen.draw(g);
 		}
 	}
 
