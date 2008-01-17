@@ -170,7 +170,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_STEP_BACKWARD:
 			GUIReferences.stepperGroup.clearSelection();
-			GUIReferences.turnController.playStepBackwards();
+			GUIReferences.turnController.playTurnBackwards();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			//TODO

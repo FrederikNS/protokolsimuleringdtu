@@ -35,6 +35,10 @@ public abstract class TurnController implements Saveable, Drawable{
 	 */
 	public abstract void playTurn();
 	
+	public abstract void playTickBackwards();
+	
+	public abstract void playTurnBackwards();
+	
 	/**
 	 * The TurnController will attempt to go to the given turn. If it jumps forward it may have to 
 	 * calculate all the turns inbetween. If it goes back it must keep a history and may have to 
@@ -142,6 +146,18 @@ public abstract class TurnController implements Saveable, Drawable{
 		}
 
 		public void draw(Graphics g) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void playTickBackwards() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void playTurnBackwards() {
 			// TODO Auto-generated method stub
 			
 		}
