@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import math.Scaling;
 import nodes.GlobalAdressBook;
 import nodes.Sensor;
 
@@ -46,17 +45,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				System.out.println("Selected: " + openFile);
 				ViewPort.disposeViewPort();
 				xml.DOMxmlParser.parse(openFile);
-				
-				/*int width = 0;
-				int height = 0;
-				width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
-				height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());*/
-
-				Scaling.setPicCoordsX(0, 500);
-				Scaling.setPicCoordsY(0, 500);
-
-				GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
-				GUIReferences.sensorNetwork.generateField(500,500);
 				CPNew.disposeWindow();
 				
 				/*if(openFile.exists()) {
@@ -227,11 +215,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
 			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
 
-			Scaling.setPicCoordsX(0, width);
-			Scaling.setPicCoordsY(0, height);
-
-			GUIReferences.sensorNetwork = new ViewPort("Untitled", 200, 0);
-			GUIReferences.sensorNetwork.generateField(width,height);
+			GUIReferences.generateNewField(width, height, "Untitled");
+			
 			CPNew.disposeWindow();
 			break;
 		case BUTTON_NEW_CANCEL:
