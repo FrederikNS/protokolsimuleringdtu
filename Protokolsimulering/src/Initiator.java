@@ -12,6 +12,14 @@ public class Initiator {
 	 */
 	public static void main(String[] args) {
 		new gui.ControlPanelFrame();
+		/*java.util.Random ran = new java.util.Random();
+		for(int i = 0 ; i < 100 ; i++) {
+			new nodes.Sensor(ran.nextInt(10), ran.nextInt(10));
+		}
+		
+		xml.XMLSaver.saveSensorList(nodes.Sensor.idToSensor.values()
+				, new java.io.File("./text.xml"));
+		
 		/*try {
 			javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
 			javax.xml.parsers.DocumentBuilder docbuilder = factory.newDocumentBuilder();
