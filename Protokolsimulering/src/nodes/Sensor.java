@@ -36,6 +36,10 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 
 	public static final int INVALID_SENSOR_ID = -1;
 	public static final int ALL_SENSORS = -2;
+	public static final int SENSOR_TRANSMISSION_RADIUS_MAX 		= 40;
+	public static final int SENSOR_TRANSMISSION_RADIUS_DEFAULT  = 20;
+	public static final int SENSOR_TRANSMISSION_RADIUS_MIN 		= 10;
+	
 	
 	protected static final int OPTION_SEND_DISABLED 	 	= 0x00000001;
 	protected static final int OPTION_RECEIVE_DISABLED 	= 0x00000002;
@@ -64,7 +68,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	private int status; //Mainly used for determing coloring.
 	private int transmissionRoll;
 	private SensorCircle draw; //handles drawing of the figure and radii
-	private static int transmissionRadius = 15;
+	private static int transmissionRadius = SENSOR_TRANSMISSION_RADIUS_DEFAULT;
 	
 	/**
 	 * Handles labelling.
@@ -169,13 +173,17 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	/**
-	 * Change the transmission radius.
+	 * Change the transmission radius. It must be greater (or equal to) than 
+	 * SENSOR_TRANSMISSION_RADIUS_MIN and less than (or equal to) SENSOR_TRANSMISSION_RADIUS_MAX
 	 * @param newRadius The new radius they can communicate within.
-	 * @throws IllegalArgumentException If the new radius was less than 1. 
+	 * @throws IllegalArgumentException If the new radius was illegal.
 	 */
 	public static void setTransmissionRadius(int newRadius){
-		if(newRadius < 1) {
-			throw new IllegalArgumentException("Transmission Radius cannot be less than 1");
+		if(newRadius < Sensor.SENSOR_TRANSMISSION_RADIUS_MIN) {
+			throw new IllegalArgumentException("Transmission Radius cannot be less than " + SENSOR_TRANSMISSION_RADIUS_MIN);
+		}
+		if(newRadius > Sensor.SENSOR_TRANSMISSION_RADIUS_MAX) {
+			throw new IllegalArgumentException("Transmission Radius cannot be greater than " + SENSOR_TRANSMISSION_RADIUS_MAX);
 		}
 		transmissionRadius = newRadius;
 	}
