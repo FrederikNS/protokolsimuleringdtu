@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.util.Hashtable;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -144,14 +142,11 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_CLEAR:
-			// FIXME
 			if(Sensor.idToSensor.size() > 0) {
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
 				System.out.println(returnValue);
 				if(returnValue == JOptionPane.OK_OPTION) {
-					GlobalAdressBook.clearBook();
-					Sensor.idToSensor = new Hashtable<Integer, Sensor>();
-					Sensor.usedIDs = 0;
+					Sensor.disposeAllSensors();
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}

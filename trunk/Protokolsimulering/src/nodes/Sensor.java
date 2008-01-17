@@ -466,6 +466,15 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	/**
+	 * Removes all sensors from the list.
+	 */
+	public static void disposeAllSensors() {
+		GlobalAdressBook.clearBook();
+		idToSensor = new Hashtable<Integer, Sensor>();
+		usedIDs = 0;
+	}
+	
+	/**
 	 * Load a sensor (or updates an previously loaded Sensor) from the XML file
 	 * @param sensorElement The DOM Document reference of the XML file
 	 * @return The newly loaded (or updated) sensor.
