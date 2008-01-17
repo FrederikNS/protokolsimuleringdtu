@@ -2,6 +2,7 @@ package xml;
 
 import java.io.File;
 
+import nodes.GlobalAdressBook;
 import nodes.Sensor;
 import notification.Note;
 
@@ -74,7 +75,7 @@ public class DOMxmlParser {
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
 			return;
 		}
-			
+		GlobalAdressBook.getAdressBook().generateDirectConnections();
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}
 	
