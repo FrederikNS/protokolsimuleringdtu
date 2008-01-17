@@ -133,4 +133,32 @@ public class Scaling {
 	public static int convertToRealY(int y) {
 		return new Fraction(y,currH).multiply(picYMax-picYMin).add(picYMin).evaluateRoundDown();
 	}
+
+	/**
+	 * @return the picXMax
+	 */
+	public static int getPicXMax() {
+		return picXMax;
+	}
+
+	/**
+	 * @return the picXMin
+	 */
+	public static int getPicXMin() {
+		return picXMin;
+	}
+
+	/**
+	 * @return the picYMax
+	 */
+	public static int getPicYMax() {
+		return picYMax;
+	}
+
+	/**
+	 * @return the picYMin
+	 */
+	public static int getPicYMin() {
+		return picYMin;
+	}
 }
