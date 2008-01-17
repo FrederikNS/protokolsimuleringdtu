@@ -44,10 +44,11 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	protected static final int ACTION_WAIT		= 0x00000010;
 	protected static final int ACTION_NOTHING_TO_DO		= 0x00000020;
 	
-	public static final int STATUS_SENDING 	   = 0x00000001;
-	public static final int STATUS_RECEIVING   = 0x00000002;
-	public static final int STATUS_DEAD		   = 0x00000004;
-	public static final int STATUS_SELECTED	   = 0x00000008;
+	public static final int STATUS_SENDING 				    = 0x00000001;
+	public static final int STATUS_RECEIVING				= 0x00000002;
+	public static final int STATUS_DEAD					    = 0x00000004;
+	public static final int STATUS_SELECTED				    = 0x00000008;
+	public static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
 	
 	protected static Random ran = new Random();
 	public static int usedIDs = 0;
@@ -177,14 +178,6 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 			throw new IllegalArgumentException("Transmission Radius cannot be less than 1");
 		}
 		transmissionRadius = newRadius;
-	}
-	
-	/**
-	 * Adds a link from this sensor to the other.
-	 * @param sen The other sensor.
-	 */
-	public void addLinkToSensor(Sensor sen) {
-		links.add(sen);
 	}
 	
 	/**
@@ -385,9 +378,37 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	
 	public void setEnabled(boolean running) {
 		if(running) {
-			status &= (~STATUS_DEAD);
+			status &= ~STATUS_DEAD;
 		} else {
 			status |= STATUS_DEAD;
+		}
+	}
+	
+	private void setSecondaySelection(boolean selectedStatus) {
+		if(selectedStatus) {
+			status |= STATUS_SECONDARY_SELECTED;
+		} else {
+			status &= ~STATUS_SECONDARY_SELECTED;
+		}
+	}
+	
+	/**
+	 * Adds a link from this sensor to the other.
+	 * @param sen The other sensor.
+	 */
+	public void addLinkToSensor(Sensor sen) {
+		links.add(sen);
+		updateLinks();
+	}
+	
+	/**
+	 * 
+	 */
+	public void updateLinks() {
+		if(0 != (status & STATUS_SELECTED)) {
+			for(Sensor sen : links) {
+				sen.setSecondaySelection(true);
+			}
 		}
 	}
 	
@@ -395,8 +416,13 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		if(selectedStatus) {
 			status |= STATUS_SELECTED;
 		} else {
-			status &= (~STATUS_SELECTED);
+			status &= ~STATUS_SELECTED;
 		}
+		//if(0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
+			for(Sensor sen : links) {
+				sen.setSecondaySelection(selectedStatus);
+			}
+		//}
 	}
 		
 	/**
@@ -524,6 +550,9 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		if(0 == (status & STATUS_SELECTED)) {
 			if(0 != (status & STATUS_DEAD)) {
 				g.setColor(GUIReferences.deadColor);
+			} else if (0 != (status & STATUS_SECONDARY_SELECTED) 
+					&& 0 != (GUIReferences.view & GUIReferences.VIEW_NEIGHBOURS)) {
+				g.setColor(GUIReferences.secondarySelectedColor);
 			} else {
 				g.setColor(GUIReferences.sensorColor);
 			}

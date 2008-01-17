@@ -1,5 +1,11 @@
 package transmissions;
 
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
+
 public class Data implements DataConstants{
 
 	private int dataType;
@@ -53,5 +59,12 @@ public class Data implements DataConstants{
 	
 	public int getSendingPriority() {
 		return dataType & PRIORITY_ALL;
+	}
+
+	public Node generateXMLElement(Document doc) {
+		Element dataNode = doc.createElement("data");
+		Text content = doc.createTextNode(String.valueOf(dataType));
+		dataNode.appendChild(content);
+		return dataNode;
 	}
 }

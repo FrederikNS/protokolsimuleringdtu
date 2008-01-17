@@ -218,7 +218,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case CHECKBOX_NEIGHBOURS:
-			//TODO
+			if(0 != (GUIReferences.view & VIEW_NEIGHBOURS)) {
+				GUIReferences.view &= ~VIEW_NEIGHBOURS;
+			} else {
+				GUIReferences.view |= VIEW_NEIGHBOURS;
+			}
+			if(GUIReferences.sensorNetwork != null) {
+				GUIReferences.sensorNetwork.repaint();
+			}
 			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer

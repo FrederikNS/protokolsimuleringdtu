@@ -55,6 +55,10 @@ public interface GUIConstants {
 	 */
 	public final static int VIEW_CONNECTIONS  = 0x00000002;
 	/**
+	 * View bit-mask for whether the Connections view is active or not 
+	 */
+	public final static int VIEW_NEIGHBOURS	  = 0x00000004;
+	/**
 	 * View bit-mask filter for no bit-masks 
 	 */
 	public final static int VIEW_NONE  		  = 0x00000000;

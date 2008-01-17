@@ -61,6 +61,8 @@ public class GUIReferences implements GUIConstants{
 	
 	public static Color connectionColor = Color.RED;
 	
+	public static Color secondarySelectedColor = Color.CYAN;
+	
 	/**
 	 * Init the static variables in the correct order.
 	 * Some values is inited through the ControlPanelFrame's constructor. 
