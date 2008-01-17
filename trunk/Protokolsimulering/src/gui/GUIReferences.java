@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import turns.TurnController;
 
+import math.Scaling;
 import nodes.Sensor;
 
 /**
@@ -26,6 +27,12 @@ public class GUIReferences implements GUIConstants{
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
 	static TurnController turnController = TurnController.newInstance();
+	
+	public static void generateNewField(int w,int h,String title){
+		Scaling.setPicCoords(w,h);
+		GUIReferences.sensorNetwork = new ViewPort(title, 200, 0);
+		GUIReferences.sensorNetwork.generateField(w,h);
+	}
 	/**
 	 * The currently selected sensor (or null if none is selected)
 	 */

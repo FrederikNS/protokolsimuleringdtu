@@ -88,8 +88,7 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 	}
 	
 	public Sensor(){
-		this(ran.nextInt(Scaling.getPicXMax() - Scaling.getPicXMin())
-				, ran.nextInt(Scaling.getPicYMax() - Scaling.getPicYMin()));
+		this(ran.nextInt(Scaling.getPicXMax()), ran.nextInt(Scaling.getPicYMax()));
 	}
 	
 	public Sensor(Location loc) {

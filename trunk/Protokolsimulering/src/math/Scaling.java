@@ -11,14 +11,6 @@ import nodes.Location;
 public class Scaling {
 	
 	/**
-	 * The minimum x coordinate in the window.
-	 */
-	private static int picXMin;
-	/**
-	 * The minimum y coordinate in the window.
-	 */
-	private static int picYMin;
-	/**
 	 * The maximum x coordinate in the window.
 	 */
 	private static int picXMax;
@@ -42,31 +34,17 @@ public class Scaling {
 	}
 	
 	/**
-	 * This method sets the minimum and maximum the x coordinate can be.
-	 * @param xMax the maximum number an x coordinate can be
-	 * @param xMin the minimum number an x coordinate can be
-	 * @throws IllegalArgumentException
-	 */
-	public static void setPicCoordsX(int xMin,int xMax) throws IllegalArgumentException {
-		if(xMax <= xMin) {
-			throw new IllegalArgumentException("Illegal x-coordinates.");
-		}
-		picXMax = xMax;
-		picXMin = xMin;
-	}
-	
-	/**
 	 * This method sets the minimum and maximum the y coordinate can be.
 	 * @param yMax the maximum number an y coordinate can be
 	 * @param yMin the minimum number an y coordinate can be
 	 * @throws IllegalArgumentException
 	 */
-	public static void setPicCoordsY(int yMin,int yMax) throws IllegalArgumentException {
-		if(yMax <= yMin) {
-			throw new IllegalArgumentException("Illegal y-coordinates.");
+	public static void setPicCoords(int x,int y) throws IllegalArgumentException {
+		if(x<1||y<1) {
+			throw new IllegalArgumentException("Illegal coordinates.");
 		}
-		picYMax = yMax;
-		picYMin = yMin;
+		picYMax = y;
+		picXMax = x;
 	}
 	
 	/**
@@ -77,15 +55,6 @@ public class Scaling {
 	public static void setWindowSize(int w, int h) {
 		currW = w;
 		currH = h;
-	}
-	
-	/**
-	 * Scales an x coordinate to fit the current size of the window.
-	 * @param x coordinate
-	 * @return an x coordinate that is scaled to fit the window
-	 */
-	public static int convertToPicX(int x) {
-		return new Fraction(x-picXMin,picXMax-picXMin).multiply(currW).evaluateRoundDown();
 	}
 	
 	/**
@@ -106,6 +75,14 @@ public class Scaling {
 		return new Point(convertToPicX(loc.getX()), convertToPicY(loc.getY()));
 	}
 	
+	/**
+	 * Scales an x coordinate to fit the current size of the window.
+	 * @param x coordinate
+	 * @return an x coordinate that is scaled to fit the window
+	 */
+	public static int convertToPicX(int x) {
+		return new Fraction(x,picXMax).multiply(currW).evaluateRoundDown();
+	}
 	
 	/**
 	 * Scales an y coordinate to fit the current size of the window.
@@ -113,7 +90,7 @@ public class Scaling {
 	 * @return an y coordinate that is scaled to fit the window
 	 */
 	public static int convertToPicY(int y) {
-		return new Fraction(y-picYMin,picYMax-picYMin).multiply(currH).evaluateRoundDown();
+		return new Fraction(y,picYMax).multiply(currH).evaluateRoundDown();
 	}
 	
 	/**
@@ -122,7 +99,7 @@ public class Scaling {
 	 * @return an x coordinate that isn't scaled
 	 */
 	public static int convertToRealX(int x) {
-		return new Fraction(x,currW).multiply(picXMax-picXMin).add(picXMin).evaluateRoundDown();
+		return new Fraction(x,currW).multiply(picXMax).evaluateRoundDown();
 	}
 	
 	/**
@@ -131,7 +108,7 @@ public class Scaling {
 	 * @return an y coordinate that isn't scaled
 	 */
 	public static int convertToRealY(int y) {
-		return new Fraction(y,currH).multiply(picYMax-picYMin).add(picYMin).evaluateRoundDown();
+		return new Fraction(y,currH).multiply(picYMax).evaluateRoundDown();
 	}
 
 	/**
@@ -142,23 +119,9 @@ public class Scaling {
 	}
 
 	/**
-	 * @return the picXMin
-	 */
-	public static int getPicXMin() {
-		return picXMin;
-	}
-
-	/**
 	 * @return the picYMax
 	 */
 	public static int getPicYMax() {
 		return picYMax;
-	}
-
-	/**
-	 * @return the picYMin
-	 */
-	public static int getPicYMin() {
-		return picYMin;
 	}
 }
