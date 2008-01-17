@@ -502,6 +502,27 @@ public class Sensor extends Location implements Transmitter, Prepareable, Compar
 		return sen;
 	}
 
+	public Element generateXMLTurnElement(Document doc) {
+		Element element = doc.createElement("sensor");
+		element.setAttribute("id", String.valueOf(id));
+		element.setIdAttribute("id", true);
+		//element.appendChild(super.generateXMLElement(doc));
+		if(this.ingoing != null) {
+			element.appendChild(this.ingoing.generateXMLElement(doc));
+		}
+		if(this.outgoing != null) {
+			element.appendChild(this.outgoing.generateXMLElement(doc));
+		}
+		if(this.unsentData.size() > 0 ) {
+			Node unsentDataNode = doc.createElement("unsentData");
+			for(Data d : unsentData) {
+				unsentDataNode.appendChild(d.generateXMLElement(doc));
+			}
+			element.appendChild(unsentDataNode);
+		}
+		return element;
+	}
+	
 	@Override
 	public Element generateXMLElement(Document doc) {
 		Element element = doc.createElement("sensor");
