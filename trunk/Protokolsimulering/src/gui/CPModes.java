@@ -50,9 +50,9 @@ public class CPModes implements GUIConstants {
 		modesPanel.setLayout(modesPanelLayout);
 		
 		GUIReferences.modeGroup.add(addButton);
+		GUIReferences.modeGroup.add(enableButton);
 		GUIReferences.modeGroup.add(disableButton);
 		GUIReferences.modeGroup.add(removeButton);
-		GUIReferences.modeGroup.add(clearButton);
 		
 		modesPanel.add(addButton);
 		modesPanel.add(generateButton);
