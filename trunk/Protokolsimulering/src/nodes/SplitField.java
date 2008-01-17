@@ -59,9 +59,9 @@ public class SplitField {
 	 * @param yMax the maximum y coordinate
 	 */
 	public SplitField(int xMin, int xMax, int yMin, int yMax) {
-		sensorList = new Sensor[10];
-		size = 0;
-		splitField = null;
+		this.sensorList = new Sensor[20];
+		this.size = 0;
+		this.splitField = null;
 		this.xMin = xMin;
 		this.xMax = xMax;
 		this.yMin = yMin;
@@ -78,34 +78,38 @@ public class SplitField {
 		case 0:
 			//upper left block
 			this.xMin = splitMe.xMin;
-			this.xMax = splitMe.xMax/2;
+			this.xMax = splitMe.xMin + (splitMe.xMax-splitMe.xMin)/2;
 			this.yMin = splitMe.yMin;
-			this.yMax = splitMe.yMax/2;
+			this.yMax = splitMe.yMin + (splitMe.yMax-splitMe.yMin)/2;
+			System.out.println("child: " + block + " xMin: " + xMin + " xMax: " + xMax + " yMin: " + yMin + " yMax: " + yMax);
 			break;
 		case 1:
 			//upper right block
-			this.xMin = (splitMe.xMax+1)/2;
+			this.xMin = splitMe.xMin + (splitMe.xMax-splitMe.xMin)/2 + 1;
 			this.xMax = splitMe.xMax;
 			this.yMin = splitMe.yMin;
-			this.yMax = splitMe.yMax/2;
+			this.yMax = splitMe.yMin + (splitMe.yMax-splitMe.yMin)/2;
+			System.out.println("child: " + block + " xMin: " + xMin + " xMax: " + xMax + " yMin: " + yMin + " yMax: " + yMax);
 			break;
 		case 2:
 			//lower left block
 			this.xMin = splitMe.xMin;
-			this.xMax = splitMe.xMax/2;
-			this.yMin = (splitMe.yMax+1)/2;
+			this.xMax = splitMe.xMin + (splitMe.xMax-splitMe.xMin)/2;
 			this.yMax = splitMe.yMax;
+			this.yMin = splitMe.yMin + (splitMe.yMax-splitMe.yMin)/2 + 1;
+			System.out.println("child: " + block + " xMin: " + xMin + " xMax: " + xMax + " yMin: " + yMin + " yMax: " + yMax);
 			break;
 		case 3:
 			//lower right block
-			this.xMin = (splitMe.xMax+1)/2;
 			this.xMax = splitMe.xMax;
-			this.yMin = (splitMe.yMax+1)/2;
+			this.xMin = splitMe.xMin + (splitMe.xMax-splitMe.xMin)/2 + 1;
 			this.yMax = splitMe.yMax;
+			this.yMin = splitMe.yMin + (splitMe.yMax-splitMe.yMin)/2 + 1;
+			System.out.println("child: " + block + " xMin: " + xMin + " xMax: " + xMax + " yMin: " + yMin + " yMax: " + yMax);
 			break;
 		}
 		this.size = 0;
-		sensorList = new Sensor[10];
+		this.sensorList = new Sensor[20];
 	}
 
 	/**
@@ -206,17 +210,32 @@ public class SplitField {
 			}
 		} else if(flag == ADD) {
 			if(size == sensorList.length) {
-				splitField = new SplitField[4];
-				for(int i = 0 ; i < 4 ; i++){
-					splitField[i] = new SplitField(this,i);
-				}
-				for(int j = 0 ; j < sensorList.length ; j++) {
-					int s = getBlock(sensorList[j]);
-					splitField[s].addSensor(sensorList[j]);
-					sensorList[j] = null;
+				if((this.xMax-this.xMin)/2 < 20 || (this.yMax-this.yMin)/2 < 20) {
+					Sensor[] temp = new Sensor[sensorList.length+20];
+					for(int i = 0 ; i < sensorList.length ; i++) {
+						temp[i] = sensorList[i];
+					}
+					System.out.println("resuze");
+					sensorList = temp;
+					this.sensorList[size] = sensor;
+					size++;
+				} else {
+					System.out.println("new children");
+					this.splitField = new SplitField[4];
+					for(int i = 0 ; i < 4 ; i++){
+						this.splitField[i] = new SplitField(this,i);
+					}
+					int s = 0;
+					Sensor reLocate;
+					for(int j = 0 ; j < sensorList.length ; j++) {
+						reLocate = this.sensorList[j];
+						s = getBlock(this.sensorList[j]);
+						this.splitField[s].addSensor(reLocate);
+						this.sensorList[j] = null;
+					}
 				}
 			} else {
-				sensorList[size] = sensor;
+				this.sensorList[size] = sensor;
 				size++;
 			}
 		} else if (flag == REMOVE) {
@@ -224,7 +243,7 @@ public class SplitField {
 				int g = 0;
 				for(int j = 0 ; j < splitField.length ; j++) {
 					for(int i = 0; i < splitField[j].sensorList.length; i++) {
-						sensorList[g] = splitField[j].sensorList[i];
+						this.sensorList[g] = this.splitField[j].sensorList[i];
 						g++;
 					}
 				}
