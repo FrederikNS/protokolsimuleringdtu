@@ -18,7 +18,7 @@ public abstract class TurnController implements Saveable, Drawable{
 	/**
 	 * Call when the field has been altered.
 	 */
-	public abstract void fieldHasBeenAltered();
+	//public abstract void fieldHasBeenAltered();
 	
 	/**
 	 * Play the next unit's prepare or step phase (depending on what part of the turn it is).
@@ -128,8 +128,8 @@ public abstract class TurnController implements Saveable, Drawable{
 			run = null;
 		}
 		
-		@Override
-		public void fieldHasBeenAltered() {
+		//@Override
+		private void fieldHasBeenAltered() {
 			if(this.currentTurn < 0) {
 				currentTurn = 0;
 				currentEntry = 0;
