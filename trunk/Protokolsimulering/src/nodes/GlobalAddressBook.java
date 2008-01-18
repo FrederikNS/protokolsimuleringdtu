@@ -5,31 +5,26 @@ import java.util.Hashtable;
 
 import nodes.Sensor;
 
-/**
- *
- * @author Frederik Nordahl Sabroe
- * @author Morten Soerensen
- */
-public class GlobalAdressBook {
-	private static GlobalAdressBook globalAdressBook;
+public class GlobalAddressBook {
+	private static GlobalAddressBook globalAdressBook;
 	private ArrayList<int[]> directConnections;
 	private boolean generatedBefore;
 	private int sensorsAccountedFor;
-	private static ArrayList<Sensor> listOfTerminals;
+	private static ArrayList<Sensor> listOfTerminals = new ArrayList<Sensor>();
 
-	private GlobalAdressBook() {
+	private GlobalAddressBook() {
 		directConnections=new ArrayList<int[]>();
 		sensorsAccountedFor = 0;
 		generatedBefore = false;
 	}
 
-	public static GlobalAdressBook clearBook() {
-		return globalAdressBook = new GlobalAdressBook();
+	public static GlobalAddressBook clearBook() {
+		return globalAdressBook = new GlobalAddressBook();
 	}
 
-	public static GlobalAdressBook getAdressBook() {
+	public static GlobalAddressBook getBook() {
 		if(globalAdressBook == null) {
-			globalAdressBook = new GlobalAdressBook();
+			globalAdressBook = new GlobalAddressBook();
 			globalAdressBook.generateDirectConnections();
 		}
 		return globalAdressBook;

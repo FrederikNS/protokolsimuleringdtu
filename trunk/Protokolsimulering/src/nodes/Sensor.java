@@ -102,7 +102,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 * @return The sensor
 	 */
 	public Sensor getSensor(int sensorID) {
-		return new Sensor(idToSensor.get(sensorID));
+		return idToSensor.get(sensorID);
 	}
 
 	/**
@@ -123,7 +123,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 * @return true, if the label was updated.
 	 */
 	public static boolean assignLabel(String label, int id) {
-		return idToRealSensor.get(id).assignLabel(label);
+		SensorImplementation sen = idToRealSensor.get(id);
+		if(sen.id == Sensor.INVALID_SENSOR_ID) {
+			return false;
+		}
+		return sen.assignLabel(label);
 	}
 	
 	/**
@@ -133,7 +137,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 */
 	public boolean assignLabel(String label) {
 		boolean toReturn = false;
-		SensorImplementation sen = idToRealSensor.get(id);
+		SensorImplementation sen = getReal();
 		if(label == null || label.trim().equals("")) {
 			toReturn = labelToID.remove(sen.sensorLabel) != null;
 		} else {
@@ -171,7 +175,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	
 	
 	public boolean canCommunicate(Sensor sen) {
-		return idToRealSensor.get(id).canCommunicate(sen);
+		return getReal().canCommunicate(sen);
 	}
 	
 	/**
@@ -187,10 +191,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	}
 	
 	public boolean isEnabled() {
-		return idToRealSensor.get(id).isEnabled();
+		return getReal().isEnabled();
 	}
 	public void setEnabled(boolean running) {
-		idToRealSensor.get(id).setEnabled(running);
+		getReal().setEnabled(running);
 	}
 	
 	/* (non-Javadoc)
@@ -205,21 +209,15 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 * @param sen The other sensor.
 	 */
 	public void addLinkToSensor(Sensor sen) {
-		idToRealSensor.get(id).addLinkToSensor(sen);
+		getReal().addLinkToSensor(sen);
 	}
-	
-	/*
-	 * Forces the sensor to update the secondary selected. Used by the addLinkToSensor method but can also
-	 * be called explicitly if the links have been modified without a call to that method.
-	 */
-	//public abstract void updateLinks() {}
 	
 	/**
 	 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
 	 * @return An array of Sensors that this sensor can reach.
 	 */
 	public Sensor[] getLinks() {
-		return idToRealSensor.get(id).getLinks();
+		return getReal().getLinks();
 	}
 	
 	/**
@@ -227,33 +225,39 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 * @param selectedStatus true if the sensor is selected, false if it is deselected.
 	 */
 	public void setSelected(boolean selectedStatus) {
-		idToRealSensor.get(id).setSelected(selectedStatus);
+		getReal().setSelected(selectedStatus);
 	}
+	
 	/**
 	 * Gets the locaiton of the sensor.
 	 * @return The location of the sensor.
 	 */
 	public Location getLocation() {
-		return idToRealSensor.get(id).getLocation();
+		return getReal().getLocation();
 	}
 	
 	/**
 	 * Removes all sensors from the list.
 	 */
 	public static void disposeAllSensors() {
-		GlobalAdressBook.clearBook();
+		GlobalAddressBook.clearBook();
 		idToSensor = new Hashtable<Integer, Sensor>();
 		usedIDs = 0;
+		idToRealSensor = new Hashtable<Integer, SensorImplementation>();
 	}
 	
 
 	public Element generateXMLTurnElement(Document doc) {
-		return idToRealSensor.get(id).generateXMLTurnElement(doc);
-	}
-	public Element generateXMLElement(Document doc) {
-		return idToRealSensor.get(id).generateXMLElement(doc);
+		return getReal().generateXMLTurnElement(doc);
 	}
 	
+	public Element generateXMLElement(Document doc) {
+		return getReal().generateXMLElement(doc);
+	}
+
+	public void setLinkToNearestTerminal(int nearestTerminal) {
+		getReal().setLinkToNearestTerminal(nearestTerminal);
+	}
 	
 	
 	/**
@@ -267,16 +271,25 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		if(terminal) {
 			if(!(sen instanceof Terminal)) {
 				Note.sendNote(sen + " has been promoted to Terminal");
-				return new Terminal(sen);
+				return copySensor(new Terminal(sen));
 			}
 			
 		} else {
 			if(sen instanceof Terminal) {
 				Note.sendNote(sen + " has been demoted to Sensor");
-				return new Sensor(sen);
+				GlobalAddressBook.removeTerminal(sen);
+				return copySensor(new SensorImplementation(sen));
 			}
 		}
 		return this;
+	}
+	
+	protected SensorImplementation getReal() {
+		SensorImplementation sen = idToRealSensor.get(id);
+		if(sen == null) {
+			sen = SensorImplementation.SENSOR_INVALID;
+		}
+		return sen;
 	}
 	
 	/**
@@ -303,6 +316,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		return toReturn;
 	}
 
+	public static void generateNewData() {
+		for(SensorImplementation sen : idToRealSensor.values()) {
+			sen.unsentData.add(Data.generateData(new Object()));
+		}
+	}
+	
 	/**
 	 * 
 	 * 
@@ -324,8 +343,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected int status; //Mainly used for determing coloring.
 		protected int transmissionRoll;
 		protected SensorCircle draw; //handles drawing of the figure and radii
-		private String sensorLabel = null;		
-		private Location loc;
+		protected Location loc;
+		protected int nearestTerminalID = Sensor.INVALID_SENSOR_ID;
+		protected String sensorLabel = null;		
+		
+		
+
+		public static SensorImplementation SENSOR_INVALID = new SensorImplementation(new Location(-1, -1), Sensor.INVALID_SENSOR_ID);
 		
 		private SensorImplementation(Location loc, int id) {
 			super(id);
@@ -344,6 +368,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		protected SensorImplementation(Location loc) {
 			this(loc, usedIDs++);
+		}
+		
+		protected SensorImplementation(Sensor sensor) {
+			this(sensor, sensor.id);
 		}
 		
 		protected SensorImplementation(Sensor sensor, int id) {
@@ -430,6 +458,45 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		public Location getLocation()  {	
 			return loc;
 		}
+		
+		/**
+		 * Forces the sensor to update the secondary selected. Used by the addLinkToSensor method but can also
+		 * be called explicitly if the links have been modified without a call to that method.
+		 */
+		protected void updateLinks() {
+			if(0 != (status & STATUS_SELECTED)) {
+				for(Sensor sen : links) {
+					idToRealSensor.get(sen.id).setSecondaySelection(true);
+				}
+			}
+		}
+		/**
+		 * Adds a link from this sensor to the other.
+		 * @param sen The other sensor.
+		 */
+		@Override
+		public void addLinkToSensor(Sensor sen) {
+			links.add(sen);
+			updateLinks();
+		}
+
+		/**
+		 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
+		 * @return An array of Sensors that this sensor can reach.
+		 */
+		@Override
+		public Sensor[] getLinks() {
+			return links.toArray(new Sensor[1]);
+		}
+
+		
+		
+		@Override
+		public void setLinkToNearestTerminal(int nearestTerminal) {
+			Note.sendNote(this + " - Nearest terminal id: " + nearestTerminal);
+			this.nearestTerminalID = nearestTerminal;
+		}
+
 			
 		
 		//*********************** XML **********************************//
@@ -466,37 +533,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			element.appendChild(this.getLocation().generateXMLElement(doc));
 			return element;
 		}
-		
-		/**
-		 * Forces the sensor to update the secondary selected. Used by the addLinkToSensor method but can also
-		 * be called explicitly if the links have been modified without a call to that method.
-		 */
-		protected void updateLinks() {
-			if(0 != (status & STATUS_SELECTED)) {
-				for(Sensor sen : links) {
-					idToRealSensor.get(sen.id).setSecondaySelection(true);
-				}
-			}
-		}
-		/**
-		 * Adds a link from this sensor to the other.
-		 * @param sen The other sensor.
-		 */
-		@Override
-		public void addLinkToSensor(Sensor sen) {
-			links.add(sen);
-			updateLinks();
-		}
-
-		/**
-		 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
-		 * @return An array of Sensors that this sensor can reach.
-		 */
-		@Override
-		public Sensor[] getLinks() {
-			return links.toArray(new Sensor[1]);
-		}
-
 
 		
 		/**
@@ -642,8 +678,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				toReturn = GUIReferences.selectedColor;
 			}
 			return toReturn;
-		}
-		
+		}		
 		/* (non-Javadoc)
 		 * @see nodes.Location#draw(java.awt.Graphics)
 		 */
@@ -716,6 +751,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static class Terminal extends SensorImplementation {
 		protected Terminal(Sensor sen) {
 			super(sen, sen.id);
+			GlobalAddressBook.addTerminal(this);
 		}
 		
 		

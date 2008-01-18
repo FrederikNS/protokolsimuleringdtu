@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import nodes.GlobalAddressBook;
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
 import shape.Drawable;
@@ -126,7 +127,9 @@ public abstract class TurnController implements Saveable, Drawable{
 				currentTurn = 0;
 				currentEntry = 0;
 				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_ID, currentTurn);
-
+				for(Sensor sen : Sensor.idToSensor.values()) {
+					sen.setLinkToNearestTerminal(GlobalAddressBook.getBook().closestConnectionToTerminal(sen).get(0).id);
+				}
 			} else {
 				//TODO split.
 			}

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import nodes.GlobalAdressBook;
+import nodes.GlobalAddressBook;
 import nodes.Sensor;
 
 /**
@@ -108,7 +108,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						//GUIReferences.sensorNetwork.getField().addSensor(new Sensor());
 						Sensor.newInstance();
 					}
-					GlobalAdressBook.getAdressBook().generateDirectConnections();
+					GlobalAddressBook.getBook().generateDirectConnections();
 					GUIReferences.sensorNetwork.repaint();
 				}
 			} catch (NumberFormatException e) {
