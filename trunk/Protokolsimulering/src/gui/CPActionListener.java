@@ -249,7 +249,16 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.view |= VIEW_CONSOLE;
 				GUIReferences.console.setVisible(true);
 			}
-			
+			break;
+		case CHECKBOX_ROUTES:
+			if(0 != (GUIReferences.view & VIEW_ROUTES)) {
+				GUIReferences.view &= ~VIEW_ROUTES;
+			} else {
+				GUIReferences.view |= VIEW_ROUTES;
+			}
+			if(GUIReferences.sensorNetwork != null) {
+				GUIReferences.sensorNetwork.repaint();
+			}
 			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer

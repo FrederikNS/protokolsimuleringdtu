@@ -130,16 +130,16 @@ public class GlobalAddressBook {
 		Sensor tempSensor;
 		while(!path.contains(from)) {
 			Sensor firstInQueue = path.get(0);
-			Sensor[] neighbors = firstInQueue.getLinks();
-			if(neighbors == null) {
+			Sensor[] neighbours = firstInQueue.getLinks();
+			if(neighbours == null) {
 				skip.add(firstInQueue);
 				continue;
 			}
-			for(int i = 0; i < neighbors.length; i++) {
-				Integer a = dist.get(neighbors[i]);
+			for(int i = 0; i < neighbours.length; i++) {
+				Integer a = dist.get(neighbours[i]);
 				Integer b = dist.get(firstInQueue); 
 				if(a!= null && b != null && a == (b-1)) {
-					temp.add(neighbors[i]);
+					temp.add(neighbours[i]);
 				}
 			}
 			boolean added = false;
@@ -159,9 +159,16 @@ public class GlobalAddressBook {
 		}
 		return path;
 	}
+	
+	/*private void generateGlobalAddressBook(){
+		int amountOfTerminals = listOfTerminals.size();
+		for(int terminal = 0;terminal<amountOfTerminals;terminal++){
+			for()
+		}
+	}*/
 
 	/**
-	 * This method uses the Width-first algorithm to find the shortest distance from a sensor to any.
+	 * This method uses the Width-first algorithm to find the shortest distance from a sensor to any other sensor.
 	 * @param from the sensor where the search starts
 	 */
 	private static void setStepsHashtable(Sensor from) {
