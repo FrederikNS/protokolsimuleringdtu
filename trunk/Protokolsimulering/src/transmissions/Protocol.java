@@ -19,12 +19,12 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	protected Transmission incomming;
 	protected int transmissionFrom = Sensor.INVALID_SENSOR_ID;
 	
-	protected static final int OPTION_SEND_DISABLED 	 	= 0x00000001;
-	protected static final int OPTION_RECEIVE_DISABLED 	= 0x00000002;
-	protected static final int ACTION_RECEIVING = 0x00000004;
-	protected static final int ACTION_SENDING	= 0x00000008;
-	protected static final int ACTION_WAIT		= 0x00000010;
-	protected static final int ACTION_NOTHING_TO_DO		= 0x00000020;
+	public static final int OPTION_SEND_DISABLED 	 	= 0x00000001;
+	public static final int OPTION_RECEIVE_DISABLED 	= 0x00000002;
+	public static final int ACTION_RECEIVING = 0x00000004;
+	public static final int ACTION_SENDING	= 0x00000008;
+	public static final int ACTION_WAIT		= 0x00000010;
+	public static final int ACTION_NOTHING_TO_DO		= 0x00000020;
 	
 	protected int currentTick = 0;
 	protected int waitingForSensor = Sensor.INVALID_SENSOR_ID;
@@ -44,6 +44,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		if(incomming != null) {
 			Note.sendNote(Note.WARNING, main +": Message from "+ msg.getSender() + " corrupted already received message!");
 			incomming = Transmission.generateCorruptTransmission();
+			return;
 		}
 		boolean isReceiver = (main.id == msg.getReceiver() || msg.getReceiver() == Sensor.ALL_SENSORS 
 				|| msg.getRespondsableTransmitter() == main.id 
@@ -62,19 +63,18 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 				//cannot receive.
 				currentTick |= OPTION_RECEIVE_DISABLED;
 			}
-			break;
+			return;
 		case TYPE_LISTENING:
 			//Someone wishes to receive.
 			if(isReceiver) {
 				//wee It is waiting for me to send.
 				if(0 == (currentTick & Protocol.OPTION_RECEIVE_DISABLED)) {
 						currentTick |= Protocol.ACTION_SENDING;
-						transmit(msg.generateConfirmationMessage());
 				}
 			} else {
 				//Not allowed to send.
 				currentTick |= Protocol.OPTION_SEND_DISABLED;
-				if(msg.getRespondsableTransmitter() == outgoing.first().getRespondsableTransmitter()) {
+				if(outgoing.size() > 0 && msg.getRespondsableTransmitter() == outgoing.first().getRespondsableTransmitter()) {
 					//wait for message.
 					waitingForSensor = msg.getRespondsableTransmitter();
 				}
@@ -91,7 +91,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		case TYPE_DATA:
 		case TYPE_NETWORK:
 			if(isReceiver) {
-				Note.sendNote(Note.DEBUG, main + " received transmission from " +  msg.getSender());
+				//Note.sendNote(Note.DEBUG, main + " received transmission from " +  msg.getSender());
 				incomming = msg;
 			}
 			break;
@@ -124,12 +124,20 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		main.transmit(msg);
 	}
 
+	public void addTransmissionToSend(Transmission trans){
+		outgoing.add(trans);
+	}
+	
+	public int getStatus() {
+		return currentTick;
+	}
+	
 	public void prepare() {
 		if(0 == (currentTick & Protocol.OPTION_SEND_DISABLED) && outgoing.size() > 0) {
 			Transmission trans = outgoing.last();
-			transmit(Transmission.generateSendRequest(trans.getReceiver(), trans.getSender()));
+			transmit(Transmission.generateSendRequest(trans.getRespondsableTransmitter(), trans.getSender()));
 		} else {
-			Note.sendNote(Note.DEBUG, main + " could not send this round.");
+			//Note.sendNote(Note.DEBUG, main + " could not send this round.");
 		}
 	}
 
@@ -137,7 +145,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		if(0 != (currentTick & Protocol.ACTION_SENDING)) {
 			transmit(outgoing.pollLast());
 		} else {
-			Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
+			//Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
 		}
 	}
 
