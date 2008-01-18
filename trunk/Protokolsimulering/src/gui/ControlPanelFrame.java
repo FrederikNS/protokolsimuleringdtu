@@ -81,8 +81,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		status = new JLabel("Ready");
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
-
-
+		
 		//frame is packed and shown
 		pack();
 		setVisible(true);
