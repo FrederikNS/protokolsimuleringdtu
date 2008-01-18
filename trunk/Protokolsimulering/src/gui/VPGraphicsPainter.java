@@ -109,7 +109,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	}
 	
 	private void selectSensor(Location loc,int dist){
-		//GUIReferences.selectedSensor = splitField.selectSensor(loc, dist);
+		//GUIReferences.selectedSensor = splitField.selectSensor(loc, dist); //TODO
 		Sensor sen;
 		int check;
 		int maxDist = dist;
