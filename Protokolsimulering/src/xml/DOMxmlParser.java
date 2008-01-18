@@ -22,6 +22,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import exceptions.XMLParseException;
+import gui.GUIReferences;
 
 public class DOMxmlParser {
 	private Document doc;
@@ -45,10 +46,28 @@ public class DOMxmlParser {
 	
 	public static void parse(File xmlFile) {
 		Document result;
+		int x = 0, y = 0; // sizes of the field.
 		try {
 			//TODO generate better notes for errors.
 			result = new DOMxmlParser(xmlFile).doc;
 			SensorImplementation.loadFromXML(result);
+			NodeList field = result.getElementsByTagName("field").item(0).getChildNodes();
+			Node child;
+			for(int i = 0; i < field.getLength() ; i++) {
+				child = field.item(i);
+				if(child.getNodeName().equals("x")) {
+					x = Integer.parseInt(getTextNodeValue(child).trim());
+				} else if(child.getNodeName().equals("y")) {
+					y = Integer.parseInt(getTextNodeValue(child).trim());
+				}
+			}
+			if(x == 0 || y == 0) {
+				throw new XMLParseException("The field size could not be determined.");
+			}
+		} catch (RuntimeException e){
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
+			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			return;
 		} catch (UnsupportedEncodingException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
@@ -74,6 +93,7 @@ public class DOMxmlParser {
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
 			return;
 		}
+		GUIReferences.generateNewField(x, y, xmlFile.getName());
 		GlobalAddressBook.getBook().generateDirectConnections();
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}

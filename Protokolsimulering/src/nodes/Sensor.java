@@ -524,6 +524,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		@Override
 		public ArrayList<Shape> getRouteToTerminal() {
 			ArrayList<Shape> lines = new ArrayList<Shape>();
+			if(this.nearestTerminalID == Sensor.INVALID_SENSOR_ID)
+				return lines;
 			if(0 != (GUIReferences.view & (GUIReferences.VIEW_ROUTES | GUIReferences.VIEW_ALL_ROUTES))) {
 				SensorImplementation current = this;
 				SensorImplementation through;
@@ -632,6 +634,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			element.setAttribute("id", String.valueOf(id));
 			element.setIdAttribute("id", true);
 			element.appendChild(this.getLocation().generateXMLElement(doc));
+			savingSensorToXML(element, doc);
 			return element;
 		}
 
@@ -667,15 +670,30 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 			
 			NamedNodeMap attrMap = sensorElement.getAttributes();
+			Node attribute;
 			int sensorID = -1;
+			boolean isTerminal = false;
 			try {
-				sensorID = Integer.parseInt(attrMap.getNamedItem("id").getNodeValue().trim());
+				attribute = attrMap.getNamedItem("id");
+				if(attribute == null) {
+					throw new XMLParseException("Sensor tag missing id attribute!");
+				}
+				sensorID = Integer.parseInt(attribute.getNodeValue().trim());
 				if(sensorID < 0) {
-					throw new XMLParseException("Sensor tag missing id attribute OR id value was invalid. (Must be int above -1)");
+					throw new XMLParseException("Sensor tag id attribute contained invalid value (Mut be int above -1)");
 				}
 			} catch(RuntimeException e) {
-				throw new XMLParseException("Sensor tag missing id attribute OR id value was invalid. (Must be int above -1)");
+				throw new XMLParseException("Sensor tag id attribute contained invalid value (Mut be int above -1)");
 			}
+			try {
+				attribute = attrMap.getNamedItem("terminal");
+				if(attribute != null) {
+					isTerminal = Boolean.valueOf(attribute.getNodeValue().trim());
+				}
+			} catch(RuntimeException e) {
+				isTerminal = false;
+			}
+			
 			
 			if(noLocation) {
 				sen = idToSensor.get(sensorID);
@@ -683,9 +701,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 					throw new XMLParseException("Did not contain Location of Sensor with id: " + sensorID + " and sensor was not loaded! Perhaps another XML file should be loaded first?");
 				}
 			} else {
-				sen = new Sensor(new SensorImplementation(loc, sensorID));
+				sen = new SensorImplementation(loc, sensorID);
+				if(isTerminal) {
+					sen = new Terminal(sen);
+				}
 			}
-			return sen;
+			return copySensor(sen);
 		}
 		
 		/**
@@ -742,6 +763,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 			return element;
 		}
+		
+		protected void savingSensorToXML(Element topSensorElement, Document doc){}
 		
 		//*********************** DRAW *******************************//
 		protected void internalDraw(Graphics g) {
@@ -863,6 +886,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		@Override
 		protected Color chooseColor(Color defaultColor) {
 			return super.chooseColor(GUIReferences.terminalColor);
+		}
+		
+		@Override
+		protected void savingSensorToXML(Element topSensorElement, Document doc) {
+			topSensorElement.setAttribute("terminal", "true");
 		}
 		
 		@Override
