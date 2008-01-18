@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
+import notification.Note;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -46,18 +47,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				ViewPort.disposeViewPort();
 				xml.DOMxmlParser.parse(openFile);
 				CPNew.disposeWindow();
-				
-				/*if(openFile.exists()) {
-					if(openFile.canRead()) {
-						//load
-						GUIReferences.sensorNetwork = new ViewPort(openFile, 200, 0);
-					} else {
-						//could not be read.
-					}
-				} else {
-					//Does not exist? Mispelled?
-				}*/
-				//openFile();
 			}
 			break;
 		case MENU_SAVE:
@@ -76,21 +65,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
 				saveFile = saveChooser.getSelectedFile();
 				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
-				/*if(saveFile.canWrite()) {
-					if(saveFile.exists()) {
-						// TODO override or cancel
-						saveFile.delete();
-					}
-					try {
-						saveFile.createNewFile();
-						//doSomeSaving.
-					} catch(IOException e) {
-						//
-					}
-				} else {
-					//Do not have write permissions.
-					System.out.println(saveFile);
-				}*/
 			}
 			break;
 		case MENU_PREFERENCES:
@@ -103,7 +77,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			try{
 				number = Integer.parseInt(generateDialog);
 				if(number>0){
-					System.out.println(generateDialog);
 					for(int i=0;i<number;i++) {
 						//GUIReferences.sensorNetwork.getField().addSensor(new Sensor());
 						Sensor.newInstance();
@@ -112,6 +85,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					GUIReferences.sensorNetwork.repaint();
 				}
 			} catch (NumberFormatException e) {
+				Note.sendNote(Note.ERROR, "Not a number.");
 			}
 		case BUTTON_ENABLE:
 			if(GUIReferences.mode==MODE_ENABLE){
@@ -146,7 +120,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_CLEAR:
-			// FIXME
 			if(Sensor.idToSensor.size() > 0) {
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
 				System.out.println(returnValue);
