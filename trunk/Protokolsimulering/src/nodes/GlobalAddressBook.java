@@ -5,6 +5,10 @@ import java.util.Hashtable;
 
 import nodes.Sensor;
 
+/**
+ * @author Frederik
+ * @author Morten
+ */
 public class GlobalAddressBook {
 	private static GlobalAddressBook globalAdressBook;
 	private ArrayList<int[]> directConnections;
