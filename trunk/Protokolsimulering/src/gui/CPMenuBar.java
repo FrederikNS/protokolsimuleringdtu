@@ -17,7 +17,7 @@ public class CPMenuBar implements GUIConstants {
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newMenuItem = new JMenuItem("New");
 		JMenuItem openMenuItem = new JMenuItem("Open...");
-		JMenuItem saveMenuItem = new JMenuItem("Save");
+		GUIReferences.saveMenuItem = new JMenuItem("Save");
 		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
 		JMenuItem quitMenuItem = new JMenuItem("Quit"); 
 		JMenu editMenu = new JMenu("Edit");
@@ -28,10 +28,11 @@ public class CPMenuBar implements GUIConstants {
 		newMenuItem.setActionCommand(String.valueOf(MENU_NEW));
 		openMenuItem.addActionListener(actionListener);
 		openMenuItem.setActionCommand(String.valueOf(MENU_OPEN));
-		saveMenuItem.addActionListener(actionListener);
-		saveMenuItem.setActionCommand(String.valueOf(MENU_SAVE));
+		GUIReferences.saveMenuItem.addActionListener(actionListener);
+		GUIReferences.saveMenuItem.setActionCommand(String.valueOf(MENU_SAVE));
 		saveAsMenuItem.addActionListener(actionListener);
 		saveAsMenuItem.setActionCommand(String.valueOf(MENU_SAVE_AS));
+		GUIReferences.saveMenuItem.setEnabled(false);
 		quitMenuItem.addActionListener(actionListener);
 		quitMenuItem.setActionCommand(String.valueOf(MENU_QUIT));
 		preferencesMenuItem.addActionListener(actionListener);
@@ -41,7 +42,7 @@ public class CPMenuBar implements GUIConstants {
 		menuBar.add(fileMenu);
 		fileMenu.add(newMenuItem);
 		fileMenu.add(openMenuItem);
-		fileMenu.add(saveMenuItem);
+		fileMenu.add(GUIReferences.saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.add(quitMenuItem);	
 		menuBar.add(editMenu);

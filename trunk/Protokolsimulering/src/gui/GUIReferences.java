@@ -6,6 +6,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import turns.TurnController;
@@ -27,6 +28,8 @@ public class GUIReferences implements GUIConstants{
 	static int mode = MODE_SELECT;
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
+	static JMenuItem saveMenuItem;
+	
 	static TurnController turnController = TurnController.newInstance();
 	
 	public static void generateNewField(int w,int h,String title){
