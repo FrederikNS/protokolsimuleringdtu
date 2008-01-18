@@ -7,11 +7,14 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+
+import shape.Shape;
 
 import math.Scaling;
 import nodes.GlobalAddressBook;
@@ -25,6 +28,7 @@ import nodes.SplitField;
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
+	private ArrayList<Shape> toDraw = new ArrayList<Shape>(); 
 	
 	private SplitField splitField;
 	private JPopupMenu jPop;
@@ -48,6 +52,9 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		Hashtable<Integer,Sensor> draw = Sensor.idToSensor;
 		for(Sensor sen : draw.values()){
 			sen.draw(g);
+		}
+		for(Shape shape:toDraw){
+			shape.draw(g);
 		}
 	}
 
