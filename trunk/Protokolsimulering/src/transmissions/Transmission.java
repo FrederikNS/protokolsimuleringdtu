@@ -84,6 +84,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		return new Transmission(wishingToSendTo, sendingFrom, Data.generateMessageSending());
 	}
 	
+	public static Transmission generateReceivedGarbage(int receiverOfGarbageData) {
+		return new Transmission(-1, receiverOfGarbageData, Data.generateMessageReceivedUnsuccessfully());
+	}
+	
 	/**
 	 * Fetches the ID of the receiving transmitter.
 	 * @return The id of the receiving transmitter.
@@ -154,6 +158,14 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		return data.remove(index);
 	}
 	
+	
+	/**
+	 * Update the respondsable transmitter field of the message.
+	 * @param sensorID The new sensorID of the respondsable transmitter.
+	 */
+	public void setRespondsableTransmitter(int sensorID) {
+		this.through = sensorID;
+	}
 	/**
 	 * Remove some data from the transmissions
 	 * @param toRemove The data to be removed.
@@ -163,7 +175,7 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		return data.remove(toRemove);
 	}
 	
-	public Transmission generateCorruptTransmission() {
+	public static Transmission generateCorruptTransmission() {
 		return new Transmission(Sensor.INVALID_SENSOR_ID, Sensor.INVALID_SENSOR_ID, Data.GarbageData);
 	}
 	

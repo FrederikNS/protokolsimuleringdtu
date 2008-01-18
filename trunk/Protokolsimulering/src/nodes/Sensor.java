@@ -70,10 +70,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 	protected Sensor(int id) {
 		this.id = id;
+		idToSensor.put(id, this);
 	}
 	protected Sensor(Sensor sen) {
 		this(sen.id);
-		idToSensor.put(id, this);
 	}
 
 	/**
@@ -844,19 +844,22 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		@Override
 		public void prepare() {
 			// TODO Auto-generated method stub
-			
+			Note.sendNote(Note.DEBUG, this + ": prepare phase.");
+			protocol.prepare();
 		}
 
 		@Override
 		public void step() {
 			// TODO Auto-generated method stub
-			
+			Note.sendNote(Note.DEBUG, this + ": step phase.");
+			protocol.step();
 		}
 
 		@Override
 		public void endStep() {
 			// TODO Auto-generated method stub
-			
+			Note.sendNote(Note.DEBUG, this + ": endStep phase.");
+			protocol.endStep();
 		}
 
 	}

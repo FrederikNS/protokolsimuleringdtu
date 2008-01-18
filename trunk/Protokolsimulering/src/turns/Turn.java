@@ -14,6 +14,7 @@ import xml.Saveable;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
+import notification.Note;
 
 /**
  * Turn contains data about each turn (between every step).
@@ -31,7 +32,7 @@ public class Turn implements Saveable, Drawable{
 	}
 	Turn(Collection<Sensor> sensor, int sortBy, int turn) {
 		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
-		this.sensors.addAll(sensors.descendingSet());		
+		this.sensors.addAll(sensors);		
 		this.turn = turn;
 	}
 	
@@ -74,6 +75,7 @@ public class Turn implements Saveable, Drawable{
 		
 		private RunnableTurn(TreeSet<Sensor> sensors, int turn) {
 			super(sensors, SensorComparator.SORT_BY_TURNS, turn);
+			Note.sendNote(Note.DEBUG, "New runnable turn created");
 		}
 		
 		public short getPhase() {
@@ -88,10 +90,11 @@ public class Turn implements Saveable, Drawable{
 				iter = sensors.descendingIterator();
 			}
 			if(!iter.hasNext()) {
+				Note.sendNote(Note.DEBUG, "Iterator did not have next.");
 				return;
 			}
 			Sensor sen = iter.next();
-			
+			Note.sendNote(Note.DEBUG, sen + " is next");
 			switch(phase) {
 			case PHASE_NOT_STARTED:
 				phase = PHASE_PREPARE;
