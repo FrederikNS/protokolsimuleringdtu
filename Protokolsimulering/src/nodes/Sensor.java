@@ -322,6 +322,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return getReal().toString();
+	}
+	
 	/**
 	 * 
 	 * 
@@ -701,7 +706,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		 */
 		@Override
 		public String toString() {
-			return "Sensor #" + id + " " + (sensorLabel != null?sensorLabel + " ":"") + super.toString();
+			return "Sensor #" + id + " " + (sensorLabel != null?sensorLabel + " ":"") + getLocation().toString();
 		}
 
 		/* (non-Javadoc)
@@ -766,6 +771,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			return super.chooseColor(GUIReferences.terminalColor);
 		}
 		
+		@Override
+		public String toString() {
+			return "Terminal #" + id + " " + (sensorLabel != null?sensorLabel + " ":"") + getLocation().toString();
+		}
 		
 	}
 
