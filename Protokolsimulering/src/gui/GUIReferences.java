@@ -37,7 +37,7 @@ public class GUIReferences implements GUIConstants{
 	
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);
-		GUIReferences.sensorNetwork = new ViewPort(title, 200, 0);
+		GUIReferences.sensorNetwork = new ViewPort(title);
 	}
 	/**
 	 * The currently selected sensor (or null if none is selected)

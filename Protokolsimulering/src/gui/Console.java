@@ -34,7 +34,7 @@ public class Console extends JFrame implements NotificationListener{
 	public Console init() {
 //		The console is created
 		setTitle("Console");
-		setLocation(0,600);
+		setLocation(0,610);
 		setMinimumSize(new Dimension(800,150));
 		console = new JTextArea();
 		FlowLayout consolePanelLayout = new FlowLayout(FlowLayout.LEFT,0,0);
