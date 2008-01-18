@@ -30,6 +30,11 @@ public class CPViewSettings implements GUIConstants{
 		viewNeighbours.setToolTipText("Highlights the neighbouring sensors of the selected sensor");
 		viewNeighbours.addActionListener(actionListener);
 		viewNeighbours.setActionCommand(String.valueOf(CHECKBOX_NEIGHBOURS));
+		
+		JCheckBox viewRoutes = new JCheckBox("Routes");
+		viewRoutes.setToolTipText("Shows routes from sensors to their terminals");
+		viewRoutes.addActionListener(actionListener);
+		viewRoutes.setActionCommand("CHECKBOX_ROUTES");
 
 		GUIReferences.controlPanelPane.add(viewSettingsPanel);
 		viewSettingsPanel.setLayout(viewSettingsLayout);
@@ -37,5 +42,6 @@ public class CPViewSettings implements GUIConstants{
 		viewSettingsPanel.add(viewRadii);
 		viewSettingsPanel.add(viewConnections);
 		viewSettingsPanel.add(viewNeighbours);
+		viewSettingsPanel.add(viewRoutes);
 	}
 }
