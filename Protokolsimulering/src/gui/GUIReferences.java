@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -29,6 +30,8 @@ public class GUIReferences implements GUIConstants{
 	static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
 	static JMenuItem saveMenuItem;
+	
+	static File currentFile;
 	
 	static TurnController turnController = TurnController.newInstance();
 	

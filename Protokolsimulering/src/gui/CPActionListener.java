@@ -44,13 +44,11 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			openChooser.setFileFilter(openFilter);
 			int openReturnVal = openChooser.showOpenDialog(ControlPanelFrame.getFrame());
 			if(openReturnVal == JFileChooser.APPROVE_OPTION) {
-				
 				openFile = openChooser.getSelectedFile();
-				System.out.println("Selected: " + openFile);
-				
 				
 				ViewPort.disposeViewPort();
 				xml.DOMxmlParser.parse(openFile);
+				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
 			}
 			break;
@@ -69,8 +67,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			saveChooser.setFileFilter(saveFilter);
 			int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
 			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
+				if(saveChooser.getSelectedFile().getPath().endsWith(".stuff")==false){
+					File tempFilePath = new File(saveChooser.getSelectedFile().getPath()+".stuff");
+					saveChooser.setSelectedFile(tempFilePath);
+				}
 				saveFile = saveChooser.getSelectedFile();
 				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+				GUIReferences.currentFile = saveFile;
 				GUIReferences.saveMenuItem.setEnabled(false);
 			}
 			break;
