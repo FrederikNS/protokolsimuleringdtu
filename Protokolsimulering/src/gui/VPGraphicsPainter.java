@@ -47,14 +47,14 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public synchronized void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
+		g.setColor(shapeColor);
+		for(Shape shape:toDraw){
+			shape.draw(g);
+		}
 		g.setColor(GUIReferences.sensorColor);
 		Hashtable<Integer,Sensor> draw = Sensor.idToSensor;
 		for(Sensor sen : draw.values()){
 			sen.draw(g);
-		}
-		g.setColor(shapeColor);
-		for(Shape shape:toDraw){
-			shape.draw(g);
 		}
 	}
 
