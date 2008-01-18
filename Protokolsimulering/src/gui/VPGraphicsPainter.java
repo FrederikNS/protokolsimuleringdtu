@@ -14,13 +14,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import shape.Shape;
-
 import math.Scaling;
 import nodes.GlobalAddressBook;
 import nodes.Location;
 import nodes.Sensor;
-import nodes.SplitField;
+import shape.Shape;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -28,12 +26,13 @@ import nodes.SplitField;
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
-	private ArrayList<Shape> toDraw = new ArrayList<Shape>(); 
 	
-	private SplitField splitField;
+	private ArrayList<Shape> toDraw = new ArrayList<Shape>(); 
+	private Color shapeColor = Color.BLACK;
+	
 	private JPopupMenu jPop;
 	private ControlPanelFrame cpf;
-
+	
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
@@ -53,13 +52,15 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		for(Sensor sen : draw.values()){
 			sen.draw(g);
 		}
+		g.setColor(shapeColor);
 		for(Shape shape:toDraw){
 			shape.draw(g);
 		}
 	}
 	
-	public void setToDraw(ArrayList<Shape> newList){
+	public void setToDraw(ArrayList<Shape> newList, Color color){
 		this.toDraw = newList;
+		this.shapeColor = color;
 	}
 
 	public void mouseClicked(MouseEvent arg0) {
@@ -120,7 +121,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	}
 	
 	private void selectSensor(Location loc,int dist){
-		//GUIReferences.selectedSensor = splitField.selectSensor(loc, dist); //TODO
 		Sensor sen;
 		int check;
 		int maxDist = dist;
@@ -132,16 +132,16 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				GUIReferences.selectedSensor = sen;
 			}
 		}
+		if(GUIReferences.selectedSensor != null) {
+			if(0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
+				this.setToDraw(
+						GUIReferences.selectedSensor.getRouteToTerminal()
+						, GUIReferences.connectionColor);	
+			}
+		}
 		
 	}
 
-	public SplitField getField() {
-		return splitField;
-	}
-	
-	public void createNewField(int w,int h) {
-		splitField = new SplitField(0,w,0,h);
-	}
 	
 	//Not used
 	/* (non-Javadoc)

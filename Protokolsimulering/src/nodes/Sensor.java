@@ -18,6 +18,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import shape.Line;
+import shape.Shape;
 import shape.DrawableCircle.SensorCircle;
 import transmissions.Data;
 import transmissions.DataConstants;
@@ -362,15 +364,19 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	
 	public static void findRoutes() {
 		SensorImplementation sen;
+		Note.sendNote("Generating paths...");
 		for(Terminal ter : Terminal.idToTerminals.values()) {
-			Note.sendNote(ter + " transmits location message.");
 			for(Sensor link : ter.links) {
 				sen = link.getReal();
 				sen.newTerminal(ter.id, ter.id, 0);
 			}
-			Note.sendNote(ter + " finished sending.");
 		}
 		for(int i = 0 ; findRoutes(i) ; i++) {}
+		Note.sendNote("Done.");
+	}
+	
+	public ArrayList<Shape> getRouteToTerminal() {
+		return getReal().getRouteToTerminal();
 	}
 	
 	@Override
@@ -430,12 +436,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		
 		protected SensorImplementation(Sensor sensor) {
-			this(sensor, sensor.id);
+			this(sensor.getReal(), sensor.id);
 		}
 		
-		protected SensorImplementation(Sensor sensor, int id) {
-			this(sensor.getLocation(), id);
-			SensorImplementation sen = idToRealSensor.get(id);
+		protected SensorImplementation(SensorImplementation sen, int id) {
+			this(sen.getLocation(), id);
 			this.ingoing = sen.ingoing;
 			this.outgoing = sen.outgoing;
 			this.links = sen.links;
@@ -448,15 +453,17 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			this.nearestTerminalID = sen.nearestTerminalID;
 			this.nearestTerminalDist = sen.nearestTerminalDist;
 			this.protocol = sen.protocol;
-			/*SensorImplementation senImp;
-			for(Sensor loop : links) {
+			this.links = new ArrayList<Sensor>();
+			SensorImplementation senImp;
+			for(Sensor loop : sen.links) {
+				this.links.add(loop);
 				senImp = idToRealSensor.get(loop.id);
 				senImp.links.remove(sen);
-				senImp.addLinkToSensor(this);
-			}*/
+				senImp.addLinkToSensor(copySensor(this));
+			}
+			
 			idToRealSensor.remove(this.id);
 			idToRealSensor.put(this.id, this);
-			GlobalAddressBook.clearBook().generateDirectConnections();
 		}
 		
 		public int getNearestTerminal() {
@@ -494,7 +501,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				this.sendThrough = through;
 				this.nearestTerminalID = terminalID;
 				this.nearestTerminalDist = steps;
-				Note.sendNote(this + " found new terminal #" + terminalID + " though " + idToRealSensor.get(through) + " : steps: " + steps);
 			}
 		}
 		
@@ -513,6 +519,21 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			for(Sensor sen : links) {
 				idToRealSensor.get(sen.id).setSecondaySelection(selectedStatus);
 			}
+		}
+		
+		@Override
+		public ArrayList<Shape> getRouteToTerminal() {
+			ArrayList<Shape> lines = new ArrayList<Shape>();
+			if(0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
+				SensorImplementation current = this;
+				SensorImplementation through;
+				while(current.nearestTerminalID != current.id) {
+					through = idToRealSensor.get(current.sendThrough);
+					lines.add(new Line(current.getLocation(), through.getLocation()));
+					current = through;
+				}
+			}
+			return lines;
 		}
 		
 		/**
@@ -829,7 +850,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static class Terminal extends SensorImplementation {
 		protected static Hashtable<Integer, Terminal> idToTerminals = new Hashtable<Integer,Terminal>(); 
 		protected Terminal(Sensor sen) {
-			super(sen, sen.id);
+			super(sen.getReal(), sen.id);
 			idToTerminals.put(this.id, this);
 			//GlobalAddressBook.addTerminal(this);
 			this.nearestTerminalDist = -1;

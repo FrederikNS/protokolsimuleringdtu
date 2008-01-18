@@ -1,9 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -12,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import shape.Shape;
 
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
@@ -253,10 +257,17 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case CHECKBOX_ROUTES:
 			if(0 != (GUIReferences.view & VIEW_ROUTES)) {
 				GUIReferences.view &= ~VIEW_ROUTES;
+				GUIReferences.sensorNetwork.getGraphicsPainter().setToDraw(new ArrayList<Shape>(), Color.BLACK);
 			} else {
 				GUIReferences.view |= VIEW_ROUTES;
 			}
+			if(GUIReferences.selectedSensor != null) {
+				GUIReferences.sensorNetwork.getGraphicsPainter()
+					.setToDraw(GUIReferences.selectedSensor.getRouteToTerminal()
+							, GUIReferences.connectionColor);
+			}
 			if(GUIReferences.sensorNetwork != null) {
+				
 				GUIReferences.sensorNetwork.repaint();
 			}
 			break;

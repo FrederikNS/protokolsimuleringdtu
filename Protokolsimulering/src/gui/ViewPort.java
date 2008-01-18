@@ -7,7 +7,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import nodes.Sensor;
-import nodes.SplitField;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -41,15 +40,9 @@ public class ViewPort extends JFrame{
 		}
 	}
 	
-	public void generateField(int w,int h){
-		graphicsPainter.createNewField(w, h);
-	}
 
 	public ViewPort(File openFile,int posX,int posY){
 		this(openFile.getAbsolutePath(),posX,posY);
 	}	
-	
-	public SplitField getField() {
-		return graphicsPainter.getField();
-	}
+
 }
