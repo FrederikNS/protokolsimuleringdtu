@@ -53,10 +53,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case MENU_SAVE:
-			//TODO
-			if(false){ //if(file has already been saved once)
-				//save(fileName);
+			if(GUIReferences.currentFile != null) {
+				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
 				GUIReferences.saveMenuItem.setEnabled(false);
+				GUIReferences.sensorNetwork.setTitle(GUIReferences.currentFile.getName());
 				break;
 			}
 		case MENU_SAVE_AS:
@@ -67,12 +67,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			saveChooser.setFileFilter(saveFilter);
 			int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
 			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
-				if(saveChooser.getSelectedFile().getPath().endsWith(".stuff")==false){
+				if(saveChooser.getSelectedFile().getPath().contains(".")==false){
 					File tempFilePath = new File(saveChooser.getSelectedFile().getPath()+".stuff");
 					saveChooser.setSelectedFile(tempFilePath);
 				}
 				saveFile = saveChooser.getSelectedFile();
 				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+				GUIReferences.sensorNetwork.setTitle(saveFile.getName());
 				GUIReferences.currentFile = saveFile;
 				GUIReferences.saveMenuItem.setEnabled(false);
 			}
@@ -93,6 +94,11 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					}
 					GlobalAddressBook.getBook().generateDirectConnections();
 					GUIReferences.saveMenuItem.setEnabled(true);
+					if(GUIReferences.currentFile != null) {
+						GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+					} else {
+						GUIReferences.sensorNetwork.setTitle("*Untitled");
+					}
 					GUIReferences.sensorNetwork.repaint();
 					
 				}
@@ -138,6 +144,11 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				if(returnValue == JOptionPane.OK_OPTION) {
 					Sensor.disposeAllSensors();
 					GUIReferences.saveMenuItem.setEnabled(true);
+					if(GUIReferences.currentFile != null) {
+						GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+					} else {
+						GUIReferences.sensorNetwork.setTitle("*Untitled");
+					}
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}
@@ -146,21 +157,45 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_TO_START:
 			//TODO
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			GUIReferences.turnController.goToTurn(0);
 			GUIReferences.stepperGroup.clearSelection();
+			GUIReferences.saveMenuItem.setEnabled(true);
 			break;
 		case BUTTON_REWIND:
 			//TODO
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			for(int i=1;i<1000;i++){
 			GUIReferences.turnController.playTurnBackwards();
 			}
 			break;
 		case BUTTON_STEP_BACKWARD:
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			GUIReferences.stepperGroup.clearSelection();
 			GUIReferences.turnController.playTurnBackwards();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			//TODO
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			for(int i=0;i<1000;i++){
 				GUIReferences.turnController.playTickBackwards();
 			}
@@ -172,20 +207,44 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_PLAY:
 			//TODO
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			for(int i=0;i<1000;i++){
 				GUIReferences.turnController.playTick();
 			}
 			GUIReferences.turnController.playTick();
 			break;
 		case BUTTON_NEXT_SENSOR:
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			GUIReferences.turnController.playTick();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_STEP_FORWARD:
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			GUIReferences.turnController.playTurn();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
+			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			//TODO
 			int i=0;
 			while(i<1000){
