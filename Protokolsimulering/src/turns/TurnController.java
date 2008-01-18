@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
+import notification.Note;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -95,6 +96,7 @@ public abstract class TurnController implements Saveable, Drawable{
 		@Override
 		public void playTick() {
 			RunnableTurn turn = getCurrentTurn();
+			Note.sendNote(Note.DEBUG, "play tick: " + turn);
 			turn.tick();
 			if(turn.getPhase() == RunnableTurn.PHASE_FINISHED) {
 				endOfTurn();
@@ -112,7 +114,12 @@ public abstract class TurnController implements Saveable, Drawable{
 
 		private void endOfTurn() {
 			if(currentEntry == turnList.length) {
-				
+				Turn[] temp = new Turn[turnList.length];
+				for(int i = 5; i < turnList.length ; i++) {
+					temp[i-5] = turnList[i];
+				}
+				turnList = temp;
+				currentEntry = 5;
 			} else {
 				currentEntry++;
 			}
@@ -126,11 +133,10 @@ public abstract class TurnController implements Saveable, Drawable{
 			if(this.currentTurn < 0) {
 				currentTurn = 0;
 				currentEntry = 0;
+				Note.sendNote(Note.DEBUG, "Creating new turn");
 				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_ID, currentTurn);
+				Note.sendNote(Note.DEBUG, "Amount of sensors in turn: " + turnList[currentEntry].sensors.size());
 				Sensor.findRoutes();
-				/*for(Sensor sen : Sensor.idToSensor.values()) {
-					sen.setLinkToNearestTerminal(GlobalAddressBook.getBook().closestConnectionToTerminal(sen).get(0).id);
-				}*/
 			} else {
 				//TODO split.
 			}
