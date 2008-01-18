@@ -24,6 +24,7 @@ public class GlobalAddressBook {
 	}
 
 	public static GlobalAddressBook clearBook() {
+		Sensor.clearAllLinks();
 		return globalAdressBook = new GlobalAddressBook();
 	}
 

@@ -73,6 +73,7 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		return new Transmission(sender, receiver, Data.generateMessageReceivedSuccessfully());
 	}
 	
+	
 	/**
 	 * Generates a send-request Transmission.
 	 * @param wishingToSendTo The one to be receiving.
