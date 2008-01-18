@@ -34,7 +34,7 @@ public class CPViewSettings implements GUIConstants{
 		JCheckBox viewRoutes = new JCheckBox("Routes");
 		viewRoutes.setToolTipText("Shows routes from sensors to their terminals");
 		viewRoutes.addActionListener(actionListener);
-		viewRoutes.setActionCommand("CHECKBOX_ROUTES");
+		viewRoutes.setActionCommand(String.valueOf(CHECKBOX_ROUTES));
 
 		GUIReferences.controlPanelPane.add(viewSettingsPanel);
 		viewSettingsPanel.setLayout(viewSettingsLayout);
