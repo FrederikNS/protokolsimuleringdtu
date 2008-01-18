@@ -35,7 +35,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case MENU_NEW:
 			//TODO
 			CPNew.openCPNew();
-			
 			break;
 		case MENU_OPEN:
 			//TODO - check if session is already running?
