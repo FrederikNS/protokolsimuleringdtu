@@ -488,7 +488,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		 */
 		@Override
 		public Sensor[] getLinks() {
-			return links.toArray(new Sensor[1]);
+			if(links.size() == 0) {
+				return null;
+			}
+			return links.toArray(new Sensor[links.size()]);
 		}
 
 		
