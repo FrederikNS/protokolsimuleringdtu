@@ -6,8 +6,8 @@ import java.util.Hashtable;
 import nodes.Sensor;
 
 /**
- * @author Frederik
- * @author Morten
+ * @author Frederik Nordahl Sabroe
+ * @author Morten Soerensen
  */
 public class GlobalAddressBook {
 	private static GlobalAddressBook globalAdressBook;
@@ -96,7 +96,11 @@ public class GlobalAddressBook {
 	 * @return number of steps
 	 */
 	public int numberOfSteps(Sensor from, Sensor to) {
-		return getStepsHashtable(from).get(to);
+		Integer value = getStepsHashtable(from).get(to);
+		if(value == null) {
+			return Integer.MAX_VALUE;
+		}
+		return value;
 	}
 	
 	/**
@@ -131,6 +135,9 @@ public class GlobalAddressBook {
 		while(!path.contains(from)) {
 			Sensor firstInQueue = path.get(0);
 			Sensor[] neighbors = firstInQueue.getLinks();
+			if(neighbors == null) {
+				break;
+			}
 			for(int i = 0; i < neighbors.length; i++) {
 				if(dist.get(neighbors[i]) == dist.get(firstInQueue)-1) {
 					temp.add(neighbors[i]);
