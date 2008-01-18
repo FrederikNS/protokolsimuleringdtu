@@ -1,32 +1,16 @@
 package shape;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class ShapeList implements Drawable{
 
-	private Shape[] shapes;
-	private int size;
-	
-	public ShapeList() {
-		resize(10);
-	}
-	
-	private void resize(int newSize) {
-		Shape[] temp = new Shape[newSize];
-		if(shapes != null) {
-			if(size > newSize) {
-				size = newSize;
-			} 
-			for(int i = 0 ; i < size ; i++) {
-				temp[i] = shapes[i];
-			}
-		}
-		shapes = temp;
-	}
+	private ArrayList<Shape> shapes = new ArrayList<Shape>();
 	
 	public int getIndexOf(Shape device) {
+		int size = shapes.size();
 		for(int i = 0 ; i < size ; i++) {
-			if(shapes[i].equals(device)) {
+			if(shapes.get(i).equals(device)) {
 				return i;
 			}
 		}
@@ -34,28 +18,26 @@ public class ShapeList implements Drawable{
 	}
 	
 	public int size() {
-		return size;
+		return shapes.size();
 	}
 	
 	public void add(Shape newShape) {
 		if(getIndexOf(newShape) == -1) {
-			shapes[size++] = newShape;
-			if(shapes.length == size) {
-				resize(10);
-			}
+			shapes.add(newShape);
 		}
 	}
 	
 	public void addAll(ShapeList list) {
-		resize(shapes.length + list.shapes.length + 10);
-		for(int i = 0 ; i<list.shapes.length ; i++) {
-			shapes[size +i] = list.shapes[i];
+		int size = list.shapes.size();
+		for(int i = 0 ; i< size; i++) {
+			add(list.shapes.get(i));
 		}
 	}
 
-	public void draw(Graphics g) {
-		for ( int i = 0 ; i < size ; i++) {
-			shapes[i].draw(g);
+	public void draw(Graphics g) {	
+		int size = size();
+		for(int i = 0 ; i < size ; i++) {
+			shapes.get(i).draw(g);
 		}
 	}
 }
