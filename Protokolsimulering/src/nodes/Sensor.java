@@ -391,6 +391,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				senImp.links.remove(sen);
 				senImp.addLinkToSensor(this);
 			}
+			idToRealSensor.remove(this.id);
+			idToRealSensor.put(this.id, this);
 		}
 		
 		
@@ -760,6 +762,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected Color chooseColor(Color defaultColor) {
 			return super.chooseColor(GUIReferences.terminalColor);
 		}
+		
 		
 	}
 
