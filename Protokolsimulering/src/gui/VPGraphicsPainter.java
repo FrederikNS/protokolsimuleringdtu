@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import math.Scaling;
-import nodes.GlobalAdressBook;
+import nodes.GlobalAddressBook;
 import nodes.Location;
 import nodes.Sensor;
 import nodes.SplitField;
@@ -67,7 +67,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			break;
 		case MODE_ADD:
 			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
-			GlobalAdressBook.getAdressBook().generateDirectConnections();
+			GlobalAddressBook.getBook().generateDirectConnections();
 			break;
 		case MODE_REMOVE:
 			if(GUIReferences.selectedSensor!=null){

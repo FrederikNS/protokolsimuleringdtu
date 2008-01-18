@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import nodes.GlobalAdressBook;
+import nodes.GlobalAddressBook;
 import nodes.Sensor.SensorImplementation;
 import notification.Note;
 
@@ -74,7 +74,7 @@ public class DOMxmlParser {
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
 			return;
 		}
-		GlobalAdressBook.getAdressBook().generateDirectConnections();
+		GlobalAddressBook.getBook().generateDirectConnections();
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}
 	

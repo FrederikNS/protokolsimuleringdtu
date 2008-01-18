@@ -21,7 +21,7 @@ import nodes.Sensor.SensorComparator;
  * @author Niels Thykier
  */
 public class Turn implements Saveable, Drawable{
-	public final TreeSet<Sensor> sensors;
+	final TreeSet<Sensor> sensors;
 	public final int turn;
 	private static int turnsCreated = 0;
 	
