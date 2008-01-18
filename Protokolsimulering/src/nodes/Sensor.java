@@ -70,10 +70,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 	protected Sensor(int id) {
 		this.id = id;
-		idToSensor.put(id, this);
+		
 	}
 	protected Sensor(Sensor sen) {
 		this(sen.id);
+		idToSensor.put(id, this);
 	}
 
 	/**
