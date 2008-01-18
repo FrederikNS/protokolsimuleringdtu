@@ -15,6 +15,7 @@ public class GlobalAddressBook {
 	private boolean generatedBefore;
 	private int sensorsAccountedFor;
 	private static ArrayList<Sensor> listOfTerminals = new ArrayList<Sensor>();
+	private static ArrayList<Hashtable<Sensor, Integer>> hash = new ArrayList<Hashtable<Sensor, Integer>>();
 
 	private GlobalAddressBook() {
 		directConnections=new ArrayList<int[]>();
@@ -79,6 +80,7 @@ public class GlobalAddressBook {
 	 */
 	public static void addTerminal(Sensor term) {
 		listOfTerminals.add(term);
+		setStepsHashtable(term);
 	}
 	
 	/**
@@ -86,21 +88,9 @@ public class GlobalAddressBook {
 	 * @param term the terminal to be removed
 	 */
 	public static void removeTerminal(Sensor term) {
+		int remove = listOfTerminals.indexOf(term);
 		listOfTerminals.remove(term);
-	}
-	
-	/**
-	 * This method returns the number of steps a sensor is from another.
-	 * @param from the "from" sensor
-	 * @param to the distination
-	 * @return number of steps
-	 */
-	public int numberOfSteps(Sensor from, Sensor to) {
-		Integer value = getStepsHashtable(from).get(to);
-		if(value == null) {
-			return Integer.MAX_VALUE;
-		}
-		return value;
+		hash.remove(remove);
 	}
 	
 	/**
@@ -111,13 +101,15 @@ public class GlobalAddressBook {
 	public ArrayList<Sensor> closestConnectionToTerminal(Sensor from) {
 		Sensor theClosest = null;
 		int stepCount = -1;
+		int block = -1;
 		for(int i = 0; i < listOfTerminals.size(); i++) {
-			int steps = numberOfSteps(from, listOfTerminals.get(i));
+			int steps = hash.get(i).get(from);
 			if((steps < stepCount) || (stepCount == -1)) {
 				theClosest = listOfTerminals.get(i);
+				block = i;
 			}
 		}
-		return closestConnectionToAny(from, theClosest);
+		return closestConnection(from, theClosest, block);
 	}
 
 	/**
@@ -127,8 +119,8 @@ public class GlobalAddressBook {
 	 * @param to the distination
 	 * @return an ArrayList containing the shortest path
 	 */
-	public ArrayList<Sensor> closestConnectionToAny(Sensor from, Sensor to) {
-		Hashtable<Sensor, Integer> dist = getStepsHashtable(from); 
+	public ArrayList<Sensor> closestConnection(Sensor from, Sensor to, int block) {
+		Hashtable<Sensor, Integer> dist = hash.get(block); 
 		ArrayList<Sensor> path = new ArrayList<Sensor>();
 		ArrayList<Sensor> temp = new ArrayList<Sensor>();
 		path.add(to);
@@ -150,11 +142,10 @@ public class GlobalAddressBook {
 	}
 
 	/**
-	 * This method uses the Width-first algorithm to find the shortest distance between two sensors.
+	 * This method uses the Width-first algorithm to find the shortest distance from a sensor to any.
 	 * @param from the sensor where the search starts
-	 * @return a Hashtable containing the number of steps from the starting point to any sensor
 	 */
-	private Hashtable<Sensor, Integer> getStepsHashtable(Sensor from) {
+	private static void setStepsHashtable(Sensor from) {
 		Hashtable<Sensor, Integer> dist = new Hashtable<Sensor, Integer>();
 		for(Sensor sen : Sensor.idToSensor.values()) {
 			if(!sen.equals(from)) {
@@ -186,6 +177,6 @@ public class GlobalAddressBook {
 			}
 			queue.remove(0);
 		}
-		return dist;
+		hash.add(dist);
 	}
 }
