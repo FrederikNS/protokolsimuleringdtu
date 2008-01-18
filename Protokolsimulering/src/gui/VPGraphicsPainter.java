@@ -80,26 +80,29 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		case MODE_ADD:
 			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
 			GlobalAddressBook.getBook().generateDirectConnections();
+			GUIReferences.saveMenuItem.setEnabled(true);
 			break;
 		case MODE_REMOVE:
 			if(GUIReferences.selectedSensor!=null){
 				GUIReferences.selectedSensor.setSelected(false);
 				GUIReferences.selectedSensor = null;
 			}
+			
 			selectSensor(loc,dist);
+			GUIReferences.saveMenuItem.setEnabled(true);
 			if(GUIReferences.selectedSensor != null) {
 
 				System.err.println("Ought to remove " + GUIReferences.selectedSensor);
 			}
 			break;
+		case MODE_ENABLE:
 		case MODE_DISABLE:
 			selectSensor(loc,dist);
 			if(GUIReferences.selectedSensor != null) {
-				if(GUIReferences.selectedSensor.isEnabled()){
-					GUIReferences.selectedSensor.setEnabled(false);
-				}else{
-					GUIReferences.selectedSensor.setEnabled(true);
-				}
+
+				GUIReferences.selectedSensor.setEnabled(GUIReferences.mode == MODE_ENABLE);
+				
+				GUIReferences.saveMenuItem.setEnabled(true);
 				GUIReferences.selectedSensor = null;
 			} else {
 			}
@@ -108,11 +111,13 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		case MODE_PROMOTE:
 			if(GUIReferences.selectedSensor!=null){
 				GUIReferences.selectedSensor.setSelected(false);
+				GUIReferences.saveMenuItem.setEnabled(true);
 				GUIReferences.selectedSensor = null;
 			}
 			selectSensor(loc,dist);
 			if(GUIReferences.selectedSensor != null) {
 				GUIReferences.selectedSensor.setTerminalStatus(GUIReferences.mode == MODE_PROMOTE);
+				GUIReferences.saveMenuItem.setEnabled(true);
 				GUIReferences.selectedSensor = null;
 			}
 			break;

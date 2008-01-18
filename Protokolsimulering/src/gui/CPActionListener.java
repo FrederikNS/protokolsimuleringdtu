@@ -56,6 +56,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			//TODO
 			if(false){ //if(file has already been saved once)
 				//save(fileName);
+				GUIReferences.saveMenuItem.setEnabled(false);
 				break;
 			}
 		case MENU_SAVE_AS:
@@ -68,6 +69,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
 				saveFile = saveChooser.getSelectedFile();
 				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+				GUIReferences.saveMenuItem.setEnabled(false);
 			}
 			break;
 		case MENU_PREFERENCES:
@@ -85,7 +87,9 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						Sensor.newInstance();
 					}
 					GlobalAddressBook.getBook().generateDirectConnections();
+					GUIReferences.saveMenuItem.setEnabled(true);
 					GUIReferences.sensorNetwork.repaint();
+					
 				}
 			} catch (NumberFormatException e) {
 				Note.sendNote(Note.ERROR, "Not a number.");
@@ -128,6 +132,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				System.out.println(returnValue);
 				if(returnValue == JOptionPane.OK_OPTION) {
 					Sensor.disposeAllSensors();
+					GUIReferences.saveMenuItem.setEnabled(true);
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}

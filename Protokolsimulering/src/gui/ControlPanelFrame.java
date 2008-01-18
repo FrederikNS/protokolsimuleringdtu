@@ -16,8 +16,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import nodes.Sensor;
-
 /**
  * @author Frederik Nordahl Sabroe
  *
@@ -36,7 +34,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		super("Control Panel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(200,/*(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()*/ 600)); //TODO
-		setResizable(true);
+		setResizable(false);
 
 
 		if(controlPanelFrame != null) {
