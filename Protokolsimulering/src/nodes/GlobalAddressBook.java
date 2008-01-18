@@ -117,26 +117,44 @@ public class GlobalAddressBook {
 	 * It uses the Hashtable with number of steps to any sensor, and then it backtracks.
 	 * @param from the sensor where the search starts
 	 * @param to the distination
+	 * @param block the index of the hashtable
 	 * @return an ArrayList containing the shortest path
 	 */
 	public ArrayList<Sensor> closestConnection(Sensor from, Sensor to, int block) {
 		Hashtable<Sensor, Integer> dist = hash.get(block); 
 		ArrayList<Sensor> path = new ArrayList<Sensor>();
+		ArrayList<Sensor> skip = new ArrayList<Sensor>();
 		ArrayList<Sensor> temp = new ArrayList<Sensor>();
 		path.add(to);
+		Sensor tempSensor;
 		while(!path.contains(from)) {
 			Sensor firstInQueue = path.get(0);
 			Sensor[] neighbors = firstInQueue.getLinks();
 			if(neighbors == null) {
-				break;
+				skip.add(firstInQueue);
+				continue;
 			}
 			for(int i = 0; i < neighbors.length; i++) {
-				if(dist.get(neighbors[i]) == dist.get(firstInQueue)-1) {
+				Integer a = dist.get(neighbors[i]);
+				Integer b = dist.get(firstInQueue); 
+				if(a!= null && b != null && a == (b-1)) {
 					temp.add(neighbors[i]);
 				}
 			}
-			path.add(0, temp.get(0));
+			boolean added = false;
+			for(int i = 0 ; i < temp.size() ; i++) {
+				tempSensor = temp.get(0);
+				if(!skip.contains(tempSensor)) {
+					path.add(0, tempSensor);
+					added = true;
+					break;
+				}
+			}
 			temp.clear();
+			if(!added) {
+				break;
+			}
+			
 		}
 		return path;
 	}

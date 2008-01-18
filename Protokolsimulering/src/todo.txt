@@ -123,53 +123,6 @@ Lave Turn/TurnController classerne.
 	}
 	
 	
-		/* (non-Javadoc)
-	 * @see transmissions.Transmitter#receive(transmissions.Transmission)
-	 */
-	public void receive(Transmission msg) {
-		// TODO Auto-generated method stub
-		if(0 != (currentTick & OPTION_RECEIVE_DISABLED)) {
-			 // cannot receive, die here, if a message was expected, flag need to send "Unsuccessful received"
-			if(ingoing != null || 0 != (currentTick & ACTION_RECEIVING)) {
-				ingoing.corruptTransmission();
-			}
-			return;
-		}
-		boolean isReceiver = isForMe(msg);
-		switch(msg.getMessageType()){
-		case TYPE_SENDING:
-			//Someone wishes to send
-			if(isReceiver) {
-				//to me. If I can receive and can send, reply with ok.
-				
-			} else {
-				//cannot receive.
-				//if expecting to receive a message, flag need to send "Unsuccessful received"
-			}
-			break;
-		case TYPE_LISTENING:
-			//Someone wishes to receive.
-			if(isReceiver) {
-				//wee It is waiting for me to send.
-			} else {
-				//Not allowed to send.
-				//if wasTryingToSendToThatTarget, wait for target comfirmation message!
-			}
-			break;
-		case TYPE_NETWORK:
-		case TYPE_RECEIVED_SUCCESSFULLY:
-		case TYPE_RECEIVED_UNSUCCESSFULLY:
-		case TYPE_DATA:
-			//Wee data!
-			if(isReceiver || msg.getRespondsableTransmitter() == this.id) {
-				ingoing = msg;
-			}
-			break;
-		default:
-			//This ought not to happen o.O
-			//Broadcast warning to user.
-			break;
-		}
-	}
+	
 
 	

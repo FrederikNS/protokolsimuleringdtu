@@ -42,14 +42,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static final int SENSOR_TRANSMISSION_RADIUS_DEFAULT  = 20;
 	public static final int SENSOR_TRANSMISSION_RADIUS_MIN 		= 10;
 	
-	
-	protected static final int OPTION_SEND_DISABLED 	 	= 0x00000001;
-	protected static final int OPTION_RECEIVE_DISABLED 	= 0x00000002;
-	protected static final int ACTION_RECEIVING = 0x00000004;
-	protected static final int ACTION_SENDING	= 0x00000008;
-	protected static final int ACTION_WAIT		= 0x00000010;
-	protected static final int ACTION_NOTHING_TO_DO		= 0x00000020;
-	
 	protected static final int STATUS_SENDING 				    = 0x00000001;
 	protected static final int STATUS_RECEIVING				= 0x00000002;
 	protected static final int STATUS_DEAD					    = 0x00000004;
@@ -390,14 +382,15 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			this.waiting = sen.waiting;
 			this.resendDelay = sen.resendDelay;
 			this.status = sen.status;
-			SensorImplementation senImp;
+			/*SensorImplementation senImp;
 			for(Sensor loop : links) {
 				senImp = idToRealSensor.get(loop.id);
 				senImp.links.remove(sen);
 				senImp.addLinkToSensor(this);
-			}
+			}*/
 			idToRealSensor.remove(this.id);
 			idToRealSensor.put(this.id, this);
+			GlobalAddressBook.clearBook().generateDirectConnections();
 		}
 		
 		
