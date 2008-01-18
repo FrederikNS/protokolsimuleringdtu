@@ -20,7 +20,7 @@ public class GUIReferences implements GUIConstants{
 	static JPanel constructPanel;
 	static JPanel simulatePanel;
 	static JPanel controlPanelPane;
-	static ViewPort sensorNetwork;
+	public static ViewPort sensorNetwork;
 	static Console console;
 	static int playback = PLAYBACK_PAUSE;
 	static int mode = MODE_SELECT;
@@ -31,7 +31,6 @@ public class GUIReferences implements GUIConstants{
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);
 		GUIReferences.sensorNetwork = new ViewPort(title, 200, 0);
-		GUIReferences.sensorNetwork.generateField(w,h);
 	}
 	/**
 	 * The currently selected sensor (or null if none is selected)
