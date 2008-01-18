@@ -29,6 +29,10 @@ public class ViewPort extends JFrame{
 		setVisible(true);
 	}
 	
+	public VPGraphicsPainter getGraphicsPainter(){
+		return graphicsPainter;
+	}
+	
 	public static void disposeViewPort(){
 		Sensor.disposeAllSensors();
 		if(GUIReferences.sensorNetwork!=null){

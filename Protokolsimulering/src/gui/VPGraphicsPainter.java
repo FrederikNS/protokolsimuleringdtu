@@ -57,6 +57,10 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			shape.draw(g);
 		}
 	}
+	
+	public void setToDraw(ArrayList<Shape> newList){
+		this.toDraw = newList;
+	}
 
 	public void mouseClicked(MouseEvent arg0) {
 		Location loc = new Location(Scaling.pointToLocation(arg0.getPoint()));
