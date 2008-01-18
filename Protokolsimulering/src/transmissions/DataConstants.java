@@ -24,6 +24,11 @@ public interface DataConstants {
 	 * Data transmission
 	 */
 	public static final int TYPE_DATA  					    = 0x80000000;
+	
+	/**
+	 * 
+	 */
+	public static final int TYPE_CHEAT  					= 0x01000000;
 	/**
 	 * A "I planning to send message so do not accept data" transmission
 	 */

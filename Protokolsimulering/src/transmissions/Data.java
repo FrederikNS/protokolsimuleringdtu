@@ -10,6 +10,8 @@ public class Data implements DataConstants{
 
 	private int dataType;
 	public static final Data GarbageData;
+	private Object data;
+	
 	static {
 		Data temp = new Data();
 		temp.dataType = TYPE_GARBAGE;
@@ -19,13 +21,13 @@ public class Data implements DataConstants{
 	
 	public static Data generateMessageReceiving() {
 		Data toReturn = new Data();
-		toReturn.dataType = TYPE_LISTENING | PRIORITY_INSTANT;
+		toReturn.dataType = TYPE_LISTENING | PRIORITY_VERY_HIGH;
 		return toReturn;
 	}
 	
 	public static Data generateMessageSending() {
 		Data toReturn = new Data();
-		toReturn.dataType = TYPE_SENDING | PRIORITY_INSTANT;
+		toReturn.dataType = TYPE_SENDING | PRIORITY_VERY_HIGH;
 		return toReturn;
 	}
 
@@ -44,12 +46,14 @@ public class Data implements DataConstants{
 	public static Data generateNetworkMessage(Object obj) {
 		Data toReturn = new Data();
 		toReturn.dataType = TYPE_NETWORK | PRIORITY_MEDIUM;
+		toReturn.data = obj;
 		return toReturn;
 	}
 	
 	public static Data generateData(Object obj) {
 		Data toReturn = new Data();
 		toReturn.dataType = TYPE_DATA | PRIORITY_LOW;
+		toReturn.data = obj;
 		return toReturn;
 	}
 	
@@ -66,6 +70,10 @@ public class Data implements DataConstants{
 		Text content = doc.createTextNode(String.valueOf(dataType));
 		dataNode.appendChild(content);
 		return dataNode;
+	}
+	
+	public Object getData() {
+		return data;
 	}
 	
 	@Override
