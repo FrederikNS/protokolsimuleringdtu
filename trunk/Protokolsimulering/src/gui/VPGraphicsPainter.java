@@ -21,7 +21,7 @@ import nodes.SplitField;
 
 /**
  * @author Frederik Nordahl Sabroe
- *
+ * @author Morten Soerensen
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;

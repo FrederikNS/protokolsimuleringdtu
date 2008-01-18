@@ -146,19 +146,22 @@ public class GlobalAddressBook {
 	private Hashtable<Sensor, Integer> getStepsHashtable(Sensor from) {
 		Hashtable<Sensor, Integer> dist = new Hashtable<Sensor, Integer>();
 		for(Sensor sen : Sensor.idToSensor.values()) {
-			if(sen != from) {
-				dist.put(sen, -1);
+			if(!sen.equals(from)) {
+				dist.put(sen, Integer.MAX_VALUE);
 			} else {
 				dist.put(sen, 0);
 			}
 		}
 		ArrayList<Sensor> queue = new ArrayList<Sensor>();
 		queue.add(from);
-		while(queue != null) {
+		while(!queue.isEmpty()) {
 			Sensor firstInQueue = queue.get(0);
 			Sensor[] neighbors = firstInQueue.getLinks();
+			if(neighbors == null) {
+				break;
+			}
 			for(int i = 0; i < neighbors.length; i++) {
-				if(dist.get(neighbors[i]) == -1) {
+				if(dist.get(neighbors[i]) == Integer.MAX_VALUE) {
 					dist.remove(neighbors[i]);
 					dist.put(neighbors[i], dist.get(firstInQueue)+1);
 					queue.add(neighbors[i]);
