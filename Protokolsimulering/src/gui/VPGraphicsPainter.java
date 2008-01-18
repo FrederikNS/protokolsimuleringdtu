@@ -47,7 +47,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
 		g.setColor(shapeColor);
-		System.err.println("Amount of shapes: " + toDraw.size());
 		
 		toDraw.draw(g);
 		
@@ -162,8 +161,16 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				GUIReferences.selectedSensor = sen;
 			}
 		}
+		boolean allRoutes = (0 != (GUIReferences.view & GUIReferences.VIEW_ALL_ROUTES));
+		if(allRoutes) {
+			ShapeList list = new ShapeList();
+			for(Sensor loop : Sensor.idToSensor.values()) {
+				list.addAll(loop.getRouteToTerminal());
+			}
+			this.setToDraw(list, GUIReferences.connectionColor);
+		}
 		if(GUIReferences.selectedSensor != null) {
-			if(0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
+			if(!allRoutes && 0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
 				this.setToDraw(
 						GUIReferences.selectedSensor.getRouteToTerminal()
 						, GUIReferences.connectionColor);	
