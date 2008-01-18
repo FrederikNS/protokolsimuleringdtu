@@ -47,6 +47,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				
 				openFile = openChooser.getSelectedFile();
 				System.out.println("Selected: " + openFile);
+				
+				
 				ViewPort.disposeViewPort();
 				xml.DOMxmlParser.parse(openFile);
 				CPNew.disposeWindow();

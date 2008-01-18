@@ -21,12 +21,13 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import math.Scaling;
 import nodes.Sensor;
 import nodes.Sensor.SensorImplementation;
 import notification.Note;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import turns.Turn;
 import turns.TurnController;
@@ -58,9 +59,18 @@ public abstract class XMLSaver {
 			return;
 		}
 		Element rootElement = doc.createElement("main");
+	
+		
+			Element fieldNode = doc.createElement("field");
+			Element fieldXElement = doc.createElement("x");
+			fieldXElement.appendChild(doc.createTextNode(String.valueOf(Scaling.getPicXMax())));
+			Element fieldYElement = doc.createElement("y");
+			fieldYElement.appendChild(doc.createTextNode(String.valueOf(Scaling.getPicYMax())));
+			fieldNode.appendChild(fieldXElement);
+			fieldNode.appendChild(fieldYElement);
+			rootElement.appendChild(fieldNode);
 		
 		rootElement.appendChild(SensorImplementation.generateXMLGeneralData(doc));
-		
 		for(Sensor sen : new TreeSet<Sensor>(sensorList)) {
 			rootElement.appendChild(sen.generateXMLElement(doc));
 		}
