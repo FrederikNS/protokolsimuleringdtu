@@ -38,6 +38,7 @@ public interface GUIConstants {
 	public final static int CHECKBOX_ENABLE_CONSOLE = 204;
 	public final static int CHECKBOX_ROUTES = 205;
 	public final static int CHECKBOX_ALL_ROUTES = 206;
+	public final static int CHECKBOX_ENABLE_INFOBOX = 207;
 	
 	public final static int POPUP_BUTTON_VIEW_SENSOR = 301;
 	
