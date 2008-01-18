@@ -26,13 +26,13 @@ import shape.Shape;
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
-	
+
 	private ArrayList<Shape> toDraw = new ArrayList<Shape>(); 
 	private Color shapeColor = Color.BLACK;
-	
+
 	private JPopupMenu jPop;
 	private ControlPanelFrame cpf;
-	
+
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
@@ -57,7 +57,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			shape.draw(g);
 		}
 	}
-	
+
 	public void setToDraw(ArrayList<Shape> newList, Color color){
 		this.toDraw = newList;
 		this.shapeColor = color;
@@ -81,15 +81,25 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
 			GlobalAddressBook.getBook().generateDirectConnections();
 			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			break;
 		case MODE_REMOVE:
 			if(GUIReferences.selectedSensor!=null){
 				GUIReferences.selectedSensor.setSelected(false);
 				GUIReferences.selectedSensor = null;
 			}
-			
+
 			selectSensor(loc,dist);
 			GUIReferences.saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			}
 			if(GUIReferences.selectedSensor != null) {
 
 				System.err.println("Ought to remove " + GUIReferences.selectedSensor);
@@ -101,8 +111,13 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			if(GUIReferences.selectedSensor != null) {
 
 				GUIReferences.selectedSensor.setEnabled(GUIReferences.mode == MODE_ENABLE);
-				
+
 				GUIReferences.saveMenuItem.setEnabled(true);
+				if(GUIReferences.currentFile != null) {
+					GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+				} else {
+					GUIReferences.sensorNetwork.setTitle("*Untitled");
+				}
 				GUIReferences.selectedSensor = null;
 			} else {
 			}
@@ -112,19 +127,29 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			if(GUIReferences.selectedSensor!=null){
 				GUIReferences.selectedSensor.setSelected(false);
 				GUIReferences.saveMenuItem.setEnabled(true);
+				if(GUIReferences.currentFile != null) {
+					GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+				} else {
+					GUIReferences.sensorNetwork.setTitle("*Untitled");
+				}
 				GUIReferences.selectedSensor = null;
 			}
 			selectSensor(loc,dist);
 			if(GUIReferences.selectedSensor != null) {
 				GUIReferences.selectedSensor.setTerminalStatus(GUIReferences.mode == MODE_PROMOTE);
 				GUIReferences.saveMenuItem.setEnabled(true);
+				if(GUIReferences.currentFile != null) {
+					GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+				} else {
+					GUIReferences.sensorNetwork.setTitle("*Untitled");
+				}
 				GUIReferences.selectedSensor = null;
 			}
 			break;
 		}
 		repaint();
 	}
-	
+
 	private void selectSensor(Location loc,int dist){
 		Sensor sen;
 		int check;
@@ -144,10 +169,10 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 						, GUIReferences.connectionColor);	
 			}
 		}
-		
+
 	}
 
-	
+
 	//Not used
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
@@ -176,7 +201,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		}
 		jPop.show(this, point.x, point.y);
 	}
-	
+
 	public void mousePressed(MouseEvent e) {
 		if( e.isPopupTrigger() ) {
 			makePopup(e.getPoint());
