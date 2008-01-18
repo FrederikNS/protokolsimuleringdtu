@@ -61,6 +61,15 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		modeTabPanes.addTab("Simulate", GUIReferences.simulatePanel);
 		GUIReferences.controlPanelPane.add(modeTabPanes);
 		modeTabPanes.addChangeListener(this);
+		
+		//infobox
+		JPanel infoBoxOptions = new JPanel();
+		infoBoxOptions.setLayout(new GridLayout(0,1));
+		JCheckBox infoBoxEnable = new JCheckBox("Information Frame");
+		infoBoxEnable.addActionListener(actionListener);
+		infoBoxEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_INFOBOX));
+		GUIReferences.controlPanelPane.add(infoBoxOptions);
+		infoBoxOptions.add(infoBoxEnable);
 
 		//Console prefs
 		JPanel consoleOptionsPane = new JPanel();
@@ -80,7 +89,6 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
 		
-//		this.setUndecorated(true);
 		//frame is packed and shown
 		pack();
 		setVisible(true);

@@ -10,10 +10,9 @@ import javax.swing.ButtonGroup;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import turns.TurnController;
-
 import math.Scaling;
 import nodes.Sensor;
+import turns.TurnController;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -24,6 +23,7 @@ public class GUIReferences implements GUIConstants{
 	static JPanel simulatePanel;
 	static JPanel controlPanelPane;
 	public static ViewPort sensorNetwork;
+	public static InformationFrame informationFrame;
 	static Console console;
 	static int playback = PLAYBACK_PAUSE;
 	static int mode = MODE_SELECT;
@@ -37,7 +37,8 @@ public class GUIReferences implements GUIConstants{
 	
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);
-		GUIReferences.sensorNetwork = new ViewPort(title);
+		sensorNetwork = new ViewPort(title);
+		informationFrame = new InformationFrame();
 	}
 	/**
 	 * The currently selected sensor (or null if none is selected)

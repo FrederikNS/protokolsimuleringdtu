@@ -168,6 +168,17 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 						GUIReferences.selectedSensor.getRouteToTerminal()
 						, GUIReferences.connectionColor);	
 			}
+			//TODO -FIX THIS
+//			GUIReferences.informationFrame.sensorLabel.setText(text);
+//			GUIReferences.informationFrame.sensorNeighbours.setText(text);
+			GUIReferences.informationFrame.sensorIsTerminal.setText("");
+			GUIReferences.informationFrame.sensorDistanceToTerminal.setText("");
+			GUIReferences.informationFrame.sensorSentMessagesAwaitingReply.setText("");
+			GUIReferences.informationFrame.sensorOutbox.setText("");
+			GUIReferences.informationFrame.sensorInbox.setText("");
+			if(!GUIReferences.informationFrame.isVisible()){
+				GUIReferences.informationFrame.setVisible(true);
+			}
 		}
 
 	}
@@ -182,6 +193,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseExited(MouseEvent e) {
 		cpf.setJLabelStatus(-1, -1, nodes.Sensor.idToSensor.size());
 	}
+	
 
 	private void makePopup(Point point) {
 		jPop = new JPopupMenu("JPopupMenu");

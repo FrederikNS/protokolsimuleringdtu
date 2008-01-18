@@ -1,25 +1,19 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import shape.Shape;
 
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
 import notification.Note;
+import shape.Shape;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -259,10 +253,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			int height = 0;
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
 			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
-
-			GUIReferences.generateNewField(width, height, "Untitled");
-			
 			CPNew.disposeWindow();
+			GUIReferences.generateNewField(width, height, "Untitled");
 			break;
 		case BUTTON_NEW_CANCEL:
 			CPNew.disposeWindow();
@@ -322,6 +314,15 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.console.setVisible(true);
 			}
 			break;
+		case CHECKBOX_ENABLE_INFOBOX:
+			if(0 != (GUIReferences.view & VIEW_CONSOLE)) {
+				GUIReferences.view &= ~VIEW_CONSOLE;
+				GUIReferences.console.setVisible(false);
+			} else {
+				GUIReferences.view |= VIEW_CONSOLE;
+				GUIReferences.console.setVisible(true);
+			}
+			break;
 		case CHECKBOX_ROUTES:
 			if(0 != (GUIReferences.view & VIEW_ROUTES)) {
 				GUIReferences.view &= ~VIEW_ROUTES;
@@ -361,14 +362,16 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer
-			JDialog log = new JDialog(GUIReferences.sensorNetwork, GUIReferences.selectedSensor.toString());
+			
+
+			/*JDialog log = new JDialog(GUIReferences.sensorNetwork, GUIReferences.selectedSensor.toString());
 			JPanel pane = new JPanel();
 			log.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			pane.setLayout(new BorderLayout());
 			log.setContentPane(pane);
 			pane.add(new JLabel(GUIReferences.selectedSensor.toString()));
 			log.pack();
-			log.setVisible(true);
+			log.setVisible(true);*/
 			break;
 		}
 	}
