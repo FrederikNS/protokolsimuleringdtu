@@ -83,6 +83,8 @@ public class GUIReferences implements GUIConstants{
 	
 	public static Color terminalColor = new Color(0x00007700);
 	
+	public static Color currentTurnColor = new Color(0x00ff00ff);
+	
 	/**
 	 * Init the static variables in the correct order.
 	 * Some values is inited through the ControlPanelFrame's constructor. 

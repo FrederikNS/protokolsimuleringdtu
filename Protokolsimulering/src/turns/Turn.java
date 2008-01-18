@@ -5,16 +5,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import nodes.Sensor;
+import nodes.Sensor.SensorComparator;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import shape.Drawable;
-
 import xml.Saveable;
-
-import nodes.Sensor;
-import nodes.Sensor.SensorComparator;
-import notification.Note;
 
 /**
  * Turn contains data about each turn (between every step).
@@ -27,12 +25,17 @@ public class Turn implements Saveable, Drawable{
 	private static int turnsCreated = 0;
 	
 	public Turn(Collection<Sensor> sensors) {
-		this(sensors, SensorComparator.SORT_BY_ID, turnsCreated++);
+		this(sensors, SensorComparator.SORT_BY_ID, turnsCreated++, false);
 
 	}
-	Turn(Collection<Sensor> sensor, int sortBy, int turn) {
+	Turn(Collection<Sensor> sensor, int sortBy, int turn, boolean roll) {
+		if(roll) {
+			Sensor.rollTurnOrder();
+		}
 		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
-		this.sensors.addAll(sensors);		
+		for(Sensor sen : sensor) {
+			this.sensors.add(sen.copyRealSensor());
+		}		
 		this.turn = turn;
 	}
 	
@@ -71,11 +74,11 @@ public class Turn implements Saveable, Drawable{
 		public final static short PHASE_FINISHED = 4;
 		private short phase = PHASE_NOT_STARTED;
 		boolean isRunning = false;
+		protected Sensor current;
 		private Iterator<Sensor> iter;
 		
 		private RunnableTurn(TreeSet<Sensor> sensors, int turn) {
-			super(sensors, SensorComparator.SORT_BY_TURNS, turn);
-			Note.sendNote(Note.DEBUG, "New runnable turn created");
+			super(sensors, SensorComparator.SORT_BY_TURNS, turn, true);
 		}
 		
 		public short getPhase() {
@@ -89,27 +92,34 @@ public class Turn implements Saveable, Drawable{
 			if(iter == null) {
 				iter = sensors.descendingIterator();
 			}
-			if(!iter.hasNext()) {
-				Note.sendNote(Note.DEBUG, "Iterator did not have next.");
+			else if(!iter.hasNext()) {
 				return;
 			}
-			Sensor sen = iter.next();
-			Note.sendNote(Note.DEBUG, sen + " is next");
+			if(current != null) {
+				current.setHasTurn(false);
+			}
+			current = iter.next();
+			current.setHasTurn(true);
 			switch(phase) {
 			case PHASE_NOT_STARTED:
 				phase = PHASE_PREPARE;
 			case PHASE_PREPARE:
-				sen.prepare();
+				current.prepare();
 				break;
 			case PHASE_STEP:
-				sen.step();
+				current.step();
 				break;
 			case PHASE_END_STEP:
-				sen.endStep();
+				current.endStep();
 				break;
 			case PHASE_FINISHED:
 			default:
 				break;
+			}
+			if(!iter.hasNext()){
+				phase++;
+				iter = sensors.descendingIterator();
+				Sensor.endOfPhase();
 			}
 		}
 
@@ -161,8 +171,6 @@ public class Turn implements Saveable, Drawable{
 			while(iter.hasNext()) {
 				tick();
 			}
-			phase++;
-			iter = sensors.descendingIterator();
 		}
 		
 		@Override

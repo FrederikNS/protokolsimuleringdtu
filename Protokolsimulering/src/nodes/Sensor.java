@@ -19,7 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import shape.Line;
-import shape.Shape;
+import shape.ShapeList;
 import shape.DrawableCircle.SensorCircle;
 import transmissions.Data;
 import transmissions.DataConstants;
@@ -37,7 +37,7 @@ import gui.GUIReferences;
  * 
  * @author Niels Thykier
  */
-public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, NoteConstants, DataConstants, EndSteppable {
+public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, NoteConstants, DataConstants, EndSteppable, Cloneable {
 
 	public static final int INVALID_SENSOR_ID = -1;
 	public static final int ALL_SENSORS = -2;
@@ -50,6 +50,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	protected static final int STATUS_DEAD					    = 0x00000004;
 	protected static final int STATUS_SELECTED				    = 0x00000008;
 	protected static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
+	protected static final int STATUS_HAS_TURN 							= 0x00000020;
+	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING |STATUS_RECEIVING ;
 	
 	protected static Random ran = new Random();
 	public static int usedIDs = 0;
@@ -268,6 +270,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 	}
 	
+	public static void rollTurnOrder() {
+		for(SensorImplementation sen : idToRealSensor.values()) {
+			sen.transmissionRoll = ran.nextInt(100);
+		}
+	}	
 
 	public Element generateXMLTurnElement(Document doc) {
 		return getReal().generateXMLTurnElement(doc);
@@ -281,6 +288,15 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		getReal().setLinkToNearestTerminal(nearestTerminal);
 	}
 	
+	@Override
+	protected Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			// Not gonna happen
+			throw new RuntimeException(e);
+		}
+	}
 	
 	/**
 	 * Turn a sensor into a terminal or a terminal into a sensor. 
@@ -323,7 +339,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static Sensor newInstance(Location loc) {
 		return copySensor(new SensorImplementation(loc));
 	}
-
+	
 	/**
 	 * Generate a new sensor at random location.
 	 * @return A reference to the new Sensor.
@@ -332,12 +348,26 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		return newInstance(new Location(ran.nextInt(Scaling.getPicXMax()), ran.nextInt(Scaling.getPicYMax())));
 	}
 	
+	public static void endOfPhase() {
+		for(SensorImplementation sen : idToRealSensor.values()) {
+			sen.status &= ~Sensor.STATUS_CLEAR_END_OF_ROUND;
+		}
+	}
+	
+	public void setHasTurn(boolean isTurn) {
+		getReal().setHasTurn(isTurn);
+	}
+	
 	private static Sensor copySensor(Sensor sen) {
 		Sensor toReturn = idToSensor.get(sen.id);
 		if(toReturn == null) {
 			toReturn = new Sensor(sen);
 		}
 		return toReturn;
+	}
+	
+	public Sensor copyRealSensor() {
+		return (Sensor) getReal().clone();
 	}
 
 	public static void generateNewData() {
@@ -376,7 +406,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		Note.sendNote("Done.");
 	}
 	
-	public ArrayList<Shape> getRouteToTerminal() {
+	public ShapeList getRouteToTerminal() {
 		return getReal().getRouteToTerminal();
 	}
 	
@@ -489,6 +519,17 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 		
+		
+		
+		@Override
+		public void setHasTurn(boolean isTurn) {
+			if(isTurn) {
+				status |= STATUS_HAS_TURN;
+			} else {
+				status &= ~STATUS_HAS_TURN;
+			}
+		}
+
 		protected void setSecondaySelection(boolean selectedStatus) {
 			if(selectedStatus) {
 				status |= STATUS_SECONDARY_SELECTED;
@@ -523,8 +564,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		
 		@Override
-		public ArrayList<Shape> getRouteToTerminal() {
-			ArrayList<Shape> lines = new ArrayList<Shape>();
+		public ShapeList getRouteToTerminal() {
+			ShapeList lines = new ShapeList();
 			if(this.nearestTerminalID == Sensor.INVALID_SENSOR_ID)
 				return lines;
 			if(0 != (GUIReferences.view & (GUIReferences.VIEW_ROUTES | GUIReferences.VIEW_ALL_ROUTES))) {
@@ -560,6 +601,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			return loc;
 		}
 		
+		@Override
+		public Object clone() {
+			return super.clone();
+		}
+		
 		/**
 		 * Forces the sensor to update the secondary selected. Used by the addLinkToSensor method but can also
 		 * be called explicitly if the links have been modified without a call to that method.
@@ -592,8 +638,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 			return links.toArray(new Sensor[links.size()]);
 		}
-
-		
 		
 		@Override
 		public void setLinkToNearestTerminal(int nearestTerminal) {
@@ -798,7 +842,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				} else if (0 != (status & STATUS_SECONDARY_SELECTED) 
 						&& 0 != (GUIReferences.view & GUIReferences.VIEW_NEIGHBOURS)) {
 					toReturn = GUIReferences.secondarySelectedColor;
-				} 
+				} else if(0 != (status & STATUS_HAS_TURN)) {
+					toReturn = GUIReferences.currentTurnColor;
+				} else if(0 != (status & STATUS_RECEIVING)) {
+					toReturn = GUIReferences.receivingColor;
+				} else if(0 != (status & STATUS_SENDING)) {
+					toReturn = GUIReferences.sendingColor;
+				}
 			} else {
 				toReturn = GUIReferences.selectedColor;
 			}
@@ -824,13 +874,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			return "Sensor #" + id + " " + (sensorLabel != null?sensorLabel + " ":"") + getLocation().toString();
 		}
 
-		/* (non-Javadoc)
-		 * @see nodes.Location#clone()
-		 */
-		@Override
-		public Object clone() throws CloneNotSupportedException {
-			return super.clone();
-		}
 
 		@Override
 		public void receive(Transmission msg) {
@@ -839,28 +882,51 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 		@Override
 		public void transmit(Transmission msg) {
-			protocol.transmit(msg);
+			if(msg.getMessageType() != Data.TYPE_LISTENING) {
+				status |= STATUS_SENDING;
+			} else {
+				status |= STATUS_RECEIVING;
+			}
+			SensorImplementation real;
+			SensorImplementation receiver = null;
+			int toSensor = msg.getRespondsableTransmitter();
+			for(Sensor sen : links) {
+				real = sen.getReal();
+				if(real.id == toSensor) {
+					receiver = real;
+					continue;
+				}
+				real.status |= STATUS_RECEIVING;
+				real.receive(msg);
+			}
+			if(receiver != null) {
+				receiver.receive(msg);
+			}
+			
 		}
 
 		@Override
 		public void prepare() {
-			// TODO Auto-generated method stub
-			Note.sendNote(Note.DEBUG, this + ": prepare phase.");
+			if(unsentData.size() > 0) {
+				protocol.addTransmissionToSend(new Transmission(
+						this.nearestTerminalID,this.sendThrough, this.id, unsentData));
+				unsentData = new ArrayList<Data>();
+			}
 			protocol.prepare();
+			GUIReferences.sensorNetwork.repaint();
 		}
 
 		@Override
 		public void step() {
-			// TODO Auto-generated method stub
-			Note.sendNote(Note.DEBUG, this + ": step phase.");
 			protocol.step();
+			GUIReferences.sensorNetwork.repaint();
 		}
 
 		@Override
 		public void endStep() {
 			// TODO Auto-generated method stub
-			Note.sendNote(Note.DEBUG, this + ": endStep phase.");
 			protocol.endStep();
+			
 		}
 
 	}
@@ -887,6 +953,21 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		
 		
+		@Override
+		public void receive(Transmission msg) {
+			Note.sendNote(this +" received message.");
+			super.receive(msg);
+		}
+
+
+
+		@Override
+		public void transmit(Transmission msg) {
+
+		}
+
+
+
 		@Override
 		protected Color chooseColor(Color defaultColor) {
 			return super.chooseColor(GUIReferences.terminalColor);

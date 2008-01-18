@@ -53,8 +53,9 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		messageType = information.getDataType();
 	}
 	
-	public Transmission(int receiver, int sender, Collection<? extends Data> dataList) {
+	public Transmission(int receiver, int through, int sender, Collection<? extends Data> dataList) {
 		this.receiver = receiver;
+		this.through = through;
 		this.sender = sender;
 		data = new ArrayList<Data>(dataList);
 		messageType = data.get(0).getDataType();

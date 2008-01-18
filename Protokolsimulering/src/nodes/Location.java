@@ -114,7 +114,8 @@ public class Location implements Drawable,Cloneable, Saveable {
 	public boolean equals(Object obj) {
 		if(obj instanceof Location) {
 			Location loc = (Location) obj;
-			return x == loc.x && y == loc.y;
+			return (x == loc.x && y == loc.y) 
+				|| (x == loc.y && y == loc.x);
 			}
 		return false;
 	}

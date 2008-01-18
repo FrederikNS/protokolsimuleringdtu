@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -13,7 +12,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
 import notification.Note;
-import shape.Shape;
+
+import shape.ShapeList;
+
+
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -326,7 +328,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case CHECKBOX_ROUTES:
 			if(0 != (GUIReferences.view & VIEW_ROUTES)) {
 				GUIReferences.view &= ~VIEW_ROUTES;
-				GUIReferences.sensorNetwork.getGraphicsPainter().setToDraw(new ArrayList<Shape>(), Color.BLACK);
+				GUIReferences.sensorNetwork.getGraphicsPainter().setToDraw(new ShapeList(), Color.BLACK);
 			} else {
 				GUIReferences.view |= VIEW_ROUTES;
 			}
@@ -341,7 +343,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case CHECKBOX_ALL_ROUTES:
-			ArrayList<Shape> newShapes = new ArrayList<Shape>();
+			ShapeList newShapes = new ShapeList();
 			if(0 != (GUIReferences.view & VIEW_ALL_ROUTES)) {
 				GUIReferences.view &= ~VIEW_ALL_ROUTES;
 				if(0 != (GUIReferences.view & VIEW_ROUTES)) {

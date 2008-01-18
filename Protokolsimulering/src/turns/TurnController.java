@@ -4,7 +4,6 @@ import java.awt.Graphics;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
-import notification.Note;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +17,7 @@ public abstract class TurnController implements Saveable, Drawable{
 	/**
 	 * Call when the field has been altered.
 	 */
-	//public abstract void fieldHasBeenAltered();
+	public abstract void fieldHasBeenAltered();
 	
 	/**
 	 * Play the next unit's prepare or step phase (depending on what part of the turn it is).
@@ -96,7 +95,6 @@ public abstract class TurnController implements Saveable, Drawable{
 		@Override
 		public void playTick() {
 			RunnableTurn turn = getCurrentTurn();
-			Note.sendNote(Note.DEBUG, "play tick: " + turn);
 			turn.tick();
 			if(turn.getPhase() == RunnableTurn.PHASE_FINISHED) {
 				endOfTurn();
@@ -113,6 +111,7 @@ public abstract class TurnController implements Saveable, Drawable{
 		}
 
 		private void endOfTurn() {
+			currentEntry++;
 			if(currentEntry == turnList.length) {
 				Turn[] temp = new Turn[turnList.length];
 				for(int i = 5; i < turnList.length ; i++) {
@@ -120,23 +119,20 @@ public abstract class TurnController implements Saveable, Drawable{
 				}
 				turnList = temp;
 				currentEntry = 5;
-			} else {
-				currentEntry++;
-			}
+			} 
 			currentTurn++;
-			turnList[currentEntry] = new Turn(run.sensors, SensorComparator.SORT_BY_ID, currentTurn);
+			turnList[currentEntry] = new Turn(run.sensors, SensorComparator.SORT_BY_ID, currentTurn, false);
 			run = null;
 		}
 		
-		//@Override
-		private void fieldHasBeenAltered() {
+		@Override
+		public void fieldHasBeenAltered() {
 			if(this.currentTurn < 0) {
 				currentTurn = 0;
 				currentEntry = 0;
-				Note.sendNote(Note.DEBUG, "Creating new turn");
-				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_ID, currentTurn);
-				Note.sendNote(Note.DEBUG, "Amount of sensors in turn: " + turnList[currentEntry].sensors.size());
 				Sensor.findRoutes();
+				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_ID, currentTurn, false);			
+				Sensor.generateNewData();
 			} else {
 				//TODO split.
 			}

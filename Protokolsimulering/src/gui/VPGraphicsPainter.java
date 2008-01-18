@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.swing.JMenuItem;
@@ -18,7 +17,7 @@ import math.Scaling;
 import nodes.GlobalAddressBook;
 import nodes.Location;
 import nodes.Sensor;
-import shape.Shape;
+import shape.ShapeList;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -27,7 +26,7 @@ import shape.Shape;
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
 
-	private ArrayList<Shape> toDraw = new ArrayList<Shape>(); 
+	private ShapeList toDraw = new ShapeList(); 
 	private Color shapeColor = Color.BLACK;
 
 	private JPopupMenu jPop;
@@ -48,9 +47,10 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
 		g.setColor(shapeColor);
-		for(Shape shape:toDraw){
-			shape.draw(g);
-		}
+		System.err.println("Amount of shapes: " + toDraw.size());
+		
+		toDraw.draw(g);
+		
 		g.setColor(GUIReferences.sensorColor);
 		Hashtable<Integer,Sensor> draw = Sensor.idToSensor;
 		for(Sensor sen : draw.values()){
@@ -58,9 +58,9 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		}
 	}
 
-	public void setToDraw(ArrayList<Shape> newList, Color color){
-		this.toDraw = newList;
+	public void setToDraw(ShapeList newList, Color color){
 		this.shapeColor = color;
+		this.toDraw = newList;
 	}
 
 	public void mouseClicked(MouseEvent arg0) {
