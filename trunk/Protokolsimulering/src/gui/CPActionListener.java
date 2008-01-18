@@ -271,6 +271,26 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.sensorNetwork.repaint();
 			}
 			break;
+		case CHECKBOX_ALL_ROUTES:
+			ArrayList<Shape> newShapes = new ArrayList<Shape>();
+			if(0 != (GUIReferences.view & VIEW_ALL_ROUTES)) {
+				GUIReferences.view &= ~VIEW_ALL_ROUTES;
+				if(0 != (GUIReferences.view & VIEW_ROUTES)) {
+					if(GUIReferences.selectedSensor != null) {
+						newShapes = GUIReferences.selectedSensor.getRouteToTerminal();
+					}
+				}
+			} else {
+				GUIReferences.view |= VIEW_ALL_ROUTES;
+				for(Sensor sen : Sensor.idToSensor.values()) {
+					newShapes.addAll(sen.getRouteToTerminal());
+				}
+			}
+			if(GUIReferences.sensorNetwork != null) {
+				GUIReferences.sensorNetwork.getGraphicsPainter().setToDraw(newShapes, GUIReferences.connectionColor);
+				GUIReferences.sensorNetwork.repaint();
+			}
+			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer
 			JDialog log = new JDialog(GUIReferences.sensorNetwork, GUIReferences.selectedSensor.toString());

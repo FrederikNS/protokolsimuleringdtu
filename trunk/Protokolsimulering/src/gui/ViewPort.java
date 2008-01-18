@@ -12,7 +12,7 @@ import nodes.Sensor;
  * @author Frederik Nordahl Sabroe
  *
  */
-public class ViewPort extends JFrame{
+public class ViewPort extends JFrame implements GUIConstants{
 
 	private static final long serialVersionUID = 1960058377833441994L;
 	private VPGraphicsPainter graphicsPainter;
@@ -23,6 +23,7 @@ public class ViewPort extends JFrame{
 		setSize(new Dimension(screenWidth,screenHeight));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocation(posX, posY);
+		addWindowListener(GUIReferences.windowListener);
 		graphicsPainter = new VPGraphicsPainter();
 		this.getContentPane().add(graphicsPainter);
 		setVisible(true);

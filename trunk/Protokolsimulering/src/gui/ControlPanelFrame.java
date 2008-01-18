@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -46,11 +47,13 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 
 		//The additional panels are created
 		ActionListener actionListener = new CPActionListener();
+		WindowListener windowListener = new WindowListeners();
 		new CPMenuBar(this,actionListener);
 		new CPViewSettings(actionListener);
 		new CPModes(actionListener);
 		new CPStepper(actionListener);
 		GUIReferences.listener = actionListener;
+		GUIReferences.windowListener = windowListener;
 
 		//The panel used for the content of the control panel is created and added
 		add(GUIReferences.controlPanelPane,BorderLayout.NORTH);
@@ -75,7 +78,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		statusBarPanel.setLayout(statusBarLayout);
 		statusBarPanel.setBorder(BorderFactory.createTitledBorder(""));
-		status = new JLabel("WAAAGH!");
+		status = new JLabel("");
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
 
