@@ -16,6 +16,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import nodes.Sensor;
+
 /**
  * @author Frederik Nordahl Sabroe
  *
@@ -78,7 +80,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		statusBarPanel.setLayout(statusBarLayout);
 		statusBarPanel.setBorder(BorderFactory.createTitledBorder(""));
-		status = new JLabel("");
+		status = new JLabel("Ready");
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(status);
 
@@ -88,8 +90,8 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		setVisible(true);
 	}
 
-	public void setJLabelStatus(int x, int y) {
-		status.setText("(" + x + "," + y + ")");
+	public void setJLabelStatus(int x, int y, int i) {
+		status.setText("(" + x + "," + y + ") Sensors: "+i);
 	}
 
 	public static ControlPanelFrame getFrame(){

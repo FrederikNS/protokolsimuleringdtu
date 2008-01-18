@@ -150,7 +150,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseEntered(MouseEvent e) {}
 
 	public void mouseExited(MouseEvent e) {
-		cpf.setJLabelStatus(-1, -1);
+		cpf.setJLabelStatus(-1, -1, nodes.Sensor.idToSensor.size());
 	}
 
 	private void makePopup(Point point) {
@@ -191,6 +191,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseDragged(MouseEvent arg0) {}
 
 	public void mouseMoved(MouseEvent e) {
-		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()));
+		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()), nodes.Sensor.idToSensor.size());
 	}
 }
