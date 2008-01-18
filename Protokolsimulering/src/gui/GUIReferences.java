@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -36,6 +37,7 @@ public class GUIReferences implements GUIConstants{
 	 * The currently selected sensor (or null if none is selected)
 	 */
 	static Sensor selectedSensor;
+	static WindowListener windowListener;
 	/**
 	 * The ActionListener (used whenever a right-click menu is re-generated)
 	 */

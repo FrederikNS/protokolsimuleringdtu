@@ -44,6 +44,7 @@ public class Console extends JFrame implements NotificationListener{
 		JScrollPane consoleScroller = new JScrollPane(consolePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		//Register as NoteListener
 		Note.registerListener(this);
+		addWindowListener(GUIReferences.windowListener);
 
 		consoleScrollerPanel.setLayout(consoleScrollerPanelLayout);
 		consolePanel.setLayout(consolePanelLayout);

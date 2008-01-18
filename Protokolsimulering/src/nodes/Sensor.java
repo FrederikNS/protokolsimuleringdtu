@@ -524,7 +524,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		@Override
 		public ArrayList<Shape> getRouteToTerminal() {
 			ArrayList<Shape> lines = new ArrayList<Shape>();
-			if(0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
+			if(0 != (GUIReferences.view & (GUIReferences.VIEW_ROUTES | GUIReferences.VIEW_ALL_ROUTES))) {
 				SensorImplementation current = this;
 				SensorImplementation through;
 				while(current.nearestTerminalID != current.id) {
