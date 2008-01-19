@@ -97,6 +97,10 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	public void setJLabelStatus(int x, int y, int i) {
 		status.setText("(" + x + "," + y + ") Sensors: "+i);
 	}
+	
+	public void setJLabalStatus(String text) {
+		status.setText(text);
+	}
 
 	public static ControlPanelFrame getFrame(){
 		return controlPanelFrame;

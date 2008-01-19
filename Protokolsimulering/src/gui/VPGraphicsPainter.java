@@ -129,16 +129,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				GUIReferences.selectedSensor = sen;
 			}
 		}
-		if(GUIReferences.selectedSensor != null) {
-			//TODO -FIX THIS
-//			GUIReferences.informationFrame.sensorLabel.setText(text);
-//			GUIReferences.informationFrame.sensorNeighbours.setText(text);
-			/*GUIReferences.informationFrame.sensorIsTerminal.setText("");
-			GUIReferences.informationFrame.sensorDistanceToTerminal.setText("");
-			GUIReferences.informationFrame.sensorSentMessagesAwaitingReply.setText("");
-			GUIReferences.informationFrame.sensorOutbox.setText("");
-			GUIReferences.informationFrame.sensorInbox.setText("");*/
-		}
 	}
 
 
