@@ -49,9 +49,11 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			int openReturnVal = openChooser.showOpenDialog(ControlPanelFrame.getFrame());
 			if(openReturnVal == JFileChooser.APPROVE_OPTION) {
 				openFile = openChooser.getSelectedFile();
-				
+				if(!openFile.exists() && openFile.getPath().contains(".")==false){
+					openFile = new File(openFile.getPath()+".stuff");
+				}
 				ViewPort.disposeViewPort();
-				xml.DOMxmlParser.parse(openFile);
+				xml.DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
 				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
 			}
@@ -71,11 +73,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			saveChooser.setFileFilter(saveFilter);
 			int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
 			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
-				if(saveChooser.getSelectedFile().getPath().contains(".")==false){
-					File tempFilePath = new File(saveChooser.getSelectedFile().getPath()+".stuff");
-					saveChooser.setSelectedFile(tempFilePath);
-				}
 				saveFile = saveChooser.getSelectedFile();
+				if(saveFile.getPath().contains(".")==false){
+					saveFile = new File(saveFile.getPath()+".stuff");
+				}
 				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
 				GUIReferences.sensorNetwork.setTitle(saveFile.getName());
 				GUIReferences.currentFile = saveFile;

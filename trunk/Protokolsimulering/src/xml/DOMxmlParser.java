@@ -22,6 +22,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import exceptions.XMLParseException;
+import gui.ControlPanelFrame;
 import gui.GUIReferences;
 
 public class DOMxmlParser {
@@ -44,12 +45,14 @@ public class DOMxmlParser {
 
 	}
 	
-	public static void parse(File xmlFile) {
+	public static void parse(File xmlFile, ControlPanelFrame panel) {
 		Document result;
 		int x = 0, y = 0; // sizes of the field.
 		try {
 			//TODO generate better notes for errors.
 			result = new DOMxmlParser(xmlFile).doc;
+			
+			
 			SensorImplementation.loadFromXML(result);
 			NodeList field = result.getElementsByTagName("field").item(0).getChildNodes();
 			Node child;
@@ -67,34 +70,42 @@ public class DOMxmlParser {
 		} catch (RuntimeException e){
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (UnsupportedEncodingException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (FileNotFoundException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (ParserConfigurationException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (SAXException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (IOException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (XMLParseException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			panel.setJLabalStatus("Failed!");
 			return;
 		}
-		GUIReferences.generateNewField(x, y, xmlFile.getName());
 		GlobalAddressBook.getBook().generateDirectConnections();
+		panel.setJLabalStatus("Load Successful.");
+		GUIReferences.generateNewField(x, y, xmlFile.getName());
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}
 	
