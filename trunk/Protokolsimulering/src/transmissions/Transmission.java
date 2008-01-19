@@ -42,15 +42,21 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	/**
 	 * Generate a Transmission.
 	 * @param receiver The receiver of the transmission
+	 * @param through The respondsable transmitter.
 	 * @param sender The original sender of the transmission.
 	 * @param information The Data it contains.
 	 */
-	public Transmission(int receiver, int sender, Data information) {
+	public Transmission(int receiver, int through, int sender, Data information) {
 		this.receiver = receiver;
+		this.through = through;
 		this.sender = sender;
 		data = new ArrayList<Data>();
 		data.add(information);
 		messageType = information.getDataType();
+	}
+	
+	public Transmission(int receiver, int sender, Data information) {
+		this(receiver, Sensor.INVALID_SENSOR_ID, sender, information);
 	}
 	
 	public Transmission(int receiver, int through, int sender, Collection<? extends Data> dataList) {
@@ -246,5 +252,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 			//Not gonna happen.
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "From: " + this.sender + ", through: " + this.through + ", to " + this.receiver + ", type: " + Integer.toHexString(this.messageType);
 	}
 }

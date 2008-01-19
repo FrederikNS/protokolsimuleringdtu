@@ -8,7 +8,7 @@ import org.w3c.dom.Text;
 
 public class Data implements DataConstants{
 
-	private int dataType;
+	protected int dataType;
 	public static final Data GarbageData;
 	private Object data;
 	
@@ -17,7 +17,7 @@ public class Data implements DataConstants{
 		temp.dataType = TYPE_GARBAGE;
 		GarbageData = temp;
 	}
-	private Data() {}
+	protected Data() {}
 	
 	public static Data generateMessageReceiving() {
 		Data toReturn = new Data();
@@ -43,10 +43,9 @@ public class Data implements DataConstants{
 		return toReturn;
 	}
 	
-	public static Data generateNetworkMessage(Object obj) {
-		Data toReturn = new Data();
+	public static Data generateNetworkMessage(int distance, int link) {
+		Data toReturn = new NetworkData(distance, link);
 		toReturn.dataType = TYPE_NETWORK | PRIORITY_MEDIUM;
-		toReturn.data = obj;
 		return toReturn;
 	}
 	
@@ -70,6 +69,15 @@ public class Data implements DataConstants{
 		Text content = doc.createTextNode(String.valueOf(dataType));
 		dataNode.appendChild(content);
 		return dataNode;
+	}
+	
+	/**
+	 * 
+	 * @return The data as NetworkData.
+	 * @throws ClassCastException If the data is not NetworkData.
+	 */
+	public NetworkData asNetworkData() throws ClassCastException{
+		return (NetworkData) this;
 	}
 	
 	public Object getData() {

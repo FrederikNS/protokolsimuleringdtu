@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
+import notification.Note;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,11 +35,11 @@ public abstract class TurnController implements Saveable, Drawable{
 	 * Play the whole turn.
 	 * If the prepare phase has not been played, it will be played.
 	 */
-	public abstract void playTurn();
+	//public abstract void playTurn();
 	
 	public abstract void playTickBackwards();
 	
-	public abstract void playTurnBackwards();
+	public abstract Turn getCurrentTurn();
 	
 	/**
 	 * The TurnController will attempt to go to the given turn. If it jumps forward it may have to 
@@ -66,7 +67,7 @@ public abstract class TurnController implements Saveable, Drawable{
 		private RunnableTurn run;
 		private boolean notReady = true;
 		
-		private RunnableTurn getCurrentTurn() {
+		private RunnableTurn getCurrentRunnableTurn() {
 			if(notReady) {
 				fieldHasBeenAltered();
 			}
@@ -84,7 +85,7 @@ public abstract class TurnController implements Saveable, Drawable{
 
 		@Override
 		public boolean playPreparePhase() {
-			RunnableTurn turn = getCurrentTurn();
+			RunnableTurn turn = getCurrentRunnableTurn();
 			if(turn.getPhase() > RunnableTurn.PHASE_PREPARE){
 				return false;
 			}
@@ -94,23 +95,24 @@ public abstract class TurnController implements Saveable, Drawable{
 
 		@Override
 		public void playTick() {
-			RunnableTurn turn = getCurrentTurn();
+			RunnableTurn turn = getCurrentRunnableTurn();
 			turn.tick();
 			if(turn.getPhase() == RunnableTurn.PHASE_FINISHED) {
 				endOfTurn();
 			}
 		}
 
-		@Override
+		/*@Override
 		public void playTurn() {
-			RunnableTurn turn = getCurrentTurn();
+			RunnableTurn turn = getCurrentRunnableTurn();
 			turn.prepare();
 			turn.step();
 			turn.endStep();
 			endOfTurn();
-		}
+		}*/
 
 		private void endOfTurn() {
+			Note.sendNote("End of Turn: " + currentTurn);
 			currentEntry++;
 			if(currentEntry == turnList.length) {
 				Turn[] temp = new Turn[turnList.length];
@@ -121,7 +123,7 @@ public abstract class TurnController implements Saveable, Drawable{
 				currentEntry = 5;
 			} 
 			currentTurn++;
-			turnList[currentEntry] = new Turn(run.sensors, SensorComparator.SORT_BY_ID, currentTurn, false);
+			turnList[currentEntry] = new Turn(run.sensors, SensorComparator.SORT_BY_TURNS, currentTurn, false);
 			run = null;
 		}
 		
@@ -131,7 +133,7 @@ public abstract class TurnController implements Saveable, Drawable{
 				currentTurn = 0;
 				currentEntry = 0;
 				Sensor.findRoutes();
-				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_ID, currentTurn, false);			
+				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_TURNS, currentTurn, false);			
 				Sensor.generateNewData();
 			} else {
 				//TODO split.
@@ -163,9 +165,8 @@ public abstract class TurnController implements Saveable, Drawable{
 		}
 
 		@Override
-		public void playTurnBackwards() {
-			// TODO Auto-generated method stub
-			
+		public Turn getCurrentTurn() {
+			return turnList[currentEntry];
 		}
 
 		

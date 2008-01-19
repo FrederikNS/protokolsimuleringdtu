@@ -5,7 +5,7 @@ Test af Sensor-protokolen.
 
 Færdiggørelse af XML aflæsning. (25%)
 Færdiggørelse af XML indskriving. (50%)
-Lave Turn/TurnController classerne.
+Lave Turn/TurnController classerne. (75%)
 
 
 
@@ -18,7 +18,7 @@ NOT DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb s
 	 hvert skridt. Den simulerede tid (antal skridt) skal vises. 
 	 
 	 - mangler visning af simulerede tid.
-	 - mangler simulering af rutebestemmelse protokollen.
+	 - simulering af rutebestemmelse protokollen bør forbedres, men er færdig!
 	 
 NOT DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
 

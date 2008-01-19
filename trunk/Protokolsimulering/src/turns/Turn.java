@@ -22,12 +22,11 @@ import xml.Saveable;
 public class Turn implements Saveable, Drawable{
 	final TreeSet<Sensor> sensors;
 	public final int turn;
-	private static int turnsCreated = 0;
 	
-	public Turn(Collection<Sensor> sensors) {
+	/*public Turn(Collection<Sensor> sensors) {
 		this(sensors, SensorComparator.SORT_BY_ID, turnsCreated++, false);
 
-	}
+	}*/
 	Turn(Collection<Sensor> sensor, int sortBy, int turn, boolean roll) {
 		if(roll) {
 			Sensor.rollTurnOrder();
