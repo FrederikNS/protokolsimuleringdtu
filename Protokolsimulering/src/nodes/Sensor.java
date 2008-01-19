@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Random;
+import java.util.TreeSet;
 
 import math.Scaling;
 import notification.Note;
@@ -282,7 +283,14 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			sen.draw(g);
 		}
 	}
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Sensor) {
+			return this.id == ((Sensor)obj).id;
+		}
+		return false;
+	}
 	
 	/**
 	 * Removes all sensors from the list.
@@ -296,7 +304,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	
 	public static void clearAllLinks() {
 		for(SensorImplementation sen : idToRealSensor.values()) {
-			sen.links = new ArrayList<Sensor>();
+			sen.links = new TreeSet<Sensor>();
 		}
 	}
 	
@@ -405,12 +413,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	}
 
 	public static void generateNewData() {
-		for(SensorImplementation sen : idToRealSensor.values()) {
+		/*for(SensorImplementation sen : idToRealSensor.values()) {
 			sen.unsentData.add(Data.generateData(new Object()));
-		}
+		}*/
+		//FIXME
 	}
 
-	private static boolean findRoutes(int step) {
+	/*private static boolean findRoutes(int step) {
 		int nextStep = step +1;
 		
 		boolean toReturn = false;
@@ -425,10 +434,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 		return toReturn;
-	}
+	}*/
 	
 	public static void findRoutes() {
-		SensorImplementation sen;
+		/*SensorImplementation sen;
 		Note.sendNote("Generating paths...");
 		for(Terminal ter : Terminal.idToTerminals.values()) {
 			for(Sensor link : ter.links) {
@@ -437,7 +446,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 		for(int i = 0 ; findRoutes(i) ; i++) {}
-		Note.sendNote("Done.");
+		Note.sendNote("Done.");*/
+		//FIXME
 	}
 	
 	
@@ -487,7 +497,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		
 		protected ArrayList<Data> unsentData = new ArrayList<Data>();
-		protected ArrayList<Sensor> links = new ArrayList<Sensor>();
+		protected TreeSet<Sensor> links = new TreeSet<Sensor>();
 		protected Transmission ingoing;
 		protected Transmission outgoing;
 		protected boolean waiting;
@@ -544,7 +554,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			this.nearestTerminalID = sen.nearestTerminalID;
 			this.nearestTerminalDist = sen.nearestTerminalDist;
 			this.protocol = sen.protocol;
-			this.links = new ArrayList<Sensor>();
+			this.links = new TreeSet<Sensor>();
 			SensorImplementation senImp;
 			for(Sensor loop : sen.links) {
 				this.links.add(loop);
@@ -695,12 +705,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				return null;
 			}
 			return links.toArray(new Sensor[links.size()]);
-		}
-		
-		@Override
-		public void setLinkToNearestTerminal(int nearestTerminal) {
-			Note.sendNote(this + " - Nearest terminal id: " + nearestTerminal);
-			this.nearestTerminalID = nearestTerminal;
 		}
 
 			
@@ -869,16 +873,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		protected void savingSensorToXML(Element topSensorElement, Document doc){}
 		
-		@Override
-		public ShapeList getConnections() {
-			ShapeList list = new ShapeList();
-			int size = links.size();
-			for(int i = 0 ; i< size ; i++) {
-				list.add(new Line(getLocation(), links.get(i).getLocation()));
-			}
-			return list;
-		}
-		
 		
 		//*********************** DRAW *******************************//
 		protected void internalDraw(Graphics g) {
@@ -1022,6 +1016,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 */
 	public static class Terminal extends SensorImplementation {
 		protected static Hashtable<Integer, Terminal> idToTerminals = new Hashtable<Integer,Terminal>(); 
+		protected boolean hasBroadcasted = false;
+		
 		protected Terminal(Sensor sen) {
 			super(sen.getReal(), sen.id);
 			idToTerminals.put(this.id, this);
@@ -1035,7 +1031,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		@Override
 		public void receive(Transmission msg) {
-			Note.sendNote(this +" received message.");
 			super.receive(msg);
 		}
 
@@ -1043,9 +1038,19 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 		@Override
 		public void transmit(Transmission msg) {
-
+			super.transmit(msg);
 		}
-
+		
+		@Override
+		public void prepare() {
+			if(!hasBroadcasted) {
+				Transmission trans = new Transmission(Sensor.ALL_SENSORS, Sensor.ALL_SENSORS
+									, this.id, Data.generateNetworkMessage(0, this.id));
+				protocol.addTransmissionToSend(trans);
+				hasBroadcasted = true;
+			}
+			protocol.prepare();
+		}
 
 
 		@Override

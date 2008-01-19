@@ -187,7 +187,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			GUIReferences.markAsModified();
 			GUIReferences.stepperGroup.clearSelection();
-			GUIReferences.turnController.playTurnBackwards();
+			//GUIReferences.turnController.playTurnBackwards();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
 			if(!GUIReferences.isSensorNetworkAvailable()) {
@@ -230,7 +230,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			}
 			GUIReferences.markAsModified();
-			GUIReferences.turnController.playTurn();
+			//GUIReferences.turnController.playTurn();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
@@ -242,7 +242,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				timer.stop();
 			}
 			playSpeed = PLAYBACK_FAST_FORWARD;
-			timer.setDelay(130);
+			timer.setDelay(10);
 			timer.start();			
 			break;
 		case TIMER_EVENT:
@@ -257,7 +257,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			case PLAYBACK_PLAY_BACKWARDS:
 			case PLAYBACK_REWIND:
-				GUIReferences.turnController.playTurnBackwards();
+				GUIReferences.turnController.playTickBackwards();
 				break;
 			}
 			break;

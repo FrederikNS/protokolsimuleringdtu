@@ -1,6 +1,7 @@
 package transmissions;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TreeSet;
 
 import turns.EndSteppable;
@@ -28,6 +29,8 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	
 	protected int currentTick = 0;
 	protected int waitingForSensor = Sensor.INVALID_SENSOR_ID;
+	protected int delayNextTransmission = 0;
+	protected static Random ran = new Random();
 	
 	
 	private SensorImplementation main;
@@ -46,18 +49,21 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			incomming = Transmission.generateCorruptTransmission();
 			return;
 		}
-		boolean isReceiver = (main.id == msg.getReceiver() || msg.getReceiver() == Sensor.ALL_SENSORS 
-				|| msg.getRespondsableTransmitter() == main.id 
-				|| msg.getRespondsableTransmitter() == Sensor.ALL_SENSORS);
+		boolean isReceiver = (main.id == msg.getReceiver() || msg.getRespondsableTransmitter() == main.id );
+		boolean isForAll = (msg.getRespondsableTransmitter() == Sensor.ALL_SENSORS || msg.getReceiver() == Sensor.ALL_SENSORS);
 		
 		switch(msg.getMessageType()){
 		case TYPE_SENDING:
 			//Someone wishes to send
-			if(isReceiver) {
+			if(isReceiver || isForAll) {
 				//to me. If I can receive and can send, reply with ok.
 				if(0 == (currentTick & (OPTION_RECEIVE_DISABLED | OPTION_SEND_DISABLED))) {
 					currentTick |= Protocol.ACTION_RECEIVING;
-					transmit(msg.generateConfirmationMessage());
+					if(isReceiver) {
+						transmit(msg.generateConfirmationMessage());
+					}
+				} else if (isForAll) {
+					currentTick |= Protocol.ACTION_RECEIVING;
 				}
 			} else {
 				//cannot receive.
@@ -90,8 +96,11 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		case TYPE_RECEIVED_UNSUCCESSFULLY:
 		case TYPE_DATA:
 		case TYPE_NETWORK:
-			if(isReceiver) {
+			if(isReceiver || isForAll) {
 				//Note.sendNote(Note.DEBUG, main + " received transmission from " +  msg.getSender());
+				if(isForAll) {
+					delayNextTransmission = ran.nextInt(10)+1;
+				}
 				incomming = msg;
 			}
 			break;
@@ -118,7 +127,9 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			break;
 		case TYPE_SENDING:
 		default:
-			sent.add(msg);
+			if(msg.getReceiver() != Sensor.ALL_SENSORS) {
+				sent.add(msg);
+			}
 			break;
 		}
 		main.transmit(msg);
@@ -133,17 +144,34 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	}
 	
 	public void prepare() {
-		if(0 == (currentTick & Protocol.OPTION_SEND_DISABLED) && outgoing.size() > 0) {
-			Transmission trans = outgoing.last();
-			transmit(Transmission.generateSendRequest(trans.getRespondsableTransmitter(), trans.getSender()));
+		if(delayNextTransmission <= 0) {
+			if(0 == (currentTick & (Protocol.OPTION_SEND_DISABLED | Protocol.ACTION_RECEIVING)) 
+				&& outgoing.size() > 0 && incomming == null) {
+				Transmission trans = outgoing.last();
+				if(trans.getReceiver() == Sensor.ALL_SENSORS) {
+					//If it is for all, do not wait for a confirmation.
+					currentTick |= Protocol.ACTION_SENDING;
+				}
+				transmit(Transmission.generateSendRequest(trans.getRespondsableTransmitter(), trans.getSender()));
+			} else {
+				
+			}
 		} else {
 			//Note.sendNote(Note.DEBUG, main + " could not send this round.");
+			--delayNextTransmission;
 		}
 	}
 
 	public void step() {
-		if(0 != (currentTick & Protocol.ACTION_SENDING)) {
-			transmit(outgoing.pollLast());
+		if(0 != (currentTick & Protocol.ACTION_SENDING) && 0 == (currentTick & Protocol.ACTION_RECEIVING)) {
+			if(0 == (currentTick & Protocol.OPTION_SEND_DISABLED)) {
+				delayNextTransmission = ran.nextInt(10)+5;
+				transmit(outgoing.pollLast());
+			} else {
+				delayNextTransmission = ran.nextInt(15)+ ran.nextInt(5) + 5;
+			}
+			
+			
 		} else {
 			//Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
 		}
@@ -168,6 +196,19 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 							sent.remove(trans);
 							break;
 						}
+					}
+					break;
+				case Data.TYPE_NETWORK:
+					try {
+						NetworkData net = incomming.getData(0).asNetworkData();
+						int nearestTerm = main.getNearestTerminal();
+						main.newTerminal(net.getLink(), incomming.getSender(), net.getDistance());
+						if(nearestTerm != main.getNearestTerminal()) {
+							outgoing.add(new Transmission(Sensor.ALL_SENSORS, Sensor.ALL_SENSORS, 
+									incomming.getSender(), net.nextGenerationData(main.id)));
+						}
+					} catch(ClassCastException e) {
+						Note.sendNote(Note.ERROR, main + ": ClassCastException in Protocol");
 					}
 					break;
 				default:
