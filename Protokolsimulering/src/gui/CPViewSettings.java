@@ -36,10 +36,10 @@ public class CPViewSettings implements GUIConstants{
 		viewRoutes.addActionListener(actionListener);
 		viewRoutes.setActionCommand(String.valueOf(CHECKBOX_ROUTES));
 		
-		JCheckBox viewAllRoutes = new JCheckBox("All Routes");
-		viewAllRoutes.setToolTipText("Shows all the routes from all sensors to their terminals");
-		viewAllRoutes.addActionListener(actionListener);
-		viewAllRoutes.setActionCommand(String.valueOf(CHECKBOX_ALL_ROUTES));
+		JCheckBox viewIsolated = new JCheckBox("Isolated");
+		viewIsolated.setToolTipText("Shows all the routes from all sensors to their terminals");
+		viewIsolated.addActionListener(actionListener);
+		viewIsolated.setActionCommand(String.valueOf(CHECKBOX_ISOLATED));
 
 		GUIReferences.controlPanelPane.add(viewSettingsPanel);
 		viewSettingsPanel.setLayout(viewSettingsLayout);
@@ -48,6 +48,6 @@ public class CPViewSettings implements GUIConstants{
 		viewSettingsPanel.add(viewConnections);
 		viewSettingsPanel.add(viewNeighbours);
 		viewSettingsPanel.add(viewRoutes);
-		viewSettingsPanel.add(viewAllRoutes);
+		viewSettingsPanel.add(viewIsolated);
 	}
 }

@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.Hashtable;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -17,7 +16,8 @@ import math.Scaling;
 import nodes.GlobalAddressBook;
 import nodes.Location;
 import nodes.Sensor;
-import shape.ShapeList;
+
+import static gui.GUIReferences.*;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -25,9 +25,6 @@ import shape.ShapeList;
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
-
-	private ShapeList toDraw = new ShapeList(); 
-	private Color shapeColor = Color.BLACK;
 
 	private JPopupMenu jPop;
 	private ControlPanelFrame cpf;
@@ -46,20 +43,24 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public synchronized void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
-		g.setColor(shapeColor);
-		
-		toDraw.draw(g);
-		
-		g.setColor(GUIReferences.sensorColor);
-		Hashtable<Integer,Sensor> draw = Sensor.idToSensor;
-		for(Sensor sen : draw.values()){
-			sen.draw(g);
+		g.setColor(connectionColor);
+		boolean isSelected = GUIReferences.selectedSensor != null;
+		if( 0 != (view & VIEW_ROUTES)) {
+			if(isSelected) {
+				selectedSensor.drawRouteToTerminal(g);
+			} else {
+				Sensor.drawAllRoutesToTerminals(g);
+			}
 		}
-	}
-
-	public void setToDraw(ShapeList newList, Color color){
-		this.shapeColor = color;
-		this.toDraw = newList;
+		if(0 != (view & VIEW_CONNECTIONS )) {
+			if(isSelected) {
+				selectedSensor.drawConnections(g);
+			} else {
+				Sensor.drawAllConnections(g);
+			}
+		}
+		
+		Sensor.drawAll(g);
 	}
 
 	public void mouseClicked(MouseEvent arg0) {
@@ -79,12 +80,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		case MODE_ADD:
 			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
 			GlobalAddressBook.getBook().generateDirectConnections();
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
-			}
+			GUIReferences.markAsModified();
 			break;
 		case MODE_REMOVE:
 			if(GUIReferences.selectedSensor!=null){
@@ -93,30 +89,14 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			}
 
 			selectSensor(loc,dist);
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
-			}
-			if(GUIReferences.selectedSensor != null) {
-
-				System.err.println("Ought to remove " + GUIReferences.selectedSensor);
-			}
+			GUIReferences.markAsModified();
 			break;
 		case MODE_ENABLE:
 		case MODE_DISABLE:
 			selectSensor(loc,dist);
 			if(GUIReferences.selectedSensor != null) {
-
 				GUIReferences.selectedSensor.setEnabled(GUIReferences.mode == MODE_ENABLE);
-
-				GUIReferences.saveMenuItem.setEnabled(true);
-				if(GUIReferences.currentFile != null) {
-					GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-				} else {
-					GUIReferences.sensorNetwork.setTitle("*Untitled");
-				}
+				GUIReferences.markAsModified();
 				GUIReferences.selectedSensor = null;
 			} else {
 			}
@@ -125,28 +105,16 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		case MODE_PROMOTE:
 			if(GUIReferences.selectedSensor!=null){
 				GUIReferences.selectedSensor.setSelected(false);
-				GUIReferences.saveMenuItem.setEnabled(true);
-				if(GUIReferences.currentFile != null) {
-					GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-				} else {
-					GUIReferences.sensorNetwork.setTitle("*Untitled");
-				}
-				GUIReferences.selectedSensor = null;
 			}
 			selectSensor(loc,dist);
 			if(GUIReferences.selectedSensor != null) {
 				GUIReferences.selectedSensor.setTerminalStatus(GUIReferences.mode == MODE_PROMOTE);
-				GUIReferences.saveMenuItem.setEnabled(true);
-				if(GUIReferences.currentFile != null) {
-					GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-				} else {
-					GUIReferences.sensorNetwork.setTitle("*Untitled");
-				}
+				GUIReferences.markAsModified();
 				GUIReferences.selectedSensor = null;
 			}
 			break;
 		}
-		repaint();
+		GUIReferences.updateViewSettings();
 	}
 
 	private void selectSensor(Location loc,int dist){
@@ -161,33 +129,16 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				GUIReferences.selectedSensor = sen;
 			}
 		}
-		boolean allRoutes = (0 != (GUIReferences.view & GUIReferences.VIEW_ALL_ROUTES));
-		if(allRoutes) {
-			ShapeList list = new ShapeList();
-			for(Sensor loop : Sensor.idToSensor.values()) {
-				list.addAll(loop.getRouteToTerminal());
-			}
-			this.setToDraw(list, GUIReferences.connectionColor);
-		}
 		if(GUIReferences.selectedSensor != null) {
-			if(!allRoutes && 0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
-				this.setToDraw(
-						GUIReferences.selectedSensor.getRouteToTerminal()
-						, GUIReferences.connectionColor);	
-			}
 			//TODO -FIX THIS
 //			GUIReferences.informationFrame.sensorLabel.setText(text);
 //			GUIReferences.informationFrame.sensorNeighbours.setText(text);
-			GUIReferences.informationFrame.sensorIsTerminal.setText("");
+			/*GUIReferences.informationFrame.sensorIsTerminal.setText("");
 			GUIReferences.informationFrame.sensorDistanceToTerminal.setText("");
 			GUIReferences.informationFrame.sensorSentMessagesAwaitingReply.setText("");
 			GUIReferences.informationFrame.sensorOutbox.setText("");
-			GUIReferences.informationFrame.sensorInbox.setText("");
-			if(!GUIReferences.informationFrame.isVisible()){
-				GUIReferences.informationFrame.setVisible(true);
-			}
+			GUIReferences.informationFrame.sensorInbox.setText("");*/
 		}
-
 	}
 
 

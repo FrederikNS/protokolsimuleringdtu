@@ -9,120 +9,74 @@ Lave Turn/TurnController classerne.
 
 
 
-///---- Sensor revision 164
+Protokol Simulering:
 
-	protected final boolean isForMe(Transmission msg) {
-		return msg.getReceiver() == this.id;
-	}
-	
-	/* (non-Javadoc)
-	 * @see transmissions.Transmitter#transmit(transmissions.Transmission)
-	 */
-	public void transmit(Transmission msg) {
-		// TODO Auto-generated method stub
+DONE: Indlæse en udlagt graf fra en fil og vise den.
+DONE: Kunne markere et eller flere punkter som terminaler (dvs. endestationer for data genereret af knuderne).
+NOT DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb skal visualiseres på grafen.
+	 Simuleringsskridtene skal kunne drives manuelt, dvs. ved tryk på en knap/tast for 
+	 hvert skridt. Den simulerede tid (antal skridt) skal vises. 
+	 
+	 - mangler visning af simulerede tid.
+	 - mangler simulering af rutebestemmelse protokollen.
+	 
+NOT DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
+
+--- 3 mandsgrupper.
+
+LAVES IKKE: Redigering af grafen: Flytning af punkter, tilføjelse/sletning af kanter, tilføjelse/sletning
+	  af punkter. Gemning af redigeret graf i fil.
+DONE: Automatisk simulering, dvs. at simuleringen kører af sig selv med en vis hastighed, efter
+			  at være blevet sat igang. Skal kunne stoppes igen.
+		    	Hertil bør man benytte Swing's Timer klasse, der kan generere "tik", der kan drive simu-
+		    	leringen (se mere på materialesiden). [Undgå brug af tråde(eng.threads).]			  
+
+LAVES IKKE: Simulering af andre protokoller. Fx. positioneringsprotokollen.
+LAVES IKKE: En mere realistisk simulering/protokol. Fx. ved at tillade at knuder går ned, at beskeder
+	  gå tabt ved med en vis sandsynlighed (evt. afhængig af afstand), eller ved at lade kom-
+	  munikation og behandling tage varierende tid. Protokollen må så gøres tilsvarende mere
+	  robust, fx. ved at ruter opdateres regelmæssigt.
+
+LAVES MULIGVIS: Mulighed for at gå frem og tilbage i en simulering.
 		
-	}
-
-	/* (non-Javadoc)
-	 * @see turns.Prepareable#prepare()
-	 */
-	public void prepare() {
-		// TODO Auto-generated method stub
-		if(0 == ( currentTick & OPTION_SEND_DISABLED)) {
-			//Can send.
-			if(outgoing == null) {
-				//No unhandled outgoing message.
-				if(unsentData.size() > 0) {
-					//Generate datamessage.
-					outgoing = new Transmission(0, 0, unsentData);
-					unsentData = null;
-				} else {
-					//Got absolutely nothing to sent, flag "nothing to do".
-					currentTick |= ACTION_NOTHING_TO_DO;
-				}
-			}
-			
-			
-		}
+		- mangler helt.
 		
 		
-	}
+Distributation's Opgaven:
 
-	/* (non-Javadoc)
-	 * @see turns.Steppable#step()
-	 */
-	public void step() {
-		// TODO Auto-generated method stub
-		if(0 != (currentTick & ACTION_NOTHING_TO_DO)) {
-			//Nothing to do.
-			return;
-		}
-		if(0 != (currentTick & ACTION_SENDING)) {
-			
-			if(0 == (currentTick & OPTION_SEND_DISABLED) ) {
-				//Can send.
-			} else {
-				//Cannot send?
-			}
-		}
-	}
 
-	/* (non-Javadoc)
-	 * @see turns.EndSteppable#EndStep()
-	 */
-	public void endStep() {
-		// TODO Auto-generated method stub
-		if(ingoing != null) {
-			switch(ingoing.getMessageType()) {
-			case TYPE_DATA: 
-				int size = ingoing.size();
-				for(int i = 0 ; i < size ; i++) {
-					unsentData.add(ingoing.getData(i));
-				}
-				break;
-			case TYPE_NETWORK:
-				//Network update. New Sensor appeared or old sensor vanished.
-				// No need to reply.
-				break;
-			case TYPE_RECEIVED_SUCCESSFULLY:
-				//Someone received a message successfully.
-				if(isForMe(ingoing)) {
-					//clear the time-out standing and allow new package to be sent.
-					outgoing = null;
-				} else if(waiting && ingoing.getSender() == outgoing.getReceiver()) {
-					waiting = false;
-					//add random delay?
-				}
-				break;
-			case TYPE_RECEIVED_UNSUCCESSFULLY:
-				//Someone did not receive their package.
-				if(outgoing != null && outgoing.getReceiver() == ingoing.getSender()) {
-					//It was the one I sent to recently, clear time-out standing
-					if(isForMe(ingoing)) {
-						//attempt resend during next tick.
-						resendDelay++;//TODO Randomize
-					} else {
-						//await for a successfully received from sender.
-					}				
-				}
-				break;
-			case TYPE_GARBAGE:
-				if(0 != (ACTION_RECEIVING & currentTick) ) {
-					if(outgoing != null) {
-						//Handle having an outgoing message.
-					}
-				}
-				break;
-			default:
-				//unexpected type. 
-				break;
-			}
-		}
-		ingoing = null;
-		currentTick = 0;
-	}
-	
-	
-	
+NOT DONE: Generere og vise fordelinger af forskellige type (fx helt tilfældig, regulært gitter) og med
+  	forskellige parametere (fx tæthed).
+  	
+  - mangler forskellige typer, mangler parametere.
+  
+DONE: Vise rækkevidden af senorerne, fx. som cirkler med centrum i censorerne.
 
+DONE: Vise naborelationen som kanter.
 	
+DONE: Vise hvilke sensorer, der er isolerede. 
+
+DONE: Tillade visninger at blive slået til og fra.
+
+NOT DONE: Vise hvordan antallet af naboer til sensorerne fordeler sig, fx i form af et histogram.
+	
+	- Mangler alt.
+
+--- 3 mandsgrupper
+
+LAVES MULIGVIS: Opmåling af afstand mellem to valgte sensorer.
+LAVES IKKE: Andre former for fordeling, fx. manuel placering eller hybrider mellem regulære og tilfældige
+  	(udkast fra fly på bestemte positioner).
+
+LAVES MULIGVIS: Zoom-funktion.
+LAVES IKKE: En "maske" (fx et kvadrat) der kan placeres på  området med optælling af sensorer inden
+	  for maskens afgrænsning (evt. suppleret med andre analyser).
+	  
+LAVES MULIGVIS: Analyse og visning af andre egenskaber ved fordelingen, fx. afstand til nærmeste sensor.
+
+LAVES IKKE: Konkret beregning af positioner ud fra basissensorer med tilskrevne positioner, der afviger fra deres sande positioner.
+	  For beregningsdetaljer, se efter ̊årets materiale [CampusNet].
+	  
+LAVES IKKE: Beregning af den generelle usikkerhed på hver sensors beregnede position, givet en vis
+			  usikkerhed på basissensorernes position. Usikkerheden vises grafisk.
+
