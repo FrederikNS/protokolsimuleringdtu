@@ -55,7 +55,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			//Someone wishes to send
 			if(isReceiver) {
 				//to me. If I can receive and can send, reply with ok.
-				if(0 == (currentTick & OPTION_RECEIVE_DISABLED)) {
+				if(0 == (currentTick & (OPTION_RECEIVE_DISABLED | OPTION_SEND_DISABLED))) {
 					currentTick |= Protocol.ACTION_RECEIVING;
 					transmit(msg.generateConfirmationMessage());
 				}
