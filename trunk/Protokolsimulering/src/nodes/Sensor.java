@@ -2,8 +2,8 @@ package nodes;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Random;
@@ -45,12 +45,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static final int SENSOR_TRANSMISSION_RADIUS_DEFAULT  = 20;
 	public static final int SENSOR_TRANSMISSION_RADIUS_MIN 		= 10;
 	
-	protected static final int STATUS_SENDING 				    = 0x00000001;
-	protected static final int STATUS_RECEIVING				= 0x00000002;
-	protected static final int STATUS_DEAD					    = 0x00000004;
-	protected static final int STATUS_SELECTED				    = 0x00000008;
-	protected static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
-	protected static final int STATUS_HAS_TURN 							= 0x00000020;
+	public static final int STATUS_SENDING 				    = 0x00000001;
+	public static final int STATUS_RECEIVING				= 0x00000002;
+	public static final int STATUS_DEAD					    = 0x00000004;
+	public static final int STATUS_SELECTED				    = 0x00000008;
+	public static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
+	public static final int STATUS_HAS_TURN 				= 0x00000020;
 	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING |STATUS_RECEIVING ;
 	
 	protected static Random ran = new Random();
@@ -71,9 +71,9 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	protected static Hashtable<Integer, SensorImplementation> idToRealSensor = new Hashtable<Integer, SensorImplementation>();
 
 	protected Sensor(int id) {
-		this.id = id;
-		
+		this.id = id;	
 	}
+	
 	protected Sensor(Sensor sen) {
 		this(sen.id);
 		idToSensor.put(id, this);
@@ -101,6 +101,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 */
 	public Sensor getSensor(int sensorID) {
 		return idToSensor.get(sensorID);
+	}
+	
+	public Collection<Sensor> getAllSensors() {
+		return idToSensor.values();
 	}
 
 	/**
@@ -171,6 +175,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		transmissionRadius = newRadius;
 	}
 	
+	public static int getAmountOfTerminals() {
+		return Terminal.idToTerminals.size();
+	}
+	
 	
 	public boolean canCommunicate(Sensor sen) {
 		return getReal().canCommunicate(sen);
@@ -193,6 +201,22 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	}
 	public void setEnabled(boolean running) {
 		getReal().setEnabled(running);
+	}
+	
+	public int getStatus() {
+		return getReal().status;
+	}
+	
+	public int getFirstLinkToTerminal() {
+		return getReal().sendThrough;
+	}
+	
+	public int getStepsFromNearestTerminal() {
+		return getReal().nearestTerminalDist;
+	}
+	
+	public int getNearestTerminal(){
+		return getReal().nearestTerminalID;
 	}
 	
 	/* (non-Javadoc)
@@ -251,6 +275,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	}
 	public void draw(Graphics g) {
 		idToRealSensor.get(id).draw(g);
+	}
+	
+	public static void drawAll(Graphics g) {
+		for(SensorImplementation sen : idToRealSensor.values()) {
+			sen.draw(g);
+		}
 	}
 
 	
@@ -358,6 +388,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		getReal().setHasTurn(isTurn);
 	}
 	
+	public ShapeList getConnections() {
+		return getReal().getConnections();
+	}
+	
 	private static Sensor copySensor(Sensor sen) {
 		Sensor toReturn = idToSensor.get(sen.id);
 		if(toReturn == null) {
@@ -406,8 +440,34 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		Note.sendNote("Done.");
 	}
 	
-	public ShapeList getRouteToTerminal() {
-		return getReal().getRouteToTerminal();
+	
+	public static void drawAllConnections(Graphics g) {
+		for(SensorImplementation sen : idToRealSensor.values()) {
+			for(Sensor link : sen.links) {
+				if(sen.id < link.id) {
+					new Line(sen.loc, link.getLocation()).draw(g);
+				}
+			}
+		}
+	}
+	
+	public static void drawAllRoutesToTerminals(Graphics g){
+		for(SensorImplementation sen : idToRealSensor.values()) {
+			if(sen.nearestTerminalID == Sensor.INVALID_SENSOR_ID 
+					|| sen.sendThrough == Sensor.INVALID_SENSOR_ID) {
+				continue;
+			}
+			new Line(sen.getLocation(), idToRealSensor.get(sen.sendThrough).getLocation()).draw(g);
+		}
+
+	}
+	
+	public void drawRouteToTerminal(Graphics g) {
+		getReal().drawRouteToTerminal(g);
+	}
+	
+	public void drawConnections(Graphics g) {
+		getReal().drawConnections(g);
 	}
 	
 	@Override
@@ -444,7 +504,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected Protocol protocol;
 		
 
-		public static SensorImplementation SENSOR_INVALID = new SensorImplementation(new Location(-1, -1), Sensor.INVALID_SENSOR_ID);
+		public static SensorImplementation SENSOR_INVALID = new SensorImplementation(new Location(-10, -10), Sensor.INVALID_SENSOR_ID);
 		
 		private SensorImplementation(Location loc, int id) {
 			super(id);
@@ -497,10 +557,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			idToRealSensor.put(this.id, this);
 		}
 		
-		public int getNearestTerminal() {
-			return this.nearestTerminalID;
-		}
-		
 		/**
 		 * Test if the Sensor is operational.
 		 * @return true if the sensor is available. 
@@ -518,9 +574,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				status |= STATUS_DEAD;
 			}
 		}
-		
-		
-		
+				
 		@Override
 		public void setHasTurn(boolean isTurn) {
 			if(isTurn) {
@@ -530,6 +584,26 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 
+		@Override
+		public int getStatus() {
+			return this.status;
+		}
+		
+		@Override
+		public int getFirstLinkToTerminal() {
+			return this.sendThrough;
+		}
+		
+		@Override
+		public int getStepsFromNearestTerminal() {
+			return this.nearestTerminalDist;
+		}
+		
+		@Override
+		public int getNearestTerminal(){
+			return this.nearestTerminalID;
+		}
+		
 		protected void setSecondaySelection(boolean selectedStatus) {
 			if(selectedStatus) {
 				status |= STATUS_SECONDARY_SELECTED;
@@ -563,22 +637,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 		
-		@Override
-		public ShapeList getRouteToTerminal() {
-			ShapeList lines = new ShapeList();
-			if(this.nearestTerminalID == Sensor.INVALID_SENSOR_ID)
-				return lines;
-			if(0 != (GUIReferences.view & (GUIReferences.VIEW_ROUTES | GUIReferences.VIEW_ALL_ROUTES))) {
-				SensorImplementation current = this;
-				SensorImplementation through;
-				while(current.nearestTerminalID != current.id) {
-					through = idToRealSensor.get(current.sendThrough);
-					lines.add(new Line(current.getLocation(), through.getLocation()));
-					current = through;
-				}
-			}
-			return lines;
-		}
 		
 		/**
 		 * Check if two sensors can communicate with each other using the current 
@@ -811,27 +869,46 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		protected void savingSensorToXML(Element topSensorElement, Document doc){}
 		
+		@Override
+		public ShapeList getConnections() {
+			ShapeList list = new ShapeList();
+			int size = links.size();
+			for(int i = 0 ; i< size ; i++) {
+				list.add(new Line(getLocation(), links.get(i).getLocation()));
+			}
+			return list;
+		}
+		
+		
 		//*********************** DRAW *******************************//
 		protected void internalDraw(Graphics g) {
-			if( 0 != (GUIReferences.view & GUIReferences.VIEW_CONNECTIONS)) {
-				g.setColor(GUIReferences.connectionColor);
-				Point senPoint = Scaling.locationToPoint(this.getLocation());
-				Point target;
-				int size = links.size();
-				Sensor sen;
-				for(int i = 0 ; i < size ; i++) {
-					sen = links.get(i);
-					if(sen.id > this.id) {
-						target = Scaling.locationToPoint(links.get(i).getLocation());
-						g.drawLine(senPoint.x, senPoint.y, target.x, target.y);
-					}
-				}
-			}
-			
 			g.setColor(chooseColor(GUIReferences.sensorColor));
 			draw.draw(g);
 			
 		}
+
+		@Override
+		public void drawRouteToTerminal(Graphics g) {
+			if(this.nearestTerminalID == Sensor.INVALID_SENSOR_ID)
+				return;
+			if(0 != (GUIReferences.view & GUIReferences.VIEW_ROUTES)) {
+				SensorImplementation current = this;
+				SensorImplementation through;
+				while(current.nearestTerminalID != current.id) {
+					through = idToRealSensor.get(current.sendThrough);
+					new Line(current.getLocation(), through.getLocation()).draw(g);
+					current = through;
+				}
+			}
+		}
+		
+		@Override
+		public void drawConnections(Graphics g) {
+			for(Sensor sen : links) {
+				new Line(loc, sen.getLocation()).draw(g);
+			}
+		}
+
 		
 		protected Color chooseColor(Color defaultColor) {
 			Color toReturn = defaultColor;
@@ -848,6 +925,9 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 					toReturn = GUIReferences.receivingColor;
 				} else if(0 != (status & STATUS_SENDING)) {
 					toReturn = GUIReferences.sendingColor;
+				} else if(0 != (GUIReferences.view & GUIReferences.VIEW_ISOLATED) &&
+						links.isEmpty()) {
+					toReturn = GUIReferences.isolatedColor;
 				}
 			} else {
 				toReturn = GUIReferences.selectedColor;

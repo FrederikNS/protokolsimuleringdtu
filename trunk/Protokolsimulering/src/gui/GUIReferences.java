@@ -40,6 +40,33 @@ public class GUIReferences implements GUIConstants{
 		sensorNetwork = new ViewPort(title);
 		informationFrame = new InformationFrame();
 	}
+	
+	public static void markAsModified() {
+		if(isSensorNetworkAvailable()) {
+			saveMenuItem.setEnabled(true);
+			if(currentFile != null) {
+				sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				sensorNetwork.setTitle("*Untitled");
+			}
+		}
+	}
+	
+	public static void updateViewSettings() {
+		if(isSensorNetworkAvailable()) {
+			
+			informationFrame.update(selectedSensor);
+			if(!informationFrame.isVisible()){
+				informationFrame.setVisible(true);
+			}
+			sensorNetwork.getGraphicsPainter().repaint();
+		}
+	}
+	
+	public static boolean isSensorNetworkAvailable() {
+		return sensorNetwork != null;
+	}
+	
 	/**
 	 * The currently selected sensor (or null if none is selected)
 	 */
@@ -84,6 +111,8 @@ public class GUIReferences implements GUIConstants{
 	public static Color terminalColor = new Color(0x00007700);
 	
 	public static Color currentTurnColor = new Color(0x00ff00ff);
+	
+	public static Color isolatedColor    = Color.PINK;
 	
 	/**
 	 * Init the static variables in the correct order.

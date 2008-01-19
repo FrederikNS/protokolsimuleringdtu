@@ -1,19 +1,17 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
 import notification.Note;
-
-import shape.ShapeList;
 
 
 
@@ -22,6 +20,16 @@ import shape.ShapeList;
  *
  */
 public class CPActionListener implements ActionListener,GUIConstants{
+	
+	private Timer timer;
+	private int playSpeed;
+	public CPActionListener() {
+		timer = new Timer(0, this);
+		timer.setActionCommand(String.valueOf(TIMER_EVENT));
+		timer.setDelay(500);
+		playSpeed = PLAYBACK_PAUSE;
+	}
+	
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
@@ -152,102 +160,105 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_TO_START:
-			//TODO
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
+			GUIReferences.markAsModified();
 			GUIReferences.turnController.goToTurn(0);
 			GUIReferences.stepperGroup.clearSelection();
-			GUIReferences.saveMenuItem.setEnabled(true);
 			break;
 		case BUTTON_REWIND:
-			//TODO
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
-			for(int i=1;i<1000;i++){
-			GUIReferences.turnController.playTurnBackwards();
+			GUIReferences.markAsModified();
+			timer.start();
+			if(timer.isRunning()) {
+				timer.stop();
 			}
+			playSpeed = PLAYBACK_REWIND;
+			timer.setDelay(130);
+			timer.start();
 			break;
 		case BUTTON_STEP_BACKWARD:
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
+			GUIReferences.markAsModified();
 			GUIReferences.stepperGroup.clearSelection();
 			GUIReferences.turnController.playTurnBackwards();
 			break;
 		case BUTTON_PLAY_BACKWARDS:
-			//TODO
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
-			for(int i=0;i<1000;i++){
-				GUIReferences.turnController.playTickBackwards();
+			GUIReferences.markAsModified();
+			if(timer.isRunning()) {
+				timer.stop();
 			}
+			playSpeed = PLAYBACK_PLAY_BACKWARDS;
+			timer.setDelay(500);
+			timer.start();
 			break;
 		case BUTTON_STOP:
-			//TODO
-			//stop();
+			timer.stop();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_PLAY:
-			//TODO
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
-			for(int i=0;i<1000;i++){
-				GUIReferences.turnController.playTick();
+			GUIReferences.markAsModified();
+			if(timer.isRunning()) {
+				timer.stop();
 			}
-			GUIReferences.turnController.playTick();
+			playSpeed = PLAYBACK_PLAY;
+			timer.setDelay(500);
+			timer.start();
 			break;
 		case BUTTON_NEXT_SENSOR:
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
+			GUIReferences.markAsModified();
 			GUIReferences.turnController.playTick();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_STEP_FORWARD:
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
+			GUIReferences.markAsModified();
 			GUIReferences.turnController.playTurn();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
-			GUIReferences.saveMenuItem.setEnabled(true);
-			if(GUIReferences.currentFile != null) {
-				GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-			} else {
-				GUIReferences.sensorNetwork.setTitle("*Untitled");
+			if(!GUIReferences.isSensorNetworkAvailable()) {
+				break;
 			}
-			//TODO
-			int i=0;
-			while(i<1000){
-			GUIReferences.turnController.playTurn();
-			i++;
+			GUIReferences.markAsModified();
+			if(timer.isRunning()) {
+				timer.stop();
 			}
-			//fastForward();
+			playSpeed = PLAYBACK_FAST_FORWARD;
+			timer.setDelay(130);
+			timer.start();			
+			break;
+		case TIMER_EVENT:
+			switch(playSpeed) {
+			default:
+			case PLAYBACK_PAUSE:
+				timer.stop();
+				break;
+			case PLAYBACK_FAST_FORWARD:
+			case PLAYBACK_PLAY:
+				GUIReferences.turnController.playTick();
+				break;
+			case PLAYBACK_PLAY_BACKWARDS:
+			case PLAYBACK_REWIND:
+				GUIReferences.turnController.playTurnBackwards();
+				break;
+			}
 			break;
 		case BUTTON_NEW_OK:
 			//Clear()
@@ -283,9 +294,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			} else {
 				GUIReferences.view |= VIEW_RADII;
 			}
-			if(GUIReferences.sensorNetwork != null) {
-				GUIReferences.sensorNetwork.repaint();
-			}
+			GUIReferences.updateViewSettings();
 			break;
 		case CHECKBOX_CONNECTIONS:
 			if(0 != (GUIReferences.view & VIEW_CONNECTIONS)) {
@@ -293,9 +302,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			} else {
 				GUIReferences.view |= VIEW_CONNECTIONS;
 			}
-			if(GUIReferences.sensorNetwork != null) {
-				GUIReferences.sensorNetwork.repaint();
-			}
+			GUIReferences.updateViewSettings();
 			break;
 		case CHECKBOX_NEIGHBOURS:
 			if(0 != (GUIReferences.view & VIEW_NEIGHBOURS)) {
@@ -303,9 +310,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			} else {
 				GUIReferences.view |= VIEW_NEIGHBOURS;
 			}
-			if(GUIReferences.sensorNetwork != null) {
-				GUIReferences.sensorNetwork.repaint();
-			}
+			GUIReferences.updateViewSettings();
 			break;
 		case CHECKBOX_ENABLE_CONSOLE:
 			if(0 != (GUIReferences.view & VIEW_CONSOLE)) {
@@ -318,49 +323,29 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case CHECKBOX_ENABLE_INFOBOX:
 			if(0 != (GUIReferences.view & VIEW_CONSOLE)) {
-				GUIReferences.view &= ~VIEW_CONSOLE;
-				GUIReferences.console.setVisible(false);
+				//GUIReferences.view &= ~VIEW_CONSOLE;
+				//GUIReferences.console.setVisible(false);
 			} else {
-				GUIReferences.view |= VIEW_CONSOLE;
-				GUIReferences.console.setVisible(true);
+				//GUIReferences.view |= VIEW_CONSOLE;
+				//GUIReferences.console.setVisible(true);
 			}
 			break;
 		case CHECKBOX_ROUTES:
 			if(0 != (GUIReferences.view & VIEW_ROUTES)) {
 				GUIReferences.view &= ~VIEW_ROUTES;
-				GUIReferences.sensorNetwork.getGraphicsPainter().setToDraw(new ShapeList(), Color.BLACK);
 			} else {
 				GUIReferences.view |= VIEW_ROUTES;
 			}
-			if(GUIReferences.selectedSensor != null) {
-				GUIReferences.sensorNetwork.getGraphicsPainter()
-					.setToDraw(GUIReferences.selectedSensor.getRouteToTerminal()
-							, GUIReferences.connectionColor);
-			}
-			if(GUIReferences.sensorNetwork != null) {
-				
-				GUIReferences.sensorNetwork.repaint();
-			}
+			GUIReferences.updateViewSettings();
 			break;
-		case CHECKBOX_ALL_ROUTES:
-			ShapeList newShapes = new ShapeList();
-			if(0 != (GUIReferences.view & VIEW_ALL_ROUTES)) {
-				GUIReferences.view &= ~VIEW_ALL_ROUTES;
-				if(0 != (GUIReferences.view & VIEW_ROUTES)) {
-					if(GUIReferences.selectedSensor != null) {
-						newShapes = GUIReferences.selectedSensor.getRouteToTerminal();
-					}
-				}
+		case CHECKBOX_ISOLATED:
+			if(0 != (GUIReferences.view & VIEW_ISOLATED)) {
+				GUIReferences.view &= ~VIEW_ISOLATED;
+
 			} else {
-				GUIReferences.view |= VIEW_ALL_ROUTES;
-				for(Sensor sen : Sensor.idToSensor.values()) {
-					newShapes.addAll(sen.getRouteToTerminal());
-				}
+				GUIReferences.view |= VIEW_ISOLATED;
 			}
-			if(GUIReferences.sensorNetwork != null) {
-				GUIReferences.sensorNetwork.getGraphicsPainter().setToDraw(newShapes, GUIReferences.connectionColor);
-				GUIReferences.sensorNetwork.repaint();
-			}
+			GUIReferences.updateViewSettings();
 			break;
 		case POPUP_BUTTON_VIEW_SENSOR:
 			//TODO - make nicer

@@ -37,10 +37,12 @@ public interface GUIConstants {
 	public final static int CHECKBOX_NEIGHBOURS = 203;
 	public final static int CHECKBOX_ENABLE_CONSOLE = 204;
 	public final static int CHECKBOX_ROUTES = 205;
-	public final static int CHECKBOX_ALL_ROUTES = 206;
+	public final static int CHECKBOX_ISOLATED = 206;
 	public final static int CHECKBOX_ENABLE_INFOBOX = 207;
 	
 	public final static int POPUP_BUTTON_VIEW_SENSOR = 301;
+	
+	public final static int TIMER_EVENT = 401;
 	
 	public final static int PLAYBACK_REWIND = -2;
 	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
@@ -78,5 +80,5 @@ public interface GUIConstants {
 	public final static int VIEW_ALL 		  = 0x000000ff;
 	public final static int VIEW_CONSOLE	  = 0x00000008;
 	public final static int VIEW_ROUTES		  = 0x00000010;
-	public final static int VIEW_ALL_ROUTES   = 0x00000020;
+	public final static int VIEW_ISOLATED     = 0x00000020;
 }
