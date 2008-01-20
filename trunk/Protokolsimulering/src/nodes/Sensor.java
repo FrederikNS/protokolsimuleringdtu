@@ -348,7 +348,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		} else {
 			if(sen instanceof Terminal) {
 				Note.sendNote(sen + " has been demoted to Sensor");
-				GlobalAddressBook.removeTerminal(sen);
 				Terminal.idToTerminals.remove(this.id);
 				return copySensor(new SensorImplementation(sen));
 			}
