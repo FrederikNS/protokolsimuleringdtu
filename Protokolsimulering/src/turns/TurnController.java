@@ -150,6 +150,9 @@ public abstract class TurnController implements Saveable{
 
 		@Override
 		public Turn getCurrentTurn() {
+			if(currentEntry < 0){
+				return null;
+			}
 			return turnList[currentEntry];
 		}
 
