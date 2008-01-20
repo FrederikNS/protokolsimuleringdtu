@@ -21,6 +21,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import turns.TurnController;
+
 import exceptions.XMLParseException;
 import gui.ControlPanelFrame;
 import gui.GUIReferences;
@@ -52,8 +54,7 @@ public class DOMxmlParser {
 			//TODO generate better notes for errors.
 			result = new DOMxmlParser(xmlFile).doc;
 			
-			
-			SensorImplementation.loadFromXML(result);
+			SensorImplementation.loadGeneralDataFromXML(result);
 			NodeList field = result.getElementsByTagName("field").item(0).getChildNodes();
 			Node child;
 			for(int i = 0; i < field.getLength() ; i++) {
@@ -64,12 +65,20 @@ public class DOMxmlParser {
 					y = Integer.parseInt(getTextNodeValue(child).trim());
 				}
 			}
+			NodeList turnController = result.getElementsByTagName("turnController");
+			if(turnController.getLength() > 0) {
+				TurnController.getInstance().loadFromXMLElement(turnController.item(0));
+			} else {
+				SensorImplementation.loadAllSensorsFromXML(result);
+				GlobalAddressBook.getBook().generateDirectConnections();
+			}
 			if(x == 0 || y == 0) {
 				throw new XMLParseException("The field size could not be determined.");
 			}
 		} catch (RuntimeException e){
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			e.printStackTrace();
 			panel.setJLabalStatus("Failed!");
 			return;
 		} catch (UnsupportedEncodingException e) {
@@ -103,7 +112,6 @@ public class DOMxmlParser {
 			panel.setJLabalStatus("Failed!");
 			return;
 		}
-		GlobalAddressBook.getBook().generateDirectConnections();
 		panel.setJLabalStatus("Load Successful.");
 		GUIReferences.generateNewField(x, y, xmlFile.getName());
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");

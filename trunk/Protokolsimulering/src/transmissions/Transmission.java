@@ -1,14 +1,16 @@
 package transmissions;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import nodes.Sensor;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import nodes.Sensor;
+import xml.DOMxmlParser;
+
+import exceptions.XMLParseException;
 
 
 /**
@@ -37,7 +39,7 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	/**
 	 * The data being transmitted.
 	 */
-	private ArrayList<Data> data;
+	private Data data;
 
 	/**
 	 * Generate a Transmission.
@@ -50,21 +52,12 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		this.receiver = receiver;
 		this.through = through;
 		this.sender = sender;
-		data = new ArrayList<Data>();
-		data.add(information);
+		data = information;
 		messageType = information.getDataType();
 	}
 	
 	public Transmission(int receiver, int sender, Data information) {
 		this(receiver, Sensor.INVALID_SENSOR_ID, sender, information);
-	}
-	
-	public Transmission(int receiver, int through, int sender, Collection<? extends Data> dataList) {
-		this.receiver = receiver;
-		this.through = through;
-		this.sender = sender;
-		data = new ArrayList<Data>(dataList);
-		messageType = data.get(0).getDataType();
 	}
 
 	/**
@@ -129,40 +122,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	
 	/**
 	 * Fetches data from the transmission.
-	 * @param index The index of the transmission.
 	 * @return The data.
 	 */
-	public Data getData(int index) {
-		return data.get(index);
-	}
-	
-	/**
-	 * Fetches the amount of data packages in this transmission.
-	 * @return The amount of data packages.
-	 */
-	public int size(){
-		return data.size();
-	}
-	
-	/**
-	 * Appends some data to the list if and only if it is of the same type.
-	 * @param toAdd Data to add
-	 * @return true if it could be added.
-	 */
-	public boolean appendData(Data toAdd) {
-		if(toAdd.getDataType() == messageType) {
-			return data.add(toAdd);
-		}
-		return false;
-	}
-	
-	/**
-	 * Remove some data from the transmissions at index.
-	 * @param index The index of the transmissions to be removed.
-	 * @return true if it could be moved.
-	 */
-	public Data remove(int index) {
-		return data.remove(index);
+	public Data getData() {
+		return data;
 	}
 	
 	
@@ -173,34 +136,86 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	public void setRespondsableTransmitter(int sensorID) {
 		this.through = sensorID;
 	}
-	/**
-	 * Remove some data from the transmissions
-	 * @param toRemove The data to be removed.
-	 * @return true if the data was in the transmissions.
-	 */
-	public boolean remove(Data toRemove) {
-		return data.remove(toRemove);
-	}
+
 	
 	public static Transmission generateCorruptTransmission() {
 		return new Transmission(Sensor.INVALID_SENSOR_ID, Sensor.INVALID_SENSOR_ID, Data.GarbageData);
 	}
 	
 	public void corruptTransmission() {
-		data = new ArrayList<Data>();
-		data.add(Data.GarbageData);
+		data = Data.GarbageData;
 		messageType = TYPE_GARBAGE;
 		sender = Sensor.INVALID_SENSOR_ID;
 		receiver = Sensor.INVALID_SENSOR_ID;
 		through = Sensor.INVALID_SENSOR_ID;
 	}
 
-	public static Transmission loadFromXMLElement(Node current) {
-		return null;
+	public static Transmission loadFromXMLElement(Node transmissionNode) throws XMLParseException {
+		if(transmissionNode.getNodeType() != Node.ELEMENT_NODE || !transmissionNode.getNodeName().equals("transmission")) {
+			throw new XMLParseException("Node was not a transmission: " + transmissionNode.getNodeName());
+		}
+		NodeList list = transmissionNode.getChildNodes();
+		Node current;
+		Data data = null;
+		int receiver = Sensor.INVALID_SENSOR_ID;
+		int sender = Sensor.INVALID_SENSOR_ID;
+		int through= Sensor.INVALID_SENSOR_ID;
+		int size = list.getLength();
+		for(int i = 0; i < size ; i++) {
+			current = list.item(i);
+			switch(current.getNodeName().charAt(0)) {
+			case 'c':
+				if(current.getNodeName().equals("content")) {
+					NodeList dataList = current.getChildNodes();
+					Node currentDataNode;
+					for(int j = 0 ; j < dataList.getLength() ; j++) {
+						currentDataNode = dataList.item(j);
+						switch(currentDataNode.getNodeName().charAt(0)){
+						case 'd':
+						case 'n':
+							data = Data.loadFromXMLElement(currentDataNode);
+							break;
+						}
+					}
+					
+				}
+				break;
+			case 'r':
+				if(current.getNodeName().equals("receiver")) {
+					try {
+						receiver = Integer.parseInt(DOMxmlParser.getTextNodeValue(current));
+					} catch(RuntimeException e) {
+						throw new XMLParseException("receiver tag within transmission tag did not contain valid int.");
+					}
+				}
+				break;
+			case 's':
+				if(current.getNodeName().equals("sender")) {
+					try {
+						sender = Integer.parseInt(DOMxmlParser.getTextNodeValue(current));
+					} catch(RuntimeException e) {
+						throw new XMLParseException("sender tag within transmission tag did not contain valid int.");
+					}
+				}
+				break;
+			case 't':
+				if(current.getNodeName().equals("through")) {
+					try {
+						through = Integer.parseInt(DOMxmlParser.getTextNodeValue(current));
+					} catch(RuntimeException e) {
+						throw new XMLParseException("through tag within transmission tag did not contain valid int.");
+					}
+				}
+				break;
+			}
+			
+		}
+		if(data == null)
+			throw new XMLParseException("data was missing in transmission tag");
+		return new Transmission(receiver, through, sender, data);
 	}
 	
 	public Element generateXMLElement(Document doc) {
-		int size = data.size();
 		Element element = doc.createElement("transmission");
 		if(receiver != Sensor.INVALID_SENSOR_ID) {
 			Node receiverNode = doc.createElement("receiver");
@@ -222,11 +237,9 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		}
 		
 		
-		if(size > 0) {	
+		if(data != null) {	
 			Node contentNode = doc.createElement("content");
-			for(int i = 0 ; i<size ; i++) {
-				contentNode.appendChild(data.get(i).generateXMLElement(doc));
-			}
+			contentNode.appendChild(data.generateXMLElement(doc));
 			element.appendChild(contentNode);
 		}
 		

@@ -11,8 +11,13 @@ import nodes.Sensor.SensorImplementation;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import exceptions.XMLParseException;
 
 import shape.Drawable;
+import xml.DOMxmlParser;
 import xml.Saveable;
 
 /**
@@ -24,24 +29,101 @@ public class Turn implements Saveable, Drawable{
 	final TreeSet<SensorImplementation> sensors;
 	public final int turn;
 	
-	/*public Turn(Collection<Sensor> sensors) {
-		this(sensors, SensorComparator.SORT_BY_ID, turnsCreated++, false);
-
-	}*/
-	Turn(Collection<? extends Sensor> sensor, int sortBy, int turn, boolean roll) {
+	protected Turn(Collection<? extends Sensor> sensors, int sortBy, int turn, boolean roll) {
 		if(roll) {
 			Sensor.rollTurnOrder();
 		}
 		this.sensors = new TreeSet<SensorImplementation>(new SensorComparator(sortBy));
-		for(Sensor sen : sensor) {
+		for(Sensor sen : sensors) {
 			this.sensors.add(sen.getReal());
+		}
+		this.turn = turn;
+	}
+
+	Turn(Collection<? extends Sensor> sensor, int sortBy, int turn) {
+		this.sensors = new TreeSet<SensorImplementation>(new SensorComparator(sortBy));
+		for(Sensor sen : sensor) {
+			this.sensors.add((SensorImplementation)sen.getReal().clone());
 		}		
 		this.turn = turn;
 	}
 	
 	
 	public RunnableTurn getRunnableTurn() {
-		return new RunnableTurn(this.sensors, this.turn);
+		return new RunnableTurn(Sensor.idToSensor.values(), this.turn);
+	}
+	
+	public static Turn loadFromXMLElement(Node turnNode) throws XMLParseException {
+		boolean runTurn = turnNode.getNodeName().equals("runningTurn");
+		if(turnNode.getNodeType() != Node.ELEMENT_NODE || (runTurn && !turnNode.getNodeName().equals("turn"))) {
+			throw new IllegalArgumentException("Node was not a turn nor a runningTurn tag");
+		}
+		NodeList list = turnNode.getChildNodes();
+		Node current;
+		int size = list.getLength();
+		Integer turnNo;
+		Short phase = null;
+		Integer currentSensorID = null;
+		try {
+			turnNo = Integer.parseInt(((Element) turnNode).getAttribute("turn"));
+			if(turnNo == null) {
+				throw new XMLParseException("Invalid or missing turn attribute.");
+			}
+		} catch(Exception e) {
+			throw new XMLParseException("Invalid or missing turn attribute.");
+		}
+		TreeSet<Sensor> sensorTree = new TreeSet<Sensor>();
+		Turn toReturn = null;
+		for(int i = 0; i < size ; i++) {
+			current = list.item(i);
+			switch(current.getNodeName().charAt(0)) {
+			case 's':
+				sensorTree.add(SensorImplementation.loadFromXMLElement(current));
+				break;
+			case 'c':
+				if(current.getNodeName().equals("currentSensor")) {
+					try {
+						currentSensorID = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
+					} catch(Exception e) {
+						throw new XMLParseException("phase tag was malformatted.");
+					}
+				}
+				break;
+			case 'p':
+				if(current.getNodeName().equals("phase")) {
+					try {
+						phase = Short.parseShort(DOMxmlParser.getTextNodeValue(current).trim());
+					} catch(Exception e) {
+						throw new XMLParseException("phase tag was malformatted.");
+					}
+				}
+				break;
+			}
+		}
+		if(sensorTree.size() == 0) {
+			throw new XMLParseException("turn contained no sensors?");
+		}
+		toReturn = new Turn(sensorTree, SensorComparator.SORT_BY_TURNS, turnNo,false);
+		if(runTurn) {
+			RunnableTurn runner = toReturn.getRunnableTurn();
+			runner.phase = phase;
+			if(currentSensorID != null) {
+				runner.isRunning = true;
+				runner.iter = runner.sensors.descendingIterator();
+				SensorImplementation sen;
+				while(runner.iter.hasNext()) {
+					sen = runner.iter.next();
+					if(sen.id == currentSensorID) {
+						runner.current = sen;
+						break;
+					}
+				}
+			} else {
+				runner.isRunning = false;
+			}
+			toReturn = runner;
+		} 
+		return toReturn;
 	}
 	
 	public Element generateXMLElement(Document doc) {
@@ -56,7 +138,7 @@ public class Turn implements Saveable, Drawable{
 		Element sensorElement;
 		int i = sensors.size();
 		for(Sensor sen : sensors) {
-			sensorElement = sen.generateXMLTurnElement(doc);
+			sensorElement = sen.generateXMLElement(doc);
 			sensorElement.setAttribute("initiative", String.valueOf(i--));
 			outerElement.appendChild(sensorElement);
 		}
@@ -82,7 +164,7 @@ public class Turn implements Saveable, Drawable{
 		protected SensorImplementation current;
 		private Iterator<SensorImplementation> iter;
 		
-		private RunnableTurn(TreeSet<? extends Sensor> sensors, int turn) {
+		private RunnableTurn(Collection<? extends Sensor> sensors, int turn) {
 			super(sensors, SensorComparator.SORT_BY_TURNS, turn, true);
 		}
 		
@@ -178,13 +260,23 @@ public class Turn implements Saveable, Drawable{
 			}
 		}
 		
-		@Override
-		public Element generateXMLElement(Document doc) {
+		public Element generateRunnableTurnXMLElement(Document doc) {
 			Element turnElement = doc.createElement("runningTurn");
 			turnElement.setAttribute("turn", String.valueOf(turn));
 			turnElement.setIdAttribute("turn", true);
-			
+			Element phaseElement = doc.createElement("phase");
+			phaseElement.appendChild(doc.createTextNode(String.valueOf(phase)));
+			turnElement.appendChild(phaseElement);
+			if(current!= null) {
+				Element currentSensorElement = doc.createElement("currentSensor");
+				currentSensorElement.appendChild(doc.createTextNode(String.valueOf(current.id)));
+				turnElement.appendChild(currentSensorElement);
+			}
 			return generateInnerXMLElement(turnElement, doc);
+		}
+		@Override
+		public Element generateXMLElement(Document doc) {
+			return generateRunnableTurnXMLElement(doc);
 		}
 	}
 	
