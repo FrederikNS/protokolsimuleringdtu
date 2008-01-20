@@ -51,7 +51,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static final int STATUS_SELECTED				    = 0x00000008;
 	public static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
 	public static final int STATUS_HAS_TURN 				= 0x00000020;
-	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING |STATUS_RECEIVING | STATUS_HAS_TURN;
+	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING | STATUS_RECEIVING | STATUS_HAS_TURN;
 	
 	protected static Random ran = new Random();
 	public static int usedIDs = 0;

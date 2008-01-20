@@ -1,9 +1,7 @@
 Fixe alle "TODO"s
 
 Test af Sensor-protokolen.
-
-Færdiggørelse af XML aflæsning. (80%)
-Færdiggørelse af XML indskriving. (90%)
+Test af Save og Load.
 
 
 
@@ -17,8 +15,11 @@ NOT DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb s
 	 
 	 - mangler visning af simulerede tid.
 	 - simulering af rutebestemmelse protokollen bør forbedres, men er færdig!
+	 - TEST!
 	 
-NOT DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
+DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
+
+	- TEST!
 
 --- 3 mandsgrupper.
 
