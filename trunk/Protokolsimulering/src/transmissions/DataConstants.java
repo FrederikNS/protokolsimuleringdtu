@@ -40,7 +40,7 @@ public interface DataConstants {
 	/**
 	 * Type Bit-mask filter.
 	 */
-	public static final int TYPE_ALL 						= 0xff000000;
+	public static final int TYPE_ALL 						= 0x0ff00000;
 	/**
 	 * Priority Bit-mask filter.
 	 */

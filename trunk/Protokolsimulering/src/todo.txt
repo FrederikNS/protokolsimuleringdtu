@@ -1,11 +1,9 @@
 Fixe alle "TODO"s
 
-Færdiggørelse af Sensor-protokolen.
 Test af Sensor-protokolen.
 
-Færdiggørelse af XML aflæsning. (25%)
-Færdiggørelse af XML indskriving. (50%)
-Lave Turn/TurnController classerne. (75%)
+Færdiggørelse af XML aflæsning. (80%)
+Færdiggørelse af XML indskriving. (90%)
 
 
 
