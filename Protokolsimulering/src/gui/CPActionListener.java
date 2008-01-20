@@ -34,7 +34,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
 			//TODO - call another method.
-			System.exit(0);
+			ControlPanelFrame.getFrame().quit();
 			break;
 		case MENU_NEW:
 			CPNew.openCPNew();
