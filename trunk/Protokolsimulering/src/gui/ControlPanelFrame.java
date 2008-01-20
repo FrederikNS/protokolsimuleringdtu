@@ -6,7 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -15,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import nodes.Sensor;
 
 import static gui.GUIReferences.*;
 
@@ -30,6 +34,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	JTabbedPane modeTabPanes = new JTabbedPane();
 	private boolean constructTabSelected = true;
 	private JLabel status;
+	private boolean run = true;
 
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
@@ -93,7 +98,26 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		
 		//frame is packed and shown
 		pack();
+		
+	}
+	
+	public synchronized void open() {
 		setVisible(true);
+		System.out.println("Suspending original thread...");
+		while(run) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+
+			}
+		}
+	}
+	
+	public synchronized void quit() {
+		this.setVisible(false);
+		System.out.println("Reactiving original thread...");
+		run = false;
+		this.notifyAll();
 	}
 
 	public void setJLabelStatus(int x, int y, int i) {
@@ -118,6 +142,16 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 			if(mode != MODE_SELECT) {
 				modeGroup.clearSelection();
 				mode = MODE_SELECT;
+			}
+			Enumeration<AbstractButton> buttons = GUIReferences.stepperGroup.getElements();
+			if(Sensor.getAmountOfTerminals() > 0) {
+				while(buttons.hasMoreElements()) {
+					buttons.nextElement().setEnabled(true);
+				}
+			} else {
+				while(buttons.hasMoreElements()) {
+					buttons.nextElement().setEnabled(false);
+				}
 			}
 		}
 	}

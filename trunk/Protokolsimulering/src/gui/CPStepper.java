@@ -2,7 +2,9 @@ package gui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -59,6 +61,11 @@ public class CPStepper implements GUIConstants {
 		GUIReferences.stepperGroup.add(play);
 		GUIReferences.stepperGroup.add(stepForward);
 		GUIReferences.stepperGroup.add(fastForward);
+		Enumeration<AbstractButton> buttons = GUIReferences.stepperGroup.getElements();
+		while(buttons.hasMoreElements()) {
+			buttons.nextElement().setEnabled(false);
+		}
+		
 		stepperPanel.add(toStart);
 		stepperPanel.add(rewind);
 		stepperPanel.add(fastForward);
