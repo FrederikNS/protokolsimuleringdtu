@@ -27,13 +27,13 @@ public class GUIReferences implements GUIConstants{
 	static Console console;
 	static int playback = PLAYBACK_PAUSE;
 	static int mode = MODE_SELECT;
-	static ButtonGroup modeGroup;
+	public static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
 	static JMenuItem saveMenuItem;
 	
 	static File currentFile;
 	
-	public static TurnController turnController = TurnController.newInstance();
+	public static TurnController turnController = TurnController.getInstance();
 	
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);

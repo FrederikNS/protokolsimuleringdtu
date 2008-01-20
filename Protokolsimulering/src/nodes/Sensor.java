@@ -312,10 +312,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			sen.transmissionRoll = ran.nextInt(100);
 		}
 	}	
-
-	public Element generateXMLTurnElement(Document doc) {
-		return getReal().generateXMLTurnElement(doc);
-	}
 	
 	public Element generateXMLElement(Document doc) {
 		return getReal().generateXMLElement(doc);
@@ -667,13 +663,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		 * @param doc The DOM Document reference of the XML file
 		 * @throws XMLParseException Throw if invalid tags/informations was found.
 		 */
-		public static void loadFromXML(Document doc) throws XMLParseException {
-			NodeList sensorList = doc.getElementsByTagName("sensor");
-			int size = sensorList.getLength();
-			for(int i = 0 ; i < size ; i++) {
-				loadFromXMLElement(sensorList.item(i));
-			}
-			usedIDs = size;
+		public static void loadGeneralDataFromXML(Document doc) throws XMLParseException {
 			Node transmissionRadiusNode = doc.getElementsByTagName("transmissionRadius").item(0);
 			if( transmissionRadiusNode != null) {
 				try {
@@ -686,16 +676,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 		
-		
-		@Override
-		public Element generateXMLElement(Document doc) {
-			//TODO Handle more data.
-			Element element = doc.createElement("sensor");
-			element.setAttribute("id", String.valueOf(id));
-			element.setIdAttribute("id", true);
-			element.appendChild(this.getLocation().generateXMLElement(doc));
-			savingSensorToXML(element, doc);
-			return element;
+		public static void loadAllSensorsFromXML(Document doc) throws XMLParseException{
+			NodeList sensorList = doc.getElementsByTagName("sensor");
+			int size = sensorList.getLength();
+			for(int i = 0 ; i < size ; i++) {
+				loadFromXMLElement(sensorList.item(i));
+			}
+			usedIDs = size;
 		}
 
 		
@@ -706,7 +693,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		 * @throws XMLParseException Throw if invalid tags/informations was found.
 		 */
 		public static Sensor loadFromXMLElement(Node sensorElement) throws XMLParseException {
-			//TODO Handle more data.
 			if(sensorElement.getNodeType() != Node.ELEMENT_NODE || !sensorElement.getNodeName().equals("sensor")) {
 				throw new IllegalArgumentException("Node was not a sensorElement");
 			}
@@ -715,7 +701,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			Node current;
 			Location loc = null;
 			SensorImplementation sen;
+			Node protoNode = null;
+			Integer nearestTermID = null;
+			Integer nearestTermDist = null;
+			Integer nearestTermLink = null;
+			Integer status = null;
 			int size = list.getLength();
+			TreeSet<Integer> linkList = new TreeSet<Integer>();
 			for(int i = 0; i < size ; i++) {
 				current = list.item(i);
 				switch(current.getNodeName().charAt(0)) {
@@ -723,10 +715,65 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 					if(current.getNodeName().equals("location")) {
 						loc = Location.loadFromXMLElement(current);
 						noLocation= false;
+					} else if(current.getNodeName().equals("links")){
+						NodeList linkNodeList = current.getChildNodes();
+						int linkNodeListLength = linkNodeList.getLength();
+						Node currentLink;
+						try {
+							for(int j = 0 ; j < linkNodeListLength ; j++) {
+								currentLink = linkNodeList.item(j);
+								switch(currentLink.getNodeName().charAt(0)) {
+								case 'l':
+									linkList.add(Integer.parseInt(DOMxmlParser.getTextNodeValue(currentLink).trim()));
+									break;
+								}
+							}
+						} catch(Exception e) {
+							throw new XMLParseException("links tag was malformatted. " +e);
+						}
 					}
 					break;
-					
+				case 'p':
+					if(current.getNodeName().equals("protocol")) {
+						protoNode = current;
+					}
+					break;
+				case 'n':
+					if(current.getNodeName().equals("nearestTerm")){
+						NodeList nearestList = current.getChildNodes();
+						Node currentJ;
+						try {
+							for(int j = 0 ; j < nearestList.getLength() ; j++) {
+								currentJ = nearestList.item(j);
+								switch(currentJ.getNodeName().charAt(0)) {
+								case 'i':
+									nearestTermID = Integer.parseInt(DOMxmlParser.getTextNodeValue(currentJ).trim());
+									break;
+								case 'd':
+									nearestTermDist = Integer.parseInt(DOMxmlParser.getTextNodeValue(currentJ).trim());
+									break;
+								case 'l':
+									nearestTermLink = Integer.parseInt(DOMxmlParser.getTextNodeValue(currentJ).trim());
+									break;
+								}
+							}
+						} catch(Exception e){
+							throw new XMLParseException("nearestTerm or its contents was malformatted.");
+						}
+						
+					}
+					break;
+				case 's':
+					if(current.getNodeName().equals("status")) {
+						try {
+							status = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
+						} catch(Exception e) {
+							throw new XMLParseException("status tag (or its contents) was malformatted");
+						}
+					}
+					break;
 				}
+				
 				
 			}
 			
@@ -778,6 +825,29 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 					sen = new Terminal(sen);
 				}
 			}
+			if(protoNode != null){
+				sen.protocol = Protocol.loadFromXMLElement(protoNode, sen);
+			}
+			if(nearestTermID != null) {
+				sen.nearestTerminalDist = nearestTermDist;
+				sen.nearestTerminalID = nearestTermID;
+				sen.sendThrough = nearestTermLink;
+			}
+			if(status != null) {
+				sen.status = status;
+			}
+			if(linkList.size() > 0) {
+				TreeSet<Sensor> sensorLinkList = new TreeSet<Sensor>();
+				Sensor currentSensorLink;
+				for(Integer linkID : linkList) {
+					currentSensorLink = idToSensor.get(linkID);
+					if(currentSensorLink == null){
+						currentSensorLink = new Sensor(linkID);
+					}
+					sensorLinkList.add(currentSensorLink);
+				}
+				sen.links = sensorLinkList;
+			}
 			return copySensor(sen);
 		}
 		
@@ -794,20 +864,49 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			return element;
 		}
 		
-		/* (non-Javadoc)
-		 * @see nodes.Sensor#generateXMLTurnElement(org.w3c.dom.Document)
-		 */
+		
 		@Override
-		public Element generateXMLTurnElement(Document doc) {
+		public Element generateXMLElement(Document doc) {
 			Element element = doc.createElement("sensor");
 			element.setAttribute("id", String.valueOf(id));
 			element.setIdAttribute("id", true);
+			element.appendChild(this.getLocation().generateXMLElement(doc));
 			if(sensorLabel != null){
 				element.setAttribute("label", sensorLabel);
 			}
-			
+			if(this.links.size() > 0) {
+				Element linksElement = doc.createElement("links");
+				Element currentLink;
+				for(Sensor sen : links) {
+					currentLink = doc.createElement("link");
+					currentLink.appendChild(doc.createTextNode(String.valueOf(sen.id)));
+					linksElement.appendChild(currentLink);
+				}
+				element.appendChild(linksElement);
+			}
+			if(this.nearestTerminalID != Sensor.INVALID_SENSOR_ID) {
+				Element nearestTermElement = doc.createElement("nearestTerm");
+				Element nearestTermIDElement = doc.createElement("id");
+				Element nearestTermDistElement = doc.createElement("dist");
+				Element nearestTermLinkElement = doc.createElement("link");
+				nearestTermIDElement.appendChild(doc.createTextNode(String.valueOf(this.nearestTerminalID)));
+				nearestTermDistElement.appendChild(doc.createTextNode(String.valueOf(this.nearestTerminalDist)));
+				nearestTermLinkElement.appendChild(doc.createTextNode(String.valueOf(this.sendThrough)));
+				nearestTermElement.appendChild(nearestTermIDElement);
+				nearestTermElement.appendChild(nearestTermDistElement);
+				nearestTermElement.appendChild(nearestTermLinkElement);
+				element.appendChild(nearestTermElement);
+			}
+			if(status != 0) {
+				Element statusElement = doc.createElement("status");
+				statusElement.appendChild(doc.createTextNode(String.valueOf(status)));
+				element.appendChild(statusElement);
+			}
+			savingSensorToXML(element, doc);
+			element.appendChild(protocol.generateXMLElement(doc));
 			return element;
 		}
+
 		
 		protected void savingSensorToXML(Element topSensorElement, Document doc){}
 		

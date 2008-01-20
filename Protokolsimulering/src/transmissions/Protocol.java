@@ -107,7 +107,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			if(isReceiver || isForAll) {
 				//Note.sendNote(Note.DEBUG, main + " received transmission from " +  msg.getSender());
 				if(isForAll) {
-					delayNextTransmission = ran.nextInt(10)+1;
+					delayNextTransmission = ran.nextInt(12);
 				}
 				incomming = msg;
 			}
@@ -171,7 +171,8 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	}
 
 	public void step() {
-		if(0 != (currentTick & Protocol.ACTION_SENDING) && 0 == (currentTick & Protocol.ACTION_RECEIVING)) {
+		if(0 != (currentTick & Protocol.ACTION_SENDING) && 0 == (currentTick & Protocol.ACTION_RECEIVING)
+				&& outgoing.size() > 0) {
 			if(0 == (currentTick & Protocol.OPTION_SEND_DISABLED)) {
 				delayNextTransmission = ran.nextInt(10)+5;
 				transmit(outgoing.pollLast());
@@ -208,7 +209,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 					break;
 				case Data.TYPE_NETWORK:
 					try {
-						NetworkData net = incomming.getData(0).asNetworkData();
+						NetworkData net = incomming.getData().asNetworkData();
 						int nearestTerm = main.getNearestTerminal();
 						main.newTerminal(net.getLink(), incomming.getSender(), net.getDistance());
 						if(nearestTerm != main.getNearestTerminal()) {
@@ -239,10 +240,11 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		Transmission incomming = null;
 		Integer currentTick = null;
 		Integer waitingForSensor = null;
+		Integer delay = null;
 		TreeSet<Transmission> ingoing = null, outgoing = null;
 		ArrayList<Transmission> sent = null;
 		for(int i = 0; i < length ; i++) {
-			current = list.item(0);
+			current = list.item(i);
 			switch(current.getNodeName().charAt(0)) {
 			case 'c':
 				try {
@@ -253,15 +255,40 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 					throw new XMLParseException("currentTick tag malformattet in Protocol tag.");
 				}
 				break;
+			case 'd':
+					if(current.getNodeName().equals("delay")) {
+						try {
+							delay = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
+						} catch(RuntimeException e) {
+							throw new XMLParseException("delay tag malformattet in Protocol tag.");
+						}
+					}
+				break;
 			case 'i':
 				if(current.getNodeName().equals("incomming")) {
-					incomming = Transmission.loadFromXMLElement(current);
+					NodeList ingoingList = current.getChildNodes();
+					int incommingSize = ingoingList.getLength();
+					Node currentIncommingNode;
+					for(int j = 0 ; j < incommingSize ; j++) {
+						currentIncommingNode = ingoingList.item(j);
+						switch(currentIncommingNode.getNodeName().charAt(0)) {
+						case 't':
+							incomming = Transmission.loadFromXMLElement(currentIncommingNode);
+							break;
+						}
+					}
 				} else if(current.getNodeName().equals("ingoing")) {
 					ingoing = new TreeSet<Transmission>();
 					NodeList ingoingList = current.getChildNodes();
 					int ingoingSize = ingoingList.getLength();
+					Node currentIngoingNode;
 					for(int j = 0 ; j < ingoingSize ; j++) {
-						ingoing.add(Transmission.loadFromXMLElement(ingoingList.item(j)));
+						currentIngoingNode = ingoingList.item(j);
+						switch(currentIngoingNode.getNodeName().charAt(0)) {
+						case 't':
+							ingoing.add(Transmission.loadFromXMLElement(currentIngoingNode));
+							break;
+						}
 					}
 				}
 				break;
@@ -270,8 +297,14 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 					outgoing = new TreeSet<Transmission>();
 					NodeList outgoingList = current.getChildNodes();
 					int outgoingSize = outgoingList.getLength();
+					Node currentOutgoingNode;
 					for(int j = 0 ; j < outgoingSize ; j++) {
-						outgoing.add(Transmission.loadFromXMLElement(outgoingList.item(j)));
+						currentOutgoingNode = outgoingList.item(j);
+						switch(currentOutgoingNode.getNodeName().charAt(0)) {
+						case 't':
+							ingoing.add(Transmission.loadFromXMLElement(currentOutgoingNode));
+							break;
+						}
 					}
 				}
 			case 's':
@@ -279,8 +312,14 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 					sent = new ArrayList<Transmission>();
 					NodeList sentList = current.getChildNodes();
 					int sentSize = sentList.getLength();
+					Node currentSentNode;
 					for(int j = 0 ; j < sentSize ; j++) {
-						sent.add(Transmission.loadFromXMLElement(sentList.item(j)));
+						currentSentNode = sentList.item(j);
+						switch(currentSentNode.getNodeName().charAt(0)) {
+						case 't':
+							ingoing.add(Transmission.loadFromXMLElement(currentSentNode));
+							break;
+						}
 					}
 				}
 			case 'w':
@@ -314,11 +353,18 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		if(sent != null) {
 			toReturn.sent = sent;
 		}
+		if(delay != null) {
+			toReturn.delayNextTransmission = delay;
+		} else throw new XMLParseException("Missing delay tag in protocol");
+			
 		return toReturn;
 	}
 
 	public Element generateXMLElement(Document doc) {
 		Element protocolElement = doc.createElement("protocol");
+		Element delayElement = doc.createElement("delay");
+		delayElement.appendChild(doc.createTextNode(String.valueOf(this.delayNextTransmission)));
+		protocolElement.appendChild(delayElement);
 		if(currentTick != 0) {
 			Element currentTickElement = doc.createElement("currentTick");
 			currentTickElement.appendChild(doc.createTextNode(String.valueOf(currentTick)));

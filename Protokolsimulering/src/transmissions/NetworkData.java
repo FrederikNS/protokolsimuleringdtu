@@ -55,7 +55,7 @@ public class NetworkData extends Data {
 		Integer distance = null;
 		Integer link = null;
 		for(int i = 0; i < length ; i++) {
-			current = list.item(0);
+			current = list.item(i);
 			switch(current.getNodeName().charAt(0)) {
 			case 'l':
 				try {
@@ -78,7 +78,7 @@ public class NetworkData extends Data {
 			}
 		}
 		if(distance == null || link == null) {
-			throw new XMLParseException("link or distance tag missing in networkData tag.");
+			throw new XMLParseException("link or distance tag missing in networkData tag. Link: " + link + ", distance " + distance);
 		}
 		
 		return new NetworkData(distance, link);

@@ -6,11 +6,17 @@ import notification.Note;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import exceptions.XMLParseException;
 
 import turns.Turn.RunnableTurn;
 import xml.Saveable;
 
 public abstract class TurnController implements Saveable{
+
+	protected static TurnController instance;
 	
 	/**
 	 * Call when the field has been altered.
@@ -33,6 +39,8 @@ public abstract class TurnController implements Saveable{
 	
 	public abstract Turn getCurrentTurn();
 	
+	public abstract TurnController loadFromXMLElement(Node turnControllerNode) throws XMLParseException;
+	
 	/**
 	 * The TurnController will attempt to go to the given turn. If it jumps forward it may have to 
 	 * calculate all the turns inbetween. If it goes back it must keep a history and may have to 
@@ -42,13 +50,17 @@ public abstract class TurnController implements Saveable{
 	 */
 	public abstract boolean goToTurn(int turn);
 
+	
 	/* (non-Javadoc)
 	 * @see xml.Saveable#generateXMLElement(org.w3c.dom.Document)
 	 */
 	public abstract Element generateXMLElement(Document doc);
 	
-	public static TurnController newInstance() {
-		return new TurnControllerImplementation();
+	public static TurnController getInstance() {
+		if(instance == null) {
+			instance = new TurnControllerImplementation();
+		}
+		return instance;
 	}
 	
 	private static class TurnControllerImplementation extends TurnController {
@@ -94,15 +106,6 @@ public abstract class TurnController implements Saveable{
 			}
 		}
 
-		/*@Override
-		public void playTurn() {
-			RunnableTurn turn = getCurrentRunnableTurn();
-			turn.prepare();
-			turn.step();
-			turn.endStep();
-			endOfTurn();
-		}*/
-
 		private void endOfTurn() {
 			Note.sendNote("End of Turn: " + currentTurn);
 			currentEntry++;
@@ -115,7 +118,7 @@ public abstract class TurnController implements Saveable{
 				currentEntry = 5;
 			} 
 			currentTurn++;
-			turnList[currentEntry] = new Turn(run.sensors, SensorComparator.SORT_BY_TURNS, currentTurn, false);
+			turnList[currentEntry] = new Turn(run.sensors, SensorComparator.SORT_BY_TURNS, currentTurn);
 			run = null;
 		}
 		
@@ -124,28 +127,58 @@ public abstract class TurnController implements Saveable{
 			if(this.currentTurn < 0) {
 				currentTurn = 0;
 				currentEntry = 0;
-				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_TURNS, currentTurn, false);			
-			} else {
-				//TODO split.
+				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_TURNS, currentTurn);
 			}
 			notReady = false;
 		}
-
+		
 		@Override
 		public Element generateXMLElement(Document doc) {
-			Element turnListNode = doc.createElement("turns");
-			for(int i = 0 ; i < currentEntry ; i++) {
-				turnListNode.appendChild(turnList[i].generateXMLElement(doc));
-			}
+			Element turnListNode = doc.createElement("turnController");
 			if(run != null) {
-				turnListNode.appendChild(run.generateXMLElement(doc));
+				turnListNode.appendChild(run.generateRunnableTurnXMLElement(doc));
+			}
+			if(currentEntry > -1) {
+				turnListNode.appendChild(turnList[currentEntry].generateXMLElement(doc));
 			}
 			return turnListNode;
 		}
-
+		
 		@Override
-		public void playTickBackwards() {
-			// TODO Auto-generated method stub			
+		public TurnController loadFromXMLElement(Node turnControllerNode) throws XMLParseException {
+			NodeList list = turnControllerNode.getChildNodes();
+			int length = list.getLength();
+			Node current ; 
+			TurnControllerImplementation controller = new TurnControllerImplementation();
+			tagLoop:
+			for(int i = 0 ; i < length ; i++) {
+				current = list.item(i);
+				switch(current.getNodeName().charAt(0)) {
+				case 'r':
+					if(current.getNodeName().equals("runningTurn")) {
+						controller.notReady = false;
+						try {
+							controller.run = (RunnableTurn) Turn.loadFromXMLElement(current);
+						} catch(ClassCastException e) {
+							throw new XMLParseException("runningTurn did not contain a running turn!");
+						}
+						controller.currentEntry = 0;
+						controller.turnList[0] = controller.run;
+						break tagLoop;
+					}
+					break;
+				case 't':
+					if(current.getNodeName().equals("turn")) {
+						controller.currentEntry = 0;
+						controller.turnList[0] = Turn.loadFromXMLElement(current);
+						break tagLoop;
+					}
+					break;
+				}
+			}
+			controller.currentTurn = turnList[0].turn;
+			instance = controller;
+			return instance;
 		}
 
 		@Override
@@ -155,6 +188,13 @@ public abstract class TurnController implements Saveable{
 			}
 			return turnList[currentEntry];
 		}
+
+		@Override
+		public void playTickBackwards() {
+			// Do nothing - not going to be implemented
+		}
+
+
 
 		
 	}

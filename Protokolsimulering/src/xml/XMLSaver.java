@@ -71,9 +71,15 @@ public abstract class XMLSaver {
 			rootElement.appendChild(fieldNode);
 		
 		rootElement.appendChild(SensorImplementation.generateXMLGeneralData(doc));
-		for(Sensor sen : new TreeSet<Sensor>(sensorList)) {
-			rootElement.appendChild(sen.generateXMLElement(doc));
+		Turn currentTurn = TurnController.getInstance().getCurrentTurn();
+		if(currentTurn != null) {
+			rootElement.appendChild(currentTurn.generateXMLElement(doc));
+		} else { 
+			for(Sensor sen : new TreeSet<Sensor>(sensorList)) {
+				rootElement.appendChild(sen.generateXMLElement(doc));
+			}
 		}
+		
 		
 		
 		doc.appendChild(rootElement);
