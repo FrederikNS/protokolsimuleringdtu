@@ -195,6 +195,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		through = Sensor.INVALID_SENSOR_ID;
 	}
 
+	public static Transmission loadFromXMLElement(Node current) {
+		return null;
+	}
+	
 	public Element generateXMLElement(Document doc) {
 		int size = data.size();
 		Element element = doc.createElement("transmission");
@@ -258,4 +262,5 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	public String toString() {
 		return "From: " + this.sender + ", through: " + this.through + ", to " + this.receiver + ", type: " + Integer.toHexString(this.messageType);
 	}
+
 }

@@ -4,21 +4,29 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeSet;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import exceptions.XMLParseException;
+
 import turns.EndSteppable;
 import turns.Prepareable;
+import xml.DOMxmlParser;
+import xml.Saveable;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorImplementation;
 import notification.Note;
 
-public class Protocol implements Transmitter, DataConstants, Prepareable, EndSteppable {
+public class Protocol implements Transmitter, DataConstants, Prepareable, EndSteppable, Saveable {
 
 	
 	protected TreeSet<Transmission> ingoing = new TreeSet<Transmission>();
 	protected TreeSet<Transmission> outgoing = new TreeSet<Transmission>();
 	protected ArrayList<Transmission> sent = new ArrayList<Transmission>();
 	protected Transmission incomming;
-	protected int transmissionFrom = Sensor.INVALID_SENSOR_ID;
 	
 	public static final int OPTION_SEND_DISABLED 	 	= 0x00000001;
 	public static final int OPTION_RECEIVE_DISABLED 	= 0x00000002;
@@ -43,9 +51,9 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	 * @see transmissions.Transmitter#receive(transmissions.Transmission)
 	 */
 	public void receive(Transmission msg) {
-		// TODO Auto-generated method stub
 		if(incomming != null) {
-			Note.sendNote(Note.WARNING, main +": Message from "+ msg.getSender() + " corrupted already received message!");
+			Note.sendNote(Note.WARNING, main +": Message from "+ msg.getRespondsableTransmitter()
+							+ " corrupted message from "+incomming.getRespondsableTransmitter() + "!");
 			incomming = Transmission.generateCorruptTransmission();
 			return;
 		}
@@ -221,6 +229,126 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		}
 		incomming = null;
 		currentTick = 0;
+	}
+	
+	public static Protocol loadFromXMLElement(Node protocolElement, SensorImplementation main) throws XMLParseException {
+		NodeList list = protocolElement.getChildNodes();
+		int length = list.getLength();
+		Node current;
+		Protocol toReturn;
+		Transmission incomming = null;
+		Integer currentTick = null;
+		Integer waitingForSensor = null;
+		TreeSet<Transmission> ingoing = null, outgoing = null;
+		ArrayList<Transmission> sent = null;
+		for(int i = 0; i < length ; i++) {
+			current = list.item(0);
+			switch(current.getNodeName().charAt(0)) {
+			case 'c':
+				try {
+					if(current.getNodeName().equals("currentTick")) {
+						currentTick = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
+					}
+				} catch(RuntimeException e) {
+					throw new XMLParseException("currentTick tag malformattet in Protocol tag.");
+				}
+				break;
+			case 'i':
+				if(current.getNodeName().equals("incomming")) {
+					incomming = Transmission.loadFromXMLElement(current);
+				} else if(current.getNodeName().equals("ingoing")) {
+					ingoing = new TreeSet<Transmission>();
+					NodeList ingoingList = current.getChildNodes();
+					int ingoingSize = ingoingList.getLength();
+					for(int j = 0 ; j < ingoingSize ; j++) {
+						ingoing.add(Transmission.loadFromXMLElement(ingoingList.item(j)));
+					}
+				}
+				break;
+			case 'o':
+				if(current.getNodeName().equals("outgoing")) {
+					outgoing = new TreeSet<Transmission>();
+					NodeList outgoingList = current.getChildNodes();
+					int outgoingSize = outgoingList.getLength();
+					for(int j = 0 ; j < outgoingSize ; j++) {
+						outgoing.add(Transmission.loadFromXMLElement(outgoingList.item(j)));
+					}
+				}
+			case 's':
+				if(current.getNodeName().equals("sent")) {
+					sent = new ArrayList<Transmission>();
+					NodeList sentList = current.getChildNodes();
+					int sentSize = sentList.getLength();
+					for(int j = 0 ; j < sentSize ; j++) {
+						sent.add(Transmission.loadFromXMLElement(sentList.item(j)));
+					}
+				}
+			case 'w':
+				try {
+					if(current.getNodeName().equals("waitingForSensor")) {
+						waitingForSensor = Integer.parseInt(DOMxmlParser.getTextNodeValue(current).trim());
+					}
+				} catch(RuntimeException e) {
+					throw new XMLParseException("waitingForSensor tag malformattet in Protocol tag.");
+				}
+				break;
+			}
+		}
+		toReturn = new Protocol(main);
+		
+		if(currentTick != null) {
+			toReturn.currentTick = currentTick;
+		}
+		if(waitingForSensor != null){
+			toReturn.waitingForSensor = waitingForSensor;
+		}
+		if(incomming != null) {
+			toReturn.incomming = incomming;
+		}
+		if(ingoing != null) {
+			toReturn.ingoing = ingoing;
+		}
+		if(outgoing != null) {
+			toReturn.outgoing = outgoing;
+		}
+		if(sent != null) {
+			toReturn.sent = sent;
+		}
+		return toReturn;
+	}
+
+	public Element generateXMLElement(Document doc) {
+		Element protocolElement = doc.createElement("protocol");
+		if(currentTick != 0) {
+			Element currentTickElement = doc.createElement("currentTick");
+			currentTickElement.appendChild(doc.createTextNode(String.valueOf(currentTick)));
+			protocolElement.appendChild(currentTickElement);
+		}
+		if(waitingForSensor > Sensor.INVALID_SENSOR_ID) {
+			Element waitingForElement = doc.createElement("waitingForSensor");
+			waitingForElement.appendChild(doc.createTextNode(String.valueOf(waitingForSensor)));
+			protocolElement.appendChild(waitingForElement);
+		}
+		if(incomming != null) {
+			Element incommingElement = doc.createElement("incomming");
+			incommingElement.appendChild(incomming.generateXMLElement(doc));
+			protocolElement.appendChild(incommingElement);
+		}
+		if(ingoing.size() > 0) {
+			Element ingoingElement = doc.createElement("ingoing");
+			for(Transmission list : ingoing) {
+				ingoingElement.appendChild(list.generateXMLElement(doc));			
+			}
+			protocolElement.appendChild(ingoingElement);
+		}
+		if(outgoing.size() > 0) {
+			Element outgoingElement = doc.createElement("outgoing");
+			for(Transmission list : ingoing) {
+				outgoingElement.appendChild(list.generateXMLElement(doc));			
+			}
+			protocolElement.appendChild(outgoingElement);
+		}
+		return protocolElement;
 	}
 
 }

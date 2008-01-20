@@ -2,7 +2,6 @@ package nodes;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -411,45 +410,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public Sensor copyRealSensor() {
 		return (Sensor) getReal().clone();
 	}
-
-	public static void generateNewData() {
-		/*for(SensorImplementation sen : idToRealSensor.values()) {
-			sen.unsentData.add(Data.generateData(new Object()));
-		}*/
-		//FIXME
-	}
-
-	/*private static boolean findRoutes(int step) {
-		int nextStep = step +1;
-		
-		boolean toReturn = false;
-		SensorImplementation next;
-		for(SensorImplementation sen : Sensor.idToRealSensor.values()) {
-			if(sen.nearestTerminalDist == step) {
-				for(Sensor link : sen.getLinks()) {
-					next = link.getReal();
-					next.newTerminal(sen.id, sen.nearestTerminalID, nextStep);
-				}
-				toReturn = true;
-			}
-		}
-		return toReturn;
-	}*/
-	
-	public static void findRoutes() {
-		/*SensorImplementation sen;
-		Note.sendNote("Generating paths...");
-		for(Terminal ter : Terminal.idToTerminals.values()) {
-			for(Sensor link : ter.links) {
-				sen = link.getReal();
-				sen.newTerminal(ter.id, ter.id, 0);
-			}
-		}
-		for(int i = 0 ; findRoutes(i) ; i++) {}
-		Note.sendNote("Done.");*/
-		//FIXME
-	}
-	
 	
 	public static void drawAllConnections(Graphics g) {
 		for(SensorImplementation sen : idToRealSensor.values()) {
@@ -496,13 +456,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static class SensorImplementation extends Sensor{
 		
 		
-		protected ArrayList<Data> unsentData = new ArrayList<Data>();
 		protected TreeSet<Sensor> links = new TreeSet<Sensor>();
-		protected Transmission ingoing;
-		protected Transmission outgoing;
 		protected boolean waiting;
-		protected int currentTick;
-		protected int resendDelay;
 		protected int status; //Mainly used for determing coloring.
 		protected int transmissionRoll;
 		protected SensorCircle draw; //handles drawing of the figure and radii
@@ -542,13 +497,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		protected SensorImplementation(SensorImplementation sen, int id) {
 			this(sen.getLocation(), id);
-			this.ingoing = sen.ingoing;
-			this.outgoing = sen.outgoing;
 			this.links = sen.links;
 			this.draw = sen.draw;
 			this.transmissionRoll = sen.transmissionRoll;
 			this.waiting = sen.waiting;
-			this.resendDelay = sen.resendDelay;
 			this.status = sen.status;
 			this.sendThrough = sen.sendThrough;
 			this.nearestTerminalID = sen.nearestTerminalID;
@@ -760,7 +712,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			boolean noLocation = true;
 			Node current;
 			Location loc = null;
-			Sensor sen;
+			SensorImplementation sen;
 			int size = list.getLength();
 			for(int i = 0; i < size ; i++) {
 				current = list.item(i);
@@ -779,6 +731,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			NamedNodeMap attrMap = sensorElement.getAttributes();
 			Node attribute;
 			int sensorID = -1;
+			int initiative = -1;
 			boolean isTerminal = false;
 			try {
 				attribute = attrMap.getNamedItem("id");
@@ -800,12 +753,22 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			} catch(RuntimeException e) {
 				isTerminal = false;
 			}
-			
+			try {
+				attribute = attrMap.getNamedItem("initiative");
+				if(attribute != null) {
+					initiative = Integer.valueOf(attribute.getNodeValue().trim());
+				}
+			} catch(RuntimeException e) {
+				initiative = -1;
+			}
 			
 			if(noLocation) {
-				sen = idToSensor.get(sensorID);
+				sen = idToRealSensor.get(sensorID);
 				if(sen == null) {
 					throw new XMLParseException("Did not contain Location of Sensor with id: " + sensorID + " and sensor was not loaded! Perhaps another XML file should be loaded first?");
+				} 
+				if(initiative > -1) {
+					sen.transmissionRoll = initiative;
 				}
 			} else {
 				sen = new SensorImplementation(loc, sensorID);
@@ -840,34 +803,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			if(sensorLabel != null){
 				element.setAttribute("label", sensorLabel);
 			}
-
-			if(this.resendDelay > 0){
-				Node resendDelayNode = doc.createElement("resendDelay");
-				resendDelayNode.appendChild(doc.createTextNode(String.valueOf(resendDelay)));
-				element.appendChild(resendDelayNode);
-			}
 			
-			Node transmissionRollNode = doc.createElement("transmissionRoll");
-			transmissionRollNode.appendChild(doc.createTextNode(String.valueOf(transmissionRoll)));
-			element.appendChild(transmissionRollNode);
-			
-			if(this.ingoing != null) {
-				Element ingoingNode = ingoing.generateXMLElement(doc);
-				ingoingNode.setAttribute("type", "ingoing");
-				element.appendChild(ingoingNode);
-			}
-			if(this.outgoing != null) {
-				Element outgoingNode = outgoing.generateXMLElement(doc);
-				outgoingNode.setAttribute("type", "outgoing");
-				element.appendChild(outgoingNode);
-			}
-			if(this.unsentData.size() > 0 ) {
-				Node unsentDataNode = doc.createElement("unsentData");
-				for(Data d : unsentData) {
-					unsentDataNode.appendChild(d.generateXMLElement(doc));
-				}
-				element.appendChild(unsentDataNode);
-			}
 			return element;
 		}
 		
@@ -981,11 +917,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 		@Override
 		public void prepare() {
-			if(unsentData.size() > 0) {
-				protocol.addTransmissionToSend(new Transmission(
-						this.nearestTerminalID,this.sendThrough, this.id, unsentData));
-				unsentData = new ArrayList<Data>();
-			}
 			protocol.prepare();
 			GUIReferences.sensorNetwork.repaint();
 		}
@@ -998,7 +929,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 		@Override
 		public void endStep() {
-			// TODO Auto-generated method stub
 			protocol.endStep();
 			
 		}

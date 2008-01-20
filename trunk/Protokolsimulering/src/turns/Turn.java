@@ -51,8 +51,12 @@ public class Turn implements Saveable, Drawable{
 	}
 	
 	protected Element generateInnerXMLElement(Element outerElement, Document doc) {
+		Element sensorElement;
+		int i = sensors.size();
 		for(Sensor sen : sensors) {
-			outerElement.appendChild(sen.generateXMLTurnElement(doc));
+			sensorElement = sen.generateXMLTurnElement(doc);
+			sensorElement.setAttribute("initiative", String.valueOf(i--));
+			outerElement.appendChild(sensorElement);
 		}
 		return outerElement;
 	}
