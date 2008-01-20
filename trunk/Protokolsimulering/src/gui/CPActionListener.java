@@ -3,6 +3,7 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -22,6 +23,7 @@ import notification.Note;
 public class CPActionListener implements ActionListener,GUIConstants{
 	
 	private Timer timer;
+	private Random ran = new Random();
 	private int playSpeed;
 	public CPActionListener() {
 		timer = new Timer(0, this);
@@ -177,7 +179,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				timer.stop();
 			}
 			playSpeed = PLAYBACK_REWIND;
-			timer.setDelay(130);
+			timer.setDelay(10);
 			timer.start();
 			break;
 		case BUTTON_STEP_BACKWARD:
@@ -213,7 +215,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				timer.stop();
 			}
 			playSpeed = PLAYBACK_PLAY;
-			timer.setDelay(500);
+			timer.setDelay(200);
 			timer.start();
 			break;
 		case BUTTON_NEXT_SENSOR:
@@ -222,6 +224,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			GUIReferences.markAsModified();
 			GUIReferences.turnController.playTick();
+			GUIReferences.sensorNetwork.repaint();
+			timer.stop();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_STEP_FORWARD:
@@ -251,8 +255,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				timer.stop();
 				break;
 			case PLAYBACK_FAST_FORWARD:
+				GUIReferences.turnController.playTick();
+				if(ran.nextInt(6) == 0) {
+					GUIReferences.sensorNetwork.repaint();	
+				}
+				break;
 			case PLAYBACK_PLAY:
 				GUIReferences.turnController.playTick();
+				GUIReferences.sensorNetwork.repaint();
 				break;
 			case PLAYBACK_PLAY_BACKWARDS:
 			case PLAYBACK_REWIND:

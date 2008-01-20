@@ -51,7 +51,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static final int STATUS_SELECTED				    = 0x00000008;
 	public static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
 	public static final int STATUS_HAS_TURN 				= 0x00000020;
-	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING |STATUS_RECEIVING ;
+	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING |STATUS_RECEIVING | STATUS_HAS_TURN;
 	
 	protected static Random ran = new Random();
 	public static int usedIDs = 0;
@@ -360,7 +360,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		return this;
 	}
 	
-	protected SensorImplementation getReal() {
+	public SensorImplementation getReal() {
 		SensorImplementation sen = idToRealSensor.get(id);
 		if(sen == null) {
 			sen = SensorImplementation.SENSOR_INVALID;
@@ -407,8 +407,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		return toReturn;
 	}
 	
-	public Sensor copyRealSensor() {
-		return (Sensor) getReal().clone();
+	public SensorImplementation copyRealSensor() {
+		return (SensorImplementation) getReal().clone();
 	}
 	
 	public static void drawAllConnections(Graphics g) {
@@ -920,19 +920,16 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		@Override
 		public void prepare() {
 			protocol.prepare();
-			GUIReferences.sensorNetwork.repaint();
 		}
 
 		@Override
 		public void step() {
 			protocol.step();
-			GUIReferences.sensorNetwork.repaint();
 		}
 
 		@Override
 		public void endStep() {
 			protocol.endStep();
-			
 		}
 
 	}

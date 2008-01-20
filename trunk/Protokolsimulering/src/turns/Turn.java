@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
+import nodes.Sensor.SensorImplementation;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,23 +21,24 @@ import xml.Saveable;
  * @author Niels Thykier
  */
 public class Turn implements Saveable, Drawable{
-	final TreeSet<Sensor> sensors;
+	final TreeSet<SensorImplementation> sensors;
 	public final int turn;
 	
 	/*public Turn(Collection<Sensor> sensors) {
 		this(sensors, SensorComparator.SORT_BY_ID, turnsCreated++, false);
 
 	}*/
-	Turn(Collection<Sensor> sensor, int sortBy, int turn, boolean roll) {
+	Turn(Collection<? extends Sensor> sensor, int sortBy, int turn, boolean roll) {
 		if(roll) {
 			Sensor.rollTurnOrder();
 		}
-		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
+		this.sensors = new TreeSet<SensorImplementation>(new SensorComparator(sortBy));
 		for(Sensor sen : sensor) {
-			this.sensors.add(sen.copyRealSensor());
+			this.sensors.add(sen.getReal());
 		}		
 		this.turn = turn;
 	}
+	
 	
 	public RunnableTurn getRunnableTurn() {
 		return new RunnableTurn(this.sensors, this.turn);
@@ -77,10 +79,10 @@ public class Turn implements Saveable, Drawable{
 		public final static short PHASE_FINISHED = 4;
 		private short phase = PHASE_NOT_STARTED;
 		boolean isRunning = false;
-		protected Sensor current;
-		private Iterator<Sensor> iter;
+		protected SensorImplementation current;
+		private Iterator<SensorImplementation> iter;
 		
-		private RunnableTurn(TreeSet<Sensor> sensors, int turn) {
+		private RunnableTurn(TreeSet<? extends Sensor> sensors, int turn) {
 			super(sensors, SensorComparator.SORT_BY_TURNS, turn, true);
 		}
 		

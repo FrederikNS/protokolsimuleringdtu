@@ -21,7 +21,6 @@ public class Console extends JFrame implements NotificationListener{
 	 */
 	private static final long serialVersionUID = 1925062183376423627L;
 	private int note = ALL_MESSAGES;
-	private ArrayList<Note> shownNotes = new ArrayList<Note>();
 	private ArrayList<Note> allNotes = new ArrayList<Note>();
 	private JTextArea console;
 
@@ -59,16 +58,13 @@ public class Console extends JFrame implements NotificationListener{
 	}
 
 	protected void updateShownNoteList() {
-		shownNotes.clear();
-		shownNotes = new ArrayList<Note>();
 		console.setText("");
 		Note nt = null;
 		int size = allNotes.size();
 		for(int i = 0; i < size ; i++) {
 			nt = allNotes.get(i);
 			if(0 != (nt.getType() & note)) {
-				shownNotes.add(nt);
-				console.append(nt.getMessage());
+				console.append(nt.getMessage()+"\n");
 			}
 		}
 	}
@@ -76,7 +72,6 @@ public class Console extends JFrame implements NotificationListener{
 	public void note(Note newNote) {
 		allNotes.add(newNote);
 		if(0 != (newNote.getType() & note)) {
-			shownNotes.add(newNote);
 			console.append(newNote.getMessage() +"\n");
 		}
 	}

@@ -33,7 +33,7 @@ public class GUIReferences implements GUIConstants{
 	
 	static File currentFile;
 	
-	static TurnController turnController = TurnController.newInstance();
+	public static TurnController turnController = TurnController.newInstance();
 	
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);

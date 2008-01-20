@@ -35,9 +35,7 @@ LAVES IKKE: En mere realistisk simulering/protokol. Fx. ved at tillade at knuder
 	  munikation og behandling tage varierende tid. Protokollen må så gøres tilsvarende mere
 	  robust, fx. ved at ruter opdateres regelmæssigt.
 
-LAVES MULIGVIS: Mulighed for at gå frem og tilbage i en simulering.
-		
-		- mangler helt.
+LAVES IKKE: Mulighed for at gå frem og tilbage i en simulering.
 		
 		
 Distributation's Opgaven:
