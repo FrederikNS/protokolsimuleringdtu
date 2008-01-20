@@ -37,7 +37,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			System.exit(0);
 			break;
 		case MENU_NEW:
-			//TODO
 			CPNew.openCPNew();
 			break;
 		case MENU_OPEN:

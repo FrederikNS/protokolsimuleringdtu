@@ -16,6 +16,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import static gui.GUIReferences.*;
+
 /**
  * @author Frederik Nordahl Sabroe
  *
@@ -33,7 +35,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		//ControlPanelFrame gets initialized
 		super("Control Panel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(200,/*(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()*/ 572)); //TODO
+		setPreferredSize(new Dimension(200, 572)); 
 		setResizable(false);
 
 		if(controlPanelFrame != null) {
@@ -45,13 +47,13 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 
 		//The additional panels are created
 		ActionListener actionListener = new CPActionListener();
-		WindowListener windowListener = new WindowListeners();
+		WindowListener localWindowListener = new WindowListeners();
 		new CPMenuBar(this,actionListener);
 		new CPViewSettings(actionListener);
 		new CPModes(actionListener);
 		new CPStepper(actionListener);
 		GUIReferences.listener = actionListener;
-		GUIReferences.windowListener = windowListener;
+		GUIReferences.windowListener = localWindowListener;
 
 		//The panel used for the content of the control panel is created and added
 		add(GUIReferences.controlPanelPane,BorderLayout.NORTH);
@@ -113,7 +115,10 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 			//construct tab selected
 		} else {
 			//simulate tab selected
-			//rebuild?
+			if(mode != MODE_SELECT) {
+				modeGroup.clearSelection();
+				mode = MODE_SELECT;
+			}
 		}
 	}
 }

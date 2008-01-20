@@ -689,6 +689,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		@Override
 		public Element generateXMLElement(Document doc) {
+			//TODO Handle more data.
 			Element element = doc.createElement("sensor");
 			element.setAttribute("id", String.valueOf(id));
 			element.setIdAttribute("id", true);
@@ -705,6 +706,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		 * @throws XMLParseException Throw if invalid tags/informations was found.
 		 */
 		public static Sensor loadFromXMLElement(Node sensorElement) throws XMLParseException {
+			//TODO Handle more data.
 			if(sensorElement.getNodeType() != Node.ELEMENT_NODE || !sensorElement.getNodeName().equals("sensor")) {
 				throw new IllegalArgumentException("Node was not a sensorElement");
 			}
