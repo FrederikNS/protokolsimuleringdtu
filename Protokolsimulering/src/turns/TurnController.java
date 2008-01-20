@@ -1,7 +1,5 @@
 package turns;
 
-import java.awt.Graphics;
-
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
 import notification.Note;
@@ -9,11 +7,10 @@ import notification.Note;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import shape.Drawable;
 import turns.Turn.RunnableTurn;
 import xml.Saveable;
 
-public abstract class TurnController implements Saveable, Drawable{
+public abstract class TurnController implements Saveable{
 	
 	/**
 	 * Call when the field has been altered.
@@ -31,11 +28,6 @@ public abstract class TurnController implements Saveable, Drawable{
 	 * @return false, if the prepare phase could not be played (e.g. it was already over)
 	 */
 	public abstract boolean playPreparePhase();
-	/**
-	 * Play the whole turn.
-	 * If the prepare phase has not been played, it will be played.
-	 */
-	//public abstract void playTurn();
 	
 	public abstract void playTickBackwards();
 	
@@ -132,9 +124,7 @@ public abstract class TurnController implements Saveable, Drawable{
 			if(this.currentTurn < 0) {
 				currentTurn = 0;
 				currentEntry = 0;
-				Sensor.findRoutes();
 				turnList[currentEntry] = new Turn(Sensor.idToSensor.values(), SensorComparator.SORT_BY_TURNS, currentTurn, false);			
-				Sensor.generateNewData();
 			} else {
 				//TODO split.
 			}
@@ -153,15 +143,9 @@ public abstract class TurnController implements Saveable, Drawable{
 			return turnListNode;
 		}
 
-		public void draw(Graphics g) {
-			// TODO Auto-generated method stub
-			
-		}
-
 		@Override
 		public void playTickBackwards() {
-			// TODO Auto-generated method stub
-			
+			// TODO Auto-generated method stub			
 		}
 
 		@Override

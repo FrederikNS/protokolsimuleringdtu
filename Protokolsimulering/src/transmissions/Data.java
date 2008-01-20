@@ -4,13 +4,16 @@ package transmissions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.Text;
+
+import exceptions.XMLParseException;
+
+import xml.DOMxmlParser;
 
 public class Data implements DataConstants{
 
 	protected int dataType;
 	public static final Data GarbageData;
-	private Object data;
+	protected Object data;
 	
 	static {
 		Data temp = new Data();
@@ -63,12 +66,30 @@ public class Data implements DataConstants{
 	public int getSendingPriority() {
 		return dataType & PRIORITY_ALL;
 	}
-
-	public Node generateXMLElement(Document doc) {
+	
+	public Element generateXMLElement(Document doc) {
 		Element dataNode = doc.createElement("data");
-		Text content = doc.createTextNode(String.valueOf(dataType));
-		dataNode.appendChild(content);
+		dataNode.appendChild(doc.createTextNode(String.valueOf(dataType)));
 		return dataNode;
+	}
+	
+	public static Data loadFromXMLElement(Node dataElement) throws XMLParseException {
+		if(dataElement.getNodeName().equals("networkData")) {
+			return NetworkData.loadFromXMLElement(dataElement);
+		}
+		if(dataElement.getNodeType() != Node.ELEMENT_NODE || !dataElement.getNodeName().equals("data")) {
+			throw new IllegalArgumentException("Node was not a dataElement");
+		}
+		int dataType = 0;
+		try {
+			dataType = Integer.parseInt(DOMxmlParser.getTextNodeValue(dataElement).trim());
+		} catch(RuntimeException e) {
+			throw new XMLParseException("Data tag must contain value dataType integer.");
+		}
+		Data data = new Data();
+		data.dataType = dataType;
+		return data;
+
 	}
 	
 	/**

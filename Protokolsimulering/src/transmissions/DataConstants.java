@@ -8,39 +8,35 @@ public interface DataConstants {
 	/**
 	 * Last transmission received successfully
 	 */
-	public static final int TYPE_RECEIVED_SUCCESSFULLY      = 0x10000000;
+	public static final int TYPE_RECEIVED_SUCCESSFULLY      = 0x01000000;
 	/**
 	 * Last transmission received contained garbage data or
 	 * could not be successfully received.
 	 */
-	public static final int TYPE_RECEIVED_UNSUCCESSFULLY    = 0x20000000;
+	public static final int TYPE_RECEIVED_UNSUCCESSFULLY    = 0x02000000;
 	/**
 	 * The Data is regarding the Sensor network
 	 * (e.g. Sensor has stopped responding or new sensor
 	 * discovered)
 	 */
-	public static final int TYPE_NETWORK   				    = 0x40000000;
+	public static final int TYPE_NETWORK   				    = 0x04000000;
 	/**
 	 * Data transmission
 	 */
-	public static final int TYPE_DATA  					    = 0x80000000;
+	public static final int TYPE_DATA  					    = 0x08000000;
 	
-	/**
-	 * 
-	 */
-	public static final int TYPE_CHEAT  					= 0x01000000;
 	/**
 	 * A "I planning to send message so do not accept data" transmission
 	 */
-	public static final int TYPE_SENDING    				= 0x01000000;
+	public static final int TYPE_SENDING    				= 0x00100000;
 	/**
 	 * A "Someone is talking to me, so keep quiet" transmission
 	 */
-	public static final int TYPE_LISTENING  				= 0x02000000;
+	public static final int TYPE_LISTENING  				= 0x00200000;
 	/**
 	 * Garbage data. Disregard all information about this package.
 	 */
-	public static final int TYPE_GARBAGE 					= 0x04000000;
+	public static final int TYPE_GARBAGE 					= 0x00400000;
 	/**
 	 * Type Bit-mask filter.
 	 */
