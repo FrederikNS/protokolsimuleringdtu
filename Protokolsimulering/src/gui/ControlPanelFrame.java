@@ -106,7 +106,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		System.out.println("Suspending original thread...");
 		while(run) {
 			try {
-				this.wait(10000);
+				this.wait();
 			} catch (InterruptedException e) {
 
 			}
@@ -115,11 +115,15 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		}
 	}
 	
+	public synchronized void garbageCollection() {
+		this.notifyAll();
+	}
+	
 	public synchronized void quit() {
 		this.setVisible(false);
 		System.out.println("Reactiving original thread...");
 		run = false;
-		this.notifyAll();
+		garbageCollection();
 	}
 
 	public void setJLabelStatus(int x, int y, int i) {

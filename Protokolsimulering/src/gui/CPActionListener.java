@@ -57,6 +57,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				xml.DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
 				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
+				ControlPanelFrame.getFrame().garbageCollection();
 			}
 			break;
 		case MENU_SAVE:
