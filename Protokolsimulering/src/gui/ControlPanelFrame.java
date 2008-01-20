@@ -106,10 +106,12 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		System.out.println("Suspending original thread...");
 		while(run) {
 			try {
-				this.wait();
+				this.wait(10000);
 			} catch (InterruptedException e) {
 
 			}
+			System.runFinalization();
+			System.gc();
 		}
 	}
 	
