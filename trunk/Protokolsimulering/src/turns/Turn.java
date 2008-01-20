@@ -54,9 +54,9 @@ public class Turn implements Saveable, Drawable{
 	}
 	
 	public static Turn loadFromXMLElement(Node turnNode) throws XMLParseException {
-		boolean runTurn = turnNode.getNodeName().equals("runningTurn");
-		if(turnNode.getNodeType() != Node.ELEMENT_NODE || (runTurn && !turnNode.getNodeName().equals("turn"))) {
-			throw new IllegalArgumentException("Node was not a turn nor a runningTurn tag");
+		boolean runTurn = turnNode.getNodeName().equals("runnableTurn");
+		if(turnNode.getNodeType() != Node.ELEMENT_NODE || (!runTurn && !turnNode.getNodeName().equals("turn"))) {
+			throw new IllegalArgumentException("Node was not a turn nor a runnableTurn tag");
 		}
 		NodeList list = turnNode.getChildNodes();
 		Node current;
@@ -127,7 +127,24 @@ public class Turn implements Saveable, Drawable{
 	}
 	
 	public Element generateXMLElement(Document doc) {
-		Element turnElement = doc.createElement("turn");
+		Element turnElement;
+		System.err.println("Saving..." + this);
+		if(this instanceof RunnableTurn) {
+			turnElement = doc.createElement("runnableTurn");
+			RunnableTurn run = (RunnableTurn) this;
+			turnElement.setAttribute("turn", String.valueOf(turn));
+			turnElement.setIdAttribute("turn", true);
+			Element phaseElement = doc.createElement("phase");
+			phaseElement.appendChild(doc.createTextNode(String.valueOf(run.phase)));
+			turnElement.appendChild(phaseElement);
+			if(run.current!= null) {
+				Element currentSensorElement = doc.createElement("currentSensor");
+				currentSensorElement.appendChild(doc.createTextNode(String.valueOf(run.current.id)));
+				turnElement.appendChild(currentSensorElement);
+			}
+		}else {
+			turnElement = doc.createElement("turn");
+		}
 		turnElement.setAttribute("turn", String.valueOf(turn));
 		turnElement.setIdAttribute("turn", true);
 
@@ -152,7 +169,7 @@ public class Turn implements Saveable, Drawable{
 		}
 	}
 	
-	public class RunnableTurn extends Turn implements Prepareable, EndSteppable {
+	public static class RunnableTurn extends Turn implements Prepareable, EndSteppable {
 
 		public final static short PHASE_NOT_STARTED = 0;
 		public final static short PHASE_PREPARE = 1;
@@ -259,27 +276,6 @@ public class Turn implements Saveable, Drawable{
 				tick();
 			}
 		}
-		
-		public Element generateRunnableTurnXMLElement(Document doc) {
-			Element turnElement = doc.createElement("runningTurn");
-			turnElement.setAttribute("turn", String.valueOf(turn));
-			turnElement.setIdAttribute("turn", true);
-			Element phaseElement = doc.createElement("phase");
-			phaseElement.appendChild(doc.createTextNode(String.valueOf(phase)));
-			turnElement.appendChild(phaseElement);
-			if(current!= null) {
-				Element currentSensorElement = doc.createElement("currentSensor");
-				currentSensorElement.appendChild(doc.createTextNode(String.valueOf(current.id)));
-				turnElement.appendChild(currentSensorElement);
-			}
-			return generateInnerXMLElement(turnElement, doc);
-		}
-		@Override
-		public Element generateXMLElement(Document doc) {
-			return generateRunnableTurnXMLElement(doc);
-		}
 	}
-	
-	
 	
 }

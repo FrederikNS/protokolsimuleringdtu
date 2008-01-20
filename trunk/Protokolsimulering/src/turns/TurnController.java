@@ -136,9 +136,11 @@ public abstract class TurnController implements Saveable{
 		public Element generateXMLElement(Document doc) {
 			Element turnListNode = doc.createElement("turnController");
 			if(run != null) {
-				turnListNode.appendChild(run.generateRunnableTurnXMLElement(doc));
+				System.err.println("TC: saving run.");
+				turnListNode.appendChild(run.generateXMLElement(doc));
 			}
 			if(currentEntry > -1) {
+				System.err.println("TC: saving turn.");
 				turnListNode.appendChild(turnList[currentEntry].generateXMLElement(doc));
 			}
 			return turnListNode;
@@ -155,12 +157,12 @@ public abstract class TurnController implements Saveable{
 				current = list.item(i);
 				switch(current.getNodeName().charAt(0)) {
 				case 'r':
-					if(current.getNodeName().equals("runningTurn")) {
+					if(current.getNodeName().equals("runnableTurn")) {
 						controller.notReady = false;
 						try {
 							controller.run = (RunnableTurn) Turn.loadFromXMLElement(current);
 						} catch(ClassCastException e) {
-							throw new XMLParseException("runningTurn did not contain a running turn!");
+							throw new XMLParseException("runnableTurn did not contain a running turn!");
 						}
 						controller.currentEntry = 0;
 						controller.turnList[0] = controller.run;
@@ -176,7 +178,7 @@ public abstract class TurnController implements Saveable{
 					break;
 				}
 			}
-			controller.currentTurn = turnList[0].turn;
+			controller.currentTurn = controller.turnList[0].turn;
 			instance = controller;
 			return instance;
 		}
