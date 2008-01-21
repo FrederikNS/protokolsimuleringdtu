@@ -151,6 +151,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	}
 	
 	
+	public Protocol getProtocol() {
+		return getReal().getProtocol();
+	}
+	
 	/**
 	 * Get the radius that sensors can communicate within.
 	 * @return The Transmission Radius
@@ -540,6 +544,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				status &= ~STATUS_HAS_TURN;
 			}
 		}
+		
+		@Override
+		public Protocol getProtocol() {
+			return this.protocol;
+		}
 
 		@Override
 		public int getStatus() {
@@ -781,6 +790,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			int sensorID = -1;
 			int initiative = -1;
 			boolean isTerminal = false;
+			boolean hasBroadcasted = false;
 			try {
 				attribute = attrMap.getNamedItem("id");
 				if(attribute == null) {
@@ -797,6 +807,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				attribute = attrMap.getNamedItem("terminal");
 				if(attribute != null) {
 					isTerminal = Boolean.valueOf(attribute.getNodeValue().trim());
+					if(isTerminal) {
+						attribute = attrMap.getNamedItem("hasBroadcasted");
+						hasBroadcasted = Boolean.valueOf(attribute.getNodeValue().trim());
+					}
 				}
 			} catch(RuntimeException e) {
 				isTerminal = false;
@@ -821,7 +835,9 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			} else {
 				sen = new SensorImplementation(loc, sensorID);
 				if(isTerminal) {
-					sen = new Terminal(sen);
+					Terminal term = new Terminal(sen);
+					term.hasBroadcasted = hasBroadcasted;
+					sen = term;
 				}
 			}
 			if(protoNode != null){
@@ -1088,6 +1104,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		@Override
 		protected void savingSensorToXML(Element topSensorElement, Document doc) {
 			topSensorElement.setAttribute("terminal", "true");
+			topSensorElement.setAttribute("hasBroadcasted", String.valueOf(hasBroadcasted));
 		}
 		
 		@Override

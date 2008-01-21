@@ -58,6 +58,11 @@ public interface GUIConstants {
 	public final static int MODE_PROMOTE = 5;
 	public final static int MODE_DEMOTE = 6;
 	
+	
+	public final static char WINDOW_VIEW_PORT = '1';
+	public final static char WINDOW_CONTROL_FRAME = '2';
+	public final static char WINDOW_CONSOLE = '3';
+	
 	/**
 	 * View bit-mask for whether the Radii view is active or not 
 	 */
