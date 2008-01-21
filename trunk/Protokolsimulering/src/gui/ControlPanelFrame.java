@@ -84,12 +84,32 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 
 		//Console prefs
 		JPanel consoleOptionsPane = new JPanel();
+		consoleOptionsPane.setBorder(BorderFactory.createTitledBorder("Console Options"));
 		consoleOptionsPane.setLayout(new GridLayout(0,1));
 		JCheckBox consoleEnable = new JCheckBox("Console");
 		consoleEnable.addActionListener(actionListener);
 		consoleEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_CONSOLE));
+		JCheckBox consoleInformation = new JCheckBox("Information");
+		consoleInformation.addActionListener(actionListener);
+		consoleInformation.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_INFORMATION));
+		consoleInformation.setSelected(true);
+		JCheckBox consoleWarning = new JCheckBox("Warning");
+		consoleWarning.addActionListener(actionListener);
+		consoleWarning.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_WARNING));
+		consoleWarning.setSelected(true);
+		JCheckBox consoleError = new JCheckBox("Error");
+		consoleError.addActionListener(actionListener);
+		consoleError.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_ERROR));
+		consoleError.setSelected(true);
+		JCheckBox consoleDebug = new JCheckBox("Debug");
+		consoleDebug.addActionListener(actionListener);
+		consoleDebug.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_DEBUG));
 		GUIReferences.controlPanelPane.add(consoleOptionsPane);
 		consoleOptionsPane.add(consoleEnable);
+		consoleOptionsPane.add(consoleInformation);
+		consoleOptionsPane.add(consoleWarning);
+		consoleOptionsPane.add(consoleError);
+		consoleOptionsPane.add(consoleDebug);
 
 		//The statusbar is created
 		JPanel statusBarPanel = new JPanel();
@@ -128,12 +148,16 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		garbageCollection();
 	}
 
-	public void setJLabelStatus(int x, int y, int i, int j) {
+	/*public void setJLabelStatus(int x, int y, int i, int j) {
 		status.setText("(" + x + "," + y + ") Sensors: "+i+" Turn: "+j);
 	}
 	
 	public void setJLabelStatus(String text) {
 		status.setText(text);
+	}*/
+	
+	public void updateStatusBar(){
+		
 	}
 
 	public static ControlPanelFrame getFrame(){

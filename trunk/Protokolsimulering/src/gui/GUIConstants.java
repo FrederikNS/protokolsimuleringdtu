@@ -51,6 +51,10 @@ public interface GUIConstants {
 	public final static int CHECKBOX_ROUTES = 205;
 	public final static int CHECKBOX_ISOLATED = 206;
 	public final static int CHECKBOX_ENABLE_INFOBOX = 207;
+	public final static int CHECKBOX_CONSOLE_INFORMATION = 208;
+	public final static int CHECKBOX_CONSOLE_WARNING = 209;
+	public final static int CHECKBOX_CONSOLE_ERROR = 210;
+	public final static int CHECKBOX_CONSOLE_DEBUG = 211;
 
 	public final static int TIMER_EVENT = 401;
 
@@ -98,4 +102,8 @@ public interface GUIConstants {
 	public final static int VIEW_ROUTES		  = 0x00000010;
 	public final static int VIEW_ISOLATED     = 0x00000020;
 	public final static int VIEW_INFOBOX	  = 0x00000040;
+	public final static int VIEW_CONSOLE_INFORMATION = 0x00000080;
+	public final static int VIEW_CONSOLE_WARNING 	 = 0x00000100;
+	public final static int VIEW_CONSOLE_ERROR		 = 0x00000200;
+	public final static int VIEW_CONSOLE_DEBUG		 = 0x00000400;
 }
