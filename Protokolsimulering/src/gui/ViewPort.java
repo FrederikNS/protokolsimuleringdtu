@@ -21,7 +21,7 @@ public class ViewPort extends JFrame implements GUIConstants{
 		int screenHeight = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()*/ 600; //TODO
 		int screenWidth = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()-200*/ 600;
 		setSize(new Dimension(screenWidth,screenHeight));
-		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setLocation(GUIReferences.controlPanelPane.getWidth()+10, 0);
 		addWindowListener(GUIReferences.windowListener);
 		graphicsPainter = new VPGraphicsPainter();

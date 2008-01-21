@@ -1,11 +1,12 @@
 package gui;
 
-import java.awt.GridLayout;
-
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import nodes.Sensor;
+import transmissions.Protocol;
+import transmissions.Transmission;
 
 public class InformationFrame extends JFrame  {
 
@@ -13,43 +14,63 @@ public class InformationFrame extends JFrame  {
 	 * 
 	 */
 	private static final long serialVersionUID = -83659491420303025L;
-	
-//	private JLabel sensorLabel;
+
+
 	private JLabel sensorNumberOfNeighbours;
-//	private JLabel sensorNeighbours;
 	private JLabel sensorIsTerminal;
 	private JLabel sensorDistanceToTerminal;
 	private JLabel sensorSentMessagesAwaitingReply;
 	private JLabel sensorOutbox;
 	private JLabel sensorInbox;
-	
+	private JLabel sensorCurrentTick;
+	private JLabel sensorDelayNextTransmission;
+	private JLabel sensorReceivedMessage;
+	private JLabel sensorSentMessage;
+	private JLabel sensorWaitingForSensor;
+
 	public InformationFrame(){
+
+	}
+
+	public InformationFrame init(){
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		
-		setLayout(new GridLayout(0,1));
-		
-		setTitle("Sensor #X @ (-1,-1)");
+
+		setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+
+		setTitle("No Sensor Selected");
 //		sensorLabel = new JLabel();
-		sensorNumberOfNeighbours = new JLabel();
+		sensorNumberOfNeighbours = new JLabel(" ");
 //		sensorNeighbours = new JLabel();
-		sensorIsTerminal = new JLabel();
-		sensorDistanceToTerminal = new JLabel();
+		sensorIsTerminal = new JLabel(" ");
+		sensorDistanceToTerminal = new JLabel(" ");
 		sensorSentMessagesAwaitingReply = new JLabel(" ");
 		sensorOutbox = new JLabel(" ");
 		sensorInbox = new JLabel(" ");
-		
+		sensorCurrentTick = new JLabel(" ");
+		sensorDelayNextTransmission = new JLabel(" ");
+		sensorReceivedMessage = new JLabel(" ");
+		sensorSentMessage = new JLabel(" ");
+		sensorWaitingForSensor = new JLabel(" ");
+
 		add(sensorNumberOfNeighbours);
 		add(sensorIsTerminal);
 		add(sensorDistanceToTerminal);
 		add(sensorInbox);
 		add(sensorSentMessagesAwaitingReply);
 		add(sensorOutbox);
-		
-		pack();
+		add(sensorCurrentTick);
+		add(sensorDelayNextTransmission);
+		add(sensorReceivedMessage);
+		add(sensorSentMessage);
+		add(sensorWaitingForSensor);
+		return this;
 	}
-	
+
 	public void update(Sensor selected) {
 		if(selected != null) {
+			String sentMessage = ("");
+			String inboxMessages = ("");
+			String outboxMessages = ("");
 			Sensor[] links = selected.getLinks();
 			int nearestTerm = selected.getNearestTerminal();
 			//int status = selected.getStatus();
@@ -75,6 +96,27 @@ public class InformationFrame extends JFrame  {
 				int dist = selected.getStepsFromNearestTerminal();
 				sensorDistanceToTerminal.setText("Distance to Terminal: " + dist + " Sensor"+(dist == 1?"":"s") + " away.");
 			}
+			Protocol protocol = selected.getProtocol();
+			
+			sensorCurrentTick.setText("Current Tick: "+ protocol.getCurrentTick());
+			sensorDelayNextTransmission.setText("Delay Next Transmission: "+protocol.getDelayNextTransmission());
+			sensorReceivedMessage.setText("Received Message: "+protocol.getIncomming());
+			
+			for(Transmission transmission:protocol.getSent()){
+				sentMessage += transmission.toString();
+			}
+			sensorSentMessage.setText("Sent Message: "+sentMessage);
+			for(Transmission transmission:protocol.getIngoing()){
+				inboxMessages += transmission.toString();
+			}
+			sensorInbox.setText(inboxMessages);
+			
+			for(Transmission transmission:protocol.getOutgoing()){
+				outboxMessages += transmission.toString();
+			}
+			sensorOutbox.setText(outboxMessages);
+			
+			sensorWaitingForSensor.setText("Waiting For Sensor: "+protocol.getWaitingForSensor());
 		} else {
 			setTitle("Nothing selected");
 			sensorNumberOfNeighbours.setText("Number of neighbours: N/A");

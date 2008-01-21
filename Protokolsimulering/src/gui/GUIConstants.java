@@ -61,6 +61,7 @@ public interface GUIConstants {
 	public final static char WINDOW_CONTROL_FRAME = '2';
 	public final static char WINDOW_CONSOLE = '3';
 	
+	
 	/**
 	 * View bit-mask for whether the Radii view is active or not 
 	 */
@@ -84,4 +85,5 @@ public interface GUIConstants {
 	public final static int VIEW_CONSOLE	  = 0x00000008;
 	public final static int VIEW_ROUTES		  = 0x00000010;
 	public final static int VIEW_ISOLATED     = 0x00000020;
+	public final static int VIEW_INFOBOX	  = 0x00000040;
 }
