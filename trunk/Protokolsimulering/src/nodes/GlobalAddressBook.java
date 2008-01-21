@@ -21,9 +21,12 @@ public class GlobalAddressBook {
 	public static GlobalAddressBook getBook() {
 		if(globalAdressBook == null) {
 			globalAdressBook = new GlobalAddressBook();
-			globalAdressBook.generateDirectConnections();
 		}
 		return globalAdressBook;
+	}
+	
+	public void loadedSensors() {
+		sensorsAccountedFor = Sensor.idToSensor.size();
 	}
 
 	public void generateDirectConnections(){

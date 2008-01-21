@@ -29,17 +29,9 @@ import notification.Note;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import turns.Turn;
 import turns.TurnController;
 
 public abstract class XMLSaver {
-
-	public static void saveTurnList(TurnController turn, File file) {
-		//TODO
-	}
-	public static void saveTurnList(Collection<Turn> turn, File file) {
-		//TODO 
-	}
 	
 	public static void saveSensorList(Collection<Sensor> sensorList, File file) {
 		Document doc;

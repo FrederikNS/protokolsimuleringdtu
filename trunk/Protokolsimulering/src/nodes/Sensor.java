@@ -744,7 +744,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 								}
 							}
 						} catch(Exception e) {
-							throw new XMLParseException("links tag was malformatted. " +e);
+							throw new XMLParseException("links tag was malformatted. ");
 						}
 					}
 					break;
