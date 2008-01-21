@@ -11,6 +11,4 @@ public interface NoteConstants {
 	public static final int WARNING  	  = 0x00000002;
 	public static final int ERROR	  	  = 0x00000004;
 	public static final int DEBUG	 	  = 0x00000008;
-	public static final int VERBOSE	 	  = 0x00000010;
-	public static final int CONFIG_CHANGE = 0x00000020;
 }
