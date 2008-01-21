@@ -78,41 +78,41 @@ public class DOMxmlParser {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
 			e.printStackTrace();
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		} catch (UnsupportedEncodingException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		} catch (FileNotFoundException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		} catch (ParserConfigurationException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		} catch (SAXException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		} catch (IOException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		} catch (XMLParseException e) {
 			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
 			Note.sendNote(Note.DEBUG, "Load fail: " + e );
-			panel.setJLabalStatus("Failed!");
+			panel.setJLabelStatus("Failed!");
 			return;
 		}
 		GlobalAddressBook.getBook().loadedSensors();
-		panel.setJLabalStatus("Load Successful.");
+		panel.setJLabelStatus("Load Successful.");
 		GUIReferences.generateNewField(x, y, xmlFile.getName());
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}

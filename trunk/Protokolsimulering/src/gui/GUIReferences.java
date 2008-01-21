@@ -47,8 +47,10 @@ public class GUIReferences implements GUIConstants{
 			saveMenuItem.setEnabled(true);
 			if(currentFile != null) {
 				sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+				sensorNetwork.halfTitle = "*"+GUIReferences.currentFile.getName();
 			} else {
 				sensorNetwork.setTitle("*Untitled");
+				sensorNetwork.halfTitle = "*Untitled";
 			}
 		}
 	}
@@ -68,6 +70,7 @@ public class GUIReferences implements GUIConstants{
 		if(GUIReferences.currentFile != null) {
 			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
 			GUIReferences.saveMenuItem.setEnabled(false);
+			GUIReferences.sensorNetwork.halfTitle = GUIReferences.currentFile.getName();
 			GUIReferences.sensorNetwork.setTitle(GUIReferences.currentFile.getName());
 		} else {
 			saveAs();
@@ -86,6 +89,7 @@ public class GUIReferences implements GUIConstants{
 				saveFile = new File(saveFile.getPath()+".stuff");
 			}
 			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+			GUIReferences.sensorNetwork.halfTitle = saveFile.getName();
 			GUIReferences.sensorNetwork.setTitle(saveFile.getName());
 			GUIReferences.currentFile = saveFile;
 			GUIReferences.saveMenuItem.setEnabled(false);

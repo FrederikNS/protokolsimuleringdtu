@@ -25,13 +25,13 @@ import nodes.Sensor;
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
 	
-	private ControlPanelFrame cpf;
+//	private ControlPanelFrame cpf;
 
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		cpf = ControlPanelFrame.getFrame();
+//		cpf = ControlPanelFrame.getFrame();
 	}
 
 	/**
@@ -135,7 +135,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseEntered(MouseEvent e) {}
 
 	public void mouseExited(MouseEvent e) {
-		cpf.setJLabelStatus(-1, -1, nodes.Sensor.idToSensor.size());
+		GUIReferences.sensorNetwork.updateTitleCoordinates();
+//		cpf.setJLabelStatus(-1, -1, Sensor.idToSensor.size(), (GUIReferences.turnController.getCurrentTurn()!=null?GUIReferences.turnController.getCurrentTurn().turn:0));
 	}
 
 
@@ -150,6 +151,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseDragged(MouseEvent arg0) {}
 
 	public void mouseMoved(MouseEvent e) {
-		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()), nodes.Sensor.idToSensor.size());
+		GUIReferences.sensorNetwork.updateTitleCoordinates(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()));
+//		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()), nodes.Sensor.idToSensor.size(),(GUIReferences.turnController.getCurrentTurn()!=null?GUIReferences.turnController.getCurrentTurn().turn:0));
 	}
 }
