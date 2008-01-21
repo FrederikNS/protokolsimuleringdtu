@@ -1,23 +1,22 @@
 package gui;
 
 
+import static gui.GUIReferences.connectionColor;
+import static gui.GUIReferences.selectedSensor;
+import static gui.GUIReferences.view;
+
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 
 import math.Scaling;
 import nodes.GlobalAddressBook;
 import nodes.Location;
 import nodes.Sensor;
-
-import static gui.GUIReferences.*;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -25,8 +24,7 @@ import static gui.GUIReferences.*;
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
-
-	private JPopupMenu jPop;
+	
 	private ControlPanelFrame cpf;
 
 	public VPGraphicsPainter(){
@@ -139,38 +137,11 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseExited(MouseEvent e) {
 		cpf.setJLabelStatus(-1, -1, nodes.Sensor.idToSensor.size());
 	}
-	
 
-	private void makePopup(Point point) {
-		jPop = new JPopupMenu("JPopupMenu");
-		if(GUIReferences.selectedSensor!=null){
-			GUIReferences.selectedSensor.setSelected(false);
-			GUIReferences.selectedSensor = null;
-		}
-		selectSensor(Scaling.pointToLocation(point),(int)Math.pow(4, 2));
-		if(GUIReferences.selectedSensor != null) {
-			GUIReferences.selectedSensor.setSelected(true);
-			JMenuItem item = new JMenuItem("View " + GUIReferences.selectedSensor);
-			item.setActionCommand(String.valueOf(POPUP_BUTTON_VIEW_SENSOR));
-			item.addActionListener(GUIReferences.listener);
-			jPop.add(item);
-		} else {
-			jPop.add(new JMenuItem("Nothing here"));
-		}
-		jPop.show(this, point.x, point.y);
-	}
 
-	public void mousePressed(MouseEvent e) {
-		if( e.isPopupTrigger() ) {
-			makePopup(e.getPoint());
-		}
-	}
+	public void mousePressed(MouseEvent e) {}
 
-	public void mouseReleased(MouseEvent e) {
-		if( e.isPopupTrigger() ) {
-			makePopup(e.getPoint());
-		}
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	//Not used
 	/* (non-Javadoc)

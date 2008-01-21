@@ -40,8 +40,6 @@ public interface GUIConstants {
 	public final static int CHECKBOX_ISOLATED = 206;
 	public final static int CHECKBOX_ENABLE_INFOBOX = 207;
 	
-	public final static int POPUP_BUTTON_VIEW_SENSOR = 301;
-	
 	public final static int TIMER_EVENT = 401;
 	
 	public final static int PLAYBACK_REWIND = -2;
