@@ -359,6 +359,36 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			
 		return toReturn;
 	}
+	
+	
+
+	public int getCurrentTick() {
+		return currentTick;
+	}
+
+	public int getDelayNextTransmission() {
+		return delayNextTransmission;
+	}
+
+	public Transmission getIncomming() {
+		return incomming;
+	}
+
+	public TreeSet<Transmission> getIngoing() {
+		return ingoing;
+	}
+
+	public TreeSet<Transmission> getOutgoing() {
+		return outgoing;
+	}
+
+	public ArrayList<Transmission> getSent() {
+		return sent;
+	}
+
+	public int getWaitingForSensor() {
+		return waitingForSensor;
+	}
 
 	public Element generateXMLElement(Document doc) {
 		Element protocolElement = doc.createElement("protocol");
