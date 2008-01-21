@@ -3,6 +3,11 @@ package xml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+/**
+ * For classes that have a convient self-xmlizing method for saving 
+ * them as an xml-file.
+ * @author Niels Thykier
+ */
 public interface Saveable {
 
 	/**

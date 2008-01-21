@@ -31,8 +31,17 @@ import org.w3c.dom.Element;
 
 import turns.TurnController;
 
+/**
+ * Handles the saving of XML-files.
+ * @author Niels Thykier
+ */
 public abstract class XMLSaver {
 	
+	/**
+	 * Saves a list of sensors, though if a turn is running the sensors in that will be saved instead.
+	 * @param sensorList The list of sensors.
+	 * @param file The file to save it in.
+	 */
 	public static void saveSensorList(Collection<Sensor> sensorList, File file) {
 		Document doc;
 		if(file.exists()) {
@@ -105,6 +114,13 @@ public abstract class XMLSaver {
 	}
 	
 	
+	/**
+	 * Generates the DOM Document of the XML file to be stored.
+	 * @param file The file to be stored.
+	 * @param standAlone true if the file is a standalone file.
+	 * @return The DOM Document to build the XML node tree.
+	 * @throws ParserConfigurationException If no XML-parser could be created.
+	 */
 	protected static Document generateXMLDocument(File file, boolean standAlone) throws ParserConfigurationException {
 		javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
 		javax.xml.parsers.DocumentBuilder docbuilder = factory.newDocumentBuilder();
@@ -115,6 +131,14 @@ public abstract class XMLSaver {
 	}
 	
 	
+	/**
+	 * Stores the generated DOM Document into the file.
+	 * @param doc The DOM document to save.
+	 * @param file The file to save it in. 
+	 * @throws TransformerFactoryConfigurationError If no outputter could be created.
+	 * @throws TransformerException If the outputter could not write the file.
+	 * @throws IOException Other IO-related exceptions.
+	 */
 	protected static void outputXMLFile(Document doc, File file) throws TransformerFactoryConfigurationError, TransformerException, IOException {
         // Prepare the DOM document for writing
         Source source = new DOMSource(doc);

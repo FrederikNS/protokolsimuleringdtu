@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import xml.DOMxmlParser;
+import xml.Saveable;
 
 import exceptions.XMLParseException;
 
@@ -18,7 +19,7 @@ import exceptions.XMLParseException;
  * A transmissions is also used to confirm receiving a transmissions previously.
  * @author Niels Thykier
  */
-public class Transmission implements Comparable<Transmission>, DataConstants, Cloneable{
+public class Transmission implements Comparable<Transmission>, DataConstants, Cloneable, Saveable{
 	
 	/**
 	 * The receiver of the transmissions.
@@ -90,6 +91,11 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		return new Transmission(wishingToSendTo, sendingFrom, Data.generateMessageSending());
 	}
 	
+	/**
+	 * Convience method for generating a "I received garbage-data" transmission
+	 * @param receiverOfGarbageData The receiver of the garbage transmission
+	 * @return The reply transmission. 
+	 */
 	public static Transmission generateReceivedGarbage(int receiverOfGarbageData) {
 		return new Transmission(-1, receiverOfGarbageData, Data.generateMessageReceivedUnsuccessfully());
 	}
@@ -144,10 +150,17 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	}
 
 	
+	/**
+	 * Convience method for generating a corrupt transmission
+	 * @return A corrupt Transmission.
+	 */
 	public static Transmission generateCorruptTransmission() {
 		return new Transmission(Sensor.INVALID_SENSOR_ID, Sensor.INVALID_SENSOR_ID, Data.GarbageData);
 	}
 	
+	/**
+	 * Corrupts the transmission.
+	 */
 	public void corruptTransmission() {
 		data = Data.GarbageData;
 		messageType = TYPE_GARBAGE;
@@ -156,6 +169,12 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		through = Sensor.INVALID_SENSOR_ID;
 	}
 
+	/**
+	 * Loads a Transmission from a node.
+	 * @param transmissionNode The XML node.
+	 * @return The transmission stored in that node.
+	 * @throws XMLParseException Thrown if the node was malformatted.
+	 */
 	public static Transmission loadFromXMLElement(Node transmissionNode) throws XMLParseException {
 		if(transmissionNode.getNodeType() != Node.ELEMENT_NODE || !transmissionNode.getNodeName().equals("transmission")) {
 			throw new XMLParseException("Node was not a transmission: " + transmissionNode.getNodeName());
