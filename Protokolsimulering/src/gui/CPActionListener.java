@@ -33,6 +33,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		playSpeed = PLAYBACK_PAUSE;
 	}
 
+	public void stopTimer() {
+		timer.stop();
+	}
+	
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:

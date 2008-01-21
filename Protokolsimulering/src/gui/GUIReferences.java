@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.io.File;
 
@@ -104,7 +103,7 @@ public class GUIReferences implements GUIConstants{
 	/**
 	 * The ActionListener (used whenever a right-click menu is re-generated)
 	 */
-	static ActionListener listener;
+	static CPActionListener listener;
 	/**
 	 * Bit mask of the selected views.
 	 */

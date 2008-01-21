@@ -49,11 +49,13 @@ public class WindowListeners implements WindowListener, GUIConstants {
 					break;
 				}
 			}
-			if(window == WINDOW_CONTROL_FRAME && !cancel){
-				ControlPanelFrame.getFrame().quit();
-			}
-			if(window == WINDOW_VIEW_PORT && !cancel){
-				ViewPort.disposeViewPort();
+			if(!cancel) {
+				if(window == WINDOW_CONTROL_FRAME){
+					ControlPanelFrame.getFrame().quit();
+				}
+				else {
+					ViewPort.disposeViewPort();
+				}
 			}
 			break;
 		}

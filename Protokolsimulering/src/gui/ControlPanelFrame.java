@@ -1,10 +1,12 @@
 package gui;
 
+import static gui.GUIReferences.mode;
+import static gui.GUIReferences.modeGroup;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.util.Enumeration;
 
@@ -19,8 +21,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nodes.Sensor;
-
-import static gui.GUIReferences.*;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -53,7 +53,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		GUIReferences.informationFrame = new InformationFrame().init();
 
 		//The additional panels are created
-		ActionListener actionListener = new CPActionListener();
+		CPActionListener actionListener = new CPActionListener();
 		WindowListener localWindowListener = new WindowListeners();
 		new CPMenuBar(this,actionListener);
 		new CPViewSettings(actionListener);
