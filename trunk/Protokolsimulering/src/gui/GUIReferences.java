@@ -7,8 +7,10 @@ import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import math.Scaling;
 import nodes.Sensor;
@@ -38,7 +40,6 @@ public class GUIReferences implements GUIConstants{
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);
 		sensorNetwork = new ViewPort(title);
-		informationFrame = new InformationFrame();
 	}
 	
 	public static void markAsModified() {
@@ -54,17 +55,41 @@ public class GUIReferences implements GUIConstants{
 	
 	public static void updateViewSettings() {
 		if(isSensorNetworkAvailable()) {
-			
 			informationFrame.update(selectedSensor);
-			if(!informationFrame.isVisible()){
-				informationFrame.setVisible(true);
-			}
 			sensorNetwork.getGraphicsPainter().repaint();
 		}
 	}
 	
 	public static boolean isSensorNetworkAvailable() {
 		return sensorNetwork != null;
+	}
+	
+	public static void save(){
+		if(GUIReferences.currentFile != null) {
+			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
+			GUIReferences.saveMenuItem.setEnabled(false);
+			GUIReferences.sensorNetwork.setTitle(GUIReferences.currentFile.getName());
+		} else {
+			saveAs();
+		}
+	}
+	
+	public static void saveAs(){
+		File saveFile;
+		JFileChooser saveChooser = new JFileChooser();
+		FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+		saveChooser.setFileFilter(saveFilter);
+		int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
+		if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
+			saveFile = saveChooser.getSelectedFile();
+			if(saveFile.getPath().contains(".")==false){
+				saveFile = new File(saveFile.getPath()+".stuff");
+			}
+			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+			GUIReferences.sensorNetwork.setTitle(saveFile.getName());
+			GUIReferences.currentFile = saveFile;
+			GUIReferences.saveMenuItem.setEnabled(false);
+		}
 	}
 	
 	/**

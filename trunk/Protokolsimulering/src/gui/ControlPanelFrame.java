@@ -50,6 +50,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		controlPanelFrame = this;
 
 		GUIReferences.console = new Console().init();
+		GUIReferences.informationFrame = new InformationFrame().init();
 
 		//The additional panels are created
 		ActionListener actionListener = new CPActionListener();

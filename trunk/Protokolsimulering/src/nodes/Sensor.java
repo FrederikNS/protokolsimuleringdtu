@@ -44,7 +44,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static final int SENSOR_TRANSMISSION_RADIUS_MAX 		= 40;
 	public static final int SENSOR_TRANSMISSION_RADIUS_DEFAULT  = 20;
 	public static final int SENSOR_TRANSMISSION_RADIUS_MIN 		= 10;
-	
+
 	public static final int STATUS_SENDING 				    = 0x00000001;
 	public static final int STATUS_RECEIVING				= 0x00000002;
 	public static final int STATUS_DEAD					    = 0x00000004;
@@ -52,13 +52,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static final int STATUS_SECONDARY_SELECTED	    = 0x00000010;
 	public static final int STATUS_HAS_TURN 				= 0x00000020;
 	protected static final int STATUS_CLEAR_END_OF_ROUND     = STATUS_SENDING | STATUS_RECEIVING | STATUS_HAS_TURN;
-	
+
 	protected static Random ran = new Random();
 	public static int usedIDs = 0;
-	
+
 	public final int id;
 	protected static int transmissionRadius = SENSOR_TRANSMISSION_RADIUS_DEFAULT;
-	
+
 	/**
 	 * Handles labelling.
 	 */
@@ -67,13 +67,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 * Handles id-look-up
 	 */
 	public static Hashtable<Integer,Sensor> idToSensor = new Hashtable<Integer,Sensor>();
-	
+
 	protected static Hashtable<Integer, SensorImplementation> idToRealSensor = new Hashtable<Integer, SensorImplementation>();
 
 	protected Sensor(int id) {
 		this.id = id;	
 	}
-	
+
 	protected Sensor(Sensor sen) {
 		this(sen.id);
 		idToSensor.put(id, this);
@@ -93,7 +93,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		throw new LabelNotRecognizedException("The label " + label + " is not recognized.");
 	}
-	
+
 	/**
 	 * Fetches a sensor by ID.
 	 * @param sensorID The id of the sensor.
@@ -102,7 +102,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public Sensor getSensor(int sensorID) {
 		return idToSensor.get(sensorID);
 	}
-	
+
 	public Collection<Sensor> getAllSensors() {
 		return idToSensor.values();
 	}
@@ -117,7 +117,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public Sensor getSensor(String label) throws LabelNotRecognizedException {
 		return getSensor(getSensorID(label));
 	}
-	
+
 	/**
 	 * Assigns a label to a sensor using the sensor's ID.
 	 * @param label The new label of the sensor. If null or "", the sensor's current label will be removed.
@@ -131,7 +131,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		return sen.assignLabel(label);
 	}
-	
+
 	/**
 	 * Assigns a label to the sensor.
 	 * @param label The new label of the sensor. If null or "", the sensor's current label will be removed.
@@ -149,12 +149,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		sen.sensorLabel = label;
 		return toReturn;
 	}
-	
-	
+
+
 	public Protocol getProtocol() {
 		return getReal().getProtocol();
 	}
-	
+
 	/**
 	 * Get the radius that sensors can communicate within.
 	 * @return The Transmission Radius
@@ -162,7 +162,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static int getTransmissionRadius(){
 		return transmissionRadius;
 	}
-	
+
 	/**
 	 * Change the transmission radius. It must be greater (or equal to) than 
 	 * SENSOR_TRANSMISSION_RADIUS_MIN and less than (or equal to) SENSOR_TRANSMISSION_RADIUS_MAX
@@ -178,16 +178,16 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		transmissionRadius = newRadius;
 	}
-	
+
 	public static int getAmountOfTerminals() {
 		return Terminal.idToTerminals.size();
 	}
-	
-	
+
+
 	public boolean canCommunicate(Sensor sen) {
 		return getReal().canCommunicate(sen);
 	}
-	
+
 	/**
 	 * Check if two sensors can communicate with each other using the current 
 	 * transmission radius.
@@ -199,37 +199,37 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static boolean canCommunicate(Sensor sen1, Sensor sen2) {
 		return sen1.canCommunicate(sen2);
 	}
-	
+
 	public boolean isEnabled() {
 		return getReal().isEnabled();
 	}
 	public void setEnabled(boolean running) {
 		getReal().setEnabled(running);
 	}
-	
+
 	public int getStatus() {
 		return getReal().status;
 	}
-	
+
 	public int getFirstLinkToTerminal() {
 		return getReal().sendThrough;
 	}
-	
+
 	public int getStepsFromNearestTerminal() {
 		return getReal().nearestTerminalDist;
 	}
-	
+
 	public int getNearestTerminal(){
 		return getReal().nearestTerminalID;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Sensor arg0) {
 		return Integer.valueOf(id).compareTo(arg0.id);
 	}
-	
+
 	/**
 	 * Adds a link from this sensor to the other.
 	 * @param sen The other sensor.
@@ -241,7 +241,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public int getTransmissionRoll() {
 		return getReal().getTransmissionRoll();
 	}
-	
+
 	/**
 	 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
 	 * @return An array of Sensors that this sensor can reach.
@@ -249,7 +249,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public Sensor[] getLinks() {
 		return getReal().getLinks();
 	}
-	
+
 	/**
 	 * Flag a sensor as selected or deselected. It will notify its links that they are now / no longer "secondarily selected"
 	 * @param selectedStatus true if the sensor is selected, false if it is deselected.
@@ -257,7 +257,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public void setSelected(boolean selectedStatus) {
 		getReal().setSelected(selectedStatus);
 	}
-	
+
 	/**
 	 * Gets the locaiton of the sensor.
 	 * @return The location of the sensor.
@@ -265,7 +265,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public Location getLocation() {
 		return getReal().getLocation();
 	}
-	
+
 	public void receive(Transmission msg) {
 		idToRealSensor.get(id).receive(msg);
 	}
@@ -284,13 +284,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public void draw(Graphics g) {
 		idToRealSensor.get(id).draw(g);
 	}
-	
+
 	public static void drawAll(Graphics g) {
 		for(SensorImplementation sen : idToRealSensor.values()) {
 			sen.draw(g);
 		}
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Sensor) {
@@ -298,7 +298,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes all sensors from the list.
 	 */
@@ -308,19 +308,19 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		usedIDs = 0;
 		idToRealSensor = new Hashtable<Integer, SensorImplementation>();
 	}
-	
+
 	public static void clearAllLinks() {
 		for(SensorImplementation sen : idToRealSensor.values()) {
 			sen.links = new TreeSet<Sensor>();
 		}
 	}
-	
+
 	public static void rollTurnOrder() {
 		for(SensorImplementation sen : idToRealSensor.values()) {
 			sen.transmissionRoll = ran.nextInt(100);
 		}
 	}	
-	
+
 	public Element generateXMLElement(Document doc) {
 		return getReal().generateXMLElement(doc);
 	}
@@ -328,7 +328,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public void setLinkToNearestTerminal(int nearestTerminal) {
 		getReal().setLinkToNearestTerminal(nearestTerminal);
 	}
-	
+
 	@Override
 	protected Object clone() {
 		try {
@@ -338,7 +338,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
 	 * Turn a sensor into a terminal or a terminal into a sensor. 
 	 * 
@@ -352,7 +352,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				Note.sendNote(sen + " has been promoted to Terminal");
 				return copySensor(new Terminal(sen));
 			}
-			
+
 		} else {
 			if(sen instanceof Terminal) {
 				Note.sendNote(sen + " has been demoted to Sensor");
@@ -362,7 +362,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		return this;
 	}
-	
+
 	public SensorImplementation getReal() {
 		SensorImplementation sen = idToRealSensor.get(id);
 		if(sen == null) {
@@ -370,7 +370,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		return sen;
 	}
-	
+
 	/**
 	 * Generate a new sensor.
 	 * @param loc The location of the sensor.
@@ -379,7 +379,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static Sensor newInstance(Location loc) {
 		return copySensor(new SensorImplementation(loc));
 	}
-	
+
 	/**
 	 * Generate a new sensor at random location.
 	 * @return A reference to the new Sensor.
@@ -387,21 +387,21 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static Sensor newInstance() {
 		return newInstance(new Location(ran.nextInt(Scaling.getPicXMax()), ran.nextInt(Scaling.getPicYMax())));
 	}
-	
+
 	public static void endOfPhase() {
 		for(SensorImplementation sen : idToRealSensor.values()) {
 			sen.status &= ~Sensor.STATUS_CLEAR_END_OF_ROUND;
 		}
 	}
-	
+
 	public void setHasTurn(boolean isTurn) {
 		getReal().setHasTurn(isTurn);
 	}
-	
+
 	public ShapeList getConnections() {
 		return getReal().getConnections();
 	}
-	
+
 	private static Sensor copySensor(Sensor sen) {
 		Sensor toReturn = idToSensor.get(sen.id);
 		if(toReturn == null) {
@@ -409,11 +409,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 		return toReturn;
 	}
-	
+
 	public SensorImplementation copyRealSensor() {
 		return (SensorImplementation) getReal().clone();
 	}
-	
+
 	public static void drawAllConnections(Graphics g) {
 		for(SensorImplementation sen : idToRealSensor.values()) {
 			for(Sensor link : sen.links) {
@@ -423,7 +423,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 	}
-	
+
 	public static void drawAllRoutesToTerminals(Graphics g){
 		for(SensorImplementation sen : idToRealSensor.values()) {
 			if(sen.nearestTerminalID == Sensor.INVALID_SENSOR_ID 
@@ -434,20 +434,20 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		}
 
 	}
-	
+
 	public void drawRouteToTerminal(Graphics g) {
 		getReal().drawRouteToTerminal(g);
 	}
-	
+
 	public void drawConnections(Graphics g) {
 		getReal().drawConnections(g);
 	}
-	
+
 	@Override
 	public String toString() {
 		return getReal().toString();
 	}
-	
+
 	/**
 	 * 
 	 * 
@@ -457,8 +457,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	 * @author Niels Thykier
 	 */
 	public static class SensorImplementation extends Sensor{
-		
-		
+
+
 		protected TreeSet<Sensor> links = new TreeSet<Sensor>();
 		protected int status; //Mainly used for determing coloring.
 		protected int transmissionRoll;
@@ -469,10 +469,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected int sendThrough = Sensor.INVALID_SENSOR_ID;
 		protected String sensorLabel = null;		
 		protected Protocol protocol;
-		
+
 
 		public static SensorImplementation SENSOR_INVALID = new SensorImplementation(new Location(-50, -50), Sensor.INVALID_SENSOR_ID);
-		
+
 		private SensorImplementation(Location loc, int id) {
 			super(id);
 			idToRealSensor.put(id, this);
@@ -480,23 +480,23 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			this.loc = loc;
 			protocol = new Protocol(this);
 		}
-	
+
 		protected SensorImplementation(int x,int y){
 			this(new Location(x,y));
 		}
-		
+
 		protected SensorImplementation(){
 			this(ran.nextInt(Scaling.getPicXMax()), ran.nextInt(Scaling.getPicYMax()));
 		}
-		
+
 		protected SensorImplementation(Location loc) {
 			this(loc, usedIDs++);
 		}
-		
+
 		protected SensorImplementation(Sensor sensor) {
 			this(sensor.getReal(), sensor.id);
 		}
-		
+
 		protected SensorImplementation(SensorImplementation sen, int id) {
 			this(sen.getLocation(), id);
 			this.links = sen.links;
@@ -515,11 +515,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				senImp.links.remove(sen);
 				senImp.addLinkToSensor(copySensor(this));
 			}
-			
+
 			idToRealSensor.remove(this.id);
 			idToRealSensor.put(this.id, this);
 		}
-		
+
 		/**
 		 * Test if the Sensor is operational.
 		 * @return true if the sensor is available. 
@@ -528,7 +528,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		public boolean isEnabled() {
 			return 0 == (status & STATUS_DEAD);
 		}
-		
+
 		@Override
 		public void setEnabled(boolean running) {
 			if(running) {
@@ -537,12 +537,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				status |= STATUS_DEAD;
 			}
 		}
-		
+
 		@Override
 		public int getTransmissionRoll() {
 			return this.transmissionRoll;
 		}
-				
+
 		@Override
 		public void setHasTurn(boolean isTurn) {
 			if(isTurn) {
@@ -551,7 +551,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				status &= ~STATUS_HAS_TURN;
 			}
 		}
-		
+
 		@Override
 		public Protocol getProtocol() {
 			return this.protocol;
@@ -561,22 +561,22 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		public int getStatus() {
 			return this.status;
 		}
-		
+
 		@Override
 		public int getFirstLinkToTerminal() {
 			return this.sendThrough;
 		}
-		
+
 		@Override
 		public int getStepsFromNearestTerminal() {
 			return this.nearestTerminalDist;
 		}
-		
+
 		@Override
 		public int getNearestTerminal(){
 			return this.nearestTerminalID;
 		}
-		
+
 		protected void setSecondaySelection(boolean selectedStatus) {
 			if(selectedStatus) {
 				status |= STATUS_SECONDARY_SELECTED;
@@ -584,7 +584,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				status &= ~STATUS_SECONDARY_SELECTED;
 			}
 		}
-		
+
 		public void newTerminal(int through, int terminalID, int steps) {
 			if(steps < this.nearestTerminalDist && terminalID != Sensor.INVALID_SENSOR_ID) {
 				this.sendThrough = through;
@@ -592,7 +592,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				this.nearestTerminalDist = steps;
 			}
 		}
-		
+
 		/**
 		 * Flag a sensor as selected or deselected. It will notify its links that they are now / no longer "secondarily selected"
 		 * @param selectedStatus true if the sensor is selected, false if it is deselected.
@@ -604,13 +604,13 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			} else {
 				status &= ~STATUS_SELECTED;
 			}
-		
+
 			for(Sensor sen : links) {
 				idToRealSensor.get(sen.id).setSecondaySelection(selectedStatus);
 			}
 		}
-		
-		
+
+
 		/**
 		 * Check if two sensors can communicate with each other using the current 
 		 * transmission radius.
@@ -631,12 +631,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		public Location getLocation()  {	
 			return loc;
 		}
-		
+
 		@Override
 		public Object clone() {
 			return super.clone();
 		}
-		
+
 		/**
 		 * Forces the sensor to update the secondary selected. Used by the addLinkToSensor method but can also
 		 * be called explicitly if the links have been modified without a call to that method.
@@ -670,8 +670,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			return links.toArray(new Sensor[links.size()]);
 		}
 
-			
-		
+
+
 		//*********************** XML **********************************//
 		/**
 		 * Load all sensors from the XML file
@@ -690,7 +690,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				transmissionRadius = Sensor.SENSOR_TRANSMISSION_RADIUS_DEFAULT;
 			}
 		}
-		
+
 		public static void loadAllSensorsFromXML(Document doc) throws XMLParseException{
 			NodeList sensorList = doc.getElementsByTagName("sensor");
 			int size = sensorList.getLength();
@@ -700,7 +700,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			usedIDs = size;
 		}
 
-		
+
 		/**
 		 * Load a sensor (or updates an previously loaded Sensor) from the XML file
 		 * @param sensorElement The DOM Document reference of the XML file
@@ -775,7 +775,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 						} catch(Exception e){
 							throw new XMLParseException("nearestTerm or its contents was malformatted.");
 						}
-						
+
 					}
 					break;
 				case 's':
@@ -788,10 +788,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 					}
 					break;
 				}
-				
-				
+
+
 			}
-			
+
 			NamedNodeMap attrMap = sensorElement.getAttributes();
 			Node attribute;
 			int sensorID = -1;
@@ -830,7 +830,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			} catch(RuntimeException e) {
 				initiative = -1;
 			}
-			
+
 			if(noLocation) {
 				sen = idToRealSensor.get(sensorID);
 				if(sen == null) {
@@ -872,7 +872,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 			return copySensor(sen);
 		}
-		
+
 		/**
 		 * Generates an XML element that contains the general sensor data settings.
 		 * @param doc The DOM Document of the XML file
@@ -885,8 +885,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			element.appendChild(transmissionRadiusNode);
 			return element;
 		}
-		
-		
+
+
 		@Override
 		public Element generateXMLElement(Document doc) {
 			Element element = doc.createElement("sensor");
@@ -929,15 +929,15 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			return element;
 		}
 
-		
+
 		protected void savingSensorToXML(Element topSensorElement, Document doc){}
-		
-		
+
+
 		//*********************** DRAW *******************************//
 		protected void internalDraw(Graphics g) {
 			g.setColor(chooseColor(GUIReferences.sensorColor));
 			draw.draw(g);
-			
+
 		}
 
 		@Override
@@ -954,7 +954,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 				}
 			}
 		}
-		
+
 		@Override
 		public void drawConnections(Graphics g) {
 			for(Sensor sen : links) {
@@ -962,7 +962,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			}
 		}
 
-		
+
 		protected Color chooseColor(Color defaultColor) {
 			Color toReturn = defaultColor;
 
@@ -996,8 +996,8 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			internalDraw(g);
 			g.setColor(temp);
 		}
-		
-		
+
+
 		//************************* MISC **********************//
 		/* (non-Javadoc)
 		 * @see nodes.Location#toString()
@@ -1035,7 +1035,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			if(receiver != null) {
 				receiver.receive(msg);
 			}
-			
+
 		}
 
 		@Override
@@ -1055,7 +1055,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 
 	}
 
-	
+
 	/**
 	 * 
 	 * 
@@ -1067,7 +1067,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	public static class Terminal extends SensorImplementation {
 		protected static Hashtable<Integer, Terminal> idToTerminals = new Hashtable<Integer,Terminal>(); 
 		protected boolean hasBroadcasted = false;
-		
+
 		protected Terminal(Sensor sen) {
 			super(sen.getReal(), sen.id);
 			idToTerminals.put(this.id, this);
@@ -1075,9 +1075,9 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			this.nearestTerminalID = this.id;
 			this.sendThrough = Sensor.INVALID_SENSOR_ID;
 		}
-		
-		
-		
+
+
+
 		@Override
 		public void receive(Transmission msg) {
 			super.receive(msg);
@@ -1089,12 +1089,12 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		public void transmit(Transmission msg) {
 			super.transmit(msg);
 		}
-		
+
 		@Override
 		public void prepare() {
 			if(!hasBroadcasted) {
 				Transmission trans = new Transmission(Sensor.ALL_SENSORS, Sensor.ALL_SENSORS
-									, this.id, Data.generateNetworkMessage(0, this.id));
+						, this.id, Data.generateNetworkMessage(0, this.id));
 				protocol.addTransmissionToSend(trans);
 				hasBroadcasted = true;
 			}
@@ -1106,29 +1106,29 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected Color chooseColor(Color defaultColor) {
 			return super.chooseColor(GUIReferences.terminalColor);
 		}
-		
+
 		@Override
 		protected void savingSensorToXML(Element topSensorElement, Document doc) {
 			topSensorElement.setAttribute("terminal", "true");
 			topSensorElement.setAttribute("hasBroadcasted", String.valueOf(hasBroadcasted));
 		}
-		
+
 		@Override
 		public String toString() {
 			return "Terminal #" + id + " " + (sensorLabel != null?sensorLabel + " ":"") + getLocation().toString();
 		}
-		
+
 	}
 
-	
-	
+
+
 	public static final class SensorComparator implements Comparator<Sensor> {
 		private final int compareType;
 		public static final int SORT_DEFAULT = 0;
 		public static final int SORT_BY_TURNS = 1;
 		public static final int SORT_BY_ID = 2;
 		public static final int SORT_BY_DIST_TO_TERMINAL = 3;
-		
+
 		public SensorComparator(int type) {
 			compareType = type;
 		}
@@ -1175,6 +1175,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 	}
 
 
-	
+
 
 }

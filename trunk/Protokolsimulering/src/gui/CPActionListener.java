@@ -67,21 +67,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			}
 		case MENU_SAVE_AS:
-			File saveFile;
-			JFileChooser saveChooser = new JFileChooser();
-			FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
-			saveChooser.setFileFilter(saveFilter);
-			int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
-			if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
-				saveFile = saveChooser.getSelectedFile();
-				if(saveFile.getPath().contains(".")==false){
-					saveFile = new File(saveFile.getPath()+".stuff");
-				}
-				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
-				GUIReferences.sensorNetwork.setTitle(saveFile.getName());
-				GUIReferences.currentFile = saveFile;
-				GUIReferences.saveMenuItem.setEnabled(false);
-			}
+			GUIReferences.saveAs();
 			break;
 		case MENU_PREFERENCES:
 			ConfigFrame.openConfigFrame().setVisible(true);
@@ -108,6 +94,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			} catch (NumberFormatException e) {
 				Note.sendNote(Note.ERROR, "Not a number.");
 			}
+			break;
 		case BUTTON_ENABLE:
 			if(GUIReferences.mode==MODE_ENABLE){
 				GUIReferences.modeGroup.clearSelection();
@@ -254,11 +241,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			case PLAYBACK_FAST_FORWARD:
 				GUIReferences.turnController.playTick();
 				if(ran.nextInt(6) == 0) {
+					GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
 					GUIReferences.sensorNetwork.repaint();	
 				}
 				break;
 			case PLAYBACK_PLAY:
 				GUIReferences.turnController.playTick();
+				GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
 				GUIReferences.sensorNetwork.repaint();
 				break;
 			case PLAYBACK_PLAY_BACKWARDS:
@@ -274,6 +263,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
 			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
 			CPNew.disposeWindow();
+			
+			ViewPort.disposeViewPort();
+			GUIReferences.saveMenuItem.setEnabled(false);
+
 			GUIReferences.generateNewField(width, height, "Untitled");
 			break;
 		case BUTTON_NEW_CANCEL:
@@ -329,12 +322,12 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case CHECKBOX_ENABLE_INFOBOX:
-			if(0 != (GUIReferences.view & VIEW_CONSOLE)) {
-				//GUIReferences.view &= ~VIEW_CONSOLE;
-				//GUIReferences.console.setVisible(false);
+			if(0 != (GUIReferences.view & VIEW_INFOBOX)) {
+				GUIReferences.view &= ~VIEW_INFOBOX;
+				GUIReferences.informationFrame.setVisible(false);
 			} else {
-				//GUIReferences.view |= VIEW_CONSOLE;
-				//GUIReferences.console.setVisible(true);
+				GUIReferences.view |= VIEW_INFOBOX;
+				GUIReferences.informationFrame.setVisible(true);
 			}
 			break;
 		case CHECKBOX_ROUTES:
