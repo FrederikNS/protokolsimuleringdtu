@@ -118,15 +118,13 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	}
 
 	private void selectSensor(Location loc,int dist){
-		Sensor sen;
 		int check;
 		int maxDist = dist;
-		for(int i=0;i<Sensor.usedIDs;i++){
-			sen = Sensor.idToSensor.get(i);
-			check = sen.getLocation().internalDistanceCheck(loc);
+		for (Sensor sensor:Sensor.idToSensor.values()){
+			check = sensor.getLocation().internalDistanceCheck(loc);
 			if(check < maxDist) {
 				maxDist = check;
-				GUIReferences.selectedSensor = sen;
+				GUIReferences.selectedSensor = sensor;
 			}
 		}
 	}
