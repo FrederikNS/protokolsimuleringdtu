@@ -8,11 +8,13 @@ import nodes.Sensor;
 import transmissions.Protocol;
 import transmissions.Transmission;
 
+/**
+ * InformationFrame is a frame that contains information about the 
+ * currently selected sensor.
+ * @author Frederik Nordahl Sabroe
+ */
 public class InformationFrame extends JFrame  {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -83659491420303025L;
 
 
@@ -28,10 +30,10 @@ public class InformationFrame extends JFrame  {
 	private JLabel sensorSentMessage;
 	private JLabel sensorWaitingForSensor;
 
-	public InformationFrame(){
-
-	}
-
+	/**
+	 * Inits the information frame.
+	 * @return Returns itself for convience.
+	 */
 	public InformationFrame init(){
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
@@ -64,6 +66,10 @@ public class InformationFrame extends JFrame  {
 		return this;
 	}
 
+	/**
+	 * Updates the InformationFrame to reflect the newly selected sensor.
+	 * @param selected The newly selected sensor.
+	 */
 	public void update(Sensor selected) {
 		if(selected != null) {
 			String sentMessage = ("");

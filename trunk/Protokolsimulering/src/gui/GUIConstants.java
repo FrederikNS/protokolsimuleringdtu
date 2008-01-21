@@ -73,8 +73,17 @@ public interface GUIConstants {
 	public final static int MODE_DEMOTE = 6;
 
 
+	/**
+	 * The "name" of the view port frame (used by the window listener)
+	 */
 	public final static char WINDOW_VIEW_PORT = '1';
+	/**
+	 * The "name" of the control frame (used by the window listener)
+	 */
 	public final static char WINDOW_CONTROL_FRAME = '2';
+	/**
+	 * The "name" of the console (used by the window listener)
+	 */
 	public final static char WINDOW_CONSOLE = '3';
 
 
@@ -98,12 +107,20 @@ public interface GUIConstants {
 	 * View bit-mask filter for all bit-masks 
 	 */
 	public final static int VIEW_ALL 		  = 0x000000ff;
+	/**
+	 * View bit-mask for whether the console should be shown.
+	 */
 	public final static int VIEW_CONSOLE	  = 0x00000008;
+	/**
+	 * View bit-mask for whether sensor routes to terminals should be shown.
+	 */
 	public final static int VIEW_ROUTES		  = 0x00000010;
+	/**
+	 * View bit-mask for whether the isolated sensors should be highlighted
+	 */
 	public final static int VIEW_ISOLATED     = 0x00000020;
+	/**
+	 * View bit-mask for whether the info box should be shown
+	 */
 	public final static int VIEW_INFOBOX	  = 0x00000040;
-	public final static int VIEW_CONSOLE_INFORMATION = 0x00000080;
-	public final static int VIEW_CONSOLE_WARNING 	 = 0x00000100;
-	public final static int VIEW_CONSOLE_ERROR		 = 0x00000200;
-	public final static int VIEW_CONSOLE_DEBUG		 = 0x00000400;
 }

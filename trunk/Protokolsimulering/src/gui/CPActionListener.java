@@ -11,9 +11,12 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import turns.TurnController;
+
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
 import notification.Note;
+import notification.NoteConstants;
 
 
 
@@ -26,6 +29,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	private Timer timer;
 	private Random ran = new Random();
 	private int playSpeed;
+	
+	/**
+	 * Default constructor for the CPActionListener.
+	 */
 	public CPActionListener() {
 		timer = new Timer(0, this);
 		timer.setActionCommand(String.valueOf(TIMER_EVENT));
@@ -33,6 +40,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		playSpeed = PLAYBACK_PAUSE;
 	}
 
+	/**
+	 * Method for stopping the timer (which will stop the simulation if automated)
+	 * This will NOT clear the button selection.
+	 */
 	public void stopTimer() {
 		timer.stop();
 	}
@@ -205,7 +216,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			}
 			GUIReferences.markAsModified();
-			GUIReferences.turnController.playTick();
+			TurnController.getInstance().playTick();
 			GUIReferences.sensorNetwork.repaint();
 			timer.stop();
 			GUIReferences.stepperGroup.clearSelection();
@@ -286,14 +297,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				timer.stop();
 				break;
 			case PLAYBACK_FAST_FORWARD:
-				GUIReferences.turnController.playTick();
+				TurnController.getInstance().playTick();
 				if(ran.nextInt(6) == 0) {
 					GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
 					GUIReferences.sensorNetwork.repaint();	
 				}
 				break;
 			case PLAYBACK_PLAY:
-				GUIReferences.turnController.playTick();
+				TurnController.getInstance().playTick();
 				GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
 				GUIReferences.sensorNetwork.repaint();
 				break;
@@ -396,16 +407,16 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 			
 		case CHECKBOX_CONSOLE_INFORMATION:
-			//TODO
+			GUIReferences.console.toggleShowFlag(NoteConstants.INFORMATION);
 			break;
 		case CHECKBOX_CONSOLE_WARNING:
-			//TODO
+			GUIReferences.console.toggleShowFlag(NoteConstants.WARNING);
 			break;
 		case CHECKBOX_CONSOLE_ERROR:
-			//TODO
+			GUIReferences.console.toggleShowFlag(NoteConstants.ERROR);
 			break;
 		case CHECKBOX_CONSOLE_DEBUG:
-			//TODO
+			GUIReferences.console.toggleShowFlag(NoteConstants.DEBUG);
 			break;
 		}
 	}
