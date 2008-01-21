@@ -56,6 +56,12 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		messageType = information.getDataType();
 	}
 	
+	/**
+	 * This method creates a transmission.
+	 * @param receiver the receiver
+	 * @param sender the sender
+	 * @param information the informations in the transmission
+	 */
 	public Transmission(int receiver, int sender, Data information) {
 		this(receiver, Sensor.INVALID_SENSOR_ID, sender, information);
 	}
@@ -247,7 +253,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	}	
 	
 	
-	/* (non-Javadoc)
+	/**
+	 * This method compares two priorities.
+	 * @param arg0 the transmissions
+	 * @return 0 or -1 whenever the compared priorities is equal or not
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Transmission arg0) {
@@ -261,6 +270,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		return 1;
 	}
 	
+	/**
+	 * Overrides the clone-method in Object.
+	 * @see java.lang.Object#clone()
+	 */
 	@Override
 	public Object clone() {
 		try {
@@ -271,6 +284,10 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 		}
 	}
 	
+	/**
+	 * This method overrides the toString-method in Object.
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "From: " + this.sender + ", through: " + this.through + ", to " + this.receiver + ", type: " + Integer.toHexString(this.messageType);
