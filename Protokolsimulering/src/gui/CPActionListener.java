@@ -394,6 +394,19 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			GUIReferences.updateViewSettings();
 			break;
+			
+		case CHECKBOX_CONSOLE_INFORMATION:
+			//TODO
+			break;
+		case CHECKBOX_CONSOLE_WARNING:
+			//TODO
+			break;
+		case CHECKBOX_CONSOLE_ERROR:
+			//TODO
+			break;
+		case CHECKBOX_CONSOLE_DEBUG:
+			//TODO
+			break;
 		}
 	}
 }
