@@ -4,15 +4,17 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class WindowListeners implements WindowListener, GUIConstants {
-	
+	boolean doBringToFront = false;
 	public void windowActivated(WindowEvent arg0) {
 		switch(arg0.getWindow().getName().charAt(0)) {
 		case WINDOW_CONTROL_FRAME:
-			if(GUIReferences.console != null) {
-				GUIReferences.console.toFront();
-			}
-			if(GUIReferences.sensorNetwork != null) {
-				GUIReferences.sensorNetwork.toFront();
+			if(doBringToFront) {
+				if(GUIReferences.console != null) {
+					GUIReferences.console.toFront();
+				}
+				if(GUIReferences.sensorNetwork != null) {
+					GUIReferences.sensorNetwork.toFront();
+				}
 			}
 			break;
 		}
@@ -40,10 +42,11 @@ public class WindowListeners implements WindowListener, GUIConstants {
 
 	public void windowDeactivated(WindowEvent e) {}
 
-	public void windowDeiconified(WindowEvent e) {
-	}
+	public void windowDeiconified(WindowEvent e) {}
 
-	public void windowIconified(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {
+		doBringToFront = true;
+	}
 
 	public void windowOpened(WindowEvent e) {}
 

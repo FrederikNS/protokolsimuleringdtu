@@ -238,6 +238,10 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		getReal().addLinkToSensor(sen);
 	}
 
+	public int getTransmissionRoll() {
+		return getReal().getTransmissionRoll();
+	}
+	
 	/**
 	 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
 	 * @return An array of Sensors that this sensor can reach.
@@ -456,7 +460,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		
 		
 		protected TreeSet<Sensor> links = new TreeSet<Sensor>();
-		protected boolean waiting;
 		protected int status; //Mainly used for determing coloring.
 		protected int transmissionRoll;
 		protected SensorCircle draw; //handles drawing of the figure and radii
@@ -468,7 +471,7 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected Protocol protocol;
 		
 
-		public static SensorImplementation SENSOR_INVALID = new SensorImplementation(new Location(-10, -10), Sensor.INVALID_SENSOR_ID);
+		public static SensorImplementation SENSOR_INVALID = new SensorImplementation(new Location(-50, -50), Sensor.INVALID_SENSOR_ID);
 		
 		private SensorImplementation(Location loc, int id) {
 			super(id);
@@ -499,7 +502,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			this.links = sen.links;
 			this.draw = sen.draw;
 			this.transmissionRoll = sen.transmissionRoll;
-			this.waiting = sen.waiting;
 			this.status = sen.status;
 			this.sendThrough = sen.sendThrough;
 			this.nearestTerminalID = sen.nearestTerminalID;
@@ -534,6 +536,11 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 			} else {
 				status |= STATUS_DEAD;
 			}
+		}
+		
+		@Override
+		public int getTransmissionRoll() {
+			return this.transmissionRoll;
 		}
 				
 		@Override
@@ -1064,7 +1071,6 @@ public class Sensor implements Transmitter, Prepareable, Comparable<Sensor>, Not
 		protected Terminal(Sensor sen) {
 			super(sen.getReal(), sen.id);
 			idToTerminals.put(this.id, this);
-			//GlobalAddressBook.addTerminal(this);
 			this.nearestTerminalDist = -1;
 			this.nearestTerminalID = this.id;
 			this.sendThrough = Sensor.INVALID_SENSOR_ID;
