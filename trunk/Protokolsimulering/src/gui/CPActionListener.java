@@ -84,11 +84,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					}
 					GlobalAddressBook.getBook().generateDirectConnections();
 					GUIReferences.saveMenuItem.setEnabled(true);
-					if(GUIReferences.currentFile != null) {
-						GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-					} else {
-						GUIReferences.sensorNetwork.setTitle("*Untitled");
-					}
 					GUIReferences.sensorNetwork.repaint();
 
 				}
@@ -143,6 +138,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}
+					
 				}
 			}
 			break;
@@ -234,63 +230,53 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			timer.setDelay(10);
 			timer.start();			
 			break;
-
-			/*
-			public static Color sensorColor = Color.BLACK;
-			public static Color selectedColor = Color.ORANGE;
-			public static Color deadColor = Color.LIGHT_GRAY;
-			public static Color sendingColor = Color.GREEN;
-			public static Color receivingColor = Color.BLUE;
-			public static Color transmissionRadiusColor = Color.MAGENTA;
-			public static Color connectionColor = Color.RED;
-			public static Color secondarySelectedColor = Color.CYAN;
-			public static Color terminalColor = new Color(0x00007700);
-			public static Color currentTurnColor = new Color(0x00ff00ff);
-			public static Color isolatedColor    = Color.PINK;
-			 */
-
+		case BUTTON_COLOR_CANVAS:
+			GUIReferences.canvasColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.canvasColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
 		case BUTTON_COLOR_SENSOR:
-			GUIReferences.sensorColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.sensorColor);
+			GUIReferences.sensorColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sensorColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SELECTED:
-			GUIReferences.selectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.selectedColor);
+			GUIReferences.selectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.selectedColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_DEAD:
-			GUIReferences.deadColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.deadColor);
+			GUIReferences.deadColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.deadColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SENDING:
-			GUIReferences.sendingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.sendingColor);
+			GUIReferences.sendingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sendingColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_RECEIVING:
-			GUIReferences.receivingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.receivingColor);
+			GUIReferences.receivingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.receivingColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_TRANSMISSION_RADIUS:
-			GUIReferences.transmissionRadiusColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.transmissionRadiusColor);
+			GUIReferences.transmissionRadiusColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.transmissionRadiusColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_CONNECTION:
-			GUIReferences.connectionColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.connectionColor);
+			GUIReferences.connectionColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.connectionColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SECONDARY_SELECTED:
-			GUIReferences.secondarySelectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.secondarySelectedColor);
+			GUIReferences.secondarySelectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.secondarySelectedColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_TERMINAL:
-			GUIReferences.terminalColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.terminalColor);
+			GUIReferences.terminalColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.terminalColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_CURRENT_TURN:
-			GUIReferences.currentTurnColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.currentTurnColor);
+			GUIReferences.currentTurnColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.currentTurnColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_ISOLATED:
-			GUIReferences.isolatedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.isolatedColor);
+			GUIReferences.isolatedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.isolatedColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
 			break;
 		case TIMER_EVENT:

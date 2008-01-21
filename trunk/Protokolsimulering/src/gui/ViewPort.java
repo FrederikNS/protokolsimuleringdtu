@@ -48,11 +48,11 @@ public class ViewPort extends JFrame implements GUIConstants{
 	}
 	
 	public void updateTitleCoordinates(){
-		setTitle(this.halfTitle);
+		setTitle((GUIReferences.saveMenuItem.isEnabled()?"*":"")+this.halfTitle);
 	}
 	
 	public void updateTitleCoordinates(int x,int y){
-		setTitle("("+x+","+y+") "+this.halfTitle);
+		setTitle("("+x+","+y+") "+(GUIReferences.saveMenuItem.isEnabled()?"*":"")+this.halfTitle);
 	}
 
 	public ViewPort(File openFile){

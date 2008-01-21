@@ -16,9 +16,9 @@ import javax.swing.JToggleButton;
 public class CPStepper implements GUIConstants {
 	public CPStepper(ActionListener actionListener){
 		JPanel stepperPanel = new JPanel();
-		GridLayout stepperLayout = new GridLayout(3,1);
+		GridLayout stepperLayout = new GridLayout(4,0);
 		stepperPanel.setLayout(stepperLayout);
-		JButton toStart = new JButton("|<");
+		/*JButton toStart = new JButton("|<");
 		toStart.setToolTipText("Goto Start");
 		toStart.addActionListener(actionListener);
 		toStart.setActionCommand(String.valueOf(BUTTON_TO_START));
@@ -33,7 +33,7 @@ public class CPStepper implements GUIConstants {
 		JToggleButton playBackwards = new JToggleButton("<");
 		playBackwards.setToolTipText("Play Backwards");
 		playBackwards.addActionListener(actionListener);
-		playBackwards.setActionCommand(String.valueOf(BUTTON_PLAY_BACKWARDS));
+		playBackwards.setActionCommand(String.valueOf(BUTTON_PLAY_BACKWARDS));*/
 		JButton stop = new JButton("■");
 		stop.setToolTipText("Stop");
 		stop.addActionListener(actionListener);
@@ -46,34 +46,34 @@ public class CPStepper implements GUIConstants {
 		nextSensor.setToolTipText("Next Sensor");
 		nextSensor.addActionListener(actionListener);
 		nextSensor.setActionCommand(String.valueOf(BUTTON_NEXT_SENSOR));
-		JButton stepForward = new JButton("|>");
+		/*JButton stepForward = new JButton("|>");
 		stepForward.setToolTipText("Step Forward");
 		stepForward.addActionListener(actionListener);
-		stepForward.setActionCommand(String.valueOf(BUTTON_STEP_FORWARD));
+		stepForward.setActionCommand(String.valueOf(BUTTON_STEP_FORWARD));*/
 		JToggleButton fastForward = new JToggleButton(">>");
 		fastForward.setToolTipText("Fast Forward");
 		fastForward.addActionListener(actionListener);
 		fastForward.setActionCommand(String.valueOf(BUTTON_FAST_FORWARD));
 
 		GUIReferences.simulatePanel.add(stepperPanel);
-		GUIReferences.stepperGroup.add(rewind);
-		GUIReferences.stepperGroup.add(playBackwards);
+//		GUIReferences.stepperGroup.add(rewind);
+//		GUIReferences.stepperGroup.add(playBackwards);
 		GUIReferences.stepperGroup.add(play);
-		GUIReferences.stepperGroup.add(stepForward);
+//		GUIReferences.stepperGroup.add(stepForward);
 		GUIReferences.stepperGroup.add(fastForward);
 		Enumeration<AbstractButton> buttons = GUIReferences.stepperGroup.getElements();
 		while(buttons.hasMoreElements()) {
 			buttons.nextElement().setEnabled(false);
 		}
 		
-		stepperPanel.add(toStart);
-		stepperPanel.add(rewind);
-		stepperPanel.add(fastForward);
-		stepperPanel.add(playBackwards);
+//		stepperPanel.add(toStart);
+//		stepperPanel.add(rewind);
+//		stepperPanel.add(playBackwards);
 		stepperPanel.add(stop);
 		stepperPanel.add(play);
-		stepperPanel.add(stepBackwards);
+//		stepperPanel.add(stepBackwards);
 		stepperPanel.add(nextSensor);
-		stepperPanel.add(stepForward);
+//		stepperPanel.add(stepForward);
+		stepperPanel.add(fastForward);
 	}
 }

@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Contains the options for changing colors on graphical elements
+ * @author frederikns
+ */
 public class ConfigFrame extends JDialog implements GUIConstants{
 
 	/**
@@ -35,6 +39,8 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		JPanel colorSelectionPane = new JPanel();
 		colorSelectionPane.setLayout(new GridLayout(0,1));
 		colorSelectionPane.setBorder(BorderFactory.createTitledBorder("Colors"));
+		JPanel canvasColorPane = new JPanel();
+		canvasColorPane.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		JPanel sensorColorPane = new JPanel();
 		sensorColorPane.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		JPanel selectedColorPane = new JPanel();
@@ -58,6 +64,7 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		JPanel isolatedColorPane = new JPanel();
 		isolatedColorPane.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		
+		JLabel canvasColorLabel = new JLabel(" Canvas");
 		JLabel sensorColorLabel = new JLabel(" Sensor");
 		JLabel selectedColorLabel = new JLabel(" Selected Sensor");
 		JLabel deadColorLabel = new JLabel(" Dead Sensor");
@@ -70,6 +77,10 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		JLabel currentTurnColorLabel = new JLabel(" Sensor's Turn");
 		JLabel isolatedColorLabel = new JLabel(" Isolated Sensor");
 		
+		JButton canvasColorButton = new JButton (" ");
+		canvasColorButton.setBackground(GUIReferences.canvasColor);
+		canvasColorButton.addActionListener(actionListener);
+		canvasColorButton.setActionCommand(String.valueOf(BUTTON_COLOR_CANVAS));
 		JButton sensorColorButton = new JButton (" ");
 		sensorColorButton.setBackground(GUIReferences.sensorColor);
 		sensorColorButton.addActionListener(actionListener);
@@ -116,6 +127,7 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		isolatedColorButton.setActionCommand(String.valueOf(BUTTON_COLOR_ISOLATED));
 		
 		add(colorSelectionPane);
+		colorSelectionPane.add(canvasColorPane);
 		colorSelectionPane.add(sensorColorPane);
 		colorSelectionPane.add(selectedColorPane);
 		colorSelectionPane.add(deadColorPane);
@@ -128,6 +140,7 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		colorSelectionPane.add(currentTurnColorPane);
 		colorSelectionPane.add(isolatedColorPane);
 		
+		canvasColorPane.add(canvasColorButton);
 		sensorColorPane.add(sensorColorButton);
 		selectedColorPane.add(selectedColorButton);
 		deadColorPane.add(deadColorButton);
@@ -140,6 +153,7 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		currentTurnColorPane.add(currentTurnColorButton);
 		isolatedColorPane.add(isolatedColorButton);
 		
+		canvasColorPane.add(canvasColorLabel);
 		sensorColorPane.add(sensorColorLabel);
 		selectedColorPane.add(selectedColorLabel);
 		deadColorPane.add(deadColorLabel);
@@ -156,6 +170,10 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 	}
 	
 	
+	/**
+	 * Spawns the config dialog
+	 * @return the config dialog
+	 */
 	public static ConfigFrame openConfigFrame() {
 		ConfigFrame dialog;
 		if(ControlPanelFrame.getFrame() != null) {

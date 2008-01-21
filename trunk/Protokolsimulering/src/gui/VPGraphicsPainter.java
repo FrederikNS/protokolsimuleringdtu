@@ -5,7 +5,6 @@ import static gui.GUIReferences.connectionColor;
 import static gui.GUIReferences.selectedSensor;
 import static gui.GUIReferences.view;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,7 +30,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	 * network. 
 	 */
 	public VPGraphicsPainter(){
-		this.setBackground(Color.white);
+		this.setBackground(GUIReferences.canvasColor);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 	}
@@ -134,11 +133,11 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	public void mouseExited(MouseEvent e) {
 		GUIReferences.sensorNetwork.updateTitleCoordinates();
-//		cpf.setJLabelStatus(-1, -1, Sensor.idToSensor.size(), (GUIReferences.turnController.getCurrentTurn()!=null?GUIReferences.turnController.getCurrentTurn().turn:0));
 	}
 
 
