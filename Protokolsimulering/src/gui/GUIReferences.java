@@ -31,6 +31,7 @@ public class GUIReferences implements GUIConstants{
 	public static ButtonGroup modeGroup;
 	static ButtonGroup stepperGroup;
 	static JMenuItem saveMenuItem;
+	static boolean mouseWithinViewPort;
 	
 	static File currentFile;
 	
@@ -44,13 +45,6 @@ public class GUIReferences implements GUIConstants{
 	public static void markAsModified() {
 		if(isSensorNetworkAvailable()) {
 			saveMenuItem.setEnabled(true);
-			if(currentFile != null) {
-				sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
-				sensorNetwork.halfTitle = "*"+GUIReferences.currentFile.getName();
-			} else {
-				sensorNetwork.setTitle("*Untitled");
-				sensorNetwork.halfTitle = "*Untitled";
-			}
 		}
 	}
 	
@@ -69,8 +63,6 @@ public class GUIReferences implements GUIConstants{
 		if(GUIReferences.currentFile != null) {
 			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
 			GUIReferences.saveMenuItem.setEnabled(false);
-			GUIReferences.sensorNetwork.halfTitle = GUIReferences.currentFile.getName();
-			GUIReferences.sensorNetwork.setTitle(GUIReferences.currentFile.getName());
 		} else {
 			saveAs();
 		}
@@ -109,6 +101,7 @@ public class GUIReferences implements GUIConstants{
 	 */
 	public static int view = 0;
 	
+	public static Color canvasColor = Color.WHITE;
 	/**
 	 * Default Sensor color
 	 */

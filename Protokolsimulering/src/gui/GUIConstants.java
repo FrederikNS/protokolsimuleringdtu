@@ -31,6 +31,7 @@ public interface GUIConstants {
 	public final static int BUTTON_NEW_OK = 120;
 	public final static int BUTTON_PROMOTE = 121;
 	public final static int BUTTON_DEMOTE = 122;
+	public final static int BUTTON_COLOR_CANVAS = 134;
 	public final static int BUTTON_COLOR_SENSOR = 123;
 	public final static int BUTTON_COLOR_SELECTED = 124;
 	public final static int BUTTON_COLOR_DEAD = 125;
