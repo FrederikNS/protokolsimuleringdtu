@@ -290,7 +290,51 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	 */
 	@Override
 	public String toString() {
-		return "From: " + this.sender + ", through: " + this.through + ", to " + this.receiver + ", type: " + Integer.toHexString(this.messageType);
+		String toReturn = "From: #";
+		if(this.sender > 0){
+			toReturn += this.sender;
+		} else {
+			toReturn += "Unknown";
+		}
+		if(through > 0) {
+			toReturn += ", through: #" + this.through;
+		} else if(through == Sensor.ALL_SENSORS) {
+			toReturn += ", through all";
+		}
+		if(receiver > 0) {
+			toReturn += ", for: #" + this.through;
+		} else if(receiver == Sensor.ALL_SENSORS) {
+			toReturn += ", for all";
+		}
+		toReturn += ". Type: ";
+		int type = getMessageType();
+		switch(type) {
+		case Data.TYPE_GARBAGE:
+			toReturn += "Corrupted.";
+			break;
+		case Data.TYPE_LISTENING:
+			toReturn += "Listening.";
+			break;
+		case Data.TYPE_SENDING:
+			toReturn += "Sending.";
+			break;
+		case Data.TYPE_NETWORK:
+			toReturn += "Network.";
+			break;
+		case Data.TYPE_RECEIVED_SUCCESSFULLY:
+			toReturn += "Success.";
+			break;
+		case Data.TYPE_RECEIVED_UNSUCCESSFULLY:
+			toReturn += "Failure.";
+			break;
+		case Data.TYPE_DATA:
+			toReturn += "Data."; 
+			break;
+		default:
+			toReturn += "unknown: 0x" + Integer.toHexString(type) ;
+			break;
+		}
+		return toReturn;
 	}
 
 }
