@@ -109,12 +109,12 @@ public class InformationFrame extends JFrame  {
 			for(Transmission transmission:protocol.getIngoing()){
 				inboxMessages += transmission.toString();
 			}
-			sensorInbox.setText(inboxMessages);
+			sensorInbox.setText("Ingoing: " + inboxMessages);
 			
 			for(Transmission transmission:protocol.getOutgoing()){
 				outboxMessages += transmission.toString();
 			}
-			sensorOutbox.setText(outboxMessages);
+			sensorOutbox.setText("Outgoing: " + outboxMessages);
 			
 			sensorWaitingForSensor.setText("Waiting For Sensor: "+protocol.getWaitingForSensor());
 		} else {

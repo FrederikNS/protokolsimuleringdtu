@@ -51,20 +51,6 @@ public class ProtocolTest extends TestCase {
 		assertTrue(protocol.getCurrentTick() == 4);
 	}
 
-	public void testPrepare() {
-		protocol.prepare();
-		fail("Not yet implemented");
-	}
-
-	public void testStep() {
-		fail("Not yet implemented");
-	}
-
-	public void testEndStep() {
-		fail("Not yet implemented");
-	}
-
-
 	public void testGetDelayNextTransmission() {
 		fail("Not yet implemented");
 	}
@@ -85,13 +71,12 @@ public class ProtocolTest extends TestCase {
 		fail("Not yet implemented");
 	}
 
-	public void testGetWaitingForSensor() {
-		fail("Not yet implemented");
-	}
-
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		this.protocol = null;
+		this.sensor = null;
+		this.sensor2 = null;
 	}
 
 }
