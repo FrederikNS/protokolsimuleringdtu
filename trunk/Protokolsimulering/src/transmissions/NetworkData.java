@@ -9,25 +9,53 @@ import xml.DOMxmlParser;
 
 import exceptions.XMLParseException;
 
+/**
+ * This class is responsible for informations about the network.
+ * @author Niels Thykier
+ */
 public class NetworkData extends Data {
 
+	/**
+	 * An integer for distance to terminal, meassured in number of sensors.
+	 */
 	private int distance;
+	/**
+	 * An integer for who to send through to reach the terminal.
+	 */
 	private int link;
 	
+	/**
+	 * The constructor of this class, sets the informations about who to send data through to reach the terminal.
+	 * @param distance the distance to terminal, meassured in sensors
+	 * @param link the sensor to send through
+	 */
 	public NetworkData(int distance, int link) {
 		this.distance = distance;
 		this.link = link;
 		this.dataType = Data.TYPE_NETWORK;
 	}
 	
+	/**
+	 * This method gets the sensor to send through.
+	 * @return the sensor to send through
+	 */
 	public int getLink(){
 		return link;
 	}
 	
+	/**
+	 * This method gets the distance to a terminal.
+	 * @return the distance
+	 */
 	public int getDistance() {
 		return distance;
 	}
 	 
+	/**
+	 * This method is used when telling about the network (distance and link).
+	 * @param newLink the new link
+	 * @return a new message about the network
+	 */
 	public NetworkData nextGenerationData(int newLink) {
 		return new NetworkData(this.distance+1, newLink);
 	}
@@ -84,6 +112,10 @@ public class NetworkData extends Data {
 		return new NetworkData(distance, link);
 	}
 
+	/**
+	 * This method overrides the toString-method in Object.
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "Net, link: " + link + ", dist: " + distance;

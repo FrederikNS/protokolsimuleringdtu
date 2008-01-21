@@ -100,14 +100,17 @@ public class Location implements Drawable,Cloneable, Saveable {
 		return y;
 	}
 	
-	/* (non-Javadoc)
-	 * @see graphics.Drawable#draw(java.awt.Graphics)
+	/**
+	 * This method uses the method draw from Drawable.
+	 * @param g the graphical object to be draw
+	 * @see shape.Drawable#draw(java.awt.Graphics)
 	 */
 	public void draw(Graphics g) {
 		g.drawOval(x-1, y-1, 3, 3);
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * This method overrides the equals-method from Object.
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -120,7 +123,8 @@ public class Location implements Drawable,Cloneable, Saveable {
 		return false;
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * This method overrides the clone-method from Object.
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
@@ -128,6 +132,10 @@ public class Location implements Drawable,Cloneable, Saveable {
 		return new Location(this);
 	}
 	
+	/**
+	 * This method moves a location to a new location.
+	 * @param newLocation the new location
+	 */
 	protected void relocate(Location newLocation) {
 		this.x = newLocation.x;
 		this.y = newLocation.y;
@@ -188,7 +196,8 @@ public class Location implements Drawable,Cloneable, Saveable {
 		return element;
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * This method overrides the toString-method from Object.
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
