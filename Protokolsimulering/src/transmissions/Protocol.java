@@ -147,10 +147,6 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		outgoing.add(trans);
 	}
 	
-	public int getStatus() {
-		return currentTick;
-	}
-	
 	public void prepare() {
 		if(delayNextTransmission <= 0) {
 			if(0 == (currentTick & (Protocol.OPTION_SEND_DISABLED | Protocol.ACTION_RECEIVING)) 
