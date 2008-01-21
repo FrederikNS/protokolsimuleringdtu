@@ -15,6 +15,7 @@ NOT DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb s
 	 
 	 - mangler visning af simulerede tid.
 	 - simulering af rutebestemmelse protokollen bør forbedres, men er færdig!
+	 - husker ikke antal turns når grafen bliver loaded
 	 - TEST!
 	 
 DONE: Gemme en simuleringstilstand i en fil og indlæse den igen

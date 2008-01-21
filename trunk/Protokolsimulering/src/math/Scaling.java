@@ -13,19 +13,19 @@ public class Scaling {
 	/**
 	 * The maximum x coordinate in the window.
 	 */
-	private static int picXMax;
+	private static int picXMax = 1;
 	/**
 	 * The maximum y coordinate in the window.
 	 */
-	private static int picYMax;
+	private static int picYMax = 1;
 	/**
 	 * The current height of the window.
 	 */
-	private static int currH;
+	private static int currH = 1;
 	/**
 	 * The current width of the window.
 	 */
-	private static int currW;
+	private static int currW = 1;
 	
 	/**
 	 * Prevents creation of static object.
