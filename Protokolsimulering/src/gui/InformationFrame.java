@@ -38,9 +38,7 @@ public class InformationFrame extends JFrame  {
 		setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
 
 		setTitle("No Sensor Selected");
-//		sensorLabel = new JLabel();
 		sensorNumberOfNeighbours = new JLabel(" ");
-//		sensorNeighbours = new JLabel();
 		sensorIsTerminal = new JLabel(" ");
 		sensorDistanceToTerminal = new JLabel(" ");
 		sensorSentMessagesAwaitingReply = new JLabel(" ");

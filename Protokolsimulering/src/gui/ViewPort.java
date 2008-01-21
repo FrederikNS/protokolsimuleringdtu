@@ -13,11 +13,14 @@ import nodes.Sensor;
  *
  */
 public class ViewPort extends JFrame implements GUIConstants{
+	
+	String halfTitle;
 
 	private static final long serialVersionUID = 1960058377833441994L;
 	private VPGraphicsPainter graphicsPainter;
 	public ViewPort(String title){
 		super(title);
+		halfTitle = title;
 		int screenHeight = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()*/ 600; //TODO
 		int screenWidth = /*(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()-200*/ 600;
 		setSize(new Dimension(screenWidth,screenHeight));
@@ -42,6 +45,13 @@ public class ViewPort extends JFrame implements GUIConstants{
 		}
 	}
 	
+	public void updateTitleCoordinates(){
+		setTitle(this.halfTitle);
+	}
+	
+	public void updateTitleCoordinates(int x,int y){
+		setTitle("("+x+","+y+") "+this.halfTitle);
+	}
 
 	public ViewPort(File openFile){
 		this(openFile.getAbsolutePath());

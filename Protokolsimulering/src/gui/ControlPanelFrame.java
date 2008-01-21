@@ -128,11 +128,11 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		garbageCollection();
 	}
 
-	public void setJLabelStatus(int x, int y, int i) {
-		status.setText("(" + x + "," + y + ") Sensors: "+i);
+	public void setJLabelStatus(int x, int y, int i, int j) {
+		status.setText("(" + x + "," + y + ") Sensors: "+i+" Turn: "+j);
 	}
 	
-	public void setJLabalStatus(String text) {
+	public void setJLabelStatus(String text) {
 		status.setText(text);
 	}
 

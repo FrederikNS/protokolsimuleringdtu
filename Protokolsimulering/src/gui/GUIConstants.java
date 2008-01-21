@@ -11,7 +11,7 @@ public interface GUIConstants {
 	public final static int MENU_SAVE_AS = 4;
 	public final static int MENU_QUIT = 0;
 	public final static int MENU_PREFERENCES = 5;
-	
+
 	public final static int BUTTON_GENERATE = 101;
 	public final static int BUTTON_DISABLE = 102;
 	public final static int BUTTON_ADD = 103;
@@ -31,7 +31,18 @@ public interface GUIConstants {
 	public final static int BUTTON_NEW_OK = 120;
 	public final static int BUTTON_PROMOTE = 121;
 	public final static int BUTTON_DEMOTE = 122;
-	
+	public final static int BUTTON_COLOR_SENSOR = 123;
+	public final static int BUTTON_COLOR_SELECTED = 124;
+	public final static int BUTTON_COLOR_DEAD = 125;
+	public final static int BUTTON_COLOR_SENDING = 126;
+	public final static int BUTTON_COLOR_RECEIVING = 127;
+	public final static int BUTTON_COLOR_TRANSMISSION_RADIUS = 128;
+	public final static int BUTTON_COLOR_CONNECTION = 129;
+	public final static int BUTTON_COLOR_SECONDARY_SELECTED = 130;
+	public final static int BUTTON_COLOR_TERMINAL = 131;
+	public final static int BUTTON_COLOR_CURRENT_TURN = 132;
+	public final static int BUTTON_COLOR_ISOLATED = 133;
+
 	public final static int CHECKBOX_RADII = 201;
 	public final static int CHECKBOX_CONNECTIONS = 202;
 	public final static int CHECKBOX_NEIGHBOURS = 203;
@@ -39,15 +50,15 @@ public interface GUIConstants {
 	public final static int CHECKBOX_ROUTES = 205;
 	public final static int CHECKBOX_ISOLATED = 206;
 	public final static int CHECKBOX_ENABLE_INFOBOX = 207;
-	
+
 	public final static int TIMER_EVENT = 401;
-	
+
 	public final static int PLAYBACK_REWIND = -2;
 	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
 	public final static int PLAYBACK_PAUSE = 0;
 	public final static int PLAYBACK_PLAY = 1;
 	public final static int PLAYBACK_FAST_FORWARD = 2;
-	
+
 	public final static int MODE_SELECT = 0;
 	public final static int MODE_DISABLE = 1;
 	public final static int MODE_ADD = 2;
@@ -55,13 +66,13 @@ public interface GUIConstants {
 	public final static int MODE_REMOVE = 4;
 	public final static int MODE_PROMOTE = 5;
 	public final static int MODE_DEMOTE = 6;
-	
-	
+
+
 	public final static char WINDOW_VIEW_PORT = '1';
 	public final static char WINDOW_CONTROL_FRAME = '2';
 	public final static char WINDOW_CONSOLE = '3';
-	
-	
+
+
 	/**
 	 * View bit-mask for whether the Radii view is active or not 
 	 */

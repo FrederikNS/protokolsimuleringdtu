@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Random;
 
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -21,7 +22,7 @@ import notification.Note;
  *
  */
 public class CPActionListener implements ActionListener,GUIConstants{
-	
+
 	private Timer timer;
 	private Random ran = new Random();
 	private int playSpeed;
@@ -31,7 +32,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		timer.setDelay(500);
 		playSpeed = PLAYBACK_PAUSE;
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
@@ -60,12 +61,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case MENU_SAVE:
-			if(GUIReferences.currentFile != null) {
-				xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
-				GUIReferences.saveMenuItem.setEnabled(false);
-				GUIReferences.sensorNetwork.setTitle(GUIReferences.currentFile.getName());
-				break;
-			}
+			GUIReferences.save();
+			break;
 		case MENU_SAVE_AS:
 			GUIReferences.saveAs();
 			break;
@@ -89,7 +86,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						GUIReferences.sensorNetwork.setTitle("*Untitled");
 					}
 					GUIReferences.sensorNetwork.repaint();
-					
+
 				}
 			} catch (NumberFormatException e) {
 				Note.sendNote(Note.ERROR, "Not a number.");
@@ -233,6 +230,65 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			timer.setDelay(10);
 			timer.start();			
 			break;
+
+			/*
+			public static Color sensorColor = Color.BLACK;
+			public static Color selectedColor = Color.ORANGE;
+			public static Color deadColor = Color.LIGHT_GRAY;
+			public static Color sendingColor = Color.GREEN;
+			public static Color receivingColor = Color.BLUE;
+			public static Color transmissionRadiusColor = Color.MAGENTA;
+			public static Color connectionColor = Color.RED;
+			public static Color secondarySelectedColor = Color.CYAN;
+			public static Color terminalColor = new Color(0x00007700);
+			public static Color currentTurnColor = new Color(0x00ff00ff);
+			public static Color isolatedColor    = Color.PINK;
+			 */
+
+		case BUTTON_COLOR_SENSOR:
+			GUIReferences.sensorColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.sensorColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_SELECTED:
+			GUIReferences.selectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.selectedColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_DEAD:
+			GUIReferences.deadColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.deadColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_SENDING:
+			GUIReferences.sendingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.sendingColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_RECEIVING:
+			GUIReferences.receivingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.receivingColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_TRANSMISSION_RADIUS:
+			GUIReferences.transmissionRadiusColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.transmissionRadiusColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_CONNECTION:
+			GUIReferences.connectionColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.connectionColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_SECONDARY_SELECTED:
+			GUIReferences.secondarySelectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.secondarySelectedColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_TERMINAL:
+			GUIReferences.terminalColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.terminalColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_CURRENT_TURN:
+			GUIReferences.currentTurnColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.currentTurnColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_COLOR_ISOLATED:
+			GUIReferences.isolatedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Sensor Color", GUIReferences.isolatedColor);
+			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
 		case TIMER_EVENT:
 			switch(playSpeed) {
 			default:
@@ -264,7 +320,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
 			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
 			CPNew.disposeWindow();
-			
+
 			ViewPort.disposeViewPort();
 			GUIReferences.saveMenuItem.setEnabled(false);
 
