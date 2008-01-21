@@ -27,6 +27,10 @@ import org.xml.sax.SAXException;
 
 import turns.TurnController;
 
+/**
+ * Semi-static file for loading data from a XML file.
+ * @author Niels Thykier
+ */
 public class DOMxmlParser {
 	private Document doc;
 	
@@ -47,6 +51,11 @@ public class DOMxmlParser {
 
 	}
 	
+	/**
+	 * Opens, parses and loads the status from a file.
+	 * @param xmlFile The xmlfile to load.
+	 * @param panel The panel is used to update the status bar label.
+	 */
 	public static void parse(File xmlFile, ControlPanelFrame panel) {
 		Document result;
 		int x = 0, y = 0; // sizes of the field.
@@ -117,6 +126,12 @@ public class DOMxmlParser {
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
 	}
 	
+	/**
+	 * Assuming the first text-node within the node is the primary text node.
+	 * This method will find it and retrieve the text from it.
+	 * @param node The node you want the text of.
+	 * @return The text in the node or null.
+	 */
 	public static String getTextNodeValue(Node node) {
 		NodeList list = node.getChildNodes();
 		int length = list.getLength();

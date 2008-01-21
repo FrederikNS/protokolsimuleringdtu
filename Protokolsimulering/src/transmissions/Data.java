@@ -8,17 +8,21 @@ import org.w3c.dom.Node;
 import exceptions.XMLParseException;
 
 import xml.DOMxmlParser;
+import xml.Saveable;
 
 /**
  * This class is responsible for all the data in transmissions.
  * @author Niels Thykier
  */
-public class Data implements DataConstants{
+public class Data implements DataConstants, Saveable{
 
 	/**
 	 * An integer-variable for defining which type of data it is.
 	 */
 	protected int dataType;
+	/**
+	 * The one and only GarbageData object. 
+	 */
 	public static final Data GarbageData;
 	/**
 	 * A variable for the data.
@@ -121,6 +125,12 @@ public class Data implements DataConstants{
 		return dataNode;
 	}
 	
+	/**
+	 * Loads data from an XML-node
+	 * @param dataElement The XML-node
+	 * @return The data stored in that node.
+	 * @throws XMLParseException Thrown if the node was malformatted.
+	 */
 	public static Data loadFromXMLElement(Node dataElement) throws XMLParseException {
 		if(dataElement.getNodeName().equals("networkData")) {
 			return NetworkData.loadFromXMLElement(dataElement);

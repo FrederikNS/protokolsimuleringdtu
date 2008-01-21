@@ -19,19 +19,21 @@ import nodes.Location;
 import nodes.Sensor;
 
 /**
+ * The Canvas for drawing the sensor network
  * @author Frederik Nordahl Sabroe
  * @author Morten Soerensen
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
 	private static final long serialVersionUID = 4244383889572154127L;
-	
-//	private ControlPanelFrame cpf;
 
+	/**
+	 * Contructor, creates a new GraphicsPainter (Canvas) for the sensor
+	 * network. 
+	 */
 	public VPGraphicsPainter(){
 		this.setBackground(Color.white);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-//		cpf = ControlPanelFrame.getFrame();
 	}
 
 	/**

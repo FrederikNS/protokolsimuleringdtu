@@ -141,6 +141,12 @@ public class Location implements Drawable,Cloneable, Saveable {
 		this.y = newLocation.y;
 	}
 	
+	/**
+	 * Loads a location from a XML-node
+	 * @param locationNode The location node.
+	 * @return The location stored in the node.
+	 * @throws XMLParseException If the location node was malformatted.
+	 */
 	public static Location loadFromXMLElement(Node locationNode) throws XMLParseException {
 		if(locationNode.getNodeType() != Node.ELEMENT_NODE || !locationNode.getNodeName().equals("location")) {
 			throw new IllegalArgumentException("Node was not a locationNode");

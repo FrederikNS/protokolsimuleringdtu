@@ -43,6 +43,10 @@ public class GlobalAddressBook {
 		return globalAdressBook;
 	}
 	
+	/**
+	 * Method used by the xml-loader to have the addressbook ignore
+	 * loaded sensors.
+	 */
 	public void loadedSensors() {
 		sensorsAccountedFor = Sensor.idToSensor.size();
 	}

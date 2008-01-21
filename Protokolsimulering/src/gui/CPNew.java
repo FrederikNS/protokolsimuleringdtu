@@ -10,6 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
+/**
+ * The dialog for when opening a new ViewFrame.
+ * 
+ * @author Frederik Nordahl Sabroe
+ */
 public class CPNew extends JDialog implements GUIConstants{
 
 	/**
@@ -17,7 +22,13 @@ public class CPNew extends JDialog implements GUIConstants{
 	 */
 	private static final long serialVersionUID = 1551499666154155856L;
 
+	/**
+	 * Handles the width of the new field
+	 */
 	static JSpinner widthSpinner;
+	/**
+	 * Handles the height of the new field
+	 */
 	static JSpinner heightSpinner;
 	private static CPNew cPNew;
 
@@ -26,7 +37,7 @@ public class CPNew extends JDialog implements GUIConstants{
 	}
 
 	private CPNew(JFrame frame){
-
+		super(frame);
 	}
 
 	private void init(){
@@ -78,6 +89,9 @@ public class CPNew extends JDialog implements GUIConstants{
 		
 	}
 
+	/**
+	 * Static method for easily disposing the dialog if it exists.
+	 */
 	public static void disposeWindow(){
 		if(cPNew!=null){
 			cPNew.dispose();
@@ -85,6 +99,10 @@ public class CPNew extends JDialog implements GUIConstants{
 		}
 	}
 
+	/**
+	 * Opens a new dialog.
+	 * @return The newly opened (or still existing) dialog.
+	 */
 	public static CPNew openCPNew() {
 		if(cPNew!=null){
 			disposeWindow();
