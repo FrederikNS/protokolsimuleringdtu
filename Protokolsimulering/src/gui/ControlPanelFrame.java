@@ -31,11 +31,15 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	private static final long serialVersionUID = -8026416994513756565L;
 
 	private static ControlPanelFrame controlPanelFrame;
-	JTabbedPane modeTabPanes = new JTabbedPane();
+	private JTabbedPane modeTabPanes = new JTabbedPane();
 	private boolean constructTabSelected = true;
 	private JLabel status;
 	private boolean run = true;
 
+	/**
+	 * Generates a new Control panel frame and inits a lot of related 
+	 * GUI elements and variables in the GUIReferences class.
+	 */
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
 		super("Control Panel");

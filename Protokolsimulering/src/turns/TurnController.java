@@ -14,8 +14,15 @@ import exceptions.XMLParseException;
 import turns.Turn.RunnableTurn;
 import xml.Saveable;
 
+/**
+ * TurnController is class to handle Turn advancements conviently.
+ * @author Niels Thykier
+ */
 public abstract class TurnController implements Saveable{
 
+	/**
+	 * The current active TurnController.
+	 */
 	protected static TurnController instance;
 	
 	/**
@@ -35,8 +42,18 @@ public abstract class TurnController implements Saveable{
 	 */
 	public abstract boolean playPreparePhase();
 	
+	/**
+	 * Gets the current turn of the simulation.
+	 * @return The current turn.
+	 */
 	public abstract Turn getCurrentTurn();
 	
+	/**
+	 * Loads a turn controller from a XML node
+	 * @param turnControllerNode The node.
+	 * @return The newly loaded TurnController.
+	 * @throws XMLParseException Thrown if the XML node was malformatted.
+	 */
 	public abstract TurnController loadFromXMLElement(Node turnControllerNode) throws XMLParseException;
 
 	/* (non-Javadoc)
@@ -44,6 +61,10 @@ public abstract class TurnController implements Saveable{
 	 */
 	public abstract Element generateXMLElement(Document doc);
 	
+	/**
+	 * Static method for acquiring an instance of the TurnController class.
+	 * @return A TurnController.
+	 */
 	public static TurnController getInstance() {
 		if(instance == null) {
 			instance = new TurnControllerImplementation();

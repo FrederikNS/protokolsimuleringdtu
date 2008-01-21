@@ -8,10 +8,15 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 /**
+ * ViewSettings creates all the "view" checkboxes.
  * @author Frederik Nordahl Sabroe
- *
  */
 public class CPViewSettings implements GUIConstants{
+	
+	/**
+	 * Constructor for creating the CPViewSettings.
+	 * @param actionListener The ActionListener for all the checkboxes.
+	 */
 	public CPViewSettings(ActionListener actionListener){
 		JPanel viewSettingsPanel = new JPanel();
 		GridLayout viewSettingsLayout = new GridLayout(0,1);

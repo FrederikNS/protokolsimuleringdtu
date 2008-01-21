@@ -33,21 +33,35 @@ public class GUIReferences implements GUIConstants{
 	static JMenuItem saveMenuItem;
 	static boolean mouseWithinViewPort;
 	
+	/**
+	 * The currently used file.
+	 */
 	static File currentFile;
 	
-	public static TurnController turnController = TurnController.getInstance();
 	
+	/**
+	 * Convience method for opening a new ViewPort with a internal width / height
+	 * @param w The (internal) width of the new field.
+	 * @param h The (internal) height of the new field.
+	 * @param title The title of the new window. (Usually just the file name or Untitled)
+	 */
 	public static void generateNewField(int w,int h,String title){
 		Scaling.setPicCoords(w,h);
 		sensorNetwork = new ViewPort(title);
 	}
 	
+	/**
+	 * Marks the current work as modified (enables the save menu)
+	 */
 	public static void markAsModified() {
 		if(isSensorNetworkAvailable()) {
 			saveMenuItem.setEnabled(true);
 		}
 	}
 	
+	/**
+	 * Convience method for repainting and updating the information frame.
+	 */
 	public static void updateViewSettings() {
 		if(isSensorNetworkAvailable()) {
 			informationFrame.update(selectedSensor);
@@ -55,10 +69,18 @@ public class GUIReferences implements GUIConstants{
 		}
 	}
 	
+	/**
+	 * Convience method for checking if the sensor network / VPGraphicsPanter is available.
+	 * @return true if the ViewPort / VPGraphicsPainter is available.
+	 */
 	public static boolean isSensorNetworkAvailable() {
 		return sensorNetwork != null;
 	}
 	
+	/**
+	 * Convience method for saving.
+	 * @see GUIReferences#saveAs()
+	 */
 	public static void save(){
 		if(GUIReferences.currentFile != null) {
 			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
@@ -68,6 +90,9 @@ public class GUIReferences implements GUIConstants{
 		}
 	}
 	
+	/**
+	 * Convience method for saving as.
+	 */
 	public static void saveAs(){
 		File saveFile;
 		JFileChooser saveChooser = new JFileChooser();
@@ -91,16 +116,21 @@ public class GUIReferences implements GUIConstants{
 	 * The currently selected sensor (or null if none is selected)
 	 */
 	static Sensor selectedSensor;
+	/**
+	 * The window listener.
+	 */
 	static WindowListener windowListener;
 	/**
-	 * The ActionListener (used whenever a right-click menu is re-generated)
+	 * The ActionListener
 	 */
 	static CPActionListener listener;
 	/**
 	 * Bit mask of the selected views.
 	 */
 	public static int view = 0;
-	
+	/**
+	 * The background color.
+	 */
 	public static Color canvasColor = Color.WHITE;
 	/**
 	 * Default Sensor color
@@ -122,17 +152,30 @@ public class GUIReferences implements GUIConstants{
 	 * Color of a Sensor which is receiving
 	 */
 	public static Color receivingColor = Color.BLUE;
-	
+	/**
+	 * Color of the transmission radius circle.
+	 */
 	public static Color transmissionRadiusColor = Color.MAGENTA;
-	
+	/**
+	 * Color of a connection between two sensors.
+	 */
 	public static Color connectionColor = Color.RED;
-	
+	/**
+	 * Color of a "secondary" selected sensor (one the selected sensor can reach)
+	 */
 	public static Color secondarySelectedColor = Color.CYAN;
 	
+	/**
+	 * Color of terminal sensors.
+	 */
 	public static Color terminalColor = new Color(0x00007700);
-	
+	/**
+	 * Color of the sensor, which currently have the turn.
+	 */
 	public static Color currentTurnColor = new Color(0x00ff00ff);
-	
+	/**
+	 * Color of isolated sensors.
+	 */
 	public static Color isolatedColor    = Color.PINK;
 	
 	/**

@@ -14,22 +14,23 @@ import javax.swing.JTextArea;
 import notification.Note;
 import notification.NotificationListener;
 
+/**
+ * This class is GUI "console" containing a list of messages from the
+ * program.
+ * @author Frederik Nordahl Sabroe
+ * @author Niels Thykier
+ */
 public class Console extends JFrame implements NotificationListener, GUIConstants{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1925062183376423627L;
-	private int note = ALL_MESSAGES;
+	private int note = Note.INFORMATION | Note.ERROR | Note.WARNING;
 	private ArrayList<Note> allNotes = new ArrayList<Note>();
 	private JTextArea console;
 
-	public Console(){
-	}
-	
-	public Console(JFrame frame){
-	}
-	
+	/**
+	 * Inits the console window. (Layout and stuff).
+	 * @return The console itself (as convience)
+	 */
 	public Console init() {
 //		The console is created
 		this.setName(String.valueOf(WINDOW_CONSOLE));
@@ -58,6 +59,23 @@ public class Console extends JFrame implements NotificationListener, GUIConstant
 		return this;
 	}
 
+	/**
+	 * Updates the shown notes by altering the params.
+	 * @param bitFlag The bit flag to alter 
+	 * @see notification.NoteConstants
+	 */
+	public void toggleShowFlag(int bitFlag){
+		if(0 != (bitFlag & note)) {
+			note &= ~bitFlag;
+		} else {
+			note |= bitFlag;
+		}
+		updateShownNoteList();
+	}
+	
+	/**
+	 * Internal command to update what notes are being showed.
+	 */
 	protected void updateShownNoteList() {
 		console.setText("");
 		Note nt = null;
@@ -74,6 +92,10 @@ public class Console extends JFrame implements NotificationListener, GUIConstant
 		allNotes.add(newNote);
 		if(0 != (newNote.getType() & note)) {
 			console.append(newNote.getMessage() +"\n");
+		}
+		if(0 != (newNote.getType() & Note.ERROR) && !this.isVisible()) {
+			//If receiving an error, show self.
+			this.setVisible(true);
 		}
 	}
 }

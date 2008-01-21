@@ -5,8 +5,14 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JOptionPane;
 
+/**
+ * WindowListener for all the windows.
+ * @author Frederik Nordahl Sabroe
+ * @author Niels Thykier
+ */
 public class WindowListeners implements WindowListener, GUIConstants {
-	boolean doBringToFront = false;
+	private boolean doBringToFront = false;
+	
 	public void windowActivated(WindowEvent arg0) {
 		switch(arg0.getWindow().getName().charAt(0)) {
 		case WINDOW_CONTROL_FRAME:
