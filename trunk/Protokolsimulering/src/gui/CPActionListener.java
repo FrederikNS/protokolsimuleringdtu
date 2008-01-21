@@ -35,7 +35,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
-			//TODO - call another method.
 			ControlPanelFrame.getFrame().quit();
 			break;
 		case MENU_NEW:
@@ -68,7 +67,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			}
 		case MENU_SAVE_AS:
-			//TODO
 			File saveFile;
 			JFileChooser saveChooser = new JFileChooser();
 			FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
@@ -86,7 +84,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case MENU_PREFERENCES:
-			//TODO (in ConfigFrame)
 			ConfigFrame.openConfigFrame().setVisible(true);
 			break;
 		case BUTTON_GENERATE:
@@ -96,7 +93,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				number = Integer.parseInt(generateDialog);
 				if(number>0){
 					for(int i=0;i<number;i++) {
-						//GUIReferences.sensorNetwork.getField().addSensor(new Sensor());
 						Sensor.newInstance();
 					}
 					GlobalAddressBook.getBook().generateDirectConnections();
@@ -357,19 +353,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.view |= VIEW_ISOLATED;
 			}
 			GUIReferences.updateViewSettings();
-			break;
-		case POPUP_BUTTON_VIEW_SENSOR:
-			//TODO - make nicer
-			
-
-			/*JDialog log = new JDialog(GUIReferences.sensorNetwork, GUIReferences.selectedSensor.toString());
-			JPanel pane = new JPanel();
-			log.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			pane.setLayout(new BorderLayout());
-			log.setContentPane(pane);
-			pane.add(new JLabel(GUIReferences.selectedSensor.toString()));
-			log.pack();
-			log.setVisible(true);*/
 			break;
 		}
 	}
