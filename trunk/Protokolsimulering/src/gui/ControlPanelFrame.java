@@ -39,8 +39,9 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	public ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
 		super("Control Panel");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(200, 572)); 
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setPreferredSize(new Dimension(200, 572));
+		this.setName(String.valueOf(WINDOW_CONTROL_FRAME));
 		setResizable(false);
 
 		if(controlPanelFrame != null) {
@@ -60,6 +61,8 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		GUIReferences.listener = actionListener;
 		GUIReferences.windowListener = localWindowListener;
 
+		this.addWindowListener(localWindowListener);
+		
 		//The panel used for the content of the control panel is created and added
 		add(GUIReferences.controlPanelPane,BorderLayout.NORTH);
 
@@ -103,13 +106,11 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	
 	public synchronized void open() {
 		setVisible(true);
-		System.out.println("Suspending original thread...");
+		System.out.println("Suspending original thread... ");
 		while(run) {
 			try {
 				this.wait();
-			} catch (InterruptedException e) {
-
-			}
+			} catch (InterruptedException e) {}
 			System.runFinalization();
 			System.gc();
 		}
@@ -139,7 +140,6 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	}
 
 	public void stateChanged(ChangeEvent arg0) {
-		//TODO
 		constructTabSelected = !constructTabSelected;
 		if(constructTabSelected) {
 			//construct tab selected

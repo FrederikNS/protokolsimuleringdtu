@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 import notification.Note;
 import notification.NotificationListener;
 
-public class Console extends JFrame implements NotificationListener{
+public class Console extends JFrame implements NotificationListener, GUIConstants{
 
 	/**
 	 * 
@@ -32,6 +32,7 @@ public class Console extends JFrame implements NotificationListener{
 	
 	public Console init() {
 //		The console is created
+		this.setName(String.valueOf(WINDOW_CONSOLE));
 		setTitle("Console");
 		setLocation(0,610);
 		setMinimumSize(new Dimension(800,150));
