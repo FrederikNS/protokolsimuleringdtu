@@ -12,6 +12,10 @@ import javax.swing.JToggleButton;
  *
  */
 public class CPModes implements GUIConstants {
+	/**
+	 * Contructor of the CPModes
+	 * @param actionListener The ActionListener for all the buttons
+	 */
 	public CPModes(ActionListener actionListener){
 		JPanel modesPanel = new JPanel();
 		GridLayout modesPanelLayout = new GridLayout(0,2);

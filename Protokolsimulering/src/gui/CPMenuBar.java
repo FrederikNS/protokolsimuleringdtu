@@ -11,6 +11,11 @@ import javax.swing.JMenuItem;
  *
  */
 public class CPMenuBar implements GUIConstants {
+	/**
+	 * Constructor of the CPMenuBar
+	 * @param frame The ControlPanelFrame to which the menu should be attached.
+	 * @param actionListener The ActionListener for all the menu items.
+	 */
 	public CPMenuBar(ControlPanelFrame frame, ActionListener actionListener){
 		
 		JMenuBar menuBar = new JMenuBar();

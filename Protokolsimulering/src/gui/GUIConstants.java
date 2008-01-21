@@ -18,14 +18,9 @@ public interface GUIConstants {
 	public final static int BUTTON_CLEAR = 104;
 	public final static int BUTTON_ENABLE = 105;
 	public final static int BUTTON_REMOVE = 106;
-	public final static int BUTTON_TO_START = 110;
-	public final static int BUTTON_REWIND = 111;
-	public final static int BUTTON_STEP_BACKWARD = 112;
-	public final static int BUTTON_PLAY_BACKWARDS = 113;
 	public final static int BUTTON_STOP = 114;
 	public final static int BUTTON_PLAY = 115;
 	public final static int BUTTON_NEXT_SENSOR = 116;
-	public final static int BUTTON_STEP_FORWARD = 117;
 	public final static int BUTTON_FAST_FORWARD = 118;
 	public final static int BUTTON_NEW_CANCEL = 119;
 	public final static int BUTTON_NEW_OK = 120;
@@ -58,8 +53,6 @@ public interface GUIConstants {
 
 	public final static int TIMER_EVENT = 401;
 
-	public final static int PLAYBACK_REWIND = -2;
-	public final static int PLAYBACK_PLAY_BACKWARDS = -1;
 	public final static int PLAYBACK_PAUSE = 0;
 	public final static int PLAYBACK_PLAY = 1;
 	public final static int PLAYBACK_FAST_FORWARD = 2;

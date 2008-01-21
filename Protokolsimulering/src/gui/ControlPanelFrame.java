@@ -34,13 +34,12 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	private JTabbedPane modeTabPanes = new JTabbedPane();
 	private boolean constructTabSelected = true;
 	private JLabel status;
-	private boolean run = true;
 
 	/**
 	 * Generates a new Control panel frame and inits a lot of related 
 	 * GUI elements and variables in the GUIReferences class.
 	 */
-	public ControlPanelFrame() {
+	private ControlPanelFrame() {
 		//ControlPanelFrame gets initialized
 		super("Control Panel");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -48,10 +47,6 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		this.setName(String.valueOf(WINDOW_CONTROL_FRAME));
 		setResizable(false);
 
-		if(controlPanelFrame != null) {
-			throw new RuntimeException();
-		}
-		controlPanelFrame = this;
 
 		GUIReferences.console = new Console().init();
 		GUIReferences.informationFrame = new InformationFrame().init();
@@ -129,27 +124,19 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		
 	}
 	
-	public synchronized void open() {
+	/**
+	 * Opens the frame
+	 */
+	public void open() {
 		setVisible(true);
-		System.out.println("Suspending original thread... ");
-		while(run) {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {}
-			System.runFinalization();
-			System.gc();
-		}
 	}
 	
-	public synchronized void garbageCollection() {
-		this.notifyAll();
-	}
-	
-	public synchronized void quit() {
+	/**
+	 * Generic method called when the program should exit.
+	 */
+	public void quit() {
 		this.setVisible(false);
-		System.out.println("Reactiving original thread...");
-		run = false;
-		garbageCollection();
+		System.exit(0);
 	}
 
 	/*public void setJLabelStatus(int x, int y, int i, int j) {
@@ -164,7 +151,14 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		
 	}
 
+	/**
+	 * Static get method for fetching the frame.
+	 * @return Return the frame.
+	 */
 	public static ControlPanelFrame getFrame(){
+		if(controlPanelFrame == null) {
+			controlPanelFrame = new ControlPanelFrame();
+		}
 		return controlPanelFrame;
 	}
 
