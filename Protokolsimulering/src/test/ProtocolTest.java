@@ -13,6 +13,7 @@ public class ProtocolTest extends TestCase {
 	private SensorImplementation sensor;
 	private SensorImplementation sensor2;
 	
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		sensor2 = Sensor.newInstance().getReal();
@@ -39,15 +40,15 @@ public class ProtocolTest extends TestCase {
 		fail("Not yet implemented");
 	}
 
-	public void testGetStatus() {
+	public void testGetCurrentTick() {
 		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
 		protocol.transmit(Transmission.generateCorruptTransmission());
 		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
 		protocol.transmit(new Transmission(sensor2.id,sensor.id,sensor.id,new NetworkData(0,sensor.id)));
 		protocol.endStep();
 		protocol.step();
-		System.out.println(protocol.getStatus());
-		assertTrue(protocol.getStatus() == 4);
+		System.out.println(protocol.getCurrentTick());
+		assertTrue(protocol.getCurrentTick() == 4);
 	}
 
 	public void testPrepare() {
@@ -63,9 +64,6 @@ public class ProtocolTest extends TestCase {
 		fail("Not yet implemented");
 	}
 
-	public void testGetCurrentTick() {
-		fail("Not yet implemented");
-	}
 
 	public void testGetDelayNextTransmission() {
 		fail("Not yet implemented");
@@ -91,6 +89,7 @@ public class ProtocolTest extends TestCase {
 		fail("Not yet implemented");
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}

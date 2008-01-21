@@ -150,7 +150,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			}
 			GUIReferences.markAsModified();
-			GUIReferences.turnController.goToTurn(0);
+			//FIXME - not implemented
+			//GUIReferences.turnController.goToTurn(0);
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_REWIND:
@@ -252,12 +253,12 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				break;
 			case PLAYBACK_PLAY_BACKWARDS:
 			case PLAYBACK_REWIND:
-				GUIReferences.turnController.playTickBackwards();
+				//FIXME - not implemented
+				//GUIReferences.turnController.playTickBackwards();
 				break;
 			}
 			break;
 		case BUTTON_NEW_OK:
-			//Clear()
 			int width = 0;
 			int height = 0;
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());

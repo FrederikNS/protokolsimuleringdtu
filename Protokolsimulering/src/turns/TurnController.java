@@ -35,22 +35,10 @@ public abstract class TurnController implements Saveable{
 	 */
 	public abstract boolean playPreparePhase();
 	
-	public abstract void playTickBackwards();
-	
 	public abstract Turn getCurrentTurn();
 	
 	public abstract TurnController loadFromXMLElement(Node turnControllerNode) throws XMLParseException;
-	
-	/**
-	 * The TurnController will attempt to go to the given turn. If it jumps forward it may have to 
-	 * calculate all the turns inbetween. If it goes back it must keep a history and may have to 
-	 * reload that turn.
-	 * @param turn The turn number.
-	 * @return true, if it could jump to that turn successfully.
-	 */
-	public abstract boolean goToTurn(int turn);
 
-	
 	/* (non-Javadoc)
 	 * @see xml.Saveable#generateXMLElement(org.w3c.dom.Document)
 	 */
@@ -79,12 +67,6 @@ public abstract class TurnController implements Saveable{
 				run = turnList[currentEntry].getRunnableTurn();
 			}
 			return run;
-		}
-
-		@Override
-		public boolean goToTurn(int turn) {
-			// TODO Auto-generated method stub
-			return false;
 		}
 
 		@Override
@@ -190,14 +172,6 @@ public abstract class TurnController implements Saveable{
 			}
 			return turnList[currentEntry];
 		}
-
-		@Override
-		public void playTickBackwards() {
-			// Do nothing - not going to be implemented
-		}
-
-
-
 		
 	}
 }
