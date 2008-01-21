@@ -2,22 +2,40 @@ package nodes;
 
 
 /**
+ * This class is responsible for checking which sensors can communicate.
  * @author Frederik Nordahl Sabroe
  * @author Morten Soerensen
  */
 public class GlobalAddressBook {
+	/**
+	 * A variable for itself.
+	 */
 	private static GlobalAddressBook globalAdressBook;
+	/**
+	 * A variable for knowing, how many sensors it has accounted for.
+	 */
 	private int sensorsAccountedFor;
 
+	/**
+	 * The constructor of this class.
+	 */
 	private GlobalAddressBook() {
 		sensorsAccountedFor = 0;
 	}
 
+	/**
+	 * This method clears all links between sensors and returns a new blank address book.
+	 * @return a new address book
+	 */
 	public static GlobalAddressBook clearBook() {
 		Sensor.clearAllLinks();
 		return globalAdressBook = new GlobalAddressBook();
 	}
 
+	/**
+	 * This method returns the address book.
+	 * @return the address book
+	 */
 	public static GlobalAddressBook getBook() {
 		if(globalAdressBook == null) {
 			globalAdressBook = new GlobalAddressBook();
@@ -29,6 +47,9 @@ public class GlobalAddressBook {
 		sensorsAccountedFor = Sensor.idToSensor.size();
 	}
 
+	/**
+	 * This method is responsible for detecting which sensors can communicate.
+	 */
 	public void generateDirectConnections(){
 		int totalAmountOfSensors = Sensor.idToSensor.size();
 		if(totalAmountOfSensors>1){

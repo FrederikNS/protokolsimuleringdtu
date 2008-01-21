@@ -123,17 +123,29 @@ public class Note implements NoteConstants {
 		return message;
 	}
 	
+	/**
+	 * This method creates a simple note.
+	 * @param text the text in the note
+	 */
 	public static void sendNote(String text) {
 		new Note(text);
 	}
 	
+	/**
+	 * This method creates a note of a specific type.
+	 * @param text the text in the note
+	 * @param type the type of the note
+	 */
 	public static void sendNote(String text, int type) {
 		new Note(type, text);
 	}
 	
+	/**
+	 * This method creates a note of a specific type.
+	 * @param text the text in the note
+	 * @param type the type of the note
+	 */
 	public static void sendNote(int type, String text) {
 		new Note(type, text);
 	}
-	
-	
 }

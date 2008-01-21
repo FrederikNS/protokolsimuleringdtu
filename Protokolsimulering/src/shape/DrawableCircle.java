@@ -63,8 +63,9 @@ public class DrawableCircle extends Shape {
 		return radius;
 	}
 	
-	/* (non-Javadoc)
-	 * @see graphics.Drawable#draw(java.awt.Graphics)
+	/**
+	 * This method draws a circle.
+	 * @see shape.Drawable#draw(java.awt.Graphics)
 	 */
 	public void draw(Graphics g) {
 		int diameter = radius *2;
@@ -72,14 +73,24 @@ public class DrawableCircle extends Shape {
 				, Scaling.convertToPicX(diameter), Scaling.convertToPicY(diameter));
 	}
 	
+	/**
+	 * This nested class is for drawing circles to mark where sensors are.
+	 * @author Niels Thykier
+	 */
 	public static class SensorCircle extends DrawableCircle{
 		
+		/**
+		 * The constructor of this class.
+		 * @param center the center of the circle
+		 * @param radius the radius of the circle
+		 */
 		public SensorCircle(Location center, int radius) {
 			super(center, radius);
 		}
 		
 		
-		/* (non-Javadoc)
+		/**
+		 * This method overrides the draw-method in DrawableCircle.
 		 * @see shape.DrawableCircle#draw(java.awt.Graphics)
 		 */
 		@Override

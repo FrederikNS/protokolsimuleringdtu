@@ -6,7 +6,13 @@ package math;
  * @author Niels Thykier
  */
 public class Fraction implements Cloneable, Comparable<Object>{
+	/**
+	 * The numerator of a fraction.
+	 */
 	private int numerator;
+	/**
+	 * The denominator of a fraction.
+	 */
 	private int denominator;
 	
 	/**
@@ -163,7 +169,8 @@ public class Fraction implements Cloneable, Comparable<Object>{
 		return reduce();
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * Overrides the equals-method from Object.
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -351,6 +358,10 @@ public class Fraction implements Cloneable, Comparable<Object>{
 		denominator = temp;
 	}		
 	
+	/**
+	 * Overrides the toString-method from Object.
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		if(denominator == 1) {
@@ -359,7 +370,8 @@ public class Fraction implements Cloneable, Comparable<Object>{
 		return "( " + numerator + " / " + denominator + " )";
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * Overrides the clone-method from Object.
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
