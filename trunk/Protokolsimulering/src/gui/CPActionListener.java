@@ -72,7 +72,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				xml.DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
 				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
-				ControlPanelFrame.getFrame().garbageCollection();
 			}
 			break;
 		case MENU_SAVE:
@@ -153,48 +152,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				}
 			}
 			break;
-		case BUTTON_TO_START:
-			if(!GUIReferences.isSensorNetworkAvailable()) {
-				break;
-			}
-			GUIReferences.markAsModified();
-			//FIXME - not implemented
-			//GUIReferences.turnController.goToTurn(0);
-			GUIReferences.stepperGroup.clearSelection();
-			break;
-		case BUTTON_REWIND:
-			if(!GUIReferences.isSensorNetworkAvailable()) {
-				break;
-			}
-			GUIReferences.markAsModified();
-			timer.start();
-			if(timer.isRunning()) {
-				timer.stop();
-			}
-			playSpeed = PLAYBACK_REWIND;
-			timer.setDelay(10);
-			timer.start();
-			break;
-		case BUTTON_STEP_BACKWARD:
-			if(!GUIReferences.isSensorNetworkAvailable()) {
-				break;
-			}
-			GUIReferences.markAsModified();
-			GUIReferences.stepperGroup.clearSelection();
-			//GUIReferences.turnController.playTurnBackwards();
-			break;
-		case BUTTON_PLAY_BACKWARDS:
-			if(!GUIReferences.isSensorNetworkAvailable()) {
-				break;
-			}
-			GUIReferences.markAsModified();
-			if(timer.isRunning()) {
-				timer.stop();
-			}
-			playSpeed = PLAYBACK_PLAY_BACKWARDS;
-			timer.setDelay(500);
-			timer.start();
-			break;
 		case BUTTON_STOP:
 			timer.stop();
 			GUIReferences.stepperGroup.clearSelection();
@@ -219,14 +176,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			TurnController.getInstance().playTick();
 			GUIReferences.sensorNetwork.repaint();
 			timer.stop();
-			GUIReferences.stepperGroup.clearSelection();
-			break;
-		case BUTTON_STEP_FORWARD:
-			if(!GUIReferences.isSensorNetworkAvailable()) {
-				break;
-			}
-			GUIReferences.markAsModified();
-			//GUIReferences.turnController.playTurn();
 			GUIReferences.stepperGroup.clearSelection();
 			break;
 		case BUTTON_FAST_FORWARD:
@@ -307,11 +256,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				TurnController.getInstance().playTick();
 				GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
 				GUIReferences.sensorNetwork.repaint();
-				break;
-			case PLAYBACK_PLAY_BACKWARDS:
-			case PLAYBACK_REWIND:
-				//FIXME - not implemented
-				//GUIReferences.turnController.playTickBackwards();
 				break;
 			}
 			break;

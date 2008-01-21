@@ -1,3 +1,5 @@
+import gui.ControlPanelFrame;
+
 import javax.swing.UIManager;
 
 
@@ -14,9 +16,6 @@ public class Initiator {
 	 */
 	public static void main(String[] args) {
 		UIManager.put("swing.boldMetal", Boolean.FALSE);
-		new gui.ControlPanelFrame().open();
-		System.err.println("Shutdown!");
-		System.err.println("Threat done!");
-		System.exit(0);
+		ControlPanelFrame.getFrame().open();
 	}
 }
