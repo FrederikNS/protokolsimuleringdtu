@@ -1,5 +1,9 @@
 package xml;
 
+import exceptions.XMLParseException;
+import gui.ControlPanelFrame;
+import gui.GUIReferences;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,10 +26,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import turns.TurnController;
-
-import exceptions.XMLParseException;
-import gui.ControlPanelFrame;
-import gui.GUIReferences;
 
 public class DOMxmlParser {
 	private Document doc;
@@ -70,7 +70,6 @@ public class DOMxmlParser {
 				TurnController.getInstance().loadFromXMLElement(turnController.item(0));
 			} else {
 				SensorImplementation.loadAllSensorsFromXML(result);
-				GlobalAddressBook.getBook().generateDirectConnections();
 			}
 			if(x == 0 || y == 0) {
 				throw new XMLParseException("The field size could not be determined.");
@@ -112,6 +111,7 @@ public class DOMxmlParser {
 			panel.setJLabalStatus("Failed!");
 			return;
 		}
+		GlobalAddressBook.getBook().loadedSensors();
 		panel.setJLabalStatus("Load Successful.");
 		GUIReferences.generateNewField(x, y, xmlFile.getName());
 		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
