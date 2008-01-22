@@ -13,6 +13,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import nodes.GlobalAddressBook;
 import nodes.Sensor;
 
 /**
@@ -85,7 +86,7 @@ public class CPModes implements GUIConstants {
 		GUIReferences.radiusSpinner.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
 				Sensor.setTransmissionRadius(Integer.parseInt(GUIReferences.radiusSpinner.getValue().toString()));
-				
+				GlobalAddressBook.clearBook();
 				if(GUIReferences.viewPort != null) {
 					GUIReferences.viewPort.repaint();
 				}
