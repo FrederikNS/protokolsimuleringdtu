@@ -2,17 +2,15 @@ package turns;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
-import notification.Note;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import exceptions.XMLParseException;
-
 import turns.Turn.RunnableTurn;
 import xml.Saveable;
+import exceptions.XMLParseException;
 
 /**
  * TurnController is class to handle Turn advancements conviently.
@@ -110,7 +108,6 @@ public abstract class TurnController implements Saveable{
 		}
 
 		private void endOfTurn() {
-			Note.sendNote("End of Turn: " + currentTurn);
 			currentEntry++;
 			if(currentEntry == turnList.length) {
 				Turn[] temp = new Turn[turnList.length];

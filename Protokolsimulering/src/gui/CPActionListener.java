@@ -72,6 +72,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				xml.DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
 				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
+				GUIReferences.updateStatusBar();
 			}
 			break;
 		case MENU_SAVE:
@@ -95,7 +96,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					GlobalAddressBook.getBook().generateDirectConnections();
 					GUIReferences.saveMenuItem.setEnabled(true);
 					GUIReferences.sensorNetwork.repaint();
-
+					GUIReferences.updateStatusBar();
 				}
 			} catch (NumberFormatException e) {
 				Note.sendNote(Note.ERROR, "Not a number.");
@@ -148,13 +149,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					if(GUIReferences.sensorNetwork != null) {
 						GUIReferences.sensorNetwork.repaint();
 					}
-					
+					GUIReferences.updateStatusBar();
 				}
 			}
 			break;
 		case BUTTON_STOP:
 			timer.stop();
 			GUIReferences.stepperGroup.clearSelection();
+			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_PLAY:
 			if(!GUIReferences.isSensorNetworkAvailable()) {
@@ -172,11 +174,12 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
+			GUIReferences.stepperGroup.clearSelection();
 			GUIReferences.markAsModified();
 			TurnController.getInstance().playTick();
 			GUIReferences.sensorNetwork.repaint();
 			timer.stop();
-			GUIReferences.stepperGroup.clearSelection();
+			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_FAST_FORWARD:
 			if(!GUIReferences.isSensorNetworkAvailable()) {
@@ -249,13 +252,15 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				TurnController.getInstance().playTick();
 				if(ran.nextInt(6) == 0) {
 					GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
-					GUIReferences.sensorNetwork.repaint();	
+					GUIReferences.sensorNetwork.repaint();
+					GUIReferences.updateStatusBar();
 				}
 				break;
 			case PLAYBACK_PLAY:
 				TurnController.getInstance().playTick();
 				GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
 				GUIReferences.sensorNetwork.repaint();
+				GUIReferences.updateStatusBar();
 				break;
 			}
 			break;
@@ -270,6 +275,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			GUIReferences.saveMenuItem.setEnabled(false);
 
 			GUIReferences.generateNewField(width, height, "Untitled");
+			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_NEW_CANCEL:
 			CPNew.disposeWindow();
