@@ -16,7 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import nodes.GlobalAddressBook;
-import nodes.Sensor.SensorImplementation;
+import nodes.Sensor;
 import notification.Note;
 
 import org.w3c.dom.Document;
@@ -63,7 +63,7 @@ public class DOMxmlParser {
 			//TODO generate better notes for errors.
 			result = new DOMxmlParser(xmlFile).doc;
 			
-			SensorImplementation.loadGeneralDataFromXML(result);
+			Sensor.loadGeneralDataFromXML(result);
 			NodeList field = result.getElementsByTagName("field").item(0).getChildNodes();
 			Node child;
 			for(int i = 0; i < field.getLength() ; i++) {
@@ -78,7 +78,7 @@ public class DOMxmlParser {
 			if(turnController.getLength() > 0) {
 				TurnController.getInstance().loadFromXMLElement(turnController.item(0));
 			} else {
-				SensorImplementation.loadAllSensorsFromXML(result);
+				Sensor.loadAllSensorsFromXML(result);
 			}
 			if(x == 0 || y == 0) {
 				throw new XMLParseException("The field size could not be determined.");

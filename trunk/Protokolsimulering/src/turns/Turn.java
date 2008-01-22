@@ -7,7 +7,6 @@ import java.util.TreeSet;
 
 import nodes.Sensor;
 import nodes.Sensor.SensorComparator;
-import nodes.Sensor.SensorImplementation;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,24 +25,24 @@ import xml.Saveable;
  * @author Niels Thykier
  */
 public class Turn implements Saveable, Drawable{
-	final TreeSet<SensorImplementation> sensors;
+	final TreeSet<Sensor> sensors;
 	public final int turn;
 	
 	protected Turn(Collection<? extends Sensor> sensors, int sortBy, int turn, boolean roll) {
 		if(roll) {
 			Sensor.rollTurnOrder();
 		}
-		this.sensors = new TreeSet<SensorImplementation>(new SensorComparator(sortBy));
+		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
 		for(Sensor sen : sensors) {
-			this.sensors.add(sen.getReal());
+			this.sensors.add(sen);
 		}
 		this.turn = turn;
 	}
 
 	Turn(Collection<? extends Sensor> sensor, int sortBy, int turn) {
-		this.sensors = new TreeSet<SensorImplementation>(new SensorComparator(sortBy));
+		this.sensors = new TreeSet<Sensor>(new SensorComparator(sortBy));
 		for(Sensor sen : sensor) {
-			this.sensors.add((SensorImplementation)sen.getReal().clone());
+			this.sensors.add((Sensor)sen.clone());
 		}		
 		this.turn = turn;
 	}
@@ -78,7 +77,7 @@ public class Turn implements Saveable, Drawable{
 			current = list.item(i);
 			switch(current.getNodeName().charAt(0)) {
 			case 's':
-				sensorTree.add(SensorImplementation.loadFromXMLElement(current));
+				sensorTree.add(Sensor.loadFromXMLElement(current));
 				break;
 			case 'c':
 				if(current.getNodeName().equals("currentSensor")) {
@@ -110,7 +109,7 @@ public class Turn implements Saveable, Drawable{
 			if(currentSensorID != null) {
 				runner.isRunning = true;
 				runner.iter = runner.sensors.descendingIterator();
-				SensorImplementation sen;
+				Sensor sen;
 				while(runner.iter.hasNext()) {
 					sen = runner.iter.next();
 					if(sen.id == currentSensorID) {
@@ -178,8 +177,8 @@ public class Turn implements Saveable, Drawable{
 		public final static short PHASE_FINISHED = 4;
 		private short phase = PHASE_NOT_STARTED;
 		boolean isRunning = false;
-		protected SensorImplementation current;
-		private Iterator<SensorImplementation> iter;
+		protected Sensor current;
+		private Iterator<Sensor> iter;
 		
 		private RunnableTurn(Collection<? extends Sensor> sensors, int turn) {
 			super(sensors, SensorComparator.SORT_BY_TURNS, turn, true);
