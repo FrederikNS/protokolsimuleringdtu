@@ -100,6 +100,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		consoleError.addActionListener(actionListener);
 		consoleError.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_ERROR));
 		consoleError.setSelected(true);
+		consoleError.setEnabled(false);
 		JCheckBox consoleDebug = new JCheckBox("Debug");
 		consoleDebug.addActionListener(actionListener);
 		consoleDebug.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_DEBUG));

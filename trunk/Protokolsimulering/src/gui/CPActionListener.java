@@ -29,7 +29,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	private Timer timer;
 	private Random ran = new Random();
 	private int playSpeed;
-	
+
 	/**
 	 * Default constructor for the CPActionListener.
 	 */
@@ -47,7 +47,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	public void stopTimer() {
 		timer.stop();
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
@@ -87,19 +87,21 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_GENERATE:
 			int number;
 			String generateDialog = JOptionPane.showInputDialog(GUIReferences.constructPanel, "Please enter a number of sensors to generate", "Generate...", JOptionPane.QUESTION_MESSAGE);
-			try{
-				number = Integer.parseInt(generateDialog);
-				if(number>0){
-					for(int i=0;i<number;i++) {
-						Sensor.newInstance();
+			if(generateDialog != null){
+				try{
+					number = Integer.parseInt(generateDialog);
+					if(number>0){
+						for(int i=0;i<number;i++) {
+							Sensor.newInstance();
+						}
+						GlobalAddressBook.getBook().generateDirectConnections();
+						GUIReferences.saveMenuItem.setEnabled(true);
+						GUIReferences.sensorNetwork.repaint();
+						GUIReferences.updateStatusBar();
 					}
-					GlobalAddressBook.getBook().generateDirectConnections();
-					GUIReferences.saveMenuItem.setEnabled(true);
-					GUIReferences.sensorNetwork.repaint();
-					GUIReferences.updateStatusBar();
+				} catch (NumberFormatException e) {
+					Note.sendNote(Note.ERROR, "Not a number.");
 				}
-			} catch (NumberFormatException e) {
-				Note.sendNote(Note.ERROR, "Not a number.");
 			}
 			break;
 		case BUTTON_ENABLE:
@@ -139,6 +141,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
 				System.out.println(returnValue);
 				if(returnValue == JOptionPane.OK_OPTION) {
+					if(GUIReferences.selectedSensor!=null){
+						GUIReferences.selectedSensor.setSelected(false);
+						GUIReferences.selectedSensor = null;
+					}
 					Sensor.disposeAllSensors();
 					GUIReferences.saveMenuItem.setEnabled(true);
 					if(GUIReferences.currentFile != null) {
@@ -241,6 +247,11 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_COLOR_ISOLATED:
 			GUIReferences.isolatedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.isolatedColor);
 			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			break;
+		case BUTTON_GENERATE_ADDRESS_BOOK:
+			GlobalAddressBook.clearBook();
+			GlobalAddressBook.getBook().generateDirectConnections();
+			GUIReferences.sensorNetwork.repaint();
 			break;
 		case TIMER_EVENT:
 			switch(playSpeed) {
@@ -355,7 +366,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			GUIReferences.updateViewSettings();
 			break;
-			
+
 		case CHECKBOX_CONSOLE_INFORMATION:
 			GUIReferences.console.toggleShowFlag(NoteConstants.INFORMATION);
 			break;

@@ -38,6 +38,7 @@ public interface GUIConstants {
 	public final static int BUTTON_COLOR_TERMINAL = 131;
 	public final static int BUTTON_COLOR_CURRENT_TURN = 132;
 	public final static int BUTTON_COLOR_ISOLATED = 133;
+	public final static int BUTTON_GENERATE_ADDRESS_BOOK = 135;
 
 	public final static int CHECKBOX_RADII = 201;
 	public final static int CHECKBOX_CONNECTIONS = 202;
