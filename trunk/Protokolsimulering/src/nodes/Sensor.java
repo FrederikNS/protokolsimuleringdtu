@@ -872,7 +872,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 
 
 
-	//*********************** XML **********************************//
+	//*********************** STATIC XML **********************************//
 	/**
 	 * Load all sensors from the XML file
 	 * @param doc The DOM Document reference of the XML file
@@ -1048,6 +1048,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 			sen = new Sensor(loc, sensorID);
 			if(isTerminal) {
 				sen.status |= STATUS_IS_TERMINAL;
+				terminals.add(sen);
 				if(hasBroadcasted) {
 					sen.status |= STATUS_HAS_BROADCASTED;
 				}
