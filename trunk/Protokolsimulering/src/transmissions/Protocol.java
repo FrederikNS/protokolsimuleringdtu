@@ -365,22 +365,43 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		return delayNextTransmission;
 	}
 
+	/**
+	 * The transmission gotten this step. (May be null, if none was received).
+	 * This transmission may be corrupted before round end.
+	 * @return The incomming transmission.
+	 */
 	public Transmission getIncomming() {
 		return incomming;
 	}
 
+	/**
+	 * All the transmissions received that has not yet been evaluated.
+	 * @return The ingoing transmissions
+	 */
 	public TreeSet<Transmission> getIngoing() {
 		return ingoing;
 	}
 
+	/**
+	 * Get the list of outgoing transmissions
+	 * @return The outgoing transmissions
+	 */
 	public TreeSet<Transmission> getOutgoing() {
 		return outgoing;
 	}
 
+	/**
+	 * Get the list of sent transmissions
+	 * @return The sent transmissions (that needs 
+	 */
 	public ArrayList<Transmission> getSent() {
 		return sent;
 	}
 
+	/**
+	 * Fetch the id of the sensor it is waiting for, if any. 
+	 * @return The id of the sensor it is waiting for or Sensor.INVALID_SENSOR_ID if it is not waiting.
+	 */
 	public int getWaitingForSensor() {
 		return waitingForSensor;
 	}

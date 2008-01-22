@@ -398,14 +398,13 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	
 	//************************************** TRANSMIT ****************************//
 	
-	@Override
 	public void receive(Transmission msg) {
 		if(isEnabled()) {
 			protocol.receive(msg);
 		}
 	}
 
-	@Override
+	
 	public void transmit(Transmission msg) {
 		if(isEnabled()) {
 			if(msg.getMessageType() != Data.TYPE_LISTENING) {
@@ -433,7 +432,6 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 
 	//************************************  STEP  *******************************// 
 	
-	@Override
 	public void prepare() {
 		if(isEnabled()) {
 			if(STATUS_IS_TERMINAL == (status & (STATUS_HAS_BROADCASTED | STATUS_IS_TERMINAL))) {
@@ -446,14 +444,12 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 		}
 	}
 
-	@Override
 	public void step() {
 		if(isEnabled()) {
 			protocol.step();
 		}
 	}
 
-	@Override
 	public void endStep() {
 		if(isEnabled()) {
 			protocol.endStep();
@@ -487,11 +483,11 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
 	 * @return An array of Sensors that this sensor can reach.
 	 */
-	public Sensor[] getLinks() {
+	public Integer[] getLinks() {
 		if(links.size() == 0) {
 			return null;
 		}
-		return links.toArray(new Sensor[links.size()]);
+		return links.toArray(new Integer[links.size()]);
 	}
 	
 
