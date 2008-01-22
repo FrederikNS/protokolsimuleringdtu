@@ -19,29 +19,79 @@ import xml.Saveable;
 import nodes.Sensor;
 import notification.Note;
 
+/**
+ * The protocol class handles transmitting and receiving transmissions.
+ * @author Niels Thykier
+ */
 public class Protocol implements Transmitter, DataConstants, Prepareable, EndSteppable, Saveable {
 
 	
-	protected TreeSet<Transmission> ingoing = new TreeSet<Transmission>();
-	protected TreeSet<Transmission> outgoing = new TreeSet<Transmission>();
-	protected ArrayList<Transmission> sent = new ArrayList<Transmission>();
-	protected Transmission incomming;
 	
+	/**
+	 * List of transmissions that should be sent on.
+	 */
+	protected TreeSet<Transmission> outgoing = new TreeSet<Transmission>();
+	/**
+	 * List of transmissions have been sent and a confirmation message is expected for.
+	 */
+	protected ArrayList<Transmission> sent = new ArrayList<Transmission>();
+	/**
+	 * The last received but yet evaluated transmission.
+	 */
+	protected Transmission received = null;
+	/**
+	 * The transmission being received this step.
+	 */
+	protected Transmission incomming = null;
+	
+	/**
+	 * Bit-flag that determines whether the protocol may transmit this step
+	 */
 	public static final int OPTION_SEND_DISABLED 	 	= 0x00000001;
+	/**
+	 * Bit-flag that determines whether the protocol may receive this step
+	 */
 	public static final int OPTION_RECEIVE_DISABLED 	= 0x00000002;
+	/**
+	 * Bit-flag that determines whether the protocol expects to receive a transmission this step
+	 */
 	public static final int ACTION_RECEIVING = 0x00000004;
+	/**
+	 * Bit-flag that determines whether the protocol expects to transmit a transmission this step
+	 */
 	public static final int ACTION_SENDING	= 0x00000008;
-	public static final int ACTION_WAIT		= 0x00000010;
+	/**
+	 * Bit-flag that determines whether the protocol has absolutely nothing to do this step.
+	 */
 	public static final int ACTION_NOTHING_TO_DO		= 0x00000020;
 	
+	/**
+	 * Bit-mask of the current turn's options and actions.
+	 */
 	protected int currentTick = 0;
+	/**
+	 * The id of the sensor it is waiting for, or Sensor.INVALID_SENSOR_ID if it is not waiting for a sensor.
+	 */
 	protected int waitingForSensor = Sensor.INVALID_SENSOR_ID;
+	/**
+	 * How many steps it will way before transmitting the next transmission.
+	 */
 	protected int delayNextTransmission = 0;
+	/**
+	 * Random generator
+	 */
 	protected static Random ran = new Random();
 	
 	
+	/**
+	 * The sensor the protocol is attached too.
+	 */
 	private Sensor main;
 	
+	/**
+	 * Constructor for the Protocol.
+	 * @param sen The sensor the procotol is attached too.
+	 */
 	public Protocol(Sensor sen) {
 		main = sen;
 	}
@@ -142,6 +192,10 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		main.transmit(msg);
 	}
 
+	/**
+	 * Adds a transmission to the list of outgoing transmissions.
+	 * @param trans The new transmission.
+	 */
 	public void addTransmissionToSend(Transmission trans){
 		outgoing.add(trans);
 	}
@@ -216,7 +270,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 					}
 					break;
 				default:
-					ingoing.add(incomming);
+					received = incomming;
 					break;
 				}
 			} else {
@@ -227,16 +281,24 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		currentTick = 0;
 	}
 	
+	/**
+	 * Loads a protocol instance from an XML node.
+	 * @param protocolElement The XML procol Node.
+	 * @param main The sensor it is attached too. If null, this will cause NullPointerExceptions later in the execution.
+	 * @return The protocol.
+	 * @throws XMLParseException Thrown if the XML Node was malformatted.
+	 */
 	public static Protocol loadFromXMLElement(Node protocolElement, Sensor main) throws XMLParseException {
 		NodeList list = protocolElement.getChildNodes();
 		int length = list.getLength();
 		Node current;
 		Protocol toReturn;
+		Transmission received = null;
 		Transmission incomming = null;
 		Integer currentTick = null;
 		Integer waitingForSensor = null;
 		Integer delay = null;
-		TreeSet<Transmission> ingoing = null, outgoing = null;
+		TreeSet<Transmission> outgoing = null;
 		ArrayList<Transmission> sent = null;
 		for(int i = 0; i < length ; i++) {
 			current = list.item(i);
@@ -272,16 +334,15 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 							break;
 						}
 					}
-				} else if(current.getNodeName().equals("ingoing")) {
-					ingoing = new TreeSet<Transmission>();
-					NodeList ingoingList = current.getChildNodes();
-					int ingoingSize = ingoingList.getLength();
-					Node currentIngoingNode;
-					for(int j = 0 ; j < ingoingSize ; j++) {
-						currentIngoingNode = ingoingList.item(j);
-						switch(currentIngoingNode.getNodeName().charAt(0)) {
+				} else if(current.getNodeName().equals("received")) {
+					NodeList receivedList = current.getChildNodes();
+					int receivedSize = receivedList.getLength();
+					Node currentReceivedNode;
+					for(int j = 0 ; j < receivedSize ; j++) {
+						currentReceivedNode = receivedList.item(j);
+						switch(currentReceivedNode.getNodeName().charAt(0)) {
 						case 't':
-							ingoing.add(Transmission.loadFromXMLElement(currentIngoingNode));
+							received = Transmission.loadFromXMLElement(currentReceivedNode);
 							break;
 						}
 					}
@@ -339,8 +400,8 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		if(incomming != null) {
 			toReturn.incomming = incomming;
 		}
-		if(ingoing != null) {
-			toReturn.ingoing = ingoing;
+		if(received != null) {
+			toReturn.received = received;
 		}
 		if(outgoing != null) {
 			toReturn.outgoing = outgoing;
@@ -383,11 +444,11 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	}
 
 	/**
-	 * All the transmissions received that has not yet been evaluated.
-	 * @return The ingoing transmissions
+	 * The incomming transmission becomes the received transmission in the end step if it was not corrupted. (May be null, if none was received).
+	 * @return The received transmission
 	 */
-	public TreeSet<Transmission> getIngoing() {
-		return ingoing;
+	public Transmission getReceived() {
+		return received;
 	}
 
 	/**
@@ -434,12 +495,10 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			incommingElement.appendChild(incomming.generateXMLElement(doc));
 			protocolElement.appendChild(incommingElement);
 		}
-		if(ingoing.size() > 0) {
-			Element ingoingElement = doc.createElement("ingoing");
-			for(Transmission list : ingoing) {
-				ingoingElement.appendChild(list.generateXMLElement(doc));			
-			}
-			protocolElement.appendChild(ingoingElement);
+		if(received != null) {
+			Element receivedElement = doc.createElement("received");
+			receivedElement.appendChild(received.generateXMLElement(doc));			
+			protocolElement.appendChild(receivedElement);
 		}
 		if(outgoing.size() > 0) {
 			Element outgoingElement = doc.createElement("outgoing");

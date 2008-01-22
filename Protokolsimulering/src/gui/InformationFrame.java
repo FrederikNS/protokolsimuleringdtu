@@ -72,9 +72,8 @@ public class InformationFrame extends JFrame  {
 	 */
 	public void update(Sensor selected) {
 		if(selected != null) {
-			String sentMessage = ("");
-			String inboxMessages = ("");
-			String outboxMessages = ("");
+			String sentMessage = "";
+			String outboxMessages = "";
 			Integer[] links = selected.getLinks();
 			int nearestTerm = selected.getNearestTerminal();
 			//int status = selected.getStatus();
@@ -110,10 +109,8 @@ public class InformationFrame extends JFrame  {
 				sentMessage += transmission.toString();
 			}
 			sensorSentMessage.setText("Sent Message: "+sentMessage);
-			for(Transmission transmission:protocol.getIngoing()){
-				inboxMessages += transmission.toString();
-			}
-			sensorInbox.setText("Ingoing: " + inboxMessages);
+
+			sensorInbox.setText("Ingoing: " + protocol.getReceived());
 			
 			for(Transmission transmission:protocol.getOutgoing()){
 				outboxMessages += transmission.toString();
