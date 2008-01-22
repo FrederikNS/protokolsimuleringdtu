@@ -47,6 +47,14 @@ public abstract class TurnController implements Saveable{
 	public abstract Turn getCurrentTurn();
 	
 	/**
+	 * Clears all turns from the controller as if they had never been there.
+	 * @return The TurnController (for convience)
+	 */
+	public static TurnController clearAll() {
+		return (instance = new TurnControllerImplementation());
+	}
+	
+	/**
 	 * Loads a turn controller from a XML node
 	 * @param turnControllerNode The node.
 	 * @return The newly loaded TurnController.
