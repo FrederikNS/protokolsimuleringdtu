@@ -29,6 +29,7 @@ import turns.TurnController;
 
 /**
  * Semi-static file for loading data from a XML file.
+ * Created (in part) together with team 11.
  * @author Niels Thykier
  */
 public class DOMxmlParser {
