@@ -297,7 +297,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 						currentOutgoingNode = outgoingList.item(j);
 						switch(currentOutgoingNode.getNodeName().charAt(0)) {
 						case 't':
-							ingoing.add(Transmission.loadFromXMLElement(currentOutgoingNode));
+							outgoing.add(Transmission.loadFromXMLElement(currentOutgoingNode));
 							break;
 						}
 					}
@@ -312,7 +312,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 						currentSentNode = sentList.item(j);
 						switch(currentSentNode.getNodeName().charAt(0)) {
 						case 't':
-							ingoing.add(Transmission.loadFromXMLElement(currentSentNode));
+							sent.add(Transmission.loadFromXMLElement(currentSentNode));
 							break;
 						}
 					}
@@ -357,10 +357,18 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	
 	
 
+	/**
+	 * Returns the bit-flag for options for the current turn.
+	 * @return A bit-flag for options and actions for the current turn.
+	 */
 	public int getCurrentTick() {
 		return currentTick;
 	}
 
+	/**
+	 * How long it will wait before transmitting its next transmissions.
+	 * @return The delay measured in turns.
+	 */
 	public int getDelayNextTransmission() {
 		return delayNextTransmission;
 	}
