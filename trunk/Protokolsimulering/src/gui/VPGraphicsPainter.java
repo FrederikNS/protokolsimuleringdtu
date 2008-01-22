@@ -139,7 +139,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	}
 
 	public void mouseExited(MouseEvent e) {
-		GUIReferences.sensorNetwork.updateTitleCoordinates();
+		GUIReferences.viewPort.updateTitleCoordinates();
 	}
 
 
@@ -154,7 +154,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	public void mouseDragged(MouseEvent arg0) {}
 
 	public void mouseMoved(MouseEvent e) {
-		GUIReferences.sensorNetwork.updateTitleCoordinates(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()));
+		GUIReferences.viewPort.updateTitleCoordinates(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()));
 //		cpf.setJLabelStatus(Scaling.convertToRealX(e.getX()), Scaling.convertToRealY(e.getY()), nodes.Sensor.idToSensor.size(),(GUIReferences.turnController.getCurrentTurn()!=null?GUIReferences.turnController.getCurrentTurn().turn:0));
 	}
 }

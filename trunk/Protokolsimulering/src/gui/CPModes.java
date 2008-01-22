@@ -86,8 +86,8 @@ public class CPModes implements GUIConstants {
 			public void stateChanged(ChangeEvent e) {
 				Sensor.setTransmissionRadius(Integer.parseInt(GUIReferences.radiusSpinner.getValue().toString()));
 				
-				if(GUIReferences.sensorNetwork != null) {
-					GUIReferences.sensorNetwork.repaint();
+				if(GUIReferences.viewPort != null) {
+					GUIReferences.viewPort.repaint();
 				}
 			}
 		});
