@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -42,6 +43,10 @@ public class GUIReferences implements GUIConstants{
 	 * Reference to the spinner for changing radius
 	 */
 	static JSpinner radiusSpinner;
+	/**
+	 * References to the button to go to the next sensor (simulation)
+	 */
+	static JButton nextSensor;
 	/**
 	 * Reference to the view of the sensor network currently opened
 	 */

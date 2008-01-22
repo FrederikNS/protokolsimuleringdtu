@@ -165,10 +165,12 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 				while(buttons.hasMoreElements()) {
 					buttons.nextElement().setEnabled(true);
 				}
+				GUIReferences.nextSensor.setEnabled(true);
 			} else {
 				while(buttons.hasMoreElements()) {
 					buttons.nextElement().setEnabled(false);
 				}
+				GUIReferences.nextSensor.setEnabled(false);
 			}
 		}
 	}
