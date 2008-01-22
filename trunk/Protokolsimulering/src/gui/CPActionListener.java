@@ -43,7 +43,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	 * For remembering where the configframe was
 	 */
 	Point where;
-	
+
 	/**
 	 * Default constructor for the CPActionListener.
 	 */
@@ -73,7 +73,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case MENU_OPEN:
 			//TODO - check if session is already running?
 			if(GUIReferences.saveMenuItem.isEnabled()) {
-				
+
 			}
 			File openFile;
 			JFileChooser openChooser = new JFileChooser();
@@ -360,8 +360,24 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_NEW_OK:
 			int width = 0;
 			int height = 0;
+			
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
 			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
+			
+			GUIReferences.reenableConstruct();
+			if(Sensor.idToSensor.size() > 0) {
+				if(GUIReferences.selectedSensor!=null){
+					GUIReferences.selectedSensor.setSelected(false);
+					GUIReferences.selectedSensor = null;
+				}
+				Sensor.disposeAllSensors();
+				
+				if(GUIReferences.viewPort != null) {
+					GUIReferences.viewPort.repaint();
+				}
+				TurnController.clearAll();
+				GUIReferences.updateStatusBar();
+			}
 			CPNew.disposeWindow();
 
 			ViewPort.disposeViewPort();
@@ -369,6 +385,9 @@ public class CPActionListener implements ActionListener,GUIConstants{
 
 			GUIReferences.generateNewField(width, height, "Untitled");
 			GUIReferences.updateStatusBar();
+
+			
+
 			break;
 		case BUTTON_NEW_CANCEL:
 			CPNew.disposeWindow();
