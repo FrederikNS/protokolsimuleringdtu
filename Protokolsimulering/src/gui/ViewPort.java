@@ -40,10 +40,10 @@ public class ViewPort extends JFrame implements GUIConstants{
 	
 	public static void disposeViewPort(){
 		Sensor.disposeAllSensors();
-		if(GUIReferences.sensorNetwork!=null){
+		if(GUIReferences.viewPort!=null){
 			GUIReferences.listener.stopTimer();
-			GUIReferences.sensorNetwork.dispose();
-			GUIReferences.sensorNetwork = null;
+			GUIReferences.viewPort.dispose();
+			GUIReferences.viewPort = null;
 		}
 	}
 	

@@ -20,8 +20,8 @@ public class WindowListeners implements WindowListener, GUIConstants {
 				if(GUIReferences.console != null) {
 					GUIReferences.console.toFront();
 				}
-				if(GUIReferences.sensorNetwork != null) {
-					GUIReferences.sensorNetwork.toFront();
+				if(GUIReferences.viewPort != null) {
+					GUIReferences.viewPort.toFront();
 				}
 			}
 			break;
@@ -50,7 +50,7 @@ public class WindowListeners implements WindowListener, GUIConstants {
 					GUIReferences.saveMenuItem.setEnabled(false);
 					break;
 				case JOptionPane.CANCEL_OPTION:
-					GUIReferences.sensorNetwork.setVisible(true);
+					GUIReferences.viewPort.setVisible(true);
 					cancel = true;
 					break;
 				}

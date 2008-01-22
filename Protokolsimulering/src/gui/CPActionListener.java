@@ -96,7 +96,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						}
 						GlobalAddressBook.getBook().generateDirectConnections();
 						GUIReferences.saveMenuItem.setEnabled(true);
-						GUIReferences.sensorNetwork.repaint();
+						GUIReferences.viewPort.repaint();
 						GUIReferences.updateStatusBar();
 					}
 				} catch (NumberFormatException e) {
@@ -148,12 +148,12 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					Sensor.disposeAllSensors();
 					GUIReferences.saveMenuItem.setEnabled(true);
 					if(GUIReferences.currentFile != null) {
-						GUIReferences.sensorNetwork.setTitle("*"+GUIReferences.currentFile.getName());
+						GUIReferences.viewPort.setTitle("*"+GUIReferences.currentFile.getName());
 					} else {
-						GUIReferences.sensorNetwork.setTitle("*Untitled");
+						GUIReferences.viewPort.setTitle("*Untitled");
 					}
-					if(GUIReferences.sensorNetwork != null) {
-						GUIReferences.sensorNetwork.repaint();
+					if(GUIReferences.viewPort != null) {
+						GUIReferences.viewPort.repaint();
 					}
 					GUIReferences.updateStatusBar();
 				}
@@ -183,7 +183,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			GUIReferences.stepperGroup.clearSelection();
 			GUIReferences.markAsModified();
 			TurnController.getInstance().playTick();
-			GUIReferences.sensorNetwork.repaint();
+			GUIReferences.viewPort.repaint();
 			timer.stop();
 			GUIReferences.updateStatusBar();
 			break;
@@ -201,57 +201,57 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case BUTTON_COLOR_CANVAS:
 			GUIReferences.canvasColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.canvasColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SENSOR:
 			GUIReferences.sensorColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sensorColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SELECTED:
 			GUIReferences.selectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.selectedColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_DEAD:
 			GUIReferences.deadColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.deadColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SENDING:
 			GUIReferences.sendingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sendingColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_RECEIVING:
 			GUIReferences.receivingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.receivingColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_TRANSMISSION_RADIUS:
 			GUIReferences.transmissionRadiusColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.transmissionRadiusColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_CONNECTION:
 			GUIReferences.connectionColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.connectionColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_SECONDARY_SELECTED:
 			GUIReferences.secondarySelectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.secondarySelectedColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_TERMINAL:
 			GUIReferences.terminalColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.terminalColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_CURRENT_TURN:
 			GUIReferences.currentTurnColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.currentTurnColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_COLOR_ISOLATED:
 			GUIReferences.isolatedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.isolatedColor);
-			GUIReferences.sensorNetwork.getGraphicsPainter().repaint();
+			GUIReferences.viewPort.getGraphicsPainter().repaint();
 			break;
 		case BUTTON_GENERATE_ADDRESS_BOOK:
 			GlobalAddressBook.clearBook();
 			GlobalAddressBook.getBook().generateDirectConnections();
-			GUIReferences.sensorNetwork.repaint();
+			GUIReferences.viewPort.repaint();
 			break;
 		case TIMER_EVENT:
 			switch(playSpeed) {
@@ -263,14 +263,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				TurnController.getInstance().playTick();
 				if(ran.nextInt(6) == 0) {
 					GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
-					GUIReferences.sensorNetwork.repaint();
+					GUIReferences.viewPort.repaint();
 					GUIReferences.updateStatusBar();
 				}
 				break;
 			case PLAYBACK_PLAY:
 				TurnController.getInstance().playTick();
 				GUIReferences.informationFrame.update(GUIReferences.selectedSensor);
-				GUIReferences.sensorNetwork.repaint();
+				GUIReferences.viewPort.repaint();
 				GUIReferences.updateStatusBar();
 				break;
 			}

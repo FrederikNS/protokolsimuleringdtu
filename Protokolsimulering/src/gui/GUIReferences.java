@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import math.Scaling;
@@ -23,106 +22,66 @@ import turns.TurnController;
  *
  */
 public class GUIReferences implements GUIConstants{ 
+	/**
+	 * Reference to the panel containing the contruction elements
+	 */
 	static JPanel constructPanel;
+	/**
+	 * Reference to the panel containing the simulation elements
+	 */
 	static JPanel simulatePanel;
+	/**
+	 * Reference to the control panel
+	 */
 	static JPanel controlPanelPane;
+	/**
+	 * Reference to the status bar
+	 */
 	static JLabel status;
+	/**
+	 * Reference to the spinner for changing radius
+	 */
 	static JSpinner radiusSpinner;
-	public static ViewPort sensorNetwork;
+	/**
+	 * Reference to the view of the sensor network currently opened
+	 */
+	public static ViewPort viewPort;
+	/**
+	 * Reference to the information frame for viewing statistics for the selected sensor
+	 */
 	public static InformationFrame informationFrame;
+	/**
+	 * Reference to the console
+	 */
 	static Console console;
+	/**
+	 * Reference to the current playback mode
+	 */
 	static int playback = PLAYBACK_PAUSE;
+	/**
+	 * Reference to the current mode
+	 */
 	static int mode = MODE_SELECT;
+	/**
+	 * Reference to the group of buttons for construction
+	 */
 	public static ButtonGroup modeGroup;
+	/**
+	 * Reference to the group of buttons for simulation
+	 */
 	static ButtonGroup stepperGroup;
+	/**
+	 * Reference to the save option in the menu
+	 */
 	static JMenuItem saveMenuItem;
+	/**
+	 * Reference to the variable which keeps track of if the mouse is inside the view port
+	 */
 	static boolean mouseWithinViewPort;
-	
 	/**
 	 * The currently used file.
 	 */
 	static File currentFile;
-	
-	/**
-	 * Convience method for opening a new ViewPort with a internal width / height
-	 * @param w The (internal) width of the new field.
-	 * @param h The (internal) height of the new field.
-	 * @param title The title of the new window. (Usually just the file name or Untitled)
-	 */
-	public static void generateNewField(int w,int h,String title){
-		Scaling.setPicCoords(w,h);
-		sensorNetwork = new ViewPort(title);
-	}
-	
-	/**
-	 * Marks the current work as modified (enables the save menu)
-	 */
-	public static void markAsModified() {
-		if(isSensorNetworkAvailable()) {
-			saveMenuItem.setEnabled(true);
-		}
-	}
-	
-	/**
-	 * Updates the statusbar of the Control Panel
-	 */
-	public static void updateStatusBar(){
-		status.setText("Sensors: "+Sensor.idToSensor.size()+(TurnController.getInstance().getCurrentTurn()!=null?", Turn: "+TurnController.getInstance().getCurrentTurn().turn:""));
-	}
-	
-	/**
-	 * Convience method for repainting and updating the information frame.
-	 */
-	public static void updateViewSettings() {
-		if(isSensorNetworkAvailable()) {
-			informationFrame.update(selectedSensor);
-			sensorNetwork.getGraphicsPainter().repaint();
-		}
-	}
-	
-	/**
-	 * Convience method for checking if the sensor network / VPGraphicsPanter is available.
-	 * @return true if the ViewPort / VPGraphicsPainter is available.
-	 */
-	public static boolean isSensorNetworkAvailable() {
-		return sensorNetwork != null;
-	}
-	
-	/**
-	 * Convience method for saving.
-	 * @see GUIReferences#saveAs()
-	 */
-	public static void save(){
-		if(GUIReferences.currentFile != null) {
-			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
-			GUIReferences.saveMenuItem.setEnabled(false);
-		} else {
-			saveAs();
-		}
-	}
-	
-	/**
-	 * Convience method for saving as.
-	 */
-	public static void saveAs(){
-		File saveFile;
-		JFileChooser saveChooser = new JFileChooser();
-		FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
-		saveChooser.setFileFilter(saveFilter);
-		int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
-		if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
-			saveFile = saveChooser.getSelectedFile();
-			if(saveFile.getPath().contains(".")==false){
-				saveFile = new File(saveFile.getPath()+".stuff");
-			}
-			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
-			GUIReferences.sensorNetwork.halfTitle = saveFile.getName();
-			GUIReferences.sensorNetwork.setTitle(saveFile.getName());
-			GUIReferences.currentFile = saveFile;
-			GUIReferences.saveMenuItem.setEnabled(false);
-		}
-	}
-	
 	/**
 	 * The currently selected sensor (or null if none is selected)
 	 */
@@ -188,6 +147,86 @@ public class GUIReferences implements GUIConstants{
 	 * Color of isolated sensors.
 	 */
 	public static Color isolatedColor    = Color.PINK;
+	
+	/**
+	 * Convenience method for opening a new ViewPort with a internal width / height
+	 * @param w The (internal) width of the new field.
+	 * @param h The (internal) height of the new field.
+	 * @param title The title of the new window. (Usually just the file name or Untitled)
+	 */
+	public static void generateNewField(int w,int h,String title){
+		Scaling.setPicCoords(w,h);
+		viewPort = new ViewPort(title);
+	}
+	
+	/**
+	 * Marks the current work as modified (enables the save menu)
+	 */
+	public static void markAsModified() {
+		if(isSensorNetworkAvailable()) {
+			saveMenuItem.setEnabled(true);
+		}
+	}
+	
+	/**
+	 * Updates the statusbar of the Control Panel
+	 */
+	public static void updateStatusBar(){
+		status.setText("Sensors: "+Sensor.idToSensor.size()+(TurnController.getInstance().getCurrentTurn()!=null?", Turn: "+TurnController.getInstance().getCurrentTurn().turn:""));
+	}
+	
+	/**
+	 * Convience method for repainting and updating the information frame.
+	 */
+	public static void updateViewSettings() {
+		if(isSensorNetworkAvailable()) {
+			informationFrame.update(selectedSensor);
+			viewPort.getGraphicsPainter().repaint();
+		}
+	}
+	
+	/**
+	 * Convience method for checking if the sensor network / VPGraphicsPanter is available.
+	 * @return true if the ViewPort / VPGraphicsPainter is available.
+	 */
+	public static boolean isSensorNetworkAvailable() {
+		return viewPort != null;
+	}
+	
+	/**
+	 * Convience method for saving.
+	 * @see GUIReferences#saveAs()
+	 */
+	public static void save(){
+		if(GUIReferences.currentFile != null) {
+			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
+			GUIReferences.saveMenuItem.setEnabled(false);
+		} else {
+			saveAs();
+		}
+	}
+	
+	/**
+	 * Convenience method for saving as.
+	 */
+	public static void saveAs(){
+		File saveFile;
+		JFileChooser saveChooser = new JFileChooser();
+		FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+		saveChooser.setFileFilter(saveFilter);
+		int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
+		if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
+			saveFile = saveChooser.getSelectedFile();
+			if(saveFile.getPath().contains(".")==false){
+				saveFile = new File(saveFile.getPath()+".stuff");
+			}
+			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+			GUIReferences.viewPort.halfTitle = saveFile.getName();
+			GUIReferences.viewPort.setTitle(saveFile.getName());
+			GUIReferences.currentFile = saveFile;
+			GUIReferences.saveMenuItem.setEnabled(false);
+		}
+	}
 	
 	/**
 	 * Init the static variables in the correct order.
