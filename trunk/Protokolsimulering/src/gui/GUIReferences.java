@@ -85,6 +85,10 @@ public class GUIReferences implements GUIConstants{
 	 */
 	public static ViewPort viewPort;
 	/**
+	 * Reference to the configFrame
+	 */
+	public static ConfigFrame configFrame;
+	/**
 	 * Reference to the information frame for viewing statistics for the selected sensor
 	 */
 	public static InformationFrame informationFrame;
