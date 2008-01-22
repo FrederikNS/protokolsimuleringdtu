@@ -757,6 +757,25 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	}
 
 	/**
+	 * Updates the size of the sensors. 
+	 * @param newSize The new size.
+	 */
+	public static void setSensorDrawRadius(int newSize) {
+		if(newSize < 1) {
+			throw new IllegalArgumentException("Cannot draw them less than 1 in size.");
+		}
+		sensorDrawRadius = newSize;
+	}
+	
+	/**
+	 * Fetches the current size of the sensors.
+	 * @return The current sensor size.
+	 */
+	public static int getSensorDrawRadius() {
+		return sensorDrawRadius;
+	}
+	
+	/**
 	 * Get the amount of terminals
 	 * @return The amount of terminals.
 	 */
