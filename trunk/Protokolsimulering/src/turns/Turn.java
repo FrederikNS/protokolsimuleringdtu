@@ -226,6 +226,11 @@ public class Turn implements Saveable, Drawable{
 		 */
 		private Iterator<Sensor> iter;
 		
+		/**
+		 * A constructor.
+		 * @param sensors the list of sensors to be included in this turn
+		 * @param turn the turn number
+		 */
 		private RunnableTurn(Collection<? extends Sensor> sensors, int turn) {
 			super(sensors, SensorComparator.SORT_BY_TURNS, turn, true);
 		}
@@ -320,6 +325,9 @@ public class Turn implements Saveable, Drawable{
 			}
 		}
 		
+		/**
+		 * A do-loop.
+		 */
 		private void doLoop() {
 			if(iter == null) {
 				iter = sensors.descendingIterator();

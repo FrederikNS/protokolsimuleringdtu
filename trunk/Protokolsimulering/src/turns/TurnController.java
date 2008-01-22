@@ -78,14 +78,37 @@ public abstract class TurnController implements Saveable{
 		return instance;
 	}
 	
+	/**
+	 * This class implements TurnController.
+	 * @author Niels Thykier
+	 */
 	private static class TurnControllerImplementation extends TurnController {
 
+		/**
+		 * A list of turns.
+		 */
 		private Turn[] turnList = new Turn[10];
+		/**
+		 * Where it is in the array.
+		 */
 		private short currentEntry = -1;
+		/**
+		 * The current turn.
+		 */
 		private int currentTurn = -1;
+		/**
+		 * The current running turn (if any).
+		 */
 		private RunnableTurn run;
+		/**
+		 * Used to find out, if field has been altered.
+		 */
 		private boolean notReady = true;
 		
+		/**
+		 * Internal command, to be use of there always is a runable turn.
+		 * @return the current turn
+		 */
 		private RunnableTurn getCurrentRunnableTurn() {
 			if(notReady) {
 				fieldHasBeenAltered();
@@ -115,6 +138,9 @@ public abstract class TurnController implements Saveable{
 			}
 		}
 
+		/**
+		 * Internal command to handle the end of a turn.
+		 */
 		private void endOfTurn() {
 			currentEntry++;
 			if(currentEntry == turnList.length) {
