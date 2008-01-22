@@ -11,8 +11,17 @@ import junit.framework.TestCase;
  */
 public class ProtocolTest extends TestCase {
 	
+	/**
+	 * The protocol object to test.
+	 */
 	private Protocol protocol;
+	/**
+	 * A sensor in the test.
+	 */
 	private Sensor sensor;
+	/**
+	 * Another sensor in the test.
+	 */
 	private Sensor sensor2;
 	
 	@Override
