@@ -70,7 +70,7 @@ public class DrawableCircle extends Shape {
 	public void draw(Graphics g) {
 		int diameter = radius *2;
 		g.fillOval(Scaling.convertToPicX(center.getX() - radius), Scaling.convertToPicY(center.getY() - radius)
-				, Scaling.convertToPicX(diameter), Scaling.convertToPicY(diameter));
+				, diameter, diameter);
 	}
 	
 	/**
