@@ -6,6 +6,9 @@ import transmissions.Protocol;
 import transmissions.Transmission;
 import junit.framework.TestCase;
 
+/**
+ * @author Niels Thykier
+ */
 public class ProtocolTest extends TestCase {
 	
 	private Protocol protocol;
@@ -22,11 +25,17 @@ public class ProtocolTest extends TestCase {
 		protocol = sensor.getProtocol();
 	}
 
+	/**
+	 * 
+	 */
 	public void testReceive() {
 		
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * 
+	 */
 	public void testTransmit() {
 		protocol.transmit(new Transmission(sensor2.id,sensor.id,sensor.id,new NetworkData(0, sensor.id)));
 		protocol.endStep();
@@ -35,10 +44,16 @@ public class ProtocolTest extends TestCase {
 		assertTrue(sensor2.getNearestTerminal() == sensor.id);
 	}
 
+	/**
+	 * 
+	 */
 	public void testAddTransmissionToSend() {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetCurrentTick() {
 		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
 		protocol.transmit(Transmission.generateCorruptTransmission());
@@ -50,22 +65,37 @@ public class ProtocolTest extends TestCase {
 		assertTrue(protocol.getCurrentTick() == 4);
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetDelayNextTransmission() {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetIncomming() {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetIngoing() {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetOutgoing() {
 		fail("Not yet implemented");
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetSent() {
 		fail("Not yet implemented");
 	}
