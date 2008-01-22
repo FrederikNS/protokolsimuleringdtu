@@ -3,9 +3,17 @@ package gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import nodes.Sensor;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -17,8 +25,17 @@ public class CPModes implements GUIConstants {
 	 * @param actionListener The ActionListener for all the buttons
 	 */
 	public CPModes(ActionListener actionListener){
-		JPanel modesPanel = new JPanel();
-		GridLayout modesPanelLayout = new GridLayout(0,2);
+		JPanel modePanel = new JPanel();
+		JPanel constructDestructPanel = new JPanel();
+		JPanel modificationPanel = new JPanel();
+		JPanel tweakPanel = new JPanel();
+		JPanel radiusPanel = new JPanel();
+		JPanel addressBookPanel = new JPanel();
+		modePanel.setLayout(new BoxLayout(modePanel,BoxLayout.Y_AXIS));
+		constructDestructPanel.setLayout(new GridLayout(0,2));
+		modificationPanel.setLayout(new GridLayout(0,2));
+		tweakPanel.setLayout(new BoxLayout(tweakPanel,BoxLayout.Y_AXIS));
+		addressBookPanel.setLayout(new GridLayout(0,1));
 		
 		JButton generateButton = new JButton("Generate");
 		generateButton.setToolTipText("Generates a given number of random sensors");
@@ -45,11 +62,11 @@ public class CPModes implements GUIConstants {
 		clearButton.addActionListener(actionListener);
 		clearButton.setActionCommand(String.valueOf(BUTTON_CLEAR));
 		
-		JToggleButton removeButton = new JToggleButton("Remove");
+		/*JToggleButton removeButton = new JToggleButton("Remove");
 		removeButton.setToolTipText("Removes the sensor you click");
 		removeButton.addActionListener(actionListener);
 		removeButton.setActionCommand(String.valueOf(BUTTON_REMOVE));
-		removeButton.setEnabled(false);
+		removeButton.setEnabled(false);*/
 		
 		JToggleButton promoteButton = new JToggleButton("Promote");
 		promoteButton.setToolTipText("");
@@ -61,23 +78,48 @@ public class CPModes implements GUIConstants {
 		demoteButton.addActionListener(actionListener);
 		demoteButton.setActionCommand(String.valueOf(BUTTON_DEMOTE));
 		
-		GUIReferences.constructPanel.add(modesPanel);
-		modesPanel.setLayout(modesPanelLayout);
+		JLabel radiusLabel = new JLabel("Communication Radius");
+		SpinnerNumberModel model = new SpinnerNumberModel(Sensor.getTransmissionRadius(),10,40,1);
+		GUIReferences.radiusSpinner = new JSpinner(model);
+//		GUIReferences.radiusSpinner.setValue(Sensor.getTransmissionRadius());
+		GUIReferences.radiusSpinner.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent e) {
+				Sensor.setTransmissionRadius(Integer.parseInt(GUIReferences.radiusSpinner.getValue().toString()));
+				
+				if(GUIReferences.sensorNetwork != null) {
+					GUIReferences.sensorNetwork.repaint();
+				}
+			}
+		});
+		JButton generateAddressBook = new JButton("Generate Address Book");
+		generateAddressBook.addActionListener(actionListener);
+		generateAddressBook.setActionCommand(String.valueOf(BUTTON_GENERATE_ADDRESS_BOOK));
+		
+		GUIReferences.constructPanel.add(modePanel);
+		modePanel.add(constructDestructPanel);
+		modePanel.add(modificationPanel);
+		modePanel.add(tweakPanel);
+		tweakPanel.add(radiusPanel);
+		tweakPanel.add(addressBookPanel);
 		
 		GUIReferences.modeGroup.add(addButton);
 		GUIReferences.modeGroup.add(enableButton);
 		GUIReferences.modeGroup.add(disableButton);
-		GUIReferences.modeGroup.add(removeButton);
+//		GUIReferences.modeGroup.add(removeButton);
 		GUIReferences.modeGroup.add(promoteButton);
 		GUIReferences.modeGroup.add(demoteButton);
 		
-		modesPanel.add(addButton);
-		modesPanel.add(generateButton);
-		modesPanel.add(removeButton);
-		modesPanel.add(clearButton);
-		modesPanel.add(enableButton);
-		modesPanel.add(disableButton);
-		modesPanel.add(promoteButton);
-		modesPanel.add(demoteButton);
+		constructDestructPanel.add(addButton);
+		constructDestructPanel.add(generateButton);
+//		constructDestructPanel.add(removeButton);
+		constructDestructPanel.add(clearButton);
+		modificationPanel.add(enableButton);
+		modificationPanel.add(disableButton);
+		modificationPanel.add(promoteButton);
+		modificationPanel.add(demoteButton);
+		
+		radiusPanel.add(radiusLabel);
+		radiusPanel.add(GUIReferences.radiusSpinner);
+		addressBookPanel.add(generateAddressBook);
 	}
 }

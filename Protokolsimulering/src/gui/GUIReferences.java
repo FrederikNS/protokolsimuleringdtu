@@ -10,6 +10,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import math.Scaling;
@@ -25,6 +27,7 @@ public class GUIReferences implements GUIConstants{
 	static JPanel simulatePanel;
 	static JPanel controlPanelPane;
 	static JLabel status;
+	static JSpinner radiusSpinner;
 	public static ViewPort sensorNetwork;
 	public static InformationFrame informationFrame;
 	static Console console;
@@ -39,7 +42,6 @@ public class GUIReferences implements GUIConstants{
 	 * The currently used file.
 	 */
 	static File currentFile;
-	
 	
 	/**
 	 * Convience method for opening a new ViewPort with a internal width / height
