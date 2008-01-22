@@ -166,9 +166,9 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 		currentTurnColorPane.add(currentTurnColorLabel);
 		isolatedColorPane.add(isolatedColorLabel);
 
+		GUIReferences.configFrame = this;
 		pack();
 	}
-	
 	
 	/**
 	 * Spawns the config dialog
