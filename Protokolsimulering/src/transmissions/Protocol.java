@@ -229,7 +229,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 				delayNextTransmission = ran.nextInt(15)+ ran.nextInt(5) + 5;
 			}
 		} else {
-			Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
+			//Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
 		}
 	}
 
