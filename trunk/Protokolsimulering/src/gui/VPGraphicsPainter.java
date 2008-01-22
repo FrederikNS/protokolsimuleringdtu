@@ -38,11 +38,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		this.addMouseMotionListener(this);
 	}
 
-	/**
-	 * @param g
-	 */
 	@Override
-	public synchronized void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Scaling.setWindowSize(this.getWidth(), this.getHeight());
 		g.setColor(connectionColor);
@@ -80,7 +77,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			}
 			break;
 		case MODE_ADD:
-			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
+			new Sensor(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())));
 			GlobalAddressBook.getBook().generateDirectConnections();
 			GUIReferences.markAsModified();
 			GUIReferences.updateStatusBar();
@@ -90,8 +87,12 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				GUIReferences.selectedSensor.setSelected(false);
 				GUIReferences.selectedSensor = null;
 			}
-
 			selectSensor(loc,dist);
+			if(GUIReferences.selectedSensor!=null){
+				Sensor.assignLabel("", GUIReferences.selectedSensor.id);
+				Sensor.idToSensor.remove(GUIReferences.selectedSensor);
+				GUIReferences.selectedSensor = null;
+			}
 			GUIReferences.markAsModified();
 			GUIReferences.updateStatusBar();
 			break;

@@ -1,9 +1,4 @@
-Fixe alle "TODO"s
-
-Test af Sensor-protokolen.
-Test af Save og Load.
-
-
+FIXME - color selector always select color
 
 Protokol Simulering:
 
