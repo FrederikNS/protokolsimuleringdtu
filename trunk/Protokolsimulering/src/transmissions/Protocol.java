@@ -228,10 +228,8 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 			} else {
 				delayNextTransmission = ran.nextInt(15)+ ran.nextInt(5) + 5;
 			}
-			
-			
 		} else {
-			//Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
+			Note.sendNote(Note.DEBUG, main + ": Nothing to do!" );
 		}
 	}
 
@@ -269,6 +267,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 						Note.sendNote(Note.ERROR, main + ": ClassCastException in Protocol");
 					}
 					break;
+				case Data.TYPE_DATA:
 				default:
 					received = incomming;
 					break;

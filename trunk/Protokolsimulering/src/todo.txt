@@ -9,18 +9,14 @@ Protokol Simulering:
 
 DONE: Indlæse en udlagt graf fra en fil og vise den.
 DONE: Kunne markere et eller flere punkter som terminaler (dvs. endestationer for data genereret af knuderne).
-NOT DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb skal visualiseres på grafen.
+DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb skal visualiseres på grafen.
 	 Simuleringsskridtene skal kunne drives manuelt, dvs. ved tryk på en knap/tast for 
 	 hvert skridt. Den simulerede tid (antal skridt) skal vises. 
 	 
-	 - mangler visning af simulerede tid.
 	 - simulering af rutebestemmelse protokollen bør forbedres, men er færdig!
-	 - husker ikke antal turns når grafen bliver loaded
-	 - TEST!
 	 
 DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
 
-	- TEST!
 
 --- 3 mandsgrupper.
 
@@ -32,10 +28,12 @@ DONE: Automatisk simulering, dvs. at simuleringen kører af sig selv med en vis 
 		    	leringen (se mere på materialesiden). [Undgå brug af tråde(eng.threads).]			  
 
 LAVES IKKE: Simulering af andre protokoller. Fx. positioneringsprotokollen.
-LAVES IKKE: En mere realistisk simulering/protokol. Fx. ved at tillade at knuder går ned, at beskeder
+DONE: En mere realistisk simulering/protokol. Fx. ved at tillade at knuder går ned, at beskeder
 	  gå tabt ved med en vis sandsynlighed (evt. afhængig af afstand), eller ved at lade kom-
 	  munikation og behandling tage varierende tid. Protokollen må så gøres tilsvarende mere
 	  robust, fx. ved at ruter opdateres regelmæssigt.
+	  
+	  - Transmission corruptions.
 
 LAVES IKKE: Mulighed for at gå frem og tilbage i en simulering.
 		
