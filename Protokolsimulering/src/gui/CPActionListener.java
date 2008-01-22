@@ -72,6 +72,9 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			break;
 		case MENU_OPEN:
 			//TODO - check if session is already running?
+			if(GUIReferences.saveMenuItem.isEnabled()) {
+				
+			}
 			File openFile;
 			JFileChooser openChooser = new JFileChooser();
 			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
