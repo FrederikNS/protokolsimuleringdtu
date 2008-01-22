@@ -22,8 +22,6 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 	 */
 	private static final long serialVersionUID = 3360612748266382475L;
 	
-	
-	
 	/**
 	 * The Config Frame
 	 */
