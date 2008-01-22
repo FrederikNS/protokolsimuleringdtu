@@ -126,7 +126,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	/**
 	 * List of sensors this sensor can reach.
 	 */
-	protected TreeSet<Sensor> links = new TreeSet<Sensor>();
+	protected TreeSet<Integer> links = new TreeSet<Integer>();
 	/**
 	 * The sensor's current status.
 	 * Mainly used for determing coloring.
@@ -305,8 +305,8 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 			status &= ~STATUS_SELECTED;
 		}
 
-		for(Sensor sen : links) {
-			idToSensor.get(sen.id).setSecondarySelection(selectedStatus);
+		for(Integer link : links) {
+			idToSensor.get(link).setSecondarySelection(selectedStatus);
 		}
 	}
 
@@ -414,8 +414,10 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 				status |= STATUS_RECEIVING;
 			}
 			Sensor receiver = null;
+			Sensor sen;
 			int toSensor = msg.getRespondsableTransmitter();
-			for(Sensor sen : links) {
+			for(Integer link : links) {
+				sen = idToSensor.get(link);
 				if(sen.id == toSensor) {
 					receiver = sen;
 					continue;
@@ -465,7 +467,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * @param sen The other sensor.
 	 */
 	public void addLinkToSensor(Sensor sen) {
-		links.add(sen);
+		links.add(sen.id);
 		updateLinks();
 	}
 
@@ -475,8 +477,8 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 */
 	protected void updateLinks() {
 		if(0 != (status & STATUS_SELECTED)) {
-			for(Sensor sen : links) {
-				idToSensor.get(sen.id).setSecondarySelection(true);
+			for(Integer link : links) {
+				idToSensor.get(link).setSecondarySelection(true);
 			}
 		}
 	}
@@ -566,8 +568,8 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * @param g The graphics to draw with.
 	 */
 	public void drawConnections(Graphics g) {
-		for(Sensor sen : links) {
-			new Line(loc, sen.getLocation()).draw(g);
+		for(Integer link : links) {
+			new Line(loc, idToSensor.get(link).loc).draw(g);
 		}
 	}
 
@@ -647,9 +649,9 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 		if(this.links.size() > 0) {
 			Element linksElement = doc.createElement("links");
 			Element currentLink;
-			for(Sensor sen : links) {
+			for(Integer link : links) {
 				currentLink = doc.createElement("link");
-				currentLink.appendChild(doc.createTextNode(String.valueOf(sen.id)));
+				currentLink.appendChild(doc.createTextNode(String.valueOf(link)));
 				linksElement.appendChild(currentLink);
 			}
 			element.appendChild(linksElement);
@@ -803,7 +805,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 */
 	public static void clearAllLinks() {
 		for(Sensor sen : idToSensor.values()) {
-			sen.links = new TreeSet<Sensor>();
+			sen.links = new TreeSet<Integer>();
 		}
 	}
 
@@ -848,9 +850,9 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 */
 	public static void drawAllConnections(Graphics g) {
 		for(Sensor sen : idToSensor.values()) {
-			for(Sensor link : sen.links) {
-				if(sen.id < link.id) {
-					new Line(sen.loc, link.loc).draw(g);
+			for(Integer link : sen.links) {
+				if(sen.id < link) {
+					new Line(sen.loc, idToSensor.get(link).loc).draw(g);
 				}
 			}
 		}
@@ -1067,17 +1069,9 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 			sen.status = status;
 		}
 		if(linkList.size() > 0) {
-			TreeSet<Sensor> sensorLinkList = new TreeSet<Sensor>();
-			Sensor currentSensorLink;
-			for(Integer linkID : linkList) {
-				currentSensorLink = idToSensor.get(linkID);
-				if(currentSensorLink == null){
-					currentSensorLink = new Sensor(linkID);
-				}
-				sensorLinkList.add(currentSensorLink);
-			}
-			sen.links = sensorLinkList;
+			sen.links = linkList;
 		}
+		
 		return sen;
 	}
 
