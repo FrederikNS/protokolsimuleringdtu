@@ -1,6 +1,6 @@
 Features:
  * Reads/Writes all the data in xml format.
- * Supports reading from/writing to gzip'ed files.
+ * Supports reading from/writing to gzip'ed files (must end with ".gz").
  * Highlighting of sensors based on their state.
  * Change of highlight colors (even run-time) 
  * Generating of sensors on the field one by one or randomly distributed over the map (pre-sim)
