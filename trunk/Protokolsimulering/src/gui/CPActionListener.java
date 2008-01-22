@@ -26,8 +26,17 @@ import notification.NoteConstants;
  */
 public class CPActionListener implements ActionListener,GUIConstants{
 
+	/**
+	 * The timer for delaying UI drawing
+	 */
 	private Timer timer;
+	/**
+	 * A random number
+	 */
 	private Random ran = new Random();
+	/**
+	 * The speed things should go
+	 */
 	private int playSpeed;
 
 	/**

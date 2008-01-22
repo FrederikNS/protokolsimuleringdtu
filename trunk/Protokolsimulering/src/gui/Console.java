@@ -22,9 +22,18 @@ import notification.NotificationListener;
  */
 public class Console extends JFrame implements NotificationListener, GUIConstants{
 
+	/**
+	 * Serialized ID
+	 */
 	private static final long serialVersionUID = 1925062183376423627L;
 	private int note = Note.INFORMATION | Note.ERROR | Note.WARNING;
+	/**
+	 * Contains all the notes which should be printed in the console
+	 */
 	private ArrayList<Note> allNotes = new ArrayList<Note>();
+	/**
+	 * The text area for the console
+	 */
 	private JTextArea console;
 
 	/**

@@ -15,8 +15,10 @@ import transmissions.Transmission;
  */
 public class InformationFrame extends JFrame  {
 
+	/**
+	 * Serialized ID
+	 */
 	private static final long serialVersionUID = -83659491420303025L;
-
 
 	private JLabel sensorNumberOfNeighbours;
 	private JLabel sensorIsTerminal;

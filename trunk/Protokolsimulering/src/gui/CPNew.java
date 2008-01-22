@@ -30,16 +30,29 @@ public class CPNew extends JDialog implements GUIConstants{
 	 * Handles the height of the new field
 	 */
 	static JSpinner heightSpinner;
+	/**
+	 * This Dialog
+	 */
 	private static CPNew cPNew;
 
+	/**
+	 * The Constructor
+	 */
 	private CPNew(){
 
 	}
 
+	/**
+	 * The constructor
+	 * @param frame Sets the given frame as parent
+	 */
 	private CPNew(JFrame frame){
 		super(frame);
 	}
 
+	/**
+	 * initializes this dialog
+	 */
 	private void init(){
 		setTitle("New...");
 		setSize(200,200);

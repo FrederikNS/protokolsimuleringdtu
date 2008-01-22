@@ -24,13 +24,23 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 	
 	
 	
+	/**
+	 * The Config Frame
+	 */
 	private ConfigFrame() {
 
 	}
+	/**
+	 * The Config Frame
+	 * @param frame Frame to be parent of
+	 */
 	private ConfigFrame(JFrame frame) {
 
 	}
 	
+	/**
+	 * Initializes The Config Frame
+	 */
 	private void init() {
 		ActionListener actionListener = GUIReferences.listener;
 		setTitle("Preferences");

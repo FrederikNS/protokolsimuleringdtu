@@ -28,10 +28,22 @@ import nodes.Sensor;
  */
 public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeListener{
 
+	/**
+	 * Serialized ID
+	 */
 	private static final long serialVersionUID = -8026416994513756565L;
 
+	/**
+	 * This Frame
+	 */
 	private static ControlPanelFrame controlPanelFrame;
+	/**
+	 * The tabbed panel for containing the simulation or construction buttons
+	 */
 	private JTabbedPane modeTabPanes = new JTabbedPane();
+	/**
+	 * boolean to keep track of which panel is selected
+	 */
 	private boolean constructTabSelected = true;
 	
 
