@@ -75,7 +75,7 @@ public class InformationFrame extends JFrame  {
 			String sentMessage = ("");
 			String inboxMessages = ("");
 			String outboxMessages = ("");
-			Sensor[] links = selected.getLinks();
+			Integer[] links = selected.getLinks();
 			int nearestTerm = selected.getNearestTerminal();
 			//int status = selected.getStatus();
 			setTitle(selected.toString());
