@@ -32,6 +32,7 @@ import turns.TurnController;
 
 /**
  * Handles the saving of XML-files.
+ * Created (in part) together with team 11
  * @author Niels Thykier
  */
 public abstract class XMLSaver {
