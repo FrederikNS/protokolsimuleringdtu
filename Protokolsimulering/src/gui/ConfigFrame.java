@@ -35,7 +35,7 @@ public class ConfigFrame extends JDialog implements GUIConstants{
 	 * @param frame Frame to be parent of
 	 */
 	private ConfigFrame(JFrame frame) {
-
+		super(frame);
 	}
 	
 	/**
