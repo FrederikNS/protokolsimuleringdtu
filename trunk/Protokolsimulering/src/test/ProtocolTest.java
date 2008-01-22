@@ -7,7 +7,9 @@ import transmissions.Protocol;
 import transmissions.Transmission;
 
 /**
+ * Testcase for the Protocol class.
  * @author Niels Thykier
+ * @author Morten Soerensen
  */
 public class ProtocolTest extends TestCase {
 	
@@ -36,7 +38,7 @@ public class ProtocolTest extends TestCase {
 	
 	
 	/**
-	 * 
+	 * Tests the method AddTransmissionToSend.
 	 */
 	public void testAddTransmissionToSend() {
 		Transmission trans = new Transmission(1, 2, Data.generateData(new Object()));
@@ -46,18 +48,30 @@ public class ProtocolTest extends TestCase {
 
 
 	/**
-	 * 
+	 * A positive test of Receive
 	 */
-	public void testReceive() {
+	public void testReceivePositive() {
 		Transmission trans = new Transmission(sensor.id, sensor2.id, sensor.id
 				, Data.generateData(new Object()));
 		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
 		protocol.receive(trans);
 		assertTrue(protocol.getIncomming().equals(trans));
 	}
+	
+	/**
+	 * A negative test of Receive
+	 */
+	public void testReceiveNegative() {
+		Transmission trans = new Transmission(sensor.id, sensor2.id, sensor.id
+				, Data.generateData(new Object()));
+		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
+		protocol.receive(trans);
+		protocol.receive(trans);
+		assertTrue(protocol.getIncomming().getMessageType() == Data.TYPE_GARBAGE);
+	}
 
 	/**
-	 * 
+	 * Test of the method Transmit
 	 */
 	public void testTransmit() {
 		Transmission trans = new Transmission(sensor2.id, sensor.id, sensor.id
@@ -68,7 +82,7 @@ public class ProtocolTest extends TestCase {
 
 	
 	/**
-	 * 
+	 * Test of the method EndStep
 	 */
 	public void testEndStep() {
 		Transmission trans = new Transmission(sensor.id, sensor2.id, sensor.id
