@@ -20,16 +20,50 @@ public class InformationFrame extends JFrame  {
 	 */
 	private static final long serialVersionUID = -83659491420303025L;
 
+	/**
+	 * Shows the current number of neightbours
+	 */
 	private JLabel sensorNumberOfNeighbours;
+	/**
+	 * Shows if the current sensor is a server or not 
+	 */
 	private JLabel sensorIsTerminal;
+	/**
+	 * Shows the distance to the nearest terminals
+	 */
 	private JLabel sensorDistanceToTerminal;
+	/**
+	 * Shows the messages the sensor is awaiting a reply for
+	 */
 	private JLabel sensorSentMessagesAwaitingReply;
+	/**
+	 * Shows the sensors outbox
+	 */
 	private JLabel sensorOutbox;
+	/**
+	 * Shows the sensors inbox
+	 */
 	private JLabel sensorInbox;
+	/**
+	 * Shows what the sensor has planned for this turn
+	 * 
+	 */
 	private JLabel sensorCurrentTick;
+	/**
+	 * Shows how many turns the sensor delays an action if a collision occured
+	 */
 	private JLabel sensorDelayNextTransmission;
+	/**
+	 * Shows the last received message
+	 */
 	private JLabel sensorReceivedMessage;
+	/**
+	 * Shows the last sent message
+	 */
 	private JLabel sensorSentMessage;
+	/**
+	 * Shows which sensor the current sensor is waiting for
+	 */
 	private JLabel sensorWaitingForSensor;
 
 	/**

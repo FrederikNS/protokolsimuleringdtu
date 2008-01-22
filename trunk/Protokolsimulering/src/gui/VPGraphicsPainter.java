@@ -23,6 +23,9 @@ import nodes.Sensor;
  * @author Morten Soerensen
  */
 public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMotionListener,GUIConstants {
+	/**
+	 * Serialized ID
+	 */
 	private static final long serialVersionUID = 4244383889572154127L;
 
 	/**
@@ -118,6 +121,11 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		GUIReferences.updateViewSettings();
 	}
 
+	/**
+	 * This method takes care of selecting a sensor, given a maximum range and the location of a click
+	 * @param loc Where a click was registered
+	 * @param dist How far away a sensor may be away from where the click was registered to still be selected
+	 */
 	private void selectSensor(Location loc,int dist){
 		int check;
 		int maxDist = dist;

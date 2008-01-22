@@ -11,6 +11,9 @@ import javax.swing.JOptionPane;
  * @author Niels Thykier
  */
 public class WindowListeners implements WindowListener, GUIConstants {
+	/**
+	 * If true tries to bring all windows to the front 
+	 */
 	private boolean doBringToFront = false;
 	
 	public void windowActivated(WindowEvent arg0) {

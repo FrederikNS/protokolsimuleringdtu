@@ -14,13 +14,20 @@ import nodes.Sensor;
  */
 public class ViewPort extends JFrame implements GUIConstants{
 	
+	
+
+	/**
+	 * Serialized ID
+	 */
+	private static final long serialVersionUID = 1960058377833441994L;
+	/**
+	 * Contains the Graphics painter
+	 */
+	private VPGraphicsPainter graphicsPainter;
 	/**
 	 * The title of the window (when unchanged: the filename, when changed: a star followed by the filename
 	 */
 	String halfTitle;
-
-	private static final long serialVersionUID = 1960058377833441994L;
-	private VPGraphicsPainter graphicsPainter;
 	
 	/**
 	 * The View Port for showing the network
