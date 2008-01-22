@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,6 +24,7 @@ public class GUIReferences implements GUIConstants{
 	static JPanel constructPanel;
 	static JPanel simulatePanel;
 	static JPanel controlPanelPane;
+	static JLabel status;
 	public static ViewPort sensorNetwork;
 	public static InformationFrame informationFrame;
 	static Console console;
@@ -57,6 +59,13 @@ public class GUIReferences implements GUIConstants{
 		if(isSensorNetworkAvailable()) {
 			saveMenuItem.setEnabled(true);
 		}
+	}
+	
+	/**
+	 * Updates the statusbar of the Control Panel
+	 */
+	public static void updateStatusBar(){
+		status.setText("Sensors: "+Sensor.idToSensor.size()+(TurnController.getInstance().getCurrentTurn()!=null?", Turn: "+TurnController.getInstance().getCurrentTurn().turn:""));
 	}
 	
 	/**

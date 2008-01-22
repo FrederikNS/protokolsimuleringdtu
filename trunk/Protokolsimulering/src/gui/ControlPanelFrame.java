@@ -33,7 +33,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	private static ControlPanelFrame controlPanelFrame;
 	private JTabbedPane modeTabPanes = new JTabbedPane();
 	private boolean constructTabSelected = true;
-	private JLabel status;
+	
 
 	/**
 	 * Generates a new Control panel frame and inits a lot of related 
@@ -115,13 +115,12 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		FlowLayout statusBarLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		statusBarPanel.setLayout(statusBarLayout);
 		statusBarPanel.setBorder(BorderFactory.createTitledBorder(""));
-		status = new JLabel("Ready");
+		GUIReferences.status = new JLabel("Ready");
 		add(statusBarPanel,BorderLayout.SOUTH);
-		statusBarPanel.add(status);
+		statusBarPanel.add(GUIReferences.status);
 		
 		//frame is packed and shown
-		pack();
-		
+		pack();	
 	}
 	
 	/**
@@ -137,18 +136,6 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 	public void quit() {
 		this.setVisible(false);
 		System.exit(0);
-	}
-
-	/*public void setJLabelStatus(int x, int y, int i, int j) {
-		status.setText("(" + x + "," + y + ") Sensors: "+i+" Turn: "+j);
-	}
-	
-	public void setJLabelStatus(String text) {
-		status.setText(text);
-	}*/
-	
-	public void updateStatusBar(){
-		
 	}
 
 	/**

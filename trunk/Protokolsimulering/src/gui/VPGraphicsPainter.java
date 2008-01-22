@@ -80,6 +80,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			/*splitField.addSensor(*/Sensor.newInstance(new Location(Scaling.convertToRealX(arg0.getX()),Scaling.convertToRealY(arg0.getY())))/*)*/;
 			GlobalAddressBook.getBook().generateDirectConnections();
 			GUIReferences.markAsModified();
+			GUIReferences.updateStatusBar();
 			break;
 		case MODE_REMOVE:
 			if(GUIReferences.selectedSensor!=null){
@@ -89,6 +90,7 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 
 			selectSensor(loc,dist);
 			GUIReferences.markAsModified();
+			GUIReferences.updateStatusBar();
 			break;
 		case MODE_ENABLE:
 		case MODE_DISABLE:
