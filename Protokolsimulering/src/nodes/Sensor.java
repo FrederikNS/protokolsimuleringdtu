@@ -1021,11 +1021,14 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 				isTerminal = Boolean.valueOf(attribute.getNodeValue().trim());
 				if(isTerminal) {
 					attribute = attrMap.getNamedItem("hasBroadcasted");
-					hasBroadcasted = Boolean.valueOf(attribute.getNodeValue().trim());
+					if(attribute != null) {
+						hasBroadcasted = Boolean.valueOf(attribute.getNodeValue().trim());
+					}
 				}
 			}
 		} catch(RuntimeException e) {
 			isTerminal = false;
+			hasBroadcasted = false;
 		}
 		try {
 			attribute = attrMap.getNamedItem("initiative");
