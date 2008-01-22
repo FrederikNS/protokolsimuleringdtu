@@ -26,6 +26,9 @@ public class Console extends JFrame implements NotificationListener, GUIConstant
 	 * Serialized ID
 	 */
 	private static final long serialVersionUID = 1925062183376423627L;
+	/**
+	 * The filter for which messages to show in the console
+	 */
 	private int note = Note.INFORMATION | Note.ERROR | Note.WARNING;
 	/**
 	 * Contains all the notes which should be printed in the console
