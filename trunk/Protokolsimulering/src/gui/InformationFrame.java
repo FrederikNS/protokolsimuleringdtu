@@ -33,10 +33,6 @@ public class InformationFrame extends JFrame  {
 	 */
 	private JLabel sensorDistanceToTerminal;
 	/**
-	 * Shows the messages the sensor is awaiting a reply for
-	 */
-	private JLabel sensorSentMessagesAwaitingReply;
-	/**
 	 * Shows the sensors outbox
 	 */
 	private JLabel sensorOutbox;
@@ -79,7 +75,6 @@ public class InformationFrame extends JFrame  {
 		sensorNumberOfNeighbours = new JLabel(" ");
 		sensorIsTerminal = new JLabel(" ");
 		sensorDistanceToTerminal = new JLabel(" ");
-		sensorSentMessagesAwaitingReply = new JLabel(" ");
 		sensorOutbox = new JLabel(" ");
 		sensorInbox = new JLabel(" ");
 		sensorCurrentTick = new JLabel(" ");
@@ -88,17 +83,17 @@ public class InformationFrame extends JFrame  {
 		sensorSentMessage = new JLabel(" ");
 		sensorWaitingForSensor = new JLabel(" ");
 
-		add(sensorNumberOfNeighbours);
 		add(sensorIsTerminal);
 		add(sensorDistanceToTerminal);
-		add(sensorInbox);
-		add(sensorSentMessagesAwaitingReply);
-		add(sensorOutbox);
 		add(sensorCurrentTick);
-		add(sensorDelayNextTransmission);
 		add(sensorReceivedMessage);
-		add(sensorSentMessage);
+		add(sensorInbox);
+		add(sensorDelayNextTransmission);
 		add(sensorWaitingForSensor);
+		add(sensorOutbox);
+		add(sensorSentMessage);
+		add(sensorNumberOfNeighbours);
+		
 		return this;
 	}
 
@@ -161,25 +156,16 @@ public class InformationFrame extends JFrame  {
 		} else {
 			setTitle("Nothing selected");
 			sensorNumberOfNeighbours.setText("Number of neighbours: N/A");
-//			sensorNeighbours = new JLabel();
 			sensorIsTerminal.setText("Sensor is terminal: N/A");
 			sensorDistanceToTerminal .setText("Distance to Terminal: N/A");
-			sensorSentMessagesAwaitingReply.setText(" ");
-			sensorOutbox.setText(" ");
-			sensorInbox.setText(" ");
+			sensorOutbox.setText("Outbox: N/A");
+			sensorInbox.setText("Inbox: N/A");
+			sensorCurrentTick.setText("Current Tick: N/A");
+			sensorDelayNextTransmission.setText("Delay Next Transmission: N/A");
+			sensorReceivedMessage.setText("Received Message: N/A");
+			sensorSentMessage.setText("Sent Message: N/A");
+			sensorWaitingForSensor.setText("Waiting For Sensor: N/A");
 		}
 		pack();
 	}
-
-	/* sendte beskeder som der ventes svar på
-	 * ting der er i kø for at blive sendt
-	 * modtagede ting som ikke er bearbejdet
-	 * location
-	 * id
-	 * terminal eller ej
-	 * planer for nuværende tur
-	 * har haft tur
-	 * distance terminal
-	 * antal naboer
-	 */
 }
