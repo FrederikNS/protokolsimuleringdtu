@@ -120,7 +120,11 @@ public class InformationFrame extends JFrame  {
 			}
 			sensorOutbox.setText("Outgoing: " + outboxMessages);
 			
-			sensorWaitingForSensor.setText("Waiting For Sensor: "+protocol.getWaitingForSensor());
+			if(protocol.getWaitingForSensor() != Sensor.INVALID_SENSOR_ID){
+				sensorWaitingForSensor.setText("Waiting For Sensor: "+protocol.getWaitingForSensor());	
+			} else {
+				sensorWaitingForSensor.setText("Waiting For Sensor: none");
+			}
 		} else {
 			setTitle("Nothing selected");
 			sensorNumberOfNeighbours.setText("Number of neighbours: N/A");
