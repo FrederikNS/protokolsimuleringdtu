@@ -14,11 +14,18 @@ import nodes.Sensor;
  */
 public class ViewPort extends JFrame implements GUIConstants{
 	
+	/**
+	 * The title of the window (when unchanged: the filename, when changed: a star followed by the filename
+	 */
 	String halfTitle;
 
 	private static final long serialVersionUID = 1960058377833441994L;
 	private VPGraphicsPainter graphicsPainter;
 	
+	/**
+	 * The View Port for showing the network
+	 * @param title the title the window should have
+	 */
 	public ViewPort(String title){
 		super(title);
 		halfTitle = title;
@@ -34,10 +41,17 @@ public class ViewPort extends JFrame implements GUIConstants{
 		setVisible(true);
 	}
 	
+	/**
+	 * Method to grab the Graphics Painter
+	 * @return The Graphics Painter
+	 */
 	public VPGraphicsPainter getGraphicsPainter(){
 		return graphicsPainter;
 	}
 	
+	/**
+	 * 
+	 */
 	public static void disposeViewPort(){
 		Sensor.disposeAllSensors();
 		if(GUIReferences.viewPort!=null){
@@ -47,16 +61,27 @@ public class ViewPort extends JFrame implements GUIConstants{
 		}
 	}
 	
+	/**
+	 * Updates the title in the View Port without the mouses current coordinates
+	 */
 	public void updateTitleCoordinates(){
 		setTitle((GUIReferences.saveMenuItem.isEnabled()?"*":"")+this.halfTitle);
 	}
 	
+	/**
+	 * Updates the title in the View Port with the mouses current coordinates
+	 * @param x The X coordinate of the mouse
+	 * @param y The Y coordinate of the mouse
+	 */
 	public void updateTitleCoordinates(int x,int y){
 		setTitle("("+x+","+y+") "+(GUIReferences.saveMenuItem.isEnabled()?"*":"")+this.halfTitle);
 	}
 
+	/**
+	 * Grabs the open files absolute path
+	 * @param openFile The open file
+	 */
 	public ViewPort(File openFile){
 		this(openFile.getAbsolutePath());
 	}	
-
 }

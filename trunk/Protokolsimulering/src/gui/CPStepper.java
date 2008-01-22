@@ -30,10 +30,10 @@ public class CPStepper implements GUIConstants {
 		play.setToolTipText("Play");
 		play.addActionListener(actionListener);
 		play.setActionCommand(String.valueOf(BUTTON_PLAY));
-		JButton nextSensor = new JButton("||>");
-		nextSensor.setToolTipText("Next Sensor");
-		nextSensor.addActionListener(actionListener);
-		nextSensor.setActionCommand(String.valueOf(BUTTON_NEXT_SENSOR));
+		GUIReferences.nextSensor = new JButton("||>");
+		GUIReferences.nextSensor.setToolTipText("Next Sensor");
+		GUIReferences.nextSensor.addActionListener(actionListener);
+		GUIReferences.nextSensor.setActionCommand(String.valueOf(BUTTON_NEXT_SENSOR));
 		JToggleButton fastForward = new JToggleButton(">>");
 		fastForward.setToolTipText("Fast Forward");
 		fastForward.addActionListener(actionListener);
@@ -49,7 +49,7 @@ public class CPStepper implements GUIConstants {
 		
 		stepperPanel.add(stop);
 		stepperPanel.add(play);
-		stepperPanel.add(nextSensor);
+		stepperPanel.add(GUIReferences.nextSensor);
 		stepperPanel.add(fastForward);
 	}
 }
