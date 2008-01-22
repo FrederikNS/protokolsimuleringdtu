@@ -172,6 +172,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					if(GUIReferences.viewPort != null) {
 						GUIReferences.viewPort.repaint();
 					}
+					TurnController.clearAll();
 					GUIReferences.updateStatusBar();
 				}
 			}
