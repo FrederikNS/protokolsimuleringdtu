@@ -1114,6 +1114,9 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * @author Niels Thykier
 	 */
 	public static final class SensorComparator implements Comparator<Sensor> {
+		/**
+		 * The type it sorts by.
+		 */
 		private final int compareType;
 		/**
 		 * Use the natural ordering.
