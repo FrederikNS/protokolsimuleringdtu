@@ -1,10 +1,10 @@
 package test;
 
+import junit.framework.TestCase;
 import nodes.Sensor;
-import transmissions.NetworkData;
+import transmissions.Data;
 import transmissions.Protocol;
 import transmissions.Transmission;
-import junit.framework.TestCase;
 
 /**
  * @author Niels Thykier
@@ -33,80 +33,50 @@ public class ProtocolTest extends TestCase {
 		sensor.addLinkToSensor(sensor2);
 		protocol = sensor.getProtocol();
 	}
+	
+	
+	/**
+	 * 
+	 */
+	public void testAddTransmissionToSend() {
+		Transmission trans = new Transmission(1, 2, Data.generateData(new Object()));
+		protocol.addTransmissionToSend(trans);
+		assertTrue(protocol.getOutgoing().contains(trans));
+	}
+
 
 	/**
 	 * 
 	 */
 	public void testReceive() {
-		
-		fail("Not yet implemented");
+		Transmission trans = new Transmission(sensor.id, sensor2.id, sensor.id
+				, Data.generateData(new Object()));
+		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
+		protocol.receive(trans);
+		assertTrue(protocol.getIncomming().equals(trans));
 	}
 
 	/**
 	 * 
 	 */
 	public void testTransmit() {
-		protocol.transmit(new Transmission(sensor2.id,sensor.id,sensor.id,new NetworkData(0, sensor.id)));
-		protocol.endStep();
-		System.out.println(sensor.id);
-		System.out.println(sensor2.getNearestTerminal());
-		assertTrue(sensor2.getNearestTerminal() == sensor.id);
+		Transmission trans = new Transmission(sensor2.id, sensor.id, sensor.id
+				, Data.generateData(new Object()));
+		protocol.transmit(trans);
+		assertTrue(sensor2.getProtocol().getIncomming().equals(trans));
 	}
 
+	
 	/**
 	 * 
 	 */
-	public void testAddTransmissionToSend() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * 
-	 */
-	public void testGetCurrentTick() {
+	public void testEndStep() {
+		Transmission trans = new Transmission(sensor.id, sensor2.id, sensor.id
+				, Data.generateData(new Object()));
 		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
-		protocol.transmit(Transmission.generateCorruptTransmission());
-		protocol.receive(Transmission.generateSendRequest(sensor.id, sensor2.id));
-		protocol.transmit(new Transmission(sensor2.id,sensor.id,sensor.id,new NetworkData(0,sensor.id)));
+		protocol.receive(trans);
 		protocol.endStep();
-		protocol.step();
-		System.out.println(protocol.getCurrentTick());
-		assertTrue(protocol.getCurrentTick() == 4);
-	}
-
-	/**
-	 * 
-	 */
-	public void testGetDelayNextTransmission() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * 
-	 */
-	public void testGetIncomming() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * 
-	 */
-	public void testGetIngoing() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * 
-	 */
-	public void testGetOutgoing() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * 
-	 */
-	public void testGetSent() {
-		fail("Not yet implemented");
+		assertTrue(protocol.getReceived().equals(trans));
 	}
 
 	@Override
