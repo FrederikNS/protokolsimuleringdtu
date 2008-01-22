@@ -17,7 +17,6 @@ import xml.DOMxmlParser;
 import xml.Saveable;
 
 import nodes.Sensor;
-import nodes.Sensor.SensorImplementation;
 import notification.Note;
 
 public class Protocol implements Transmitter, DataConstants, Prepareable, EndSteppable, Saveable {
@@ -41,9 +40,9 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 	protected static Random ran = new Random();
 	
 	
-	private SensorImplementation main;
+	private Sensor main;
 	
-	public Protocol(SensorImplementation sen) {
+	public Protocol(Sensor sen) {
 		main = sen;
 	}
 	
@@ -228,7 +227,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		currentTick = 0;
 	}
 	
-	public static Protocol loadFromXMLElement(Node protocolElement, SensorImplementation main) throws XMLParseException {
+	public static Protocol loadFromXMLElement(Node protocolElement, Sensor main) throws XMLParseException {
 		NodeList list = protocolElement.getChildNodes();
 		int length = list.getLength();
 		Node current;

@@ -1,7 +1,6 @@
 package test;
 
 import nodes.Sensor;
-import nodes.Sensor.SensorImplementation;
 import transmissions.NetworkData;
 import transmissions.Protocol;
 import transmissions.Transmission;
@@ -10,14 +9,14 @@ import junit.framework.TestCase;
 public class ProtocolTest extends TestCase {
 	
 	private Protocol protocol;
-	private SensorImplementation sensor;
-	private SensorImplementation sensor2;
+	private Sensor sensor;
+	private Sensor sensor2;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		sensor2 = Sensor.newInstance().getReal();
-		sensor = Sensor.newInstance().getReal();
+		sensor2 = Sensor.newInstance();
+		sensor = Sensor.newInstance();
 		sensor2.addLinkToSensor(sensor);
 		sensor.addLinkToSensor(sensor2);
 		protocol = sensor.getProtocol();

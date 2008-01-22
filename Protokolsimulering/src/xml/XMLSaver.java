@@ -23,7 +23,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import math.Scaling;
 import nodes.Sensor;
-import nodes.Sensor.SensorImplementation;
 import notification.Note;
 
 import org.w3c.dom.Document;
@@ -71,7 +70,7 @@ public abstract class XMLSaver {
 			fieldNode.appendChild(fieldYElement);
 			rootElement.appendChild(fieldNode);
 		
-		rootElement.appendChild(SensorImplementation.generateXMLGeneralData(doc));
+		rootElement.appendChild(Sensor.generateXMLGeneralData(doc));
 		TurnController controller = TurnController.getInstance();
 		if(controller.getCurrentTurn() != null) {
 			rootElement.appendChild(controller.generateXMLElement(doc));
