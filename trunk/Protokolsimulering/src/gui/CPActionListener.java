@@ -6,19 +6,17 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Random;
 
-import javax.swing.JDialog;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import turns.TurnController;
-
 import nodes.GlobalAddressBook;
 import nodes.Sensor;
 import notification.Note;
 import notification.NoteConstants;
+import turns.TurnController;
 
 
 
