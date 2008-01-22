@@ -81,8 +81,8 @@ public class CPNew extends JDialog implements GUIConstants{
 		cancelButton.setActionCommand(String.valueOf(BUTTON_NEW_CANCEL));
 		okButton.setActionCommand(String.valueOf(BUTTON_NEW_OK));
 
-		widthSpinner.setValue(500);
-		heightSpinner.setValue(500);
+		widthSpinner.setValue(250);
+		heightSpinner.setValue(250);
 
 		pack();
 		setVisible(true);

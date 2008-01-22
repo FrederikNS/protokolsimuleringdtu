@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import math.Scaling;
@@ -47,6 +48,38 @@ public class GUIReferences implements GUIConstants{
 	 * References to the button to go to the next sensor (simulation)
 	 */
 	static JButton nextSensor;
+	/**
+	 * Reference to the Generate button
+	 */
+	static JButton generateButton = new JButton("Generate");
+	/**
+	 * Reference to the Enable button
+	 */
+	static JToggleButton enableButton;
+	/**
+	 * Reference to the Disable button
+	 */
+	static JToggleButton disableButton;
+	/**
+	 * Reference to the Add button
+	 */
+	static JToggleButton addButton;
+	/**
+	 * Reference to the Clear button
+	 */
+	static JButton clearButton;
+	/**
+	 * Reference to the Generate Address Book button
+	 */
+	static JButton generateAddressBook;
+	/**
+	 * Reference to the Promote button
+	 */
+	static JToggleButton promoteButton;
+	/**
+	 * Reference to the Demote button
+	 */
+	static JToggleButton demoteButton;
 	/**
 	 * Reference to the view of the sensor network currently opened
 	 */
@@ -231,6 +264,37 @@ public class GUIReferences implements GUIConstants{
 			GUIReferences.currentFile = saveFile;
 			GUIReferences.saveMenuItem.setEnabled(false);
 		}
+	}
+	
+	/**
+	 * Disables all buttons on the construction tab
+	 */
+	public static void disableConstruct(){
+		addButton.setEnabled(false);
+		generateButton.setEnabled(false);
+		clearButton.setEnabled(false);
+		enableButton.setEnabled(false);
+		disableButton.setEnabled(false);
+		promoteButton.setEnabled(false);
+		demoteButton.setEnabled(false);
+		radiusSpinner.setEnabled(false);
+		generateAddressBook.setEnabled(false);
+	}
+	
+	
+	/**
+	 * reenables all buttons on the construction tab
+	 */
+	public static void reenableConstruct(){
+		addButton.setEnabled(true);
+		generateButton.setEnabled(true);
+		clearButton.setEnabled(true);
+		enableButton.setEnabled(true);
+		disableButton.setEnabled(true);
+		promoteButton.setEnabled(true);
+		demoteButton.setEnabled(true);
+		radiusSpinner.setEnabled(true);
+		generateAddressBook.setEnabled(true);
 	}
 	
 	/**

@@ -139,13 +139,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 		case BUTTON_CLEAR:
 			if(Sensor.idToSensor.size() > 0) {
 				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you really wish to clear?", "", JOptionPane.OK_CANCEL_OPTION);
-				System.out.println(returnValue);
 				if(returnValue == JOptionPane.OK_OPTION) {
 					if(GUIReferences.selectedSensor!=null){
 						GUIReferences.selectedSensor.setSelected(false);
 						GUIReferences.selectedSensor = null;
 					}
 					Sensor.disposeAllSensors();
+					GUIReferences.reenableConstruct();
 					GUIReferences.saveMenuItem.setEnabled(true);
 					if(GUIReferences.currentFile != null) {
 						GUIReferences.viewPort.setTitle("*"+GUIReferences.currentFile.getName());
@@ -160,11 +160,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			break;
 		case BUTTON_STOP:
+			GUIReferences.clearButton.setEnabled(true);
 			timer.stop();
 			GUIReferences.stepperGroup.clearSelection();
 			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_PLAY:
+			GUIReferences.disableConstruct();
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
@@ -177,6 +179,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			timer.start();
 			break;
 		case BUTTON_NEXT_SENSOR:
+			GUIReferences.disableConstruct();
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
@@ -188,6 +191,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_FAST_FORWARD:
+			GUIReferences.disableConstruct();
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
