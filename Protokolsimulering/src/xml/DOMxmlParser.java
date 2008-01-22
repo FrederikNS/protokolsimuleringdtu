@@ -32,8 +32,20 @@ import turns.TurnController;
  * @author Niels Thykier
  */
 public class DOMxmlParser {
+	/**
+	 * The DOM Document of the XML file.
+	 */
 	private Document doc;
 	
+	/**
+	 * Constructor.
+	 * @param xmlFile The XML file to load from.
+	 * @throws ParserConfigurationException Thrown if no XML parser could be created.
+	 * @throws UnsupportedEncodingException Thrown if Java stops supporting the "UTF-8" encoding. 
+	 * @throws FileNotFoundException File did not exist.
+	 * @throws SAXException Malformatted XML file.
+	 * @throws IOException Other read/write problems.
+	 */
 	private DOMxmlParser(File xmlFile) throws ParserConfigurationException, UnsupportedEncodingException, FileNotFoundException, SAXException, IOException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docbuilder = factory.newDocumentBuilder();
@@ -60,7 +72,6 @@ public class DOMxmlParser {
 		Document result;
 		int x = 0, y = 0; // sizes of the field.
 		try {
-			//TODO generate better notes for errors.
 			result = new DOMxmlParser(xmlFile).doc;
 			
 			Sensor.loadGeneralDataFromXML(result);
