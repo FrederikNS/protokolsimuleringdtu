@@ -901,12 +901,20 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 		Node transmissionRadiusNode = doc.getElementsByTagName("transmissionRadius").item(0);
 		if( transmissionRadiusNode != null) {
 			try {
-				transmissionRadius = Integer.parseInt(DOMxmlParser.getTextNodeValue(transmissionRadiusNode).trim());
+				Sensor.setTransmissionRadius(Integer.parseInt(DOMxmlParser.getTextNodeValue(transmissionRadiusNode).trim()));
 			} catch(Exception e) {
 				throw new XMLParseException("Transmission Radius tag did not contain an int.");
 			}
 		} else {
 			transmissionRadius = Sensor.SENSOR_TRANSMISSION_RADIUS_DEFAULT;
+		}
+		Node sensorSizeNode = doc.getElementsByTagName("sensorsize").item(0);
+		if( sensorSizeNode != null) {
+			try {
+				Sensor.setSensorDrawRadius(Integer.parseInt(DOMxmlParser.getTextNodeValue(sensorSizeNode).trim()));
+			} catch(Exception e) {
+				throw new XMLParseException("Sensor Size tag did not contain an int.");
+			}
 		}
 	}
 
@@ -1104,6 +1112,9 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 		Node transmissionRadiusNode = doc.createElement("transmissionRadius");
 		transmissionRadiusNode.appendChild(doc.createTextNode(String.valueOf(transmissionRadius)));
 		element.appendChild(transmissionRadiusNode);
+		Node sensorsizeNode = doc.createElement("sensorsize");
+		sensorsizeNode.appendChild(doc.createTextNode(String.valueOf(sensorDrawRadius)));
+		element.appendChild(sensorsizeNode);
 		return element;
 	}
 
