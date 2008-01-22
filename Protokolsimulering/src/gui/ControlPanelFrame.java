@@ -43,7 +43,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		//ControlPanelFrame gets initialized
 		super("Control Panel");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setPreferredSize(new Dimension(200, 572));
+		setSize(new Dimension(200, 572));
 		this.setName(String.valueOf(WINDOW_CONTROL_FRAME));
 		setResizable(false);
 
