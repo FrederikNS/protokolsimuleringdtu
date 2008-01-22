@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Random;
 
+import javax.swing.JDialog;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -219,7 +220,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			playSpeed = PLAYBACK_FAST_FORWARD;
 			timer.setDelay(10);
-			timer.start();			
+			timer.start();
 			break;
 		case BUTTON_COLOR_CANVAS:
 			GUIReferences.canvasColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.canvasColor);
