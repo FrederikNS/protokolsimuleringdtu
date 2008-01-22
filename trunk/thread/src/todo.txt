@@ -1,0 +1,80 @@
+Fixe alle "TODO"s
+
+Test af Sensor-protokolen.
+Test af Save og Load.
+
+
+
+Protokol Simulering:
+
+DONE: Indlæse en udlagt graf fra en fil og vise den.
+DONE: Kunne markere et eller flere punkter som terminaler (dvs. endestationer for data genereret af knuderne).
+DONE: Kunne simulere protokollen til rutebestemmelse. Protokollens forløb skal visualiseres på grafen.
+	 Simuleringsskridtene skal kunne drives manuelt, dvs. ved tryk på en knap/tast for 
+	 hvert skridt. Den simulerede tid (antal skridt) skal vises. 
+	 
+	 - simulering af rutebestemmelse protokollen bør forbedres, men er færdig!
+	 
+DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
+
+
+--- 3 mandsgrupper.
+
+LAVES IKKE: Redigering af grafen: Flytning af punkter, tilføjelse/sletning af kanter, tilføjelse/sletning
+	  af punkter. Gemning af redigeret graf i fil.
+	  
+DONE: Automatisk simulering, dvs. at simuleringen kører af sig selv med en vis hastighed, efter
+			  at være blevet sat igang. Skal kunne stoppes igen.
+		    	Hertil bør man benytte Swing's Timer klasse, der kan generere "tik", der kan drive simu-
+		    	leringen (se mere på materialesiden). [Undgå brug af tråde(eng.threads).]			  
+
+LAVES IKKE: Simulering af andre protokoller. Fx. positioneringsprotokollen.
+
+DONE: En mere realistisk simulering/protokol. Fx. ved at tillade at knuder går ned, at beskeder
+	  gå tabt ved med en vis sandsynlighed (evt. afhængig af afstand), eller ved at lade kom-
+	  munikation og behandling tage varierende tid. Protokollen må så gøres tilsvarende mere
+	  robust, fx. ved at ruter opdateres regelmæssigt.
+	  
+	  - Transmission corruptions.
+
+LAVES IKKE: Mulighed for at gå frem og tilbage i en simulering.
+		
+		
+Distributation's Opgaven:
+
+
+NOT DONE: Generere og vise fordelinger af forskellige type (fx helt tilfældig, regulært gitter) og med
+  	forskellige parametere (fx tæthed).
+  	
+  - mangler forskellige typer, mangler parametere.
+  
+DONE: Vise rækkevidden af senorerne, fx. som cirkler med centrum i censorerne.
+
+DONE: Vise naborelationen som kanter.
+	
+DONE: Vise hvilke sensorer, der er isolerede. 
+
+DONE: Tillade visninger at blive slået til og fra.
+
+NOT DONE: Vise hvordan antallet af naboer til sensorerne fordeler sig, fx i form af et histogram.
+	
+	- Mangler alt.
+
+--- 3 mandsgrupper
+
+LAVES MULIGVIS: Opmåling af afstand mellem to valgte sensorer.
+LAVES IKKE: Andre former for fordeling, fx. manuel placering eller hybrider mellem regulære og tilfældige
+  	(udkast fra fly på bestemte positioner).
+
+LAVES MULIGVIS: Zoom-funktion.
+LAVES IKKE: En "maske" (fx et kvadrat) der kan placeres på  området med optælling af sensorer inden
+	  for maskens afgrænsning (evt. suppleret med andre analyser).
+	  
+LAVES MULIGVIS: Analyse og visning af andre egenskaber ved fordelingen, fx. afstand til nærmeste sensor.
+
+LAVES IKKE: Konkret beregning af positioner ud fra basissensorer med tilskrevne positioner, der afviger fra deres sande positioner.
+	  For beregningsdetaljer, se efter ̊årets materiale [CampusNet].
+	  
+LAVES IKKE: Beregning af den generelle usikkerhed på hver sensors beregnede position, givet en vis
+			  usikkerhed på basissensorernes position. Usikkerheden vises grafisk.
+
