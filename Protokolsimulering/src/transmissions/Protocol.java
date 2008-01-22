@@ -104,7 +104,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		case TYPE_DATA:
 		case TYPE_NETWORK:
 			if(isReceiver || isForAll) {
-				//Note.sendNote(Note.DEBUG, main + " received transmission from " +  msg.getSender());
+				Note.sendNote(Note.DEBUG, main + " received transmission from " +  msg.getSender());
 				if(isForAll) {
 					delayNextTransmission = ran.nextInt(12);
 				}
@@ -414,7 +414,7 @@ public class Protocol implements Transmitter, DataConstants, Prepareable, EndSte
 		}
 		if(outgoing.size() > 0) {
 			Element outgoingElement = doc.createElement("outgoing");
-			for(Transmission list : ingoing) {
+			for(Transmission list : outgoing) {
 				outgoingElement.appendChild(list.generateXMLElement(doc));			
 			}
 			protocolElement.appendChild(outgoingElement);
