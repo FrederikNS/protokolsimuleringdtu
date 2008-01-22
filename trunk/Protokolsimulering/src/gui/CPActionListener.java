@@ -385,9 +385,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 
 			GUIReferences.generateNewField(width, height, "Untitled");
 			GUIReferences.updateStatusBar();
-
-			
-
 			break;
 		case BUTTON_NEW_CANCEL:
 			CPNew.disposeWindow();
