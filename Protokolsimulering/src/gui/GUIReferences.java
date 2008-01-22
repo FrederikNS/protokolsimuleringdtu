@@ -241,7 +241,7 @@ public class GUIReferences implements GUIConstants{
 	 */
 	public static void save(){
 		if(GUIReferences.currentFile != null) {
-			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), GUIReferences.currentFile);
+			xml.XMLSaver.saveSensorList(GUIReferences.currentFile);
 			GUIReferences.saveMenuItem.setEnabled(false);
 		} else {
 			saveAs();
@@ -262,7 +262,7 @@ public class GUIReferences implements GUIConstants{
 			if(saveFile.getPath().contains(".")==false){
 				saveFile = new File(saveFile.getPath()+".stuff");
 			}
-			xml.XMLSaver.saveSensorList(Sensor.idToSensor.values(), saveFile);
+			xml.XMLSaver.saveSensorList(saveFile);
 			GUIReferences.viewPort.halfTitle = saveFile.getName();
 			GUIReferences.viewPort.setTitle(saveFile.getName());
 			GUIReferences.currentFile = saveFile;

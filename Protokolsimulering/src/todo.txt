@@ -22,12 +22,14 @@ DONE: Gemme en simuleringstilstand i en fil og indlæse den igen
 
 LAVES IKKE: Redigering af grafen: Flytning af punkter, tilføjelse/sletning af kanter, tilføjelse/sletning
 	  af punkter. Gemning af redigeret graf i fil.
+	  
 DONE: Automatisk simulering, dvs. at simuleringen kører af sig selv med en vis hastighed, efter
 			  at være blevet sat igang. Skal kunne stoppes igen.
 		    	Hertil bør man benytte Swing's Timer klasse, der kan generere "tik", der kan drive simu-
 		    	leringen (se mere på materialesiden). [Undgå brug af tråde(eng.threads).]			  
 
 LAVES IKKE: Simulering af andre protokoller. Fx. positioneringsprotokollen.
+
 DONE: En mere realistisk simulering/protokol. Fx. ved at tillade at knuder går ned, at beskeder
 	  gå tabt ved med en vis sandsynlighed (evt. afhængig af afstand), eller ved at lade kom-
 	  munikation og behandling tage varierende tid. Protokollen må så gøres tilsvarende mere

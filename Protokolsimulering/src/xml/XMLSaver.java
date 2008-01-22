@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.TreeSet;
+import java.util.zip.GZIPOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -39,10 +40,9 @@ public abstract class XMLSaver {
 	
 	/**
 	 * Saves a list of sensors, though if a turn is running the sensors in that will be saved instead.
-	 * @param sensorList The list of sensors.
 	 * @param file The file to save it in.
 	 */
-	public static void saveSensorList(Collection<Sensor> sensorList, File file) {
+	public static void saveSensorList(File file) {
 		Document doc;
 		if(file.exists()) {
 			if(!file.isFile()) {
@@ -76,7 +76,7 @@ public abstract class XMLSaver {
 		if(controller.getCurrentTurn() != null) {
 			rootElement.appendChild(controller.generateXMLElement(doc));
 		} else { 
-			for(Sensor sen : new TreeSet<Sensor>(sensorList)) {
+			for(Sensor sen : new TreeSet<Sensor>(Sensor.idToSensor.values())) {
 				rootElement.appendChild(sen.generateXMLElement(doc));
 			}
 		}
@@ -147,7 +147,10 @@ public abstract class XMLSaver {
         TransformerFactory fact = TransformerFactory.newInstance();
         fact.setAttribute("indent-number", new Integer(4));
         //GZIPOutputStream outfile= new GZIPOutputStream(new FileOutputStream(file, false));
-        FileOutputStream outfile = new FileOutputStream(file, false);
+        OutputStream outfile = new FileOutputStream(file, false);
+        if(file.getName().endsWith(".gz")) {
+        	outfile = new GZIPOutputStream(outfile);
+        }
         Result result = new StreamResult(new OutputStreamWriter(outfile, "utf-8"));
         Transformer xformer;
 		try {
