@@ -271,12 +271,17 @@ public class GUIReferences implements GUIConstants{
 		File saveFile;
 		JFileChooser saveChooser = new JFileChooser();
 		FileNameExtensionFilter saveFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+		FileNameExtensionFilter saveFilter2 = new FileNameExtensionFilter("Gzipped Sensormap Files (.stuff.gz)", "stuff.gz");
 		saveChooser.setFileFilter(saveFilter);
+		saveChooser.setFileFilter(saveFilter2);
 		int saveReturnVal = saveChooser.showSaveDialog(ControlPanelFrame.getFrame());
 		if(saveReturnVal == JFileChooser.APPROVE_OPTION) {
-			saveFile = saveChooser.getSelectedFile();
-			if(saveFile.getPath().contains(".")==false){
-				saveFile = new File(saveFile.getPath()+".stuff");
+			if(saveChooser.getFileFilter() == saveFilter && saveChooser.getSelectedFile().getName().endsWith(".stuff")==false){
+				saveFile = new File(saveChooser.getSelectedFile().getAbsolutePath()+".stuff");
+			} else if(saveChooser.getFileFilter() == saveFilter2 && saveChooser.getSelectedFile().getName().endsWith(".stuff.gz")==false){
+				saveFile = new File(saveChooser.getSelectedFile().getAbsolutePath()+".stuff.gz");
+			} else {
+				saveFile = saveChooser.getSelectedFile();
 			}
 			XMLSaver.saveSensorList(saveFile);
 			GUIReferences.viewPort.halfTitle = saveFile.getName();
