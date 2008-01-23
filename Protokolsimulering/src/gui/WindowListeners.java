@@ -20,12 +20,14 @@ public class WindowListeners implements WindowListener, GUIConstants {
 		switch(arg0.getWindow().getName().charAt(0)) {
 		case WINDOW_CONTROL_FRAME:
 			if(doBringToFront) {
+				doBringToFront = false;
 				if(GUIReferences.console != null) {
 					GUIReferences.console.toFront();
 				}
 				if(GUIReferences.viewPort != null) {
 					GUIReferences.viewPort.toFront();
 				}
+				arg0.getWindow().toFront();
 			}
 			break;
 		}

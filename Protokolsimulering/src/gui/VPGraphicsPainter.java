@@ -58,7 +58,17 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 				Sensor.drawAllConnections(g);
 			}
 		}
-		
+		if(0 != (view & VIEW_RADII)) {
+			g.setColor(GUIReferences.transmissionRadiusColor);
+			if(isSelected) {
+				selectedSensor.drawTransmissionRadius(g);
+			} else {
+				for(Sensor sen : Sensor.idToSensor.values()) {
+					sen.drawTransmissionRadius(g);
+				}
+			}
+			g.setColor(GUIReferences.sensorColor);
+		}
 		Sensor.drawAll(g);
 	}
 

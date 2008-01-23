@@ -1,13 +1,9 @@
 package shape;
 
-import gui.GUIReferences;
-
-import java.awt.Color;
 import java.awt.Graphics;
 
 import math.Scaling;
 import nodes.Location;
-import nodes.Sensor;
 
 /**
  * A circle that is optimized to be drawn but is scaled up before each draw.
@@ -69,8 +65,8 @@ public class DrawableCircle extends Shape {
 	 */
 	public void draw(Graphics g) {
 		int diameter = radius *2;
-		g.fillOval(Scaling.convertToPicX(center.getX()) - radius, Scaling.convertToPicY(center.getY()) - radius
-				, diameter, diameter);
+		g.drawOval(Scaling.convertToPicX(center.getX() - radius), Scaling.convertToPicY(center.getY() - radius)
+				, Scaling.convertToPicX(diameter), Scaling.convertToPicY(diameter));
 	}
 	
 	/**
@@ -95,17 +91,9 @@ public class DrawableCircle extends Shape {
 		 */
 		@Override
 		public void draw(Graphics g) {
-			super.draw(g);
-			if(0 == (GUIReferences.view & GUIReferences.VIEW_RADII)) {
-				return;
-			}
-			Color temp = g.getColor();
-			g.setColor(GUIReferences.transmissionRadiusColor);
-			int transRadius = Sensor.getTransmissionRadius();
-			int diameter = transRadius * 2;
-			g.drawOval(Scaling.convertToPicX(center.getX() - transRadius), Scaling.convertToPicY(center.getY() - transRadius)
-					, Scaling.convertToPicX(diameter), Scaling.convertToPicY(diameter));
-			g.setColor(temp);
+			int diameter = 2 * radius;
+			g.fillOval(Scaling.convertToPicX(center.getX()) - radius, Scaling.convertToPicY(center.getY()) - radius
+					, diameter, diameter);
 		}
 	}
 
