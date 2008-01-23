@@ -8,9 +8,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.WindowListener;
-import java.util.Enumeration;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -59,11 +57,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		setSize(new Dimension(200, 572));
 		this.setName(String.valueOf(WINDOW_CONTROL_FRAME));
 		setResizable(false);
-
 		
-
-		
-
 		//The additional panels are created
 		CPActionListener actionListener = new CPActionListener();
 		WindowListener localWindowListener = new WindowListeners();
@@ -136,6 +130,8 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		add(statusBarPanel,BorderLayout.SOUTH);
 		statusBarPanel.add(GUIReferences.status);
 		
+		GUIReferences.setConstructEnabled(false);
+		
 		//frame is packed and shown
 		pack();	
 	}
@@ -177,18 +173,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 				mode = MODE_SELECT;
 			}
 			GlobalAddressBook.getBook().generateDirectConnections();
-			Enumeration<AbstractButton> buttons = GUIReferences.stepperGroup.getElements();
-			if(Sensor.getAmountOfTerminals() > 0) {
-				while(buttons.hasMoreElements()) {
-					buttons.nextElement().setEnabled(true);
-				}
-			GUIReferences.nextSensor.setEnabled(true);
-			} else {
-				while(buttons.hasMoreElements()) {
-					buttons.nextElement().setEnabled(false);
-				}
-				GUIReferences.nextSensor.setEnabled(false);
-			}
+			GUIReferences.setSimulateEnabled(Sensor.getAmountOfTerminals() > 0);
 		}
 	}
 }

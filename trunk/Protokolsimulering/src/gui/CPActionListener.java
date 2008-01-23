@@ -97,6 +97,14 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				for(ChangeListener list : listeners) {
 					GUIReferences.radiusSpinner.addChangeListener(list);
 				}
+				if(TurnController.getInstance().getCurrentTurn()==null){
+					GUIReferences.setSimulateEnabled(Sensor.getAmountOfTerminals() > 0);
+					GUIReferences.setConstructEnabled(true);
+				} else {
+					GUIReferences.setSimulateEnabled(true);
+					GUIReferences.setConstructEnabled(false);
+					GUIReferences.clearButton.setEnabled(true);
+				}
 				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
 				GUIReferences.updateStatusBar();
@@ -164,6 +172,8 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						GUIReferences.selectedSensor = null;
 					}
 					GUIReferences.clearViewPort();
+					GUIReferences.setConstructEnabled(true);
+					GUIReferences.setSimulateEnabled(false);
 					GUIReferences.markAsModified();
 					if(GUIReferences.viewPort != null) {
 						GUIReferences.viewPort.repaint();
@@ -368,6 +378,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 
 			GUIReferences.generateNewField(width, height, "Untitled");
 			GUIReferences.updateStatusBar();
+			GUIReferences.setConstructEnabled(true);
 			break;
 		case BUTTON_NEW_CANCEL:
 			CPNew.disposeWindow();
