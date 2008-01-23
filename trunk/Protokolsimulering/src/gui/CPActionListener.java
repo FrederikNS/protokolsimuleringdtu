@@ -79,7 +79,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			}
 			File openFile;
 			JFileChooser openChooser = new JFileChooser();
-			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff)", "stuff");
+			FileNameExtensionFilter openFilter = new FileNameExtensionFilter("Sensormap Files (.stuff or .stuff.gz)", "stuff", "gz");
 			openChooser.setFileFilter(openFilter);
 			int openReturnVal = openChooser.showOpenDialog(ControlPanelFrame.getFrame());
 			if(openReturnVal == JFileChooser.APPROVE_OPTION) {
