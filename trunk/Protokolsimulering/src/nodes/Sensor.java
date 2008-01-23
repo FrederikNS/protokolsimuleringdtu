@@ -227,7 +227,9 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	public boolean assignLabel(String label) {
 		boolean toReturn = false;
 		if(label == null || label.trim().equals("")) {
-			toReturn = labelToID.remove(this.sensorLabel) != null;
+			if(this.sensorLabel != null) {
+				toReturn = labelToID.remove(this.sensorLabel) != null;
+			}	
 		} else {
 			labelToID.put(label, id);
 			toReturn = true;
