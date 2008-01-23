@@ -149,7 +149,6 @@ public class Turn implements Saveable, Drawable{
 	
 	public Element generateXMLElement(Document doc) {
 		Element turnElement;
-		System.err.println("Saving..." + this);
 		if(this instanceof RunnableTurn) {
 			turnElement = doc.createElement("runnableTurn");
 			RunnableTurn run = (RunnableTurn) this;
