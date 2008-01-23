@@ -45,10 +45,11 @@ public class Console extends JFrame implements NotificationListener, GUIConstant
 	 */
 	public Console init() {
 //		The console is created
-		this.setName(String.valueOf(WINDOW_CONSOLE));
+		setName(String.valueOf(WINDOW_CONSOLE));
 		setTitle("Console");
 		setLocation(0,610);
 		setMinimumSize(new Dimension(800,150));
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		console = new JTextArea();
 		FlowLayout consolePanelLayout = new FlowLayout(FlowLayout.LEFT,0,0);
 		GridLayout consoleScrollerPanelLayout = new GridLayout(0,1);

@@ -234,6 +234,10 @@ public interface GUIConstants {
 	 */
 	public final static char WINDOW_CONSOLE = '3';
 	/**
+	 * The "name" of the informationFrame (used by the window listener)
+	 */
+	public final static char WINDOW_INFORMATION_FRAME = '4';
+	/**
 	 * View bit-mask for whether the Radii view is active or not 
 	 */
 	public final static int VIEW_RADII		  = 0x00000001;

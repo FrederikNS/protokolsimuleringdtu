@@ -60,19 +60,22 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		this.setName(String.valueOf(WINDOW_CONTROL_FRAME));
 		setResizable(false);
 
+		
 
-		GUIReferences.console = new Console().init();
-		GUIReferences.informationFrame = new InformationFrame().init();
+		
 
 		//The additional panels are created
 		CPActionListener actionListener = new CPActionListener();
 		WindowListener localWindowListener = new WindowListeners();
+		GUIReferences.listener = actionListener;
+		GUIReferences.windowListener = localWindowListener;
 		new CPMenuBar(this,actionListener);
 		new CPViewSettings(actionListener);
 		new CPModes(actionListener);
 		new CPStepper(actionListener);
-		GUIReferences.listener = actionListener;
-		GUIReferences.windowListener = localWindowListener;
+		
+		GUIReferences.console = new Console().init();
+		GUIReferences.informationFrame = new InformationFrame().init();
 
 		this.addWindowListener(localWindowListener);
 		
@@ -88,19 +91,19 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		//infobox
 		JPanel infoBoxOptions = new JPanel();
 		infoBoxOptions.setLayout(new GridLayout(0,1));
-		JCheckBox infoBoxEnable = new JCheckBox("Information Frame");
-		infoBoxEnable.addActionListener(actionListener);
-		infoBoxEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_INFOBOX));
+		GUIReferences.infoBoxEnable = new JCheckBox("Information Frame");
+		GUIReferences.infoBoxEnable.addActionListener(actionListener);
+		GUIReferences.infoBoxEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_INFOBOX));
 		GUIReferences.controlPanelPane.add(infoBoxOptions);
-		infoBoxOptions.add(infoBoxEnable);
+		infoBoxOptions.add(GUIReferences.infoBoxEnable);
 
 		//Console prefs
 		JPanel consoleOptionsPane = new JPanel();
 		consoleOptionsPane.setBorder(BorderFactory.createTitledBorder("Console Options"));
 		consoleOptionsPane.setLayout(new GridLayout(0,1));
-		JCheckBox consoleEnable = new JCheckBox("Console");
-		consoleEnable.addActionListener(actionListener);
-		consoleEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_CONSOLE));
+		GUIReferences.consoleEnable = new JCheckBox("Console");
+		GUIReferences.consoleEnable.addActionListener(actionListener);
+		GUIReferences.consoleEnable.setActionCommand(String.valueOf(CHECKBOX_ENABLE_CONSOLE));
 		JCheckBox consoleInformation = new JCheckBox("Information");
 		consoleInformation.addActionListener(actionListener);
 		consoleInformation.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_INFORMATION));
@@ -118,7 +121,7 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 		consoleDebug.addActionListener(actionListener);
 		consoleDebug.setActionCommand(String.valueOf(CHECKBOX_CONSOLE_DEBUG));
 		GUIReferences.controlPanelPane.add(consoleOptionsPane);
-		consoleOptionsPane.add(consoleEnable);
+		consoleOptionsPane.add(GUIReferences.consoleEnable);
 		consoleOptionsPane.add(consoleInformation);
 		consoleOptionsPane.add(consoleWarning);
 		consoleOptionsPane.add(consoleError);
