@@ -19,6 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import math.Scaling;
 import nodes.Sensor;
 import turns.TurnController;
+import xml.XMLSaver;
 
 /**
  * @author Frederik Nordahl Sabroe
@@ -212,6 +213,11 @@ public class GUIReferences implements GUIConstants{
 	public static void markAsModified() {
 		if(isSensorNetworkAvailable()) {
 			saveMenuItem.setEnabled(true);
+			if(GUIReferences.currentFile != null) {
+				GUIReferences.viewPort.setTitle("*"+GUIReferences.currentFile.getName());
+			} else {
+				GUIReferences.viewPort.setTitle("*Untitled");
+			}
 		}
 	}
 	
@@ -220,7 +226,7 @@ public class GUIReferences implements GUIConstants{
 	 */
 	public static void clearViewPort() {
 		Sensor.disposeAllSensors();
-		GUIReferences.reenableConstruct();
+		GUIReferences.setConstructEnabled(true);
 		TurnController.clearAll();
 		GUIReferences.updateStatusBar();
 	}
@@ -276,7 +282,7 @@ public class GUIReferences implements GUIConstants{
 			if(saveFile.getPath().contains(".")==false){
 				saveFile = new File(saveFile.getPath()+".stuff");
 			}
-			xml.XMLSaver.saveSensorList(saveFile);
+			XMLSaver.saveSensorList(saveFile);
 			GUIReferences.viewPort.halfTitle = saveFile.getName();
 			GUIReferences.viewPort.setTitle(saveFile.getName());
 			GUIReferences.currentFile = saveFile;
@@ -285,36 +291,21 @@ public class GUIReferences implements GUIConstants{
 	}
 	
 	/**
-	 * Disables all buttons on the construction tab
+	 * Enables or disables all buttons on the construction tab
+	 * @param isEnabled true if it should be enabled, false if it should be disabled.
 	 */
-	public static void disableConstruct(){
-		addButton.setEnabled(false);
-		generateButton.setEnabled(false);
-		clearButton.setEnabled(false);
-		enableButton.setEnabled(false);
-		disableButton.setEnabled(false);
-		promoteButton.setEnabled(false);
-		demoteButton.setEnabled(false);
-		radiusSpinner.setEnabled(false);
-		generateAddressBook.setEnabled(false);
+	public static void setConstructEnabled(boolean isEnabled){
+		addButton.setEnabled(isEnabled);
+		generateButton.setEnabled(isEnabled);
+		clearButton.setEnabled(isEnabled);
+		enableButton.setEnabled(isEnabled);
+		disableButton.setEnabled(isEnabled);
+		promoteButton.setEnabled(isEnabled);
+		demoteButton.setEnabled(isEnabled);
+		radiusSpinner.setEnabled(isEnabled);
+		generateAddressBook.setEnabled(isEnabled);
 	}
-	
-	
-	/**
-	 * reenables all buttons on the construction tab
-	 */
-	public static void reenableConstruct(){
-		addButton.setEnabled(true);
-		generateButton.setEnabled(true);
-		clearButton.setEnabled(true);
-		enableButton.setEnabled(true);
-		disableButton.setEnabled(true);
-		promoteButton.setEnabled(true);
-		demoteButton.setEnabled(true);
-		radiusSpinner.setEnabled(true);
-		generateAddressBook.setEnabled(true);
-	}
-	
+		
 	/**
 	 * Convience method for reopening the Config-frame.
 	 * @param where The location on the screen where it should be placed.
