@@ -15,6 +15,21 @@ public class Initiator {
 	 * @param args The command-line arguments.
 	 */
 	public static void main(String[] args) {
+		if(args.length > 0) {
+			for(int i = 0 ; i < args.length ; i++) {
+				if(args[i].equals("make") && args.length > i +1) {
+					if(args[i+1].equals("coffee") || args[i+1].equals("tea")) {
+						System.out.println("Here you go, one large cup of " + args[i+1]);
+					} else if(args[i+1].equals("cake")) {
+						System.err.println("The cake is a lie!");
+						System.err.println("THE CAKE IS A LIE!");
+					} else {
+						System.out.println("We do not serve " + args[i+1] + " here.");
+					}
+					return;
+				}
+			}
+		}
 		UIManager.put("swing.boldMetal", Boolean.FALSE);
 		ControlPanelFrame.getFrame().open();
 	}
