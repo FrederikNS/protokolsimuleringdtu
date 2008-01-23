@@ -172,12 +172,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						GUIReferences.selectedSensor = null;
 					}
 					GUIReferences.clearViewPort();
-					GUIReferences.saveMenuItem.setEnabled(true);
-					if(GUIReferences.currentFile != null) {
-						GUIReferences.viewPort.setTitle("*"+GUIReferences.currentFile.getName());
-					} else {
-						GUIReferences.viewPort.setTitle("*Untitled");
-					}
+					GUIReferences.markAsModified();
 					if(GUIReferences.viewPort != null) {
 						GUIReferences.viewPort.repaint();
 					}
@@ -191,7 +186,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_PLAY:
-			GUIReferences.disableConstruct();
+			GUIReferences.setConstructEnabled(false);
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
@@ -204,7 +199,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			timer.start();
 			break;
 		case BUTTON_NEXT_SENSOR:
-			GUIReferences.disableConstruct();
+			GUIReferences.setConstructEnabled(false);
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
@@ -216,7 +211,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			GUIReferences.updateStatusBar();
 			break;
 		case BUTTON_FAST_FORWARD:
-			GUIReferences.disableConstruct();
+			GUIReferences.setConstructEnabled(false);
 			if(!GUIReferences.isSensorNetworkAvailable()) {
 				break;
 			}
@@ -361,7 +356,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			width = Integer.parseInt(CPNew.widthSpinner.getValue().toString());
 			height = Integer.parseInt(CPNew.heightSpinner.getValue().toString());
 			
-			GUIReferences.reenableConstruct();
 			if(Sensor.idToSensor.size() > 0) {
 				if(GUIReferences.selectedSensor!=null){
 					GUIReferences.selectedSensor.setSelected(false);
@@ -376,7 +370,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.updateStatusBar();
 			}
 			CPNew.disposeWindow();
-
+			GUIReferences.setConstructEnabled(true);
 			ViewPort.disposeViewPort();
 			GUIReferences.saveMenuItem.setEnabled(false);
 
