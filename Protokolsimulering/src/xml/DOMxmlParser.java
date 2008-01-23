@@ -1,9 +1,5 @@
 package xml;
 
-import exceptions.XMLParseException;
-import gui.ControlPanelFrame;
-import gui.GUIReferences;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +24,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import turns.TurnController;
+import exceptions.XMLParseException;
+import gui.GUIReferences;
 
 /**
  * Semi-static file for loading data from a XML file.
@@ -72,9 +70,8 @@ public class DOMxmlParser {
 	/**
 	 * Opens, parses and loads the status from a file.
 	 * @param xmlFile The xmlfile to load.
-	 * @param panel The panel is used to update the status bar label.
 	 */
-	public static void parse(File xmlFile, ControlPanelFrame panel) {
+	public static void parse(File xmlFile) {
 		Document result;
 		int x = 0, y = 0; // sizes of the field.
 		try {

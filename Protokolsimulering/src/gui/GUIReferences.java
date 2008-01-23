@@ -75,10 +75,6 @@ public class GUIReferences implements GUIConstants{
 	 */
 	static JButton generateAddressBook;
 	/**
-	 * References to the Remove button
-	 */
-	static JToggleButton removeButton;
-	/**
 	 * Reference to the Promote button
 	 */
 	static JToggleButton promoteButton;

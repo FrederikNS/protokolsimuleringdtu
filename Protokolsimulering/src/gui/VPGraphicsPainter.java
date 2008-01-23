@@ -92,21 +92,6 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 			GUIReferences.markAsModified();
 			GUIReferences.updateStatusBar();
 			break;
-		case MODE_REMOVE:
-			if(GUIReferences.selectedSensor!=null){
-				GUIReferences.selectedSensor.setSelected(false);
-				GUIReferences.selectedSensor = null;
-			}
-			selectSensor(loc,dist);
-			if(GUIReferences.selectedSensor!=null){
-				Sensor.assignLabel(null, GUIReferences.selectedSensor.id);
-				Sensor.idToSensor.remove(GUIReferences.selectedSensor.id);
-				GUIReferences.selectedSensor = null;
-				GUIReferences.updateViewSettings();
-			}
-			GUIReferences.markAsModified();
-			GUIReferences.updateStatusBar();
-			break;
 		case MODE_ENABLE:
 		case MODE_DISABLE:
 			selectSensor(loc,dist);

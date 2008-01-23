@@ -52,10 +52,6 @@ public interface GUIConstants {
 	/**
 	 * A constant for easily keeping track of which actions have been fired 
 	 */
-	public final static int BUTTON_REMOVE = 106;
-	/**
-	 * A constant for easily keeping track of which actions have been fired 
-	 */
 	public final static int BUTTON_STOP = 114;
 	/**
 	 * A constant for easily keeping track of which actions have been fired 
