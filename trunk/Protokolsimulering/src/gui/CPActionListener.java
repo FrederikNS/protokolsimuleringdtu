@@ -171,8 +171,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 						GUIReferences.selectedSensor.setSelected(false);
 						GUIReferences.selectedSensor = null;
 					}
-					Sensor.disposeAllSensors();
-					GUIReferences.reenableConstruct();
+					GUIReferences.clearViewPort();
 					GUIReferences.saveMenuItem.setEnabled(true);
 					if(GUIReferences.currentFile != null) {
 						GUIReferences.viewPort.setTitle("*"+GUIReferences.currentFile.getName());
@@ -182,8 +181,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					if(GUIReferences.viewPort != null) {
 						GUIReferences.viewPort.repaint();
 					}
-					TurnController.clearAll();
-					GUIReferences.updateStatusBar();
 				}
 			}
 			break;

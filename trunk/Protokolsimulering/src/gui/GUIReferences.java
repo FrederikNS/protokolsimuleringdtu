@@ -216,6 +216,15 @@ public class GUIReferences implements GUIConstants{
 	}
 	
 	/**
+	 * Clears the view-port, removes all sensors and re-enables modification.
+	 */
+	public static void clearViewPort() {
+		Sensor.disposeAllSensors();
+		GUIReferences.reenableConstruct();
+		TurnController.clearAll();
+		GUIReferences.updateStatusBar();
+	}
+	/**
 	 * Updates the statusbar of the Control Panel
 	 */
 	public static void updateStatusBar(){
