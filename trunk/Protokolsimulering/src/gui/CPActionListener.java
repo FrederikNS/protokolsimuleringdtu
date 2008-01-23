@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,6 +10,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import nodes.GlobalAddressBook;
@@ -18,6 +18,7 @@ import nodes.Sensor;
 import notification.Note;
 import notification.NoteConstants;
 import turns.TurnController;
+import xml.DOMxmlParser;
 
 
 
@@ -39,10 +40,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	 * The speed things should go
 	 */
 	private int playSpeed;
-	/**
-	 * For remembering where the configframe was
-	 */
-	Point where;
 
 	/**
 	 * Default constructor for the CPActionListener.
@@ -91,7 +88,15 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					openFile = new File(openFile.getPath()+".stuff");
 				}
 				ViewPort.disposeViewPort();
-				xml.DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
+				DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
+				ChangeListener[] listeners = GUIReferences.radiusSpinner.getChangeListeners();
+				for(ChangeListener list : listeners) {
+					GUIReferences.radiusSpinner.removeChangeListener(list);
+				}
+				GUIReferences.radiusSpinner.setValue(Sensor.getTransmissionRadius());
+				for(ChangeListener list : listeners) {
+					GUIReferences.radiusSpinner.addChangeListener(list);
+				}
 				GUIReferences.currentFile = openFile;
 				CPNew.disposeWindow();
 				GUIReferences.updateStatusBar();

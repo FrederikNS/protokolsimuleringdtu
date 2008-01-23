@@ -23,8 +23,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import shape.Drawable;
-import shape.Line;
+import shape.DrawableCircle;
 import shape.DrawableCircle.SensorCircle;
+import shape.Line;
 import transmissions.Data;
 import transmissions.DataConstants;
 import transmissions.Protocol;
@@ -106,7 +107,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	protected static Random ran = new Random();
 	
 	/**
-	 * 
+	 * Transmission Radius of the sensors.
 	 */
 	protected static int transmissionRadius = SENSOR_TRANSMISSION_RADIUS_DEFAULT;
 	
@@ -568,7 +569,16 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 			new Line(loc, idToSensor.get(link).loc).draw(g);
 		}
 	}
-
+	
+	/**
+	 * Draws the transmission radius of the sensor as a circle around it.
+	 * @param g The graphics to draw with.
+	 * 
+	 */
+	public void drawTransmissionRadius(Graphics g) {
+		new DrawableCircle(loc, transmissionRadius).draw(g);
+	}
+	
 	/**
 	 * Method for choosing which color to use.
 	 * @param defaultColor The default sensor color
@@ -748,7 +758,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 */
 	public static void setTransmissionRadius(int newRadius){
 		if(newRadius < Sensor.SENSOR_TRANSMISSION_RADIUS_MIN) {
-			throw new IllegalArgumentException("Transmission Radius cannot be less than " + SENSOR_TRANSMISSION_RADIUS_MIN);
+			throw new IllegalArgumentException("Transmission Radius cannot be less than " + SENSOR_TRANSMISSION_RADIUS_MIN + " " + newRadius);
 		}
 		if(newRadius > Sensor.SENSOR_TRANSMISSION_RADIUS_MAX) {
 			throw new IllegalArgumentException("Transmission Radius cannot be greater than " + SENSOR_TRANSMISSION_RADIUS_MAX);
