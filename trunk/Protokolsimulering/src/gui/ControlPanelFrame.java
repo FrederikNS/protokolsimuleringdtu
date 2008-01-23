@@ -20,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import nodes.GlobalAddressBook;
 import nodes.Sensor;
 
 /**
@@ -172,12 +173,13 @@ public class ControlPanelFrame extends JFrame implements GUIConstants,ChangeList
 				modeGroup.clearSelection();
 				mode = MODE_SELECT;
 			}
+			GlobalAddressBook.getBook().generateDirectConnections();
 			Enumeration<AbstractButton> buttons = GUIReferences.stepperGroup.getElements();
 			if(Sensor.getAmountOfTerminals() > 0) {
 				while(buttons.hasMoreElements()) {
 					buttons.nextElement().setEnabled(true);
 				}
-				GUIReferences.nextSensor.setEnabled(true);
+			GUIReferences.nextSensor.setEnabled(true);
 			} else {
 				while(buttons.hasMoreElements()) {
 					buttons.nextElement().setEnabled(false);

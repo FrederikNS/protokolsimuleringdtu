@@ -88,7 +88,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 					openFile = new File(openFile.getPath()+".stuff");
 				}
 				ViewPort.disposeViewPort();
-				DOMxmlParser.parse(openFile, ControlPanelFrame.getFrame());
+				DOMxmlParser.parse(openFile);
 				ChangeListener[] listeners = GUIReferences.radiusSpinner.getChangeListeners();
 				for(ChangeListener list : listeners) {
 					GUIReferences.radiusSpinner.removeChangeListener(list);
@@ -145,14 +145,6 @@ public class CPActionListener implements ActionListener,GUIConstants{
 				GUIReferences.mode = MODE_SELECT;
 			} else {
 				GUIReferences.mode = MODE_DISABLE;
-			}
-			break;
-		case BUTTON_REMOVE:
-			if(GUIReferences.mode==MODE_REMOVE){
-				GUIReferences.modeGroup.clearSelection();
-				GUIReferences.mode = MODE_SELECT;
-			}else{
-				GUIReferences.mode = MODE_REMOVE;
 			}
 			break;
 		case BUTTON_ADD:

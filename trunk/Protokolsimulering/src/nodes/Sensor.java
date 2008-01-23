@@ -218,7 +218,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 		this(id);
 		this.loc = loc;
 	}
-	
+
 	/**
 	 * Assigns a label to the sensor.
 	 * @param label The new label of the sensor. If null or "", the sensor's current label will be removed.
@@ -710,7 +710,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	public static Sensor getSensor(int sensorID) {
 		return idToSensor.get(sensorID);
 	}
-
+	
 	/**
 	 * Fetches a collection of all the sensors.
 	 * @return A collection of all the sensors.
