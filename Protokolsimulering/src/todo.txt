@@ -1,5 +1,3 @@
-FIXME - color selector always select color
-
 Protokol Simulering:
 
 DONE: Indlæse en udlagt graf fra en fil og vise den.
