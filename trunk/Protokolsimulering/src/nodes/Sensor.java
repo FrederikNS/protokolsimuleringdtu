@@ -824,6 +824,7 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	public static void disposeAllSensors() {
 		GlobalAddressBook.clearBook();
 		idToSensor = new Hashtable<Integer, Sensor>();
+		Sensor.terminals = new TreeSet<Sensor>();
 		usedIDs = 0;
 	}
 
