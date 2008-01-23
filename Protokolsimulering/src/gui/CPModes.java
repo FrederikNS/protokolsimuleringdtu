@@ -63,11 +63,11 @@ public class CPModes implements GUIConstants {
 		GUIReferences.clearButton.addActionListener(actionListener);
 		GUIReferences.clearButton.setActionCommand(String.valueOf(BUTTON_CLEAR));
 		
-		/*JToggleButton removeButton = new JToggleButton("Remove");
-		removeButton.setToolTipText("Removes the sensor you click");
-		removeButton.addActionListener(actionListener);
-		removeButton.setActionCommand(String.valueOf(BUTTON_REMOVE));
-		removeButton.setEnabled(false);*/
+		GUIReferences.removeButton = new JToggleButton("Remove");
+		GUIReferences.removeButton.setToolTipText("Removes the sensor you click");
+		GUIReferences.removeButton.addActionListener(actionListener);
+		GUIReferences.removeButton.setActionCommand(String.valueOf(BUTTON_REMOVE));
+//		GUIReferences.removeButton.setEnabled(false);
 		
 		GUIReferences.promoteButton = new JToggleButton("Promote");
 		GUIReferences.promoteButton.setToolTipText("");
@@ -82,7 +82,7 @@ public class CPModes implements GUIConstants {
 		JLabel radiusLabel = new JLabel("Communication Radius");
 		SpinnerNumberModel model = new SpinnerNumberModel(Sensor.getTransmissionRadius(),10,40,1);
 		GUIReferences.radiusSpinner = new JSpinner(model);
-//		GUIReferences.radiusSpinner.setValue(Sensor.getTransmissionRadius());
+		GUIReferences.radiusSpinner.setValue(Sensor.getTransmissionRadius());
 		GUIReferences.radiusSpinner.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
 				Sensor.setTransmissionRadius(Integer.parseInt(GUIReferences.radiusSpinner.getValue().toString()));
@@ -106,13 +106,13 @@ public class CPModes implements GUIConstants {
 		GUIReferences.modeGroup.add(GUIReferences.addButton);
 		GUIReferences.modeGroup.add(GUIReferences.enableButton);
 		GUIReferences.modeGroup.add(GUIReferences.disableButton);
-//		GUIReferences.modeGroup.add(removeButton);
+		GUIReferences.modeGroup.add(GUIReferences.removeButton);
 		GUIReferences.modeGroup.add(GUIReferences.promoteButton);
 		GUIReferences.modeGroup.add(GUIReferences.demoteButton);
 		
 		constructDestructPanel.add(GUIReferences.addButton);
 		constructDestructPanel.add(GUIReferences.generateButton);
-//		constructDestructPanel.add(removeButton);
+		constructDestructPanel.add(GUIReferences.removeButton);
 		constructDestructPanel.add(GUIReferences.clearButton);
 		modificationPanel.add(GUIReferences.enableButton);
 		modificationPanel.add(GUIReferences.disableButton);
