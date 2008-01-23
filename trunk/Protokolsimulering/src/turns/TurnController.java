@@ -170,11 +170,9 @@ public abstract class TurnController implements Saveable{
 		public Element generateXMLElement(Document doc) {
 			Element turnListNode = doc.createElement("turnController");
 			if(run != null) {
-				System.err.println("TC: saving run.");
 				turnListNode.appendChild(run.generateXMLElement(doc));
 			}
-			if(currentEntry > -1) {
-				System.err.println("TC: saving turn.");
+			else if(currentEntry > -1) {
 				turnListNode.appendChild(turnList[currentEntry].generateXMLElement(doc));
 			}
 			return turnListNode;
