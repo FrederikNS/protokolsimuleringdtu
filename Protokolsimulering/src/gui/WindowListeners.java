@@ -22,6 +22,12 @@ public class WindowListeners implements WindowListener, GUIConstants {
 		boolean isChanged = GUIReferences.saveMenuItem.isEnabled();
 		char window = e.getWindow().getName().charAt(0);
 		switch(window) {
+		case WINDOW_INFORMATION_FRAME:
+			GUIReferences.infoBoxEnable.setSelected(false);
+			break;
+		case WINDOW_CONSOLE:
+			GUIReferences.consoleEnable.setSelected(false);
+			break;
 		case WINDOW_VIEW_PORT:
 		case WINDOW_CONTROL_FRAME:
 			if(isChanged) {

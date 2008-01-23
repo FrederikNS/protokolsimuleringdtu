@@ -13,7 +13,7 @@ import transmissions.Transmission;
  * currently selected sensor.
  * @author Frederik Nordahl Sabroe
  */
-public class InformationFrame extends JFrame  {
+public class InformationFrame extends JFrame implements GUIConstants {
 
 	/**
 	 * Serialized ID
@@ -67,7 +67,9 @@ public class InformationFrame extends JFrame  {
 	 * @return Returns itself for convience.
 	 */
 	public InformationFrame init(){
+		setName(String.valueOf(WINDOW_INFORMATION_FRAME));
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		addWindowListener(GUIReferences.windowListener);
 
 		setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
 
