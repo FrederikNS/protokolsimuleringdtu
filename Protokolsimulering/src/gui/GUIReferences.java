@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -187,7 +189,7 @@ public class GUIReferences implements GUIConstants{
 	 * Color of a "secondary" selected sensor (one the selected sensor can reach)
 	 */
 	public static Color secondarySelectedColor = Color.CYAN;
-	
+
 	/**
 	 * Color of terminal sensors.
 	 */
@@ -200,7 +202,7 @@ public class GUIReferences implements GUIConstants{
 	 * Color of isolated sensors.
 	 */
 	public static Color isolatedColor    = Color.PINK;
-	
+
 	/**
 	 * Convenience method for opening a new ViewPort with a internal width / height
 	 * @param w The (internal) width of the new field.
@@ -211,7 +213,7 @@ public class GUIReferences implements GUIConstants{
 		Scaling.setPicCoords(w,h);
 		viewPort = new ViewPort(title);
 	}
-	
+
 	/**
 	 * Marks the current work as modified (enables the save menu)
 	 */
@@ -225,7 +227,7 @@ public class GUIReferences implements GUIConstants{
 			}
 		}
 	}
-	
+
 	/**
 	 * Clears the view-port, removes all sensors and re-enables modification.
 	 */
@@ -241,7 +243,7 @@ public class GUIReferences implements GUIConstants{
 	public static void updateStatusBar(){
 		status.setText("Sensors: "+Sensor.idToSensor.size()+(TurnController.getInstance().getCurrentTurn()!=null?", Turn: "+TurnController.getInstance().getCurrentTurn().turn:""));
 	}
-	
+
 	/**
 	 * Convience method for repainting and updating the information frame.
 	 */
@@ -251,7 +253,7 @@ public class GUIReferences implements GUIConstants{
 			viewPort.getGraphicsPainter().repaint();
 		}
 	}
-	
+
 	/**
 	 * Convience method for checking if the sensor network / VPGraphicsPanter is available.
 	 * @return true if the ViewPort / VPGraphicsPainter is available.
@@ -259,7 +261,7 @@ public class GUIReferences implements GUIConstants{
 	public static boolean isSensorNetworkAvailable() {
 		return viewPort != null;
 	}
-	
+
 	/**
 	 * Convience method for saving.
 	 * @see GUIReferences#saveAs()
@@ -272,7 +274,7 @@ public class GUIReferences implements GUIConstants{
 			saveAs();
 		}
 	}
-	
+
 	/**
 	 * Convenience method for saving as.
 	 */
@@ -299,7 +301,7 @@ public class GUIReferences implements GUIConstants{
 			GUIReferences.saveMenuItem.setEnabled(false);
 		}
 	}
-	
+
 	/**
 	 * Enables or disables all buttons on the construction tab
 	 * @param isEnabled true if it should be enabled, false if it should be disabled.
@@ -315,7 +317,19 @@ public class GUIReferences implements GUIConstants{
 		radiusSpinner.setEnabled(isEnabled);
 		generateAddressBook.setEnabled(isEnabled);
 	}
-		
+
+	/**
+	 * Enables or disables all buttons on the simulate tab
+	 * @param isEnabled true if it should be enabled, false if it should be disabled.
+	 */
+	public static void setSimulateEnabled(boolean isEnabled){
+		Enumeration<AbstractButton> buttons = GUIReferences.stepperGroup.getElements();
+		while(buttons.hasMoreElements()) {
+			buttons.nextElement().setEnabled(isEnabled);
+		}
+		GUIReferences.nextSensor.setEnabled(isEnabled);
+	}
+
 	/**
 	 * Convience method for reopening the Config-frame.
 	 * @param where The location on the screen where it should be placed.
@@ -326,7 +340,7 @@ public class GUIReferences implements GUIConstants{
 		configFrame.setLocation(where);
 		configFrame.setVisible(true);
 	}
-	
+
 	/**
 	 * Init the static variables in the correct order.
 	 * Some values is inited through the ControlPanelFrame's constructor. 
