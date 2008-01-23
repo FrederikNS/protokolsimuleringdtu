@@ -817,7 +817,6 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 		}
 	}
 
-
 	/**
 	 * Removes all sensors from the list.
 	 */

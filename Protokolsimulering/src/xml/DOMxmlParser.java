@@ -98,37 +98,43 @@ public class DOMxmlParser {
 				throw new XMLParseException("The field size could not be determined.");
 			}
 		} catch (RuntimeException e){
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! (See debug for more information)");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		} catch (UnsupportedEncodingException e) {
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! Unsupported file encoding was not supported.");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		} catch (FileNotFoundException e) {
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! The file did not exist.");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		} catch (ParserConfigurationException e) {
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! Could not acquire a XML Parser.");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		} catch (SAXException e) {
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! The file did not contain valid XML.");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		} catch (IOException e) {
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! Read error (See debug for more information).");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		} catch (XMLParseException e) {
-			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed!");
-			Note.sendNote(Note.DEBUG, "Load fail: " + e );
+			Note.sendNote(Note.ERROR, "Loading, " + xmlFile.getName() + " failed! The xml-file did not fulfill the .stuff standard.");
+			Note.sendNote(Note.DEBUG, "Load failuire: " + e.getLocalizedMessage() );
 			return;
 		}
 		GlobalAddressBook.getBook().loadedSensors();
 		GUIReferences.generateNewField(x, y, xmlFile.getName());
-		Note.sendNote("Data from " + xmlFile.getName() + " was loaded successfully!");
+		String msg = "from " + xmlFile.getName() + " was loaded successfully! ";
+		if(TurnController.getInstance().getCurrentTurn() != null) {
+			msg = "Simulation ." + msg;
+		} else {
+			msg = "Sensors " + msg;
+		}
+		Note.sendNote(msg);
 	}
 	
 	/**
