@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.WindowListener;
 import java.io.File;
 
@@ -299,6 +300,17 @@ public class GUIReferences implements GUIConstants{
 		demoteButton.setEnabled(true);
 		radiusSpinner.setEnabled(true);
 		generateAddressBook.setEnabled(true);
+	}
+	
+	/**
+	 * Convience method for reopening the Config-frame.
+	 * @param where The location on the screen where it should be placed.
+	 */
+	public static void reopenConfigFrame(Point where){			
+		configFrame.dispose();
+		ConfigFrame.openConfigFrame();
+		configFrame.setLocation(where);
+		configFrame.setVisible(true);
 	}
 	
 	/**

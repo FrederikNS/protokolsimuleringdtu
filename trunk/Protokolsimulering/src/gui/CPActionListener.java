@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,6 +63,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		Color newColor;
 		switch(Integer.parseInt(arg0.getActionCommand())) {
 		case MENU_QUIT:
 			ControlPanelFrame.getFrame().quit();
@@ -221,113 +223,101 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			timer.start();
 			break;
 		case BUTTON_COLOR_CANVAS:
-			GUIReferences.canvasColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.canvasColor);
-			GUIReferences.viewPort.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.canvasColor);
+			if(newColor != null) {
+				GUIReferences.canvasColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_SENSOR:
-			GUIReferences.sensorColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sensorColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sensorColor);
+			if(newColor != null) {
+				GUIReferences.sensorColor = newColor;
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_SELECTED:
-			GUIReferences.selectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.selectedColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.selectedColor);
+			if(newColor != null) {
+				GUIReferences.selectedColor = newColor;
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_DEAD:
-			GUIReferences.deadColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.deadColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.deadColor);
+			if(newColor != null) {
+				GUIReferences.deadColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_SENDING:
-			GUIReferences.sendingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sendingColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sendingColor);
+			if(newColor != null) {
+				GUIReferences.sendingColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_RECEIVING:
-			GUIReferences.receivingColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.receivingColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.receivingColor);
+			if(newColor != null) {
+				GUIReferences.receivingColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_TRANSMISSION_RADIUS:
-			GUIReferences.transmissionRadiusColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.transmissionRadiusColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.transmissionRadiusColor);
+			if(newColor != null) {
+				GUIReferences.transmissionRadiusColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_CONNECTION:
-			GUIReferences.connectionColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.connectionColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.connectionColor);
+			if(newColor != null) {
+				GUIReferences.connectionColor = newColor;
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_SECONDARY_SELECTED:
-			GUIReferences.secondarySelectedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.secondarySelectedColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.secondarySelectedColor);
+			if(newColor != null) {
+				GUIReferences.secondarySelectedColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_TERMINAL:
-			GUIReferences.terminalColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.terminalColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.terminalColor);
+			if(newColor != null) {
+				GUIReferences.terminalColor = newColor;
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_CURRENT_TURN:
-			GUIReferences.currentTurnColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.currentTurnColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.currentTurnColor);
+			if(newColor != null) {
+				GUIReferences.currentTurnColor = newColor;
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_COLOR_ISOLATED:
-			GUIReferences.isolatedColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.isolatedColor);
-			GUIReferences.viewPort.getGraphicsPainter().repaint();
-			where = GUIReferences.configFrame.getLocation();
-			GUIReferences.configFrame.dispose();
-			ConfigFrame.openConfigFrame();
-			GUIReferences.configFrame.setLocation(where);
-			GUIReferences.configFrame.setVisible(true);
+			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.isolatedColor);
+			if(newColor != null)  {
+				GUIReferences.isolatedColor = newColor; 
+				GUIReferences.viewPort.getGraphicsPainter().repaint();
+			}
+			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
 		case BUTTON_GENERATE_ADDRESS_BOOK:
 			GlobalAddressBook.clearBook();
