@@ -72,9 +72,13 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			CPNew.openCPNew();
 			break;
 		case MENU_OPEN:
-			//TODO - check if session is already running?
 			if(GUIReferences.saveMenuItem.isEnabled()) {
-
+				int returnValue = JOptionPane.showConfirmDialog(GUIReferences.constructPanel, "Do you wish to save your work?", "", JOptionPane.YES_NO_CANCEL_OPTION);
+				if(returnValue == JOptionPane.OK_OPTION) {
+					GUIReferences.save();
+				} else if(returnValue == JOptionPane.CANCEL_OPTION) {
+					break;
+				}
 			}
 			File openFile;
 			JFileChooser openChooser = new JFileChooser();
