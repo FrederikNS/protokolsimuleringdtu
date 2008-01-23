@@ -226,8 +226,10 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.canvasColor);
 			if(newColor != null) {
 				GUIReferences.canvasColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				if(GUIReferences.isSensorNetworkAvailable()) {
+					GUIReferences.viewPort.getGraphicsPainter().setBackground(GUIReferences.canvasColor);
+					GUIReferences.updateViewSettings();
+				}
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -235,7 +237,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sensorColor);
 			if(newColor != null) {
 				GUIReferences.sensorColor = newColor;
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -243,7 +245,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.selectedColor);
 			if(newColor != null) {
 				GUIReferences.selectedColor = newColor;
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -251,7 +253,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.deadColor);
 			if(newColor != null) {
 				GUIReferences.deadColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -259,7 +261,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.sendingColor);
 			if(newColor != null) {
 				GUIReferences.sendingColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -267,7 +269,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.receivingColor);
 			if(newColor != null) {
 				GUIReferences.receivingColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -275,7 +277,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.transmissionRadiusColor);
 			if(newColor != null) {
 				GUIReferences.transmissionRadiusColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -283,7 +285,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.connectionColor);
 			if(newColor != null) {
 				GUIReferences.connectionColor = newColor;
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -291,7 +293,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.secondarySelectedColor);
 			if(newColor != null) {
 				GUIReferences.secondarySelectedColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -299,7 +301,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.terminalColor);
 			if(newColor != null) {
 				GUIReferences.terminalColor = newColor;
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -307,7 +309,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.currentTurnColor);
 			if(newColor != null) {
 				GUIReferences.currentTurnColor = newColor;
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
@@ -315,7 +317,7 @@ public class CPActionListener implements ActionListener,GUIConstants{
 			newColor = JColorChooser.showDialog(GUIReferences.controlPanelPane, "Color Selector", GUIReferences.isolatedColor);
 			if(newColor != null)  {
 				GUIReferences.isolatedColor = newColor; 
-				GUIReferences.viewPort.getGraphicsPainter().repaint();
+				GUIReferences.updateViewSettings();
 			}
 			GUIReferences.reopenConfigFrame(GUIReferences.configFrame.getLocation());
 			break;
