@@ -47,6 +47,7 @@ public class WindowListeners implements WindowListener, GUIConstants {
 					ControlPanelFrame.getFrame().quit();
 				}
 				else {
+					GUIReferences.clearViewPort();
 					ViewPort.disposeViewPort();
 				}
 			}
