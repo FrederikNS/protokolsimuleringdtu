@@ -36,7 +36,7 @@ import turns.TurnController;
  * Created (in part) together with team 11
  * @author Niels Thykier
  */
-public abstract class XMLSaver {
+public class XMLSaver {
 	
 	/**
 	 * Saves a list of sensors, though if a turn is running the sensors in that will be saved instead.
