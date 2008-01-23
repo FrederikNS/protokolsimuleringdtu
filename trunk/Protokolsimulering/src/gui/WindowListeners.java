@@ -28,10 +28,12 @@ public class WindowListeners implements WindowListener, GUIConstants {
 				int saveBeforeQuit = JOptionPane.showConfirmDialog(GUIReferences.controlPanelPane, "Do you want to save before you quit?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				switch(saveBeforeQuit){
 				case JOptionPane.YES_OPTION:
+					GUIReferences.stepperGroup.clearSelection();
 					GUIReferences.saveMenuItem.setEnabled(false);
 					GUIReferences.save();
 					break;
 				case JOptionPane.NO_OPTION:
+					GUIReferences.stepperGroup.clearSelection();
 					GUIReferences.saveMenuItem.setEnabled(false);
 					break;
 				case JOptionPane.CANCEL_OPTION:
