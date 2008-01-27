@@ -177,6 +177,8 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 */
 	private static TreeSet<Sensor> terminals = new TreeSet<Sensor>();
 	
+	private volatile boolean isLocked = false;
+	
 	/**
 	 * The radius of the sensor (when drawn).
 	 */
@@ -320,7 +322,14 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * @param terminal true if it should be upgrade to a terminal, false if downgraded to normal sensor.
 	 * @return A new terminal or sensor depending on the input.
 	 */
-	public Sensor setTerminalStatus(boolean terminal) {
+	public synchronized Sensor setTerminalStatus(boolean terminal) {
+		while(isLocked) {
+			try {
+				this.wait();
+			} catch(Exception e) {
+			}
+		}
+		isLocked = true;
 		if(terminal) {
 			if(0 == (this.status & STATUS_IS_TERMINAL)) {
 				Note.sendNote(this + " has been promoted to Terminal");
@@ -329,7 +338,6 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 				this.nearestTerminalDist = -1;
 				this.sendThrough = this.id;
 				terminals.add(this);
-				return this;
 			}
 
 		} else {
@@ -340,9 +348,10 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 				this.nearestTerminalDist = Integer.MAX_VALUE;
 				this.sendThrough = Sensor.INVALID_SENSOR_ID;
 				terminals.remove(this);
-				return this;
 			}
 		}
+		isLocked = false;
+		this.notifyAll();
 		return this;
 	}
 
@@ -465,9 +474,18 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * Adds a link from this sensor to the other.
 	 * @param sen The other sensor.
 	 */
-	public void addLinkToSensor(Sensor sen) {
+	public synchronized void addLinkToSensor(Sensor sen) {
+		while(isLocked) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+			}
+		}
+		isLocked = true;
 		links.add(sen.id);
 		updateLinks();
+		isLocked = false;
+		this.notifyAll();
 	}
 
 	/**
@@ -486,11 +504,21 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * Fetches a list of the sensors this sensor can reach. (Requires that the GlobalAddressBook has been updated)
 	 * @return An array of Sensors that this sensor can reach.
 	 */
-	public Integer[] getLinks() {
-		if(links.size() == 0) {
-			return null;
+	public synchronized Integer[] getLinks() {
+		while(isLocked) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+			}
 		}
-		return links.toArray(new Integer[links.size()]);
+		isLocked = true;
+		Integer[] array = null;
+		if(links.size() > 0) {
+			array = links.toArray(new Integer[links.size()]);
+		}
+		isLocked = false;
+		this.notifyAll();
+		return array;
 	}
 	
 
@@ -566,10 +594,16 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 * Draws lines between this sensor and all its links.
 	 * @param g The graphics to draw with.
 	 */
-	public void drawConnections(Graphics g) {
+	public synchronized void drawConnections(Graphics g) {
+		if(isLocked) { 
+			return;
+		}
+		isLocked = true;
 		for(Integer link : links) {
 			new Line(loc, idToSensor.get(link).loc).draw(g);
 		}
+		isLocked = false;
+		this.notifyAll();
 	}
 	
 	/**
@@ -877,12 +911,31 @@ public class Sensor implements Transmitter, Saveable, Prepareable, Comparable<Se
 	 */
 	public static void drawAllConnections(Graphics g) {
 		for(Sensor sen : idToSensor.values()) {
+			if(sen.isLocked) {
+				continue;
+			}
+			sen.lock();
 			for(Integer link : sen.links) {
 				if(sen.id < link) {
 					new Line(sen.loc, idToSensor.get(link).loc).draw(g);
 				}
 			}
+			sen.unlock();
 		}
+	}
+	
+	private synchronized void lock() {
+		while(isLocked) {
+			try {
+				this.wait();
+			} catch(Exception e) {
+			}
+		}
+		isLocked = true;
+	}
+	private synchronized void unlock() {
+		isLocked = false;
+		this.notifyAll();
 	}
 
 	/**

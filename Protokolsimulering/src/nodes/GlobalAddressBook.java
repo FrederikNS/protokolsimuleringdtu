@@ -1,5 +1,8 @@
 package nodes;
 
+import gui.ControlPanelFrame;
+import gui.GUIReferences;
+
 
 /**
  * This class is responsible for checking which sensors can communicate.
@@ -16,6 +19,10 @@ public class GlobalAddressBook {
 	 */
 	private int sensorsAccountedFor;
 
+	private volatile boolean cleared = false;
+	
+	private boolean skipSleep = false;
+	
 	/**
 	 * The constructor of this class.
 	 */
@@ -29,7 +36,10 @@ public class GlobalAddressBook {
 	 */
 	public static GlobalAddressBook clearBook() {
 		Sensor.clearAllLinks();
-		return (globalAdressBook = new GlobalAddressBook());
+		synchronized (globalAdressBook) {
+			globalAdressBook.cleared = true;
+		}
+		return globalAdressBook;
 	}
 
 	/**
@@ -42,22 +52,27 @@ public class GlobalAddressBook {
 		}
 		return globalAdressBook;
 	}
-	
-	/**
-	 * Method used by the xml-loader to have the addressbook ignore
-	 * loaded sensors.
-	 */
-	public void loadedSensors() {
-		sensorsAccountedFor = Sensor.idToSensor.size();
-	}
 
 	/**
 	 * This method is responsible for detecting which sensors can communicate.
 	 */
-	public void generateDirectConnections(){
+	public synchronized void generateDirectConnections(){
+		this.notifyAll();
+	}
+	
+	private void generate() {
 		int totalAmountOfSensors = Sensor.idToSensor.size();
 		if(totalAmountOfSensors>1){
-			for(int i=sensorsAccountedFor;i<totalAmountOfSensors;i++){
+			int i;
+			synchronized (this) {
+				if(cleared) {
+					i = 0;
+					cleared = false;
+				} else {
+					i = sensorsAccountedFor;
+				}
+			}
+			for( ;i<totalAmountOfSensors;i++){
 				for(int j=0;j<totalAmountOfSensors;j++){
 					if(i != j) {
 						Sensor sen1 = Sensor.idToSensor.get(i);
@@ -68,8 +83,36 @@ public class GlobalAddressBook {
 						}
 					}
 				}
+				synchronized (this) {
+					if(cleared) {
+						skipSleep = true;
+						return;
+					}
+				}
 			}
 			sensorsAccountedFor = totalAmountOfSensors;
 		}
+	}
+	
+	public void capture() {
+		while(true) {
+			if(!skipSleep) {
+				try {	
+					synchronized (this) {
+						this.wait();
+					}
+				} catch(Exception e) {
+				}
+			}
+			if(ControlPanelFrame.getFrame() == null || !ControlPanelFrame.getFrame().isVisible()) {
+				break;
+			}
+			generate();
+			GUIReferences.viewPort.repaint();
+		}
+	}
+
+	public void loadedSensors() {
+		this.sensorsAccountedFor = Sensor.idToSensor.size();
 	}
 }

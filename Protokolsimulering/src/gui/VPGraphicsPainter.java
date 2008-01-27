@@ -27,6 +27,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 	 * Serialized ID
 	 */
 	private static final long serialVersionUID = 4244383889572154127L;
+	
+	//private PainterThread painter;
 
 	/**
 	 * Contructor, creates a new GraphicsPainter (Canvas) for the sensor
@@ -36,6 +38,8 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		this.setBackground(GUIReferences.canvasColor);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+		//painter = this.new PainterThread();
+		//painter.start();
 	}
 
 	@Override
@@ -135,6 +139,46 @@ public class VPGraphicsPainter extends JPanel implements MouseListener,MouseMoti
 		}
 	}
 
+	
+	protected class PainterThread extends Thread {
+		
+		private Graphics paint;
+		private volatile boolean isLocked = false; 
+		
+		protected PainterThread() {
+		}
+		
+		@Override
+		public synchronized void run() {
+			while(true) {
+				try {
+					this.wait();
+				} catch(Exception e) {
+				}
+				if(ControlPanelFrame.getFrame() == null || !ControlPanelFrame.getFrame().isVisible()) {
+					break;
+				}
+				if(paint != null) {
+					
+				}
+				paint.dispose();
+				paint = null;
+			}
+		}
+		
+		public synchronized void repaint(Graphics g) {
+			while(isLocked) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
+				}
+			}
+			isLocked = true;
+			paint = g;
+			isLocked = false;
+			this.notifyAll();
+		}
+	}
 
 	//Not used
 	/* (non-Javadoc)
