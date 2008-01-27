@@ -2,6 +2,8 @@ import gui.ControlPanelFrame;
 
 import javax.swing.UIManager;
 
+import nodes.GlobalAddressBook;
+
 
 
 
@@ -54,5 +56,6 @@ public class Initiator {
 		}
 		UIManager.put("swing.boldMetal", Boolean.FALSE);
 		ControlPanelFrame.getFrame().open();
+		GlobalAddressBook.getBook().capture();
 	}
 }
