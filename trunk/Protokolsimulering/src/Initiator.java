@@ -4,9 +4,6 @@ import javax.swing.UIManager;
 
 import nodes.GlobalAddressBook;
 
-
-
-
 /**
  * The initializor of the program.
  */
