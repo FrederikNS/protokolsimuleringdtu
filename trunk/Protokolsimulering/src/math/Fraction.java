@@ -372,7 +372,6 @@ public class Fraction implements Cloneable, Comparable<Object>{
 	
 	/**
 	 * Overrides the clone-method from Object.
-	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	public Fraction clone() throws RuntimeException {

@@ -169,7 +169,6 @@ public class Data implements DataConstants, Saveable{
 	
 	/**
 	 * This method overrides the clone-method in Object.
-	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	public Object clone() {
