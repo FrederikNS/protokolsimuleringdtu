@@ -125,7 +125,6 @@ public class Location implements Drawable,Cloneable, Saveable {
 	
 	/**
 	 * This method overrides the clone-method from Object.
-	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {

@@ -291,7 +291,6 @@ public class Transmission implements Comparable<Transmission>, DataConstants, Cl
 	
 	/**
 	 * Overrides the clone-method in Object.
-	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	public Object clone() {
