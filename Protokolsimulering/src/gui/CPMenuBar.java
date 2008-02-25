@@ -26,7 +26,7 @@ public class CPMenuBar implements GUIConstants {
 		JMenuItem saveAsMenuItem = new JMenuItem("Save As...");
 		JMenuItem quitMenuItem = new JMenuItem("Quit"); 
 		JMenu editMenu = new JMenu("Edit");
-		JMenuItem preferencesMenuItem = new JMenuItem("Perferences");
+		JMenuItem preferencesMenuItem = new JMenuItem("Preferences");
 		
 		newMenuItem.addActionListener(actionListener);
 		newMenuItem.setActionCommand(String.valueOf(MENU_NEW));
